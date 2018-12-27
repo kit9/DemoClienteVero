@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_generic_excel_report,generic.excel.report,model_generic_excel_report,,1,1,1,1
+access_generic_configuration,generic.excel.report.configuration,model_template_configuration,,1,1,1,1
+access_sub_model_field_ids_one2many,Sub.model.field.ids.one2many,model_sub_model_field_ids_one2many,,1,1,1,1
+access_field_ids_one2many,field.ids.one2many,model_field_ids_one2many,,1,1,1,1
