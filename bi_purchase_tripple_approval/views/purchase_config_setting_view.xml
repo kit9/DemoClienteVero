@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_res_config_purchase_inherit" model="ir.ui.view">
+			<field name="name">purchase.res.config.settings.inherite</field>
+			<field name="model">res.config.settings</field>
+			<field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+
+			<field name="arch" type="xml">
+				<xpath expr="//div[@groups='purchase.group_purchase_manager']/div[@class='row mt16 o_settings_container']" position="after">
+					 <h2>Purchase Order Second Approval</h2>
+					 <div class="row mt16 o_settings_container">
+					 	<div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="second_approval"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+							<label for="second_approval"/>                      
+							 </div>
+							 <div class="o_setting_right_pane" attrs="{'invisible': [('second_approval', '=', False)]}">
+                                    <div class="row mt16">
+                                        <label for="second_approval_minimum_amount" class="col-md-4 o_light_label"/>
+                                        <field name="second_approval_minimum_amount"/>
+                                    </div>
+                                </div>
+                        </div>
+                     </div>
+
+					</xpath>
+				
+			</field>
+		</record>
+</odoo>
