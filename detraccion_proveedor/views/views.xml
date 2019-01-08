@@ -1,5 +1,6 @@
 <odoo>
 
+  <!-- Detraccion en el Proveedor -->
   <record id="detraccino_form_view_proveedor" model="ir.ui.view">
     <field name="name">detraccion.form.proveedor</field>
     <field name="model">res.partner</field>
