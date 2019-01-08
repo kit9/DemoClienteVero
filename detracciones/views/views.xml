@@ -1,0 +1,46 @@
+<odoo>
+
+  <!-- Form View -->
+  <record id="detraccion_form_view" model="ir.ui.view">
+    <field name="name">sunat.detraccion.form.view</field>
+    <field name="model">sunat.detracciones</field>
+    <field name="arch" type="xml">
+      <form string="Form Detracciones">
+        <sheet>
+          <group>
+            <field name="codigo"/>
+            <field name="desc"/>
+            <field name="detrac"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Thee -->
+  <record id="detracciones_tree_view" model="ir.ui.view">
+    <field name="name">sunat.detracciones.tree.view</field>
+    <field name="model">sunat.detracciones</field>
+    <field name="arch" type="xml">
+      <tree string="Tree Detracciones">
+        <field name="codigo"/>
+        <field name="desc"/>
+        <field name="detrac"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Action Sunat -->
+  <record id="action_sunat_detracciones" model="ir.actions.act_window">
+    <field name="name">Detracciones Sunat</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">sunat.detracciones</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <!-- Menus -->
+  <menuitem id="sunat_menu_root" name="Sunat" sequence="1" />
+  <menuitem id="sunat_detracciones_menu_category" name="Detracciones" sequence="1" parent="sunat_menu_root" />
+  <menuitem id="action_sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_detracciones_menu_category" action="action_sunat_detracciones" />
+
+</odoo>
