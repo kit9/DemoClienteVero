@@ -1,7 +1,7 @@
 <odoo>
 
     <!-- Menus -->
-    <menuitem id="sunat_menu_root" name="Sunat" sequence="1" />
+    <menuitem id="sunat_menu_root" name="Sunat" sequence="1" web_icon="sunat,static/description/icon.png"/>
     <menuitem id="sunat_detracciones_menu_category" name="Detracciones" sequence="1" parent="sunat_menu_root" action="action_sunat_detracciones"/>
     <!--menuitem id="action_sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_detracciones_menu_category" action="action_sunat_detracciones" /-->
     <menuitem id="sunat_document_type_menu_category" name="Tipo Documento" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type" />
