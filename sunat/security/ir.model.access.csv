@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_detraccion_all,access_detraccion_all,model_sunat_detracciones,,1,1,1,1
+access_document_type_all,access_document_type_all,model_sunat_document_type,,1,1,1,1

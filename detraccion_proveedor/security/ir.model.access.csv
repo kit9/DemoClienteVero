@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_detraccion_proveedor_detraccion_proveedor,detraccion_proveedor.detraccion_proveedor,model_detraccion_proveedor_detraccion_proveedor,,1,0,0,0

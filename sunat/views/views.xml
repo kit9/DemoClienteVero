@@ -1,0 +1,70 @@
+<odoo>
+
+  <!-- Detraccion en el Proveedor -->
+  <record id="detraccion_form_view_proveedor" model="ir.ui.view">
+    <field name="name">detraccion.form.proveedor</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+      <field name="vat" position="after">
+        <field string="Detraccion" name="detrac_id"/>
+      </field>
+    </field>
+  </record>
+
+  <!-- Detraccion Factura Proveedor -->
+  <record id="detraccion_form_view_factura" model="ir.ui.view">
+    <field name="name">detraccion.form.factura</field>
+    <field name="model">account.invoice</field>
+    <field name="inherit_id" ref="account.invoice_supplier_form"/>
+    <field name="arch" type="xml">
+      <field name="reference" position="after">
+        <field string="Detraccion" name="detrac_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
+        <field string="Document Type" name="document_type_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
+        <field name="hide_apply_retention" invisible="1"/>
+        <field name="apply_retention" attrs="{'readonly':[['state','not in',['draft']]],'invisible':[('hide_apply_retention', '=', True)]}"/>
+      </field>
+      <field name="payments_widget" position="before">
+        <field name="detraccion" />
+      </field>
+    </field>
+  </record>
+
+  <!-- Detraccion Tabla Factura -->
+  <record id="detraccion_tree_view_factura" model="ir.ui.view">
+    <field name="name">detraccion.tree.factura</field>
+    <field name="model">account.invoice</field>
+    <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+    <field name="arch" type="xml">
+      <field name="amount_total_signed" position="before">
+        <field name="detraccion" sum="Total"/>
+        <field name="detraccion_paid"/>
+      </field>
+    </field>
+  </record>
+
+  <!-- Accion de Pagar la detraccion de una Factura -->
+  <record id="paid_detraccion_invoice" model="ir.actions.server">
+    <field name="name">Pago de Detraccion</field>
+    <field name="model_id" ref="model_account_invoice"/>
+    <field name="binding_model_id" ref="account.model_account_invoice"/>
+    <field name="state">code</field>
+    <field name="code">
+for rec in records:
+    rec.action_paid_detraccion()
+    </field>
+  </record>
+
+  <!-- Accion de Prueba -->
+  <record id="prueba" model="ir.actions.server">
+    <field name="name">Prueba</field>
+    <field name="model_id" ref="model_account_invoice"/>
+    <field name="binding_model_id" ref="account.model_account_invoice"/>
+    <field name="state">code</field>
+    <field name="code">
+for rec in records:
+    rec.action_prueba()
+    </field>
+  </record>
+
+</odoo>
