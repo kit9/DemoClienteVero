@@ -39,6 +39,40 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
         </field>
     </record>
 
+    <record id="dev_bulk_invoice_view_detraction" model="ir.ui.view">
+        <field name="name">bulk.invoice.detraction.view</field>
+        <field name="model">bulk.inv.detraction</field>
+        <field name="arch" type="xml">
+            <form string="Multiple Invoice Payment">
+                <group>
+                    <group>
+                        <field name="payment_type"/>
+                        <field name="partner_type"/>
+                        <field name="journal_id"/>
+                    </group>
+                    <group>
+                        <field name="payment_date"/>
+                        <field name="communication"/>
+                    </group>
+                </group>
+                    <seperator string='Invoices'/>
+                    <field name="invoice_ids">
+                        <tree editable="buttom">
+                            <field name="invoice_id"/>
+                            <field name="partner_id"/>
+                            <field name="amount"/>
+                            <field name="paid_amount"/>
+                        </tree>
+                    </field>
+                <footer>
+                    <button string="Process" name="process_payment" type="object" default_focus="1" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
     <act_window id="action_bulk_invoice_payment"
         multi="True"
         key2="client_action_multi"
@@ -48,4 +82,16 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
         view_mode="form"
         target="new"
         view_type="form" />
+
+    <!-- Codigo JCondori -->
+    <act_window id="action_bulk_invoice_detraction"
+        multi="True"
+        key2="client_action_multi"
+        name="Maltiple Invoice Detraction"
+        res_model="bulk.inv.detraction"
+        src_model="account.invoice"
+        view_mode="form"
+        target="new"
+        view_type="form" />
+
 </odoo>

@@ -54,7 +54,7 @@
     "category": 'Generic Modules/Accounting',
     'author': 'DevIntelle Consulting Service Pvt.Ltd', 
     'website': 'http://www.devintellecs.com',
-    'depends': ['account_voucher'],
+    'depends': ['account_voucher','sunat'],
     'data': [
             'security/ir.model.access.csv',
             'view/account_payment.xml',
