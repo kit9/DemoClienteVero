@@ -32,5 +32,21 @@
             </xpath>
         </template>
 
+        <template id="report_prueba">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>Report title</h2>
+                            <p>This object's name is <span t-field="o.number"/></p>
+                            <p>Fecha <span t-field="o.date_invoice"/></p>
+                            <p>Vence <span t-field="o.date_due"/></p>
+                            <p>Servicio <span t-field="o.detrac_id.name"/></p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
     </data>
 </odoo>

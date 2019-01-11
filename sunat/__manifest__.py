@@ -15,6 +15,7 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
+    'sequence':0,
     'category': 'Generic Modules/Base',
     'application': True,
     'version': '0.1',
@@ -28,8 +29,8 @@
         'views/detraccion.xml',
         'views/document_type.xml',
         'views/views.xml',
-        'views/menu.xml',
         'views/templates.xml',
+        'views/menu.xml',
         'data/data_detracciones.xml',
         'data/data_document_type.xml',
     ],
