@@ -29,7 +29,7 @@ class document_type(models.Model):
     _description = "Tipos de Documentos"
 
     name = fields.Text(string="Description", translate=True)
-    number = fields.Char(string="Number",size=2, translate=True)
+    number = fields.Char(string="Number", size=2, translate=True)
 
 
 class account_invoice(models.Model):
@@ -45,11 +45,13 @@ class account_invoice(models.Model):
     # Apply Retention
     apply_retention = fields.Boolean(string="Apply Retention")
     # Hide or not Apply Retention
-    hide_apply_retention = fields.Boolean(string='Hide', compute="_compute_hide_apply_retention")
+    hide_apply_retention = fields.Boolean(
+        string='Hide', compute="_compute_hide_apply_retention")
     # Detraction Paid
     detraccion_paid = fields.Boolean()
     # Total a Pagar
-    total_pagar = fields.Monetary(string="Total a Pagar2",compute="_total_pagar_factura")
+    total_pagar = fields.Monetary(
+        string="Total a Pagar2", compute="_total_pagar_factura")
 
     # Method to hide Apply Retention
     @api.depends('document_type_id')
@@ -64,7 +66,7 @@ class account_invoice(models.Model):
     # Load the retention of the selected provider
     @api.onchange('partner_id')
     def _onchange_proveedor(self):
-        #if len(self.detrac_id) <= 0 :
+        # if len(self.detrac_id) <= 0 :
         self.detrac_id = self.partner_id.detrac_id
 
     # Calculate the value of the Detraction
@@ -72,8 +74,9 @@ class account_invoice(models.Model):
     @api.multi
     def _calcular_detrac(self):
         for record in self:
-            record.detraccion = record.amount_total * (record.detrac_id.detrac / 100)
-    
+            record.detraccion = record.amount_total * \
+                (record.detrac_id.detrac / 100)
+
     # Trial Action
     @api.multi
     def action_prueba(self):
@@ -87,7 +90,7 @@ class account_invoice(models.Model):
         for rec in self:
             rec.detraccion_paid = True
         return True
-    
+
     @api.depends('residual_signed', 'detraccion')
     @api.multi
     def _total_pagar_factura(self):

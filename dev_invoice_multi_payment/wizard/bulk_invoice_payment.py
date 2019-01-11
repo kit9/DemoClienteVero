@@ -47,7 +47,7 @@ class bulk_inv_payment(models.TransientModel):
                 'invoice_id':inv and inv.id or False,
                 'partner_id':inv and inv.partner_id.id or False,
                 'amount':inv.residual or 0.0,
-                'paid_amount':inv.detraccion or 0.0,
+                'paid_amount':inv.residual or 0.0,
             }))
             if inv.type in ('out_invoice','out_refund'):
                 res.update({
