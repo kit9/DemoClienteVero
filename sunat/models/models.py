@@ -49,15 +49,17 @@ class account_invoice(models.Model):
     # Detraction Paid
     detraccion_paid = fields.Boolean()
     # Total a Pagar
-    total_pagar = fields.Monetary(string="Total a Pagar2",compute="_total_pagar_Factura")
+    total_pagar = fields.Monetary(string="Total a Pagar2",compute="_total_pagar_factura")
 
     # Method to hide Apply Retention
     @api.depends('document_type_id')
+    @api.multi
     def _compute_hide_apply_retention(self):
-        if self.document_type_id.number == '02':
-            self.hide_apply_retention = False
-        else:
-            self.hide_apply_retention = True
+        for record in self:
+            if record.document_type_id.number == '02':
+                record.hide_apply_retention = False
+            else:
+                record.hide_apply_retention = True
 
     # Load the retention of the selected provider
     @api.onchange('partner_id')
@@ -88,7 +90,7 @@ class account_invoice(models.Model):
     
     @api.depends('residual_signed', 'detraccion')
     @api.multi
-    def _total_pagar_Factura(self):
+    def _total_pagar_factura(self):
         for record in self:
             if record.detraccion_paid == True:
                 record.total_pagar = record.residual_signed - record.detraccion

@@ -31,7 +31,7 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
                         </tree>
                     </field>
                 <footer>
-                    <button string="Process" name="process_payment" type="object" default_focus="1" class="oe_highlight"/>
+                    <button string="Process Payment" name="process_payment" type="object" default_focus="1" class="oe_highlight"/>
                     or
                     <button string="Cancel" class="oe_link" special="cancel"/>
                 </footer>
@@ -83,7 +83,6 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
         target="new"
         view_type="form" />
 
-    <!-- Codigo JCondori -->
     <act_window id="action_bulk_invoice_detraction"
         multi="True"
         key2="client_action_multi"
@@ -93,5 +92,4 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
         view_mode="form"
         target="new"
         view_type="form" />
-
 </odoo>
