@@ -39,7 +39,7 @@ class account_invoice(models.Model):
     detrac_id = fields.Many2one('sunat.detracciones', 'Detraccion')
     # Value of the Detraction
     detraccion = fields.Monetary(
-        string="Detraccion", compute="_calcular_detrac", store=True)
+        string="Detraction Value", compute="_calcular_detrac", store=True)
     # Document Type
     document_type_id = fields.Many2one('sunat.document_type', 'Document Type')
     # Apply Retention
@@ -48,7 +48,8 @@ class account_invoice(models.Model):
     hide_apply_retention = fields.Boolean(
         string='Hide', compute="_compute_hide_apply_retention")
     # Detraction Paid
-    detraccion_paid = fields.Boolean()
+    detraccion_paid = fields.Boolean(
+        string="Detraction Paid", compute="_detraction_is_paid", store=True)
     # Total a Pagar
     total_pagar = fields.Monetary(
         string="Total a Pagar2", compute="_total_pagar_factura")
@@ -62,6 +63,20 @@ class account_invoice(models.Model):
                 record.hide_apply_retention = False
             else:
                 record.hide_apply_retention = True
+
+    @api.depends('detraccion','residual_signed','amount_total_signed')
+    @api.multi
+    def _detraction_is_paid(self):
+        for rec in self:
+            # rec.detraccion_paid = True
+            valor = rec.amount_total_signed - rec.residual_signed
+            if valor >= rec.detraccion:
+                rec.detraccion_paid = True
+            else:
+                if rec.state == "Paid":
+                    rec.detraccion_paid = True
+                else:
+                    rec.detraccion_paid = False
 
     # Load the retention of the selected provider
     @api.onchange('partner_id')
@@ -77,19 +92,12 @@ class account_invoice(models.Model):
             record.detraccion = record.amount_total * \
                 (record.detrac_id.detrac / 100)
 
-    # Trial Action
-    @api.multi
-    def action_prueba(self):
-        for rec in self:
-            rec.reference = 'FacturaDePrueba'
-        return True
-
-    # Action Paid Detraccion
-    @api.multi
-    def action_paid_detraccion(self):
-        for rec in self:
-            rec.detraccion_paid = True
-        return True
+    # # Trial Action
+    # @api.multi
+    # def action_prueba(self):
+    #     for rec in self:
+    #         rec.reference = 'FacturaDePrueba'
+    #     return True
 
     @api.depends('residual_signed', 'detraccion')
     @api.multi
