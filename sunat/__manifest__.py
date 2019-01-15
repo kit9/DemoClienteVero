@@ -32,7 +32,8 @@
         'views/templates.xml',
         'views/menu.xml',
         'data/data_detracciones.xml',
-        'data/data_document_type.xml',
+        # 'data/data_document_type.xml',
+        'data/sunat.document_type.csv',
     ],
     # only loaded in demonstration mode
     'demo': [

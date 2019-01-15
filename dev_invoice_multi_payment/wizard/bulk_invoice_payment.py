@@ -167,6 +167,8 @@ class bulk_inv_detraction(models.TransientModel):
                 raise ValidationError('You must select only invoices or refunds.')
             if inv.state != 'open':
                 raise ValidationError('Please Select Open Invoices.')
+            if inv.detraccion_paid == True:
+                raise ValidationError('Only invoices without detraction payment.')
             vals.append((0,0,{
                 'invoice_id':inv and inv.id or False,
                 'partner_id':inv and inv.partner_id.id or False,

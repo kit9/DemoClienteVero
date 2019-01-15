@@ -20,7 +20,7 @@
     <field name="arch" type="xml">
       <field name="reference" position="after">
         <field string="Detraccion" name="detrac_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
-        <field string="Document Type" name="document_type_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
+        <field string="Document Type" name="document_type_id" attrs="{'readonly':[['state','not in',['draft']]]}" invisible="1"/>
         <field name="hide_apply_retention" invisible="1"/>
         <field name="apply_retention" attrs="{'readonly':[['state','not in',['draft']]],'invisible':[('hide_apply_retention', '=', True)]}"/>
       </field>
@@ -36,10 +36,10 @@
     <field name="model">account.invoice</field>
     <field name="inherit_id" ref="account.invoice_supplier_tree"/>
     <field name="arch" type="xml">
-      <field name="amount_total_signed" position="before">
+      <field name="amount_total_signed" position="after">
         <field name="detraccion" sum="Total"/>
         <field name="detraccion_paid"/>
-        <field name="total_pagar" sum="Total"/>
+        <field name="total_pagar" sum="Total" invisible="1"/>
       </field>
     </field>
   </record>

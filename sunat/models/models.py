@@ -28,8 +28,14 @@ class document_type(models.Model):
     _name = 'sunat.document_type'
     _description = "Tipos de Documentos"
 
-    name = fields.Text(string="Description", translate=True)
+    name = fields.Text(compute="_document_type_full")
     number = fields.Char(string="Number", size=2, translate=True)
+    description = fields.Text(string="Description", translate=True)
+
+    def _document_type_full(self):
+        for rec in self:
+            rec.name = "%s %s" % (rec.number or '', rec.description or '')
+
 
 
 class account_invoice(models.Model):
@@ -64,7 +70,7 @@ class account_invoice(models.Model):
             else:
                 record.hide_apply_retention = True
 
-    @api.depends('detraccion','residual_signed','amount_total_signed')
+    @api.depends('detraccion', 'residual_signed', 'amount_total_signed')
     @api.multi
     def _detraction_is_paid(self):
         for rec in self:
