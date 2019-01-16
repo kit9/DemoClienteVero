@@ -23,8 +23,6 @@
         <field string="Document Type" name="document_type_id" attrs="{'readonly':[['state','not in',['draft']]]}" invisible="1"/>
         <field name="hide_apply_retention" invisible="1"/>
         <field name="apply_retention" attrs="{'readonly':[['state','not in',['draft']]],'invisible':[('hide_apply_retention', '=', True)]}"/>
-        <field name="file_name" invisible="1"/>
-        <field widget="binary" name="file_txt" filename="file_name" />
       </field>
       <field name="payments_widget" position="before">
         <field name="detraccion" />
@@ -43,7 +41,7 @@
         <field name="detraccion" sum="Total"/> 
         <field name="detraccion_paid"/>
         <field name="total_pagar" sum="Total" invisible="1"/>
-        <field widget="binary" name="file_txt" filename="file_name" />
+        <field name="file_txt" filename="file_name" widget="binary"/>
       </field>
     </field>
   </record>

@@ -65,16 +65,18 @@ class account_invoice(models.Model):
         string="Total a Pagar2", compute="_total_pagar_factura")
     #Experimentos
     file_txt = fields.Binary(compute="_generate_txt")
-    file_name = fields.Char()
+    file_demo = fields.Binary(string="Archivo")
+    file_name = fields.Char(compute="_generate_name_txt")
 
     def _generate_txt(self):
         content = '-'
         for rec in self:
-            _logger.info("Funcionando el Metodo Generar TXT")
-            _logger.info(content)
-            _logger.info("Imprimio el valor del contenido - Validar")
-            rec.file_name = 'txt_file.txt'
+            content = "%s%s" % (rec.detraccion or '-', rec.detrac_id.detrac or '-')
             rec.file_txt = base64.encodestring(content.encode('ISO-8859-1'))
+    
+    def _generate_name_txt(self):
+        for rec in self:
+            rec.file_name = 'txt_file.txt'
 
     # Method to hide Apply Retention
     @api.depends('document_type_id')
