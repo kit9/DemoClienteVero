@@ -33,7 +33,7 @@ class document_type(models.Model):
     _description = "Tipos de Documentos"
 
     name = fields.Text(compute="_document_type_full")
-    number = fields.Char(string="Numero", size=2, translate=True,index=True)
+    number = fields.Char(string="Numero", size=2, translate=True, index=True)
     description = fields.Text(string="Descripción", translate=True)
 
     def _document_type_full(self):
@@ -46,48 +46,52 @@ class document_type_identity(models.Model):
     _description = "Tipos de Documentos de Identidad"
 
     name = fields.Text(compute="_document_type_identity_full")
-    number = fields.Char(string="Numero", size=2, translate=True,index=True)
+    number = fields.Char(string="Numero", size=2, translate=True, index=True)
     description = fields.Text(string="Descripción", translate=True)
 
     def _document_type_identity_full(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')
 
+
 class currency_type(models.Model):
     _name = 'sunat.currency_type'
     _description = "Tipos de Monedas"
 
     name = fields.Text(compute="_currency_type_full")
-    number = fields.Char(string="Numero", size=2, translate=True,index=True)
+    number = fields.Char(string="Numero", size=2, translate=True, index=True)
     description = fields.Text(string="Descripción", translate=True)
 
     def _currency_type_full(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')
 
+
 class customs_code(models.Model):
     _name = 'sunat.customs_code'
     _description = "Codigos de Aduana"
 
     name = fields.Text(compute="_customs_code_full")
-    number = fields.Char(string="Numero", size=3, translate=True,index=True)
+    number = fields.Char(string="Numero", size=3, translate=True, index=True)
     description = fields.Text(string="Descripción", translate=True)
 
     def _customs_code_full(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')
 
+
 class classification_goods(models.Model):
     _name = 'sunat.classification_goods'
     _description = "Claseficación de Bienes"
 
     name = fields.Text(compute="_classification_goods_full")
-    number = fields.Char(string="Numero", size=3, translate=True,index=True)
+    number = fields.Char(string="Numero", size=3, translate=True, index=True)
     description = fields.Text(string="Descripción", translate=True)
 
     def _classification_goods_full(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')
+
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"
@@ -110,62 +114,59 @@ class account_invoice(models.Model):
     # Total a Pagar
     total_pagar = fields.Monetary(
         string="Total a Pagar2", compute="_total_pagar_factura")
-    # Archivo txt
-    file_txt = fields.Binary(compute="_generate_txt")
-    file_name = fields.Char(compute="_generate_name_txt")
 
     # Campos necesarios para el TXT
     operation_type = fields.Selection(string="Tipo de Operación", selection=[
-                                      ('1.-Exportación', '1.-Exportación')])
+        ('1.-Exportación', '1.-Exportación')])
     num_dua = fields.Char(string="N° DUA")
     year_emission_dua = fields.Char(string="Año de emisión de la DUA")
-    document_type_identity_id = fields.Many2one('sunat.document_type_identity','Tipo de Documento de Identidad')
+    document_type_identity_id = fields.Many2one('sunat.document_type_identity', 'Tipo de Documento de Identidad')
     document_num = fields.Integer(string="Numero de Documento")
-    currency_type_id = fields.Many2one('sunat.currency_type','Tipo de Moneda')
+    currency_type_id = fields.Many2one('sunat.currency_type', 'Tipo de Moneda')
 
     # Detracciones
     date_detraction = fields.Date(string="Fecha de detracción")
     num_detraction = fields.Char(string="Número de detración")
     proof_mark = fields.Char(string="Marca del comprobante")
-    classifier_good = fields.Many2one('sunat.classification_goods','Clasificación del Bien')
+    classifier_good = fields.Many2one('sunat.classification_goods', 'Clasificación del Bien')
 
     # Documento que Modifica
     date_document_modifies = fields.Date(string="Fecha del documento que modifica")
     type_document_modifies = fields.Many2one('sunat.document_type', 'Tipo de Documento que Modifica')
     num_document_modifies = fields.Char(
         string="Numero del documento que modifica")
-    code_dua = fields.Many2one('sunat.customs_code','Código DUA')
+    code_dua = fields.Many2one('sunat.customs_code', 'Código DUA')
     num_dua = fields.Char(string="Número DUA")
 
-    def _generate_txt(self):
+    def _generate_txt_content(self):
         content = '-'
         for rec in self:
             content = "%s00|%s|%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s||%s|%s|%s%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                rec.move_id.date.strftime("%Y%m") or '',    #Periodo del Asiento -> 1
-                rec.move_id.name.replace("/", "") or '',    # Correlativo de Factura -> 2
-                '--' or '',                                 # Correlativo de todos los asientos no solo facturas -> 3
-                rec.date_invoice.strftime("%d/%m/%Y") or '',    # Fecha de la Factura -> 4
-                rec.date_due.strftime("%d/%m/%Y") or '',    # Fecha de Vencimiento -> 5
+                rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
+                rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
+                '--' or '',  # Correlativo de todos los asientos no solo facturas -> 3
+                rec.date_invoice.strftime("%d/%m/%Y") or '',  # Fecha de la Factura -> 4
+                rec.date_due.strftime("%d/%m/%Y") or '',  # Fecha de Vencimiento -> 5
                 rec.document_type_id.number or '',  # N° del Tipo de Documento -> 6
-                rec.number or '',   # Numero de la Factura -> 7
-                rec.year_emission_dua or '',    # Año de emision del DUA -> 8
-                rec.number[len(rec.number)-4:len(rec.number)] or '',   # Numero -> 9
+                rec.number or '',  # Numero de la Factura -> 7
+                rec.year_emission_dua or '',  # Año de emision del DUA -> 8
+                rec.number[len(rec.number) - 4:len(rec.number)] or '',  # Numero -> 9
                 # Omitido -> 10
-                rec.document_type_identity_id.number or '', # N° Tipo de Documento Identidad -> 11
-                rec.document_num or '', # N° de Documento de Identidad -> 12
-                rec.partner_id.name or '', # Nombre del Proveedor -> 13
-                rec.amount_untaxed or '', # Base imponible -> 14
-                rec.amount_total or '', # Total -> 15
-                rec.amount_untaxed or '', # Base imponible -> 16
-                rec.amount_tax or '', # Impuesto -> 17
-                rec.amount_untaxed or '', # Base imponible -> 18
-                rec.amount_tax or '', # Impuesto -> 19
-                rec.residual or '', # Total Adeudado -> 20
+                rec.document_type_identity_id.number or '',  # N° Tipo de Documento Identidad -> 11
+                rec.document_num or '',  # N° de Documento de Identidad -> 12
+                rec.partner_id.name or '',  # Nombre del Proveedor -> 13
+                rec.amount_untaxed or '',  # Base imponible -> 14
+                rec.amount_total or '',  # Total -> 15
+                rec.amount_untaxed or '',  # Base imponible -> 16
+                rec.amount_tax or '',  # Impuesto -> 17
+                rec.amount_untaxed or '',  # Base imponible -> 18
+                rec.amount_tax or '',  # Impuesto -> 19
+                rec.residual or '',  # Total Adeudado -> 20
                 # Dejar en blando -> 21
-                '--' or '', # Otros de las Lineas -> 22
-                rec.residual or '', # Total Adeudado -> 23
-                '' or '',  #Tipo de moneda
-                rec.currency_id.name or '',  #Tipo de moneda
+                '--' or '',  # Otros de las Lineas -> 22
+                rec.residual or '',  # Total Adeudado -> 23
+                '' or '',  # Tipo de moneda
+                rec.currency_id.name or '',  # Tipo de moneda
                 rec.date_document_modifies or '',  # Fecha del documento que modifica
                 rec.type_document_modifies.number or '',  # Tipo del documento que modifica
                 rec.num_document_modifies or '',  # Numero del documento que modifica
@@ -176,11 +177,7 @@ class account_invoice(models.Model):
                 rec.proof_mark or '',  # Marca de Comprobante
                 rec.classifier_good.number or ''  # Clasificador de Bienes
             )
-            rec.file_txt = base64.encodestring(content.encode('ISO-8859-1'))
-
-    def _generate_name_txt(self):
-        for rec in self:
-            rec.file_name = 'txt_file.txt'
+            return content
 
     # Method to hide Apply Retention
     @api.depends('document_type_id')
@@ -218,7 +215,7 @@ class account_invoice(models.Model):
     def _calcular_detrac(self):
         for record in self:
             record.detraccion = record.amount_total * \
-                (record.detrac_id.detrac / 100)
+                                (record.detrac_id.detrac / 100)
 
     # # Trial Action
     # @api.multi
