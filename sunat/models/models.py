@@ -160,14 +160,14 @@ class account_invoice(models.Model):
                 if inv.number == rec.number:
                     correlativo = "%s" % (contador)
 
-            #Obtener el impuesto otros
+            # Obtener el impuesto otros
             impuesto_otros = ""
             for line in rec.invoice_line_ids:
                 for imp in line.invoice_line_tax_ids:
                     if imp.name == "otros":
                         impuesto_otros = rec.amount_tax
 
-            content = "%s00|%s|%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s||%s|%s|%s%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            content = "%s00|%s|M%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%.2f|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
                 rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
                 correlativo or '',  # Correlativo de todos los asientos no solo facturas -> 3
@@ -191,17 +191,23 @@ class account_invoice(models.Model):
                 # Dejar en blando -> 21
                 impuesto_otros or '',  # Otros de las Lineas -> 22
                 rec.residual or '',  # Total Adeudado -> 23
-                '' or '',  # Tipo de moneda
-                rec.currency_id.name or '',  # Tipo de moneda
-                rec.date_document_modifies or '',  # Fecha del documento que modifica
-                rec.type_document_modifies.number or '',  # Tipo del documento que modifica
-                rec.num_document_modifies or '',  # Numero del documento que modifica
-                rec.code_dua.number or '',  # Codigo DUA
-                rec.num_dua or '',  # Numero DUA
-                rec.date_detraction or '',  # Fecha de Detracciones
-                rec.num_detraction or '',  # Numero de Detracciones
-                rec.proof_mark or '',  # Marca de Comprobante
-                rec.classifier_good.number or ''  # Clasificador de Bienes
+                rec.currency_id.name or '',  # Tipo de moneda -> 24
+                rec.currency_id.rate or '',#-> 25
+                rec.date_document_modifies or '',  # Fecha del documento que modifica -> 26
+                rec.type_document_modifies.number or '',  # Tipo del documento que modifica -> 27
+                rec.num_document_modifies or '',  # Numero del documento que modifica -> 28
+                rec.code_dua.number or '',  # Codigo DUA -> 29
+                rec.num_dua or '',  # Numero DUA -> 30
+                rec.date_detraction or '',  # Fecha de Detracciones -> 31
+                rec.num_detraction or '',  # Numero de Detracciones -> 32
+                rec.proof_mark or '',  # Marca de Comprobante -> 33
+                rec.classifier_good.number or '',  # Clasificador de Bienes -> 34
+                '', # -> 35
+                '',  # -> 36
+                '',  # -> 37
+                '',  # -> 38
+                '',  # -> 39
+                '',  # -> 40
             )
             return content
 
