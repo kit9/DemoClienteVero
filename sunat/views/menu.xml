@@ -6,7 +6,7 @@
     <!--menuitem id="action_sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_detracciones_menu_category" action="action_sunat_detracciones" /-->
     <menuitem id="sunat_document_type_menu" name="Tipo Documento" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type" />
     <menuitem id="sunat_document_type_identity_menu" name="Tipo Documento de Identidad" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type_identity" />
-    <menuitem id="sunat_currency_type_menu" name="Tipos de Monedas" sequence="1" parent="sunat_menu_root" action="action_sunat_currency_type" />
+    <!--<menuitem id="sunat_currency_type_menu" name="Tipos de Monedas" sequence="1" parent="sunat_menu_root" action="action_sunat_currency_type" />-->
     <menuitem id="sunat_customs_code_menu" name="Codigos de la Aduana" sequence="1" parent="sunat_menu_root" action="action_sunat_customs_code" />
     <menuitem id="sunat_classification_goods_menu" name="Clasificacón de Bienes" sequence="1" parent="sunat_menu_root" action="action_sunat_classification_goods" />
 
