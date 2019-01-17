@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_detraccion_all,access_detraccion_all,model_sunat_detracciones,,1,1,1,1
 access_document_type_all,access_document_type_all,model_sunat_document_type,,1,1,1,1
+access_document_type_identity_all,access_document_type_identity_all,model_sunat_document_type_identity,,1,1,1,1
+access_currency_type_all,access_currency_type_all,model_sunat_currency_type,,1,1,1,1
+access_customs_code_all,access_customs_code_all,model_sunat_customs_code,,1,1,1,1
+access_classification_goods_all,access_classification_goods_all,model_sunat_classification_goods,,1,1,1,1

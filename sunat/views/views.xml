@@ -19,14 +19,44 @@
     <field name="inherit_id" ref="account.invoice_supplier_form"/>
     <field name="arch" type="xml">
       <field name="reference" position="after">
+        <field name="num_dua" />
+        <field name="year_emission_dua" />
+        <field name="document_type_identity_id" />
+        <field name="document_num" />
         <field string="Detraccion" name="detrac_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
-        <field string="Document Type" name="document_type_id" attrs="{'readonly':[['state','not in',['draft']]]}" invisible="1"/>
-        <field name="hide_apply_retention" invisible="1"/>
         <field name="apply_retention" attrs="{'readonly':[['state','not in',['draft']]],'invisible':[('hide_apply_retention', '=', True)]}"/>
+      </field>
+      <field name="date_due" position="after">
+        <field name="currency_type_id" />
       </field>
       <field name="payments_widget" position="before">
         <field name="detraccion" />
       </field>
+      <field name="partner_id" position="before">
+        <field name="operation_type" />
+      </field>
+      <field name="partner_id" position="after">
+        <field string="Document Type" name="document_type_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
+        <field name="hide_apply_retention" invisible="1"/>
+      </field>
+      <xpath expr="sheet//group" position="after">
+        <group>
+          <group>
+            <h2>Detracciones</h2>
+            <field name="date_detraction" />
+            <field name="num_detraction" />
+            <field name="proof_mark" />
+            <field name="classifier_good" />
+          </group>
+          <group>
+            <h2>Documento que Modifica</h2>
+            <field name="type_document_modifies" />
+            <field name="num_document_modifies" />
+            <field name="code_dua" />
+            <field name="num_dua" />
+          </group>
+        </group>
+      </xpath>
     </field>
   </record>
 
@@ -37,8 +67,8 @@
     <field name="inherit_id" ref="account.invoice_supplier_tree"/>
     <field name="arch" type="xml">
       <field name="amount_total_signed" position="after">
-        <field name="file_name" invisible="1"/> 
-        <field name="detraccion" sum="Total"/> 
+        <field name="file_name" invisible="1"/>
+        <field name="detraccion" sum="Total"/>
         <field name="detraccion_paid"/>
         <field name="total_pagar" sum="Total" invisible="1"/>
         <field name="file_txt" filename="file_name" widget="binary"/>
