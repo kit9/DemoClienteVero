@@ -145,7 +145,7 @@ class account_invoice(models.Model):
     @api.multi
     def _get_month_invoice(self):
         for rec in self:
-            rec.month_year_inv = rec.date_invoice.strftime("%m%Y")
+            rec.month_year_inv = str(rec.date_invoice.strftime("%m%Y"))
 
     def _generate_txt_bill(self):
         content = '-'
