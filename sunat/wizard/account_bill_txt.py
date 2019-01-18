@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 
 class AccountInvoiceConfirm(models.TransientModel):
-    _name = "account.invoice.txt"
+    _name = "account.bill.txt"
     _description = "Generate TXT"
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
@@ -21,16 +21,16 @@ class AccountInvoiceConfirm(models.TransientModel):
         invoice_ids = self.env['account.invoice'].browse(inv_ids)
         content = ""
         for inv in invoice_ids:
-            content = content + "" + inv._generate_txt_invoice() + "\n"
+            content = content + "" + inv._generate_txt_bill() + "\n"
         self.write({
             'state': 'get',
             'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),
-            'txt_filename': "ventas.txt"
+            'txt_filename': "compras.txt"
         })
         return {
             'type': 'ir.actions.act_window',
             'name': 'Generar TXT',
-            'res_model': 'account.invoice.txt',
+            'res_model': 'account.bill.txt',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,

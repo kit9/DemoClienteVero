@@ -4,13 +4,15 @@
     <menuitem id="sunat_menu_root" name="Sunat" sequence="1" parent="account.menu_finance_configuration"/>
     <menuitem id="sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_menu_root" action="action_sunat_detracciones"/>
     <!--menuitem id="action_sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_detracciones_menu_category" action="action_sunat_detracciones" /-->
-    <menuitem id="sunat_document_type_menu" name="Tipo Documento" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type" />
-    <menuitem id="sunat_document_type_identity_menu" name="Tipo Documento de Identidad" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type_identity" />
+    <menuitem id="sunat_document_type_menu" name="Tipo Documento" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type"/>
+    <menuitem id="sunat_document_type_identity_menu" name="Tipo Documento de Identidad" sequence="1" parent="sunat_menu_root"
+              action="action_sunat_document_type_identity"/>
     <!--<menuitem id="sunat_currency_type_menu" name="Tipos de Monedas" sequence="1" parent="sunat_menu_root" action="action_sunat_currency_type" />-->
-    <menuitem id="sunat_customs_code_menu" name="Codigos de la Aduana" sequence="1" parent="sunat_menu_root" action="action_sunat_customs_code" />
-    <menuitem id="sunat_classification_goods_menu" name="Clasificacón de Bienes" sequence="1" parent="sunat_menu_root" action="action_sunat_classification_goods" />
+    <menuitem id="sunat_customs_code_menu" name="Codigos de la Aduana" sequence="1" parent="sunat_menu_root" action="action_sunat_customs_code"/>
+    <menuitem id="sunat_classification_goods_menu" name="Clasificacón de Bienes" sequence="1" parent="sunat_menu_root"
+              action="action_sunat_classification_goods"/>
 
-    <!-- <report
+    <report
             id="account_invoices_prueba"
             model="account.invoice"
             string="Invoices Prueba"
@@ -19,6 +21,6 @@
             file="sunat.report_prueba"
             attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
             print_report_name="(object._get_report_base_filename())"
-        /> -->
+    />
 
 </odoo>

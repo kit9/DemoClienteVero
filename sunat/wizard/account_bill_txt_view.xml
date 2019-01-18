@@ -1,9 +1,9 @@
 <odoo>
     <data>
 
-        <record id="account_invoice_txt_view" model="ir.ui.view">
-            <field name="name">account.invoice.txt.form</field>
-            <field name="model">account.invoice.txt</field>
+        <record id="account_bill_txt_view" model="ir.ui.view">
+            <field name="name">account.bill.txt.form</field>
+            <field name="model">account.bill.txt</field>
             <field name="arch" type="xml">
                 <form string="Generar TXT">
                     <field name="state" invisible="1"/>
@@ -32,11 +32,11 @@
             </field>
         </record>
 
-        <act_window id="action_account_invoice_txt"
+        <act_window id="action_account_bill_txt"
                     multi="True"
                     key2="client_action_multi"
-                    name="Generate Invoice TXT"
-                    res_model="account.invoice.txt"
+                    name="Generate Bill TXT"
+                    res_model="account.bill.txt"
                     src_model="account.invoice"
                     view_mode="form,tree"
                     target="new"
