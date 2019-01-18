@@ -145,7 +145,7 @@ class account_invoice(models.Model):
     @api.multi
     def _get_month_invoice(self):
         for rec in self:
-            if rec.date_invoice != True:
+            if rec.date_invoice != False:
                 rec.month_year_inv = rec.date_invoice.strftime("%m%Y")
 
     def _generate_txt_bill(self):
