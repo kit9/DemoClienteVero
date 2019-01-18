@@ -139,7 +139,7 @@ class account_invoice(models.Model):
     num_dua = fields.Char(string="Número DUA")
 
     # Para filtrar
-    month_year_inv = fields.Char(compute="_get_month_invoice", store=True,copy=True)
+    month_year_inv = fields.Char(compute="_get_month_invoice", store=True,copy=False)
 
     @api.depends('date_invoice')
     @api.multi
