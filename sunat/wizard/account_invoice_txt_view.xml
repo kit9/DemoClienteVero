@@ -35,7 +35,7 @@
         <act_window id="action_account_invoice_txt"
                     multi="True"
                     key2="client_action_multi"
-                    name="Generate Invoice TXT"
+                    name="Generate TXT"
                     res_model="account.invoice.txt"
                     src_model="account.invoice"
                     view_mode="form,tree"

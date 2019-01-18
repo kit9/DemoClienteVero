@@ -21,11 +21,11 @@ class AccountInvoiceConfirm(models.TransientModel):
         invoice_ids = self.env['account.invoice'].browse(inv_ids)
         content = ""
         for inv in invoice_ids:
-            content = content + "" + inv._generate_txt_invoice() + "\n"
+            content = content + "" + inv._generate_txt_content() + "\n"
         self.write({
             'state': 'get',
             'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),
-            'txt_filename': "ventas.txt"
+            'txt_filename': "compras.txt"
         })
         return {
             'type': 'ir.actions.act_window',
