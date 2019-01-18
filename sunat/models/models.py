@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
 import base64
@@ -148,7 +148,7 @@ class account_invoice(models.Model):
             rec.month_year_inv = rec.date_invoice.strftime("%m%Y")
 
     def _generate_txt_bill(self):
-        content = '-'
+        content = ''
         for rec in self:
             # Obtener el correlativo General de la Factura en el Mes
             correlativo = ""
