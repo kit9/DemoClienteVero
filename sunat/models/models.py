@@ -147,7 +147,7 @@ class account_invoice(models.Model):
         for rec in self:
             rec.month_year_inv = rec.date_invoice.strftime("%m%Y")
 
-    def _generate_txt_content(self):
+    def _generate_txt_bill(self):
         content = '-'
         for rec in self:
             # Obtener el correlativo General de la Factura en el Mes
@@ -192,7 +192,7 @@ class account_invoice(models.Model):
                 impuesto_otros or '',  # Otros de las Lineas -> 22
                 rec.residual or '',  # Total Adeudado -> 23
                 rec.currency_id.name or '',  # Tipo de moneda -> 24
-                rec.currency_id.rate or '',#-> 25
+                rec.currency_id.rate or '',  # -> 25
                 rec.date_document_modifies or '',  # Fecha del documento que modifica -> 26
                 rec.type_document_modifies.number or '',  # Tipo del documento que modifica -> 27
                 rec.num_document_modifies or '',  # Numero del documento que modifica -> 28
@@ -202,12 +202,21 @@ class account_invoice(models.Model):
                 rec.num_detraction or '',  # Numero de Detracciones -> 32
                 rec.proof_mark or '',  # Marca de Comprobante -> 33
                 rec.classifier_good.number or '',  # Clasificador de Bienes -> 34
-                '', # -> 35
+                '',  # -> 35
                 '',  # -> 36
                 '',  # -> 37
                 '',  # -> 38
                 '',  # -> 39
                 '',  # -> 40
+            )
+            return content
+
+    def _generate_txt_invoice(self):
+        content = '-'
+        for rec in self:
+            content = "%s|%s|" % (
+                rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
+                rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
             )
             return content
 
