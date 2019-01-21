@@ -1,5 +1,9 @@
 <odoo>
 
+    <record model="sunat.detracciones" id="data_sunat_detracciones_No">
+        <field name="name">No Aplica</field>
+        <field name="detrac">0</field>
+    </record>
     <record model="sunat.detracciones" id="data_sunat_detracciones_0111">
         <field name="name">0111 - CULTIVO DE CEREALES (EXCEPTO ARROZ), LEGUMBRES Y SEMILLAS OLEAGINOSAS</field>
         <field name="detrac">5</field>

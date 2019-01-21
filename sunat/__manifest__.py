@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Sunat",
+    'name': "Sunat Peru",
 
     'summary': """
         Los procesos que pide sunat el la contabilidad""",
@@ -18,7 +18,9 @@
     'sequence':0,
     'category': 'Generic Modules/Base',
     'application': True,
-    'version': '0.1',
+    'version': '1.2',
+    'installable': True,
+    'auto_install': True,
 
     # any module necessary for this one to work correctly
     'depends': ['base','account'],
@@ -34,9 +36,8 @@
         'views/document_type_identity.xml',
         'views/views.xml',
         'views/templates.xml',
-        'views/menu.xml',
-        'wizard/account_invoice_txt_view.xml',
         'wizard/account_bill_txt_view.xml',
+        'views/menu.xml',
         'data/data_detracciones.xml',
         'data/currency_type.xml',
         'data/customs_code.xml',

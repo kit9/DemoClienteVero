@@ -61,6 +61,7 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
                             <field name="invoice_id"/>
                             <field name="partner_id"/>
                             <field name="amount"/>
+                            <field name="bank_id"/>
                             <field name="paid_amount"/>
                         </tree>
                     </field>
