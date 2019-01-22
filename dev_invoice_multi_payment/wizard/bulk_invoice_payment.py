@@ -15,6 +15,7 @@ from operator import itemgetter
 import operator
 from datetime import datetime
 import logging
+import json
 
 _logger = logging.getLogger(__name__)
 
@@ -23,15 +24,29 @@ class bulk_invoice(models.TransientModel):
     _name = 'bulk.invoice'
 
     invoice_id = fields.Many2one('account.invoice', string='Invoice')
-    partner_id = fields.Many2one('res.partner', string='Partner')
-    amount = fields.Float('Amount')
+    partner_id = fields.Many2one('res.partner', string='Partner', readonly=True)
+    amount = fields.Float(string='Amount', readonly=True)
+
+    # dominio = fields.Char(compute="_get_invoice_domain")
 
     paid_amount = fields.Float('Pay Amount')
     bulk_invoice_id = fields.Many2one('bulk.inv.payment')
     bulk_detraction_id = fields.Many2one('bulk.inv.detracction')
 
     bank_id = fields.Char(string='Banco', readonly=True)
+
     # bank_id = fields.Many2one('res.partner.bank', string='Banks')
+
+    # @api.multi
+    # @api.depends('bulk_invoice_id', 'bulk_detraction_id')
+    # def _get_invoice_domain(self):
+    #     self.dominio = json.dumps([])
+    #     _logger.info("Entro al filtro domain")
+    #     if self.bulk_detraction_id:
+    #         _logger.info("Entro a la condicion detraccion")
+    #         self.dominio = json.dumps([('detraccion_paid', '=', 'False'), ('type', '=', 'in_invoice')])
+    #     _logger.info("Retorna en dominio")
+    #     _logger.info(self.dominio)
 
 
 class bulk_inv_payment(models.TransientModel):
@@ -208,30 +223,10 @@ class bulk_inv_payment(models.TransientModel):
 
     @api.multi
     def process_payment_3(self):
-        # vals = []
-
-        # Inicio del codigo para organizar las facturas
-        # for line in self.invoice_ids:
-        #     if line.paid_amount > 0.0:
-        #         vals.append({
-        #             'invoice_id': line.invoice_id or False,
-        #             'partner_id': line.partner_id and line.partner_id.id or False,
-        #             'amount': line.amount or 0.0,
-        #             'paid_amount': line.paid_amount or 0.0,
-        #             'currency_id': line.invoice_id.currency_id.id or False,
-        #         })
-
-        # new_vals = sorted(vals, key=itemgetter('partner_id'))
-
-        # groups = itertools.groupby(new_vals, key=operator.itemgetter('partner_id'))
-
-        # agrupado_x_proveedor = [{'partner_id': k, 'values': [x for x in v]} for k, v in groups]
-        # Fin del codigo para organizar las facturas
 
         new_payment_ids = []
 
         # Lista de proveedores con sus facturas
-        # for proveedor in agrupado_x_proveedor:
         for rec in self:
 
             # Factura
@@ -630,7 +625,7 @@ class bulk_inv_detraction(models.TransientModel):
             })
         else:
             res.update({
-                'payment_type': 'outbound'
+                'payment_type': 'transfer'
             })
 
         res.update({
@@ -639,12 +634,14 @@ class bulk_inv_detraction(models.TransientModel):
         return res
 
     name = fields.Char('Name', default='hello')
-    payment_type = fields.Selection([('outbound', 'Send Money'),
-                                     ('inbound', 'Receive Money'), ('transfer', 'Transfer')], string="Payment Type",
-                                    required="1")
+    payment_type = fields.Selection(selection=[('outbound', 'Send Money'),
+                                               ('inbound', 'Receive Money'), ('transfer', 'Transfer')],
+                                    string="Payment Type",
+                                    required="1", readonly=True)
     payment_date = fields.Date('Payment Date', required="1")
     communication = fields.Char('Memo')
-    partner_type = fields.Selection([('customer', 'Customer'), ('supplier', 'Supplier')], string='Partner Type')
+    partner_type = fields.Selection(string="Partner Type",
+                                    selection=[('customer', 'Customer'), ('supplier', 'Supplier')], readonly=True)
     journal_id = fields.Many2one('account.journal', string='Payment Method', required=True,
                                  domain=[('type', 'in', ('bank', 'cash'))])
     invoice_ids = fields.One2many('bulk.invoice', 'bulk_detraction_id', string='Invoice Detraction')
@@ -665,6 +662,16 @@ class bulk_inv_detraction(models.TransientModel):
         groups = itertools.groupby(new_vals, key=operator.itemgetter('partner_id'))
         result = [{'partner_id': k, 'values': [x for x in v]} for k, v in groups]
         new_payment_ids = []
+
+        # Inicio de Modificado
+        correlativo = 0
+        pago_anterior = self.env['account.payment'].search([], order="id desc", limit=1)
+        if pago_anterior.number_payment:
+            correlativo = pago_anterior.number_payment + 1
+        else:
+            correlativo = 1
+        # Fin de Modificado
+
         for res in result:
             payment_method_id = self.env['account.payment.method'].search([('name', '=', 'Manual')], limit=1)
             if not payment_method_id:
@@ -672,6 +679,7 @@ class bulk_inv_detraction(models.TransientModel):
             payment_date = False
             if self.payment_date:
                 payment_date = self.payment_date.strftime("%Y-%m-%d")
+
             pay_val = {
                 'payment_type': self.payment_type,
                 'payment_date': payment_date,
@@ -682,6 +690,7 @@ class bulk_inv_detraction(models.TransientModel):
                 'communication': self.communication,
                 'payment_method_id': payment_method_id and payment_method_id.id or False,
                 'state': 'draft',
+                'number_payment': correlativo or 0,
                 'currency_id': res.get('values')[0].get('currency_id'),
                 'amount': 0.0,
             }

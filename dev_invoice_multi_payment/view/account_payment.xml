@@ -37,4 +37,18 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
                
         </field>
     </record>
+
+	<record id="detraction_payment_tree" model="ir.ui.view">
+	    <field name="name">detraction.payment.tree</field>
+	    <field name="model">account.payment</field>
+	    <field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
+	    <field name="arch" type="xml">
+
+	        <xpath expr="//field[@name='name']" position="after">
+				<field name="number_payment"/>
+	        </xpath>
+
+	    </field>
+	</record>
+
 </odoo>

@@ -21,6 +21,8 @@ class account_payment(models.Model):
     invoice_ids = fields.Many2many('account.invoice', 'account_invoice_payment_rel', 'payment_id', 'invoice_id',
                                    string="Invoices", copy=False, readonly=False)
 
+    number_payment = fields.Integer(string="Numero de Pago Masivo")
+
     @api.multi
     @api.onchange('payment_for')
     def onchange_payment_for(self):
@@ -86,19 +88,18 @@ class account_payment(models.Model):
 
     @api.multi
     def post(self):
-        for rec in self:
-            if rec.line_ids and rec.payment_for == 'multi_payment':
-                amt = 0.0
-                invoice_ids = []
-                for line in rec.line_ids:
-                    invoice_ids.append(line.invoice_id.id)
-                    amt += line.allocation
-                if rec.amount < amt:
-                    raise ValidationError(("Amount is must be greater or equal '%s'") % (amt))
-                if rec.amount > amt:
-                    rec.full_reco = True
-                rec.invoice_ids = [(6, 0, invoice_ids)]
-            return super(account_payment, rec).post()
+        if self.line_ids and self.payment_for == 'multi_payment':
+            amt = 0.0
+            invoice_ids = []
+            for line in self.line_ids:
+                invoice_ids.append(line.invoice_id.id)
+                amt += line.allocation
+            if self.amount < amt:
+                raise ValidationError(("Amount is must be greater or equal '%s'") % (amt))
+            if self.amount > amt:
+                self.full_reco = True
+            self.invoice_ids = [(6, 0, invoice_ids)]
+        return super(account_payment, self).post()
 
     @api.multi
     def get_inv_pay_amount(self, inv):
