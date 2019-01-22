@@ -110,6 +110,27 @@ class Partner(models.Model):
                                                                         ('02-Persona Jurídica', '02-Persona Jurídica'),
                                                                         ('03-Sujeto no Domiciliado',
                                                                          '03-Sujeto no Domiciliado')])
+    is_empresa = fields.Boolean(compute="_is_empresa")
+
+    # Datos Persona Natural
+    ape_pat = fields.Char(string="Apellido Paterno")
+    ape_mat = fields.Char(string="Apellido Materno")
+    nombres = fields.Char(string="Nombre Completo")
+
+    # Datos Persona Juridica
+    age_retencion = fields.Boolean(string="Agente de Retención")
+    buen_contribuyente = fields.Boolean(string="Buen Contribuyente")
+    age_percepcion = fields.Boolean(string="Agente de Percepción")
+
+    @api.multi
+    @api.depends('person_type')
+    def _is_empresa(self):
+        for rec in self:
+            if rec.person_type == '02-Persona Jurídica':
+                rec.is_empresa = True
+            else:
+                rec.is_empresa = False
+            _logger.info("Variable -> " + str(rec.is_empresa))
 
 
 class res_partner_bank(models.Model):
@@ -131,7 +152,7 @@ class account_invoice(models.Model):
     apply_retention = fields.Boolean(string="Apply Retention")
     # Detraction Paid
     detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True)
-    #Saldo de Detraccion
+    # Saldo de Detraccion
     detraction_residual = fields.Monetary(string="Detraction To Pay", compute="_detraction_residual", store=True)
     # Total a Pagar
     total_pagar = fields.Monetary(string="Total a Pagar2", compute="_total_pagar_factura")
@@ -468,7 +489,7 @@ class account_invoice(models.Model):
     def _calcular_detrac(self):
         for rec in self:
             rec.detraccion = rec.amount_total * \
-                                (rec.detrac_id.detrac / 100)
+                             (rec.detrac_id.detrac / 100)
 
     # # Trial Action
     # @api.multi

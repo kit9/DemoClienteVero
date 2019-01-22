@@ -9,11 +9,11 @@
 ##############################################################################
 {
     'name': 'Multiple Invoice Payment',
-    'version': '12.0.1.1',
+    'version': '12.0.1.2',
     'sequence':1,
     'summary': 'odoo App will allow multiple invoice payment from payment and invoice screen.',
     'description': """
-        App will allow multiple invoice payment from payment and invoice screen.
+       App will allow multiple invoice payment from payment and invoice screen.
         
        Multiple invoice payment, Invoice Multiple payment, Payment , Partial Invoice Payment, Full invoice Payment,Payment write off,   Payment Invoice, 
     Multiple invoice payment
@@ -48,13 +48,11 @@
     mass invoice payment in odoo
     multi invoice ap payments
     ap payments of multiple invoice 
-           
-        
     """,
     "category": 'Generic Modules/Accounting',
     'author': 'DevIntelle Consulting Service Pvt.Ltd', 
     'website': 'http://www.devintellecs.com',
-    'depends': ['account_voucher','sunat'],
+    'depends': ['account_voucher'],
     'data': [
             'security/ir.model.access.csv',
             'view/account_payment.xml',
@@ -69,7 +67,7 @@
     'images': ['images/main_screenshot.png'],
     'installable': True,
     'application': True,
-    'auto_install': True,
+    'auto_install': False,
     'price':35.0,
     'currency':'EUR',
     #'live_test_url':'https://youtu.be/A5kEBboAh_k',
