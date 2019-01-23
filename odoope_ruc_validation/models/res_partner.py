@@ -25,6 +25,7 @@ from odoo.exceptions import Warning
 
 import requests
 
+
 def get_data_doc_number(tipo_doc, numero_doc, format='json'):
     user, password = 'demorest', 'demo1234'
     url = 'http://py-devs.com/api'
@@ -46,44 +47,45 @@ def get_data_doc_number(tipo_doc, numero_doc, format='json'):
             res['error'] = True
     return res
 
+
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     registration_name = fields.Char('Name', size=128, index=True, )
-    catalog_06_id = fields.Many2one('einvoice.catalog.06','Tipo Doc.', index=True, required=True)
-    state = fields.Selection([('habido','Habido'),('nhabido','No Habido')],'State')
-    
-    #~ tipo_contribuyente = fields.Char('Tipo de contribuyente')
-    #~ fecha_inscripcion = fields.Date('Fecha de inscripción')
-    #~ estado_contribuyente = fields.Char('Estado del contribuyente')
-    #~ agente_retencion = fields.Boolean('Agente de Retención')
-    #~ agente_retencion_apartir_del = fields.Date('A partir del')
-    #~ agente_retencion_resolucion = fields.Char('Resolución')
-    #~ sistema_emision_comprobante = fields.Char('Sistema emisión')
-    #~ sistema_contabilidad = fields.Char('Sistema contabilidad')
-    #~ ultima_actualizacion_sunat = fields.Date('Última actualización')
-	
-    @api.onchange('catalog_06_id','vat')    
+    catalog_06_id = fields.Many2one('einvoice.catalog.06', 'Tipo Doc.', index=True, required=True)
+    state = fields.Selection([('habido', 'Habido'), ('nhabido', 'No Habido')], 'State')
+
+    # ~ tipo_contribuyente = fields.Char('Tipo de contribuyente')
+    # ~ fecha_inscripcion = fields.Date('Fecha de inscripción')
+    # ~ estado_contribuyente = fields.Char('Estado del contribuyente')
+    # ~ agente_retencion = fields.Boolean('Agente de Retención')
+    # ~ agente_retencion_apartir_del = fields.Date('A partir del')
+    # ~ agente_retencion_resolucion = fields.Char('Resolución')
+    # ~ sistema_emision_comprobante = fields.Char('Sistema emisión')
+    # ~ sistema_contabilidad = fields.Char('Sistema contabilidad')
+    # ~ ultima_actualizacion_sunat = fields.Date('Última actualización')
+
+    @api.onchange('catalog_06_id', 'vat')
     def vat_change(self):
         self.update_document()
-        
+
     @api.one
     def update_document(self):
-    
+
         if not self.vat:
             return False
-        # if self.catalog_06_id and self.catalog_06_id.code == '1':
-        #         #     # Valida DNI
-        #         #     if self.vat and len(self.vat) != 8:
-        #         #         raise Warning('El Dni debe tener 8 caracteres')
-        #         #     else:
-        #         #         d = get_data_doc_number(
-        #         #             'dni', self.vat, format='json')
-        #         #         if not d['error']:
-        #         #             d = d['data']
-        #         #             self.name = '%s %s %s' % (d['nombres'],
-        #         #                                       d['ape_paterno'],
-        #         #                                       d['ape_materno'])
+        if self.catalog_06_id and self.catalog_06_id.code == '1':
+            # Valida DNI
+            if self.vat and len(self.vat) != 8:
+                raise Warning('El Dni debe tener 8 caracteres')
+            else:
+                d = get_data_doc_number(
+                    'dni', self.vat, format='json')
+                if not d['error']:
+                    d = d['data']
+                    self.name = '%s %s %s' % (d['nombres'],
+                                              d['ape_paterno'],
+                                              d['ape_materno'])
 
         elif self.catalog_06_id and self.catalog_06_id.code == '6':
             # Valida RUC
@@ -95,7 +97,7 @@ class ResPartner(models.Model):
                 if d['error']:
                     return True
                 d = d['data']
-                #~ Busca el distrito
+                # ~ Busca el distrito
                 ditrict_obj = self.env['res.country.state']
                 prov_ids = ditrict_obj.search([('name', '=', d['provincia']),
                                                ('province_id', '=', False),
@@ -109,7 +111,7 @@ class ResPartner(models.Model):
                     self.province_id = dist_id.province_id.id
                     self.state_id = dist_id.state_id.id
                     self.country_id = dist_id.country_id.id
-                        
+
                 # Si es HABIDO, caso contrario es NO HABIDO
                 tstate = d['condicion_contribuyente']
                 if tstate == 'HABIDO':
@@ -117,7 +119,7 @@ class ResPartner(models.Model):
                 else:
                     tstate = 'nhabido'
                 self.state = tstate
-                            
+
                 self.name = d['nombre_comercial'] != '-' and d['nombre_comercial'] or d['nombre']
                 self.registration_name = d['nombre']
                 self.street = d['domicilio_fiscal']
@@ -125,5 +127,3 @@ class ResPartner(models.Model):
                 self.is_company = True
         else:
             True
-
-
