@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="action_template_configuration_menu" model="ir.actions.act_window">
+        <field name="name">Template Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">template.configuration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+     <record id="view_template_configuration_tree" model="ir.ui.view">
+        <field name="name">view.template.configuration.tree</field>
+        <field name="model">template.configuration</field>
+        <field name="arch" type="xml">
+        <tree string="Template Configuration">
+                <field name="name"/>
+            </tree>
+            </field>
+    </record>
+    
+     
+
+
+
+    
+    <record id="view_template_configuration_form" model="ir.ui.view">
+        <field name="name">view.template.configuration.form</field>
+        <field name="model">template.configuration</field>
+        <field name="arch" type="xml">
+            <form string="Template Configuration">
+            
+                <sheet>
+               <group>
+                        <div>
+                        <div class="oe_edit_only">
+                            <label for="name"/> 
+                        </div>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Template Name"/>
+                        </h1>
+                    </div>
+                       </group>
+                       <group string="Excel Title">
+                        <div>
+                        <group>
+                        <group>
+                            <field name="excel_sheet_name"/>
+                            </group>
+                            <group>
+                            <field name="header_name"/>
+                            </group>
+                            </group>
+                    </div>
+                       </group>
+                       
+                          <notebook>
+							<page string="Company Style">
+										<group>
+				                            <field name="company_check"/>
+                			            </group>
+                            			
+                            	<group>
+                            	<group>
+                            				<field name="cmp_font_name" attrs="{'invisible':[('company_check','=',False)]}"/>
+                            			</group>
+                            			<group>
+                            				<field name="cmp_font_size" attrs="{'invisible':[('company_check','=',False)]}"/>
+                            			</group>
+                            	</group>
+                            	<group>
+                            	<group>
+                            				<field name="cmp_font_color" attrs="{'invisible':[('company_check','=',False)]}"/>
+                            			</group>
+                            			<group>
+                            				<field name="cmp_background_color" attrs="{'invisible':[('company_check','=',False)]}"/>
+                            			</group>
+                            	</group>
+                            	<group>
+                            	<group>
+                            				<field name="cmp_bold" attrs="{'invisible':[('company_check','=',False)]}"/>
+                            			</group>
+                            			<group>
+                            				<field name="cmp_italic" attrs="{'invisible':[('company_check','=',False)]}"/>
+                            			</group>
+                            	</group>
+                            	
+                            </page>
+                            
+                            
+                            <page string="Header Style">
+                            	<group>
+                            	<group>
+                            				<field name="header_font_name"/>
+                            			</group>
+                            			<group>
+                            				<field name="header_font_size"/>
+                            			</group>
+                            	</group>
+                            	<group>
+                            	<group>
+                            				<field name="header_font_color"/>
+                            			</group>
+                            			<group>
+                            				<field name="header_background_color"/>
+                            			</group>
+                            	</group>
+                            	<group>
+                            	<group>
+                            				<field name="header_bold"/>
+                            			</group>
+                            			<group>
+                            				<field name="header_italic"/>
+                            			</group>
+                            	</group>
+                            </page >
+                            <page string="Total Style">
+                             <group>
+                            	<field name="check_total"/>
+                            </group>
+                            <group>
+                        		<group>
+                            		<field name="sum_background_color" attrs="{'invisible':[('check_total','=',False)]}"/>
+                            	</group>
+                            	<group>
+                            	<field name="total_Font_color" attrs="{'invisible':[('check_total','=',False)]}"/>
+                            	</group>
+                            </group>
+                            </page>
+                          </notebook>
+                       
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    
+    <menuitem action="action_template_configuration_menu" id="template_configuration_menu" parent="generic_report_excel"/>
+    
+    
+  </data>
+</openerp>
+        

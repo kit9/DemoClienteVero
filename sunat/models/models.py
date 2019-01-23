@@ -491,6 +491,13 @@ class account_invoice(models.Model):
             rec.detraccion = rec.amount_total * \
                              (rec.detrac_id.detrac / 100)
 
+    # # Trial Action
+    # @api.multi
+    # def action_prueba(self):
+    #     for rec in self:
+    #         rec.reference = 'FacturaDePrueba'
+    #     return True
+
     @api.depends('residual_signed', 'detraccion')
     @api.multi
     def _total_pagar_factura(self):
