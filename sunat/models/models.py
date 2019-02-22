@@ -163,7 +163,15 @@ class UoM(models.Model):
 class AccountAccount(models.Model):
     _inherit = "account.account"
 
-    target_debit_id = fields.Many2one('account.account', string='Cuenta de amarre al Debe')
+    target_debit1_id = fields.Many2one('account.account', string='Cuenta de amarre al Debe 1')
+    target_debit1_value = fields.Integer(string="Porcentaje 1")
+
+    target_debit2_id = fields.Many2one('account.account', string='Cuenta de amarre al Debe 2')
+    target_debit2_value = fields.Integer(string="Porcentaje 2")
+
+    target_debit3_id = fields.Many2one('account.account', string='Cuenta de amarre al Debe 3')
+    target_debit3_value = fields.Integer(string="Porcentaje 3")
+
     target_credit_id = fields.Many2one('account.account', string='Cuenta de amarre al Haber')
     target_account = fields.Boolean(string='Tiene cuenta destino', default=False)
 
@@ -193,24 +201,38 @@ class account_move(models.Model):
                     if account.credit:
                         monto = account.credit;
 
-                # Linea 2
+                # Linea 4
                 lines.append((0, 0, {
                     'account_id': account.account_id.target_credit_id and account.account_id.target_credit_id.id or False,
                     'credit': monto
                 }))
 
+                # Linea 3
+                if account.account_id.target_debit3_id:
+                    lines.append((0, 0, {
+                        'account_id': account.account_id.target_debit3_id and account.account_id.target_debit3_id.id or False,
+                        'debit': monto * (account.account_id.target_debit3_value / 100)
+                    }))
+
+                # Linea 2
+                if account.account_id.target_debit2_id:
+                    lines.append((0, 0, {
+                        'account_id': account.account_id.target_debit2_id and account.account_id.target_debit2_id.id or False,
+                        'debit': monto * (account.account_id.target_debit2_value / 100)
+                    }))
+
                 # Linea 1
-                lines.append((0, 0, {
-                    'account_id': account.account_id.target_debit_id and account.account_id.target_debit_id.id or False,
-                    'debit': monto
-                }))
+                if account.account_id.target_debit1_id:
+                    lines.append((0, 0, {
+                        'account_id': account.account_id.target_debit1_id and account.account_id.target_debit1_id.id or False,
+                        'debit': monto * (account.account_id.target_debit1_value / 100)
+                    }))
 
             # Asiento
             account_move_dic = {
                 'date': str(datetime.now().date()) or False,
                 'journal_id': self.journal_id and self.journal_id.id or False,
                 'ref': self.ref,
-                # 'currency_id': self.currency_id and self.currency_id.id or False,
                 'line_ids': lines
             }
 
