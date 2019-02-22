@@ -127,6 +127,8 @@ class bulk_inv_payment(models.TransientModel):
             # Validaciones de Retencion Proveedor
             apply_retention = True
             total_payment = 0
+            bank_retencion = False
+            bank_factura = False
             proveedor_id = res.get('partner_id')
             proveedor = self.env['res.partner'].search([('id', 'like', proveedor_id)], limit=1)
             for inv_line in res.get('values'):
@@ -134,12 +136,15 @@ class bulk_inv_payment(models.TransientModel):
                 total_payment = total_payment + invoice.amount_total_signed
             if proveedor.is_withholding_agent:
                 apply_retention = False
-                _logger.info("Es usuario es Agente de Retencion")
             if total_payment < 700:
                 apply_retention = False
-                _logger.info("El Monto total es menor a 700")
 
-            _logger.info("Las 2 validaciones ya se ejecutarios")
+            for bank in proveedor.bank_ids:
+                if bank.is_retention and not bank_retencion and not bank.is_detraction:
+                    bank_retencion = bank
+                if not bank.is_retention and not bank_factura and not bank.is_detraction:
+                    bank_factura = bank
+
             # Iteraciones por Factura
             for inv_line in res.get('values'):
 
@@ -160,10 +165,13 @@ class bulk_inv_payment(models.TransientModel):
                     tipo = "factura"
 
                 journal = False
+                banco = False
                 if tipo == "retencion":
                     journal = retention_journal
+                    banco = bank_retencion
                 else:
                     journal = self.journal_id
+                    banco = bank_factura
 
                 # Pago 1
                 pay_val = {
@@ -177,6 +185,7 @@ class bulk_inv_payment(models.TransientModel):
                     'payment_method_id': payment_method_id and payment_method_id.id or False,
                     'state': 'draft',
                     'type': tipo,
+                    'back_partner_id': banco and banco.id or False,
                     'currency_id': res.get('values')[0].get('currency_id'),
                     'amount': 0.0,
                 }
@@ -233,6 +242,7 @@ class bulk_inv_payment(models.TransientModel):
                         'payment_method_id': payment_method_id and payment_method_id.id or False,
                         'state': 'draft',
                         'type': 'factura',
+                        'back_partner_id': bank_factura and bank_factura.id or False,
                         'currency_id': res.get('values')[0].get('currency_id'),
                         'amount': 0.0,
                     }

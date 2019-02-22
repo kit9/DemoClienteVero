@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-from io import BytesIO
+from io import BytesIO, StringIO, TextIOWrapper
 import zipfile
 from zipfile import ZipFile
 from urllib.request import urlopen
@@ -62,16 +62,29 @@ class Sunat(http.Controller):
         url = "http://www.sunat.gob.pe/descarga/BueCont/BueCont_TXT.zip"
 
         try:
-            resp = urlopen(url)
-            zip = zipfile.ZipFile(BytesIO(resp.read()))
-            with zipfile.ZipFile(zip) as z:
-                with z.open(zip) as f:
-                    for line in f:
-                        _logger.info(line)
+            respuesta = ""
+            response = urlopen(url)
+            zip = zipfile.ZipFile(BytesIO(response.read()))
             _logger.info("----")
             _logger.info("zip encontrado")
-            # file = zip.read('BueCont_TXT.txt')
-            # datos = str(file).split("|")
+            file = zip.read('BueCont_TXT.txt')
+            datos = str(file)
+            respuesta = datos
+            _logger.info(file)
+            # file = StringIO(file)
+            # respuesta = str(StringIO(str(file)), "utf-8")
+            # respuesta = file.decode("utf8")
+            # respuesta = respuesta.replace("b'", "")
+            # respuesta = file
+
+            # encoding = 'utf-8'
+            # # with zipfile.ZipFile(zip) as zfile:
+            # for name in zip.namelist():
+            #     with zip.open(name) as readfile:
+            #         for line in TextIOWrapper(readfile, encoding):
+            #             _logger.info(repr(line))
+
+            # datos = respuesta.split("|")
             # _logger.info("Archivo Leido")
             # _logger.info(datos[0])
             # _logger.info(datos[1])
@@ -89,7 +102,7 @@ class Sunat(http.Controller):
             _logger.info("No se realizo la caneccion")
             return "Hola"
 
-        return "Hola"
+        return respuesta
 
     @http.route('/demo', auth='public')
     def obtener_cambio(self):
