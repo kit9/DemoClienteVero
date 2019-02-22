@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="0">
+    
+    <record id="group_asset_management_user" model="res.groups">
+        <field name="name">Asset Management User</field>
+        <field name="comment">The user will have access to his own data in the asset management.</field>
+    </record>
+
+</data>
+</odoo>    

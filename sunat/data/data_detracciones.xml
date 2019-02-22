@@ -1,0 +1,28 @@
+<odoo>
+
+    <record model="sunat.detracciones" id="data_sunat_detracciones_No">
+        <field name="name">No Aplica</field>
+        <field name="detrac">0</field>
+    </record>
+    <record model="sunat.detracciones" id="data_sunat_detracciones_0111">
+        <field name="name">0111 - CULTIVO DE CEREALES (EXCEPTO ARROZ), LEGUMBRES Y SEMILLAS OLEAGINOSAS</field>
+        <field name="detrac">5</field>
+    </record>
+    <record model="sunat.detracciones" id="data_sunat_detracciones_0162">
+        <field name="name">0162 - ACTIVIDADES DE APOYO A LA GANADERÍA</field>
+        <field name="detrac">8</field>
+    </record>
+    <record model="sunat.detracciones" id="data_sunat_detracciones_1071">
+        <field name="name">1071 - ELABORACIÓN DE PRODUCTOS DE PANADERÍA.</field>
+        <field name="detrac">10</field>
+    </record>
+    <record model="sunat.detracciones" id="data_sunat_detracciones_1410">
+        <field name="name">1410 - FABRICACIÓN DE PRENDAS DE VESTIR, EXCEPTO PRENDAS DE PIEL</field>
+        <field name="detrac">5</field>
+    </record>
+    <record model="sunat.detracciones" id="data_sunat_detracciones_1520">
+        <field name="name">1520 - FABRICACIÓN DE CALZADO</field>
+        <field name="detrac">8</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+
+    <record model="sunat.currency_type" id="1">
+        <field name="number">1</field>
+        <field name="description">NUEVOS SOLES</field>
+    </record>
+    <record model="sunat.currency_type" id="2">
+        <field name="number">2</field>
+        <field name="description">DÓLARES AMERICANOS</field>
+    </record>
+    <record model="sunat.currency_type" id="9">
+        <field name="number">9</field>
+        <field name="description">OTRA MONEDA (ESPECIFICAR)</field>
+    </record>
+
+</odoo>

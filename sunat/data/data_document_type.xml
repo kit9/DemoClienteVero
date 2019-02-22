@@ -1,0 +1,16 @@
+<odoo>
+
+    <record model="sunat.document_type" id="data_sunat_documentype_0">
+        <field name="name">Otros</field>
+        <field name="number">00</field>
+    </record>
+    <record model="sunat.document_type" id="data_sunat_documentype_1">
+        <field name="name">Factura</field>
+        <field name="number">01</field>
+    </record>
+    <record model="sunat.document_type" id="data_sunat_documentype_2">
+        <field name="name">Recibo por Honorarios</field>
+        <field name="number">02</field>
+    </record>
+
+</odoo>

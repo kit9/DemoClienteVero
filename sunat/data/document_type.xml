@@ -1,0 +1,248 @@
+<odoo>
+
+    <record model="sunat.document_type" id="00">
+        <field name="number">00</field>
+        <field name="description">Otros</field>
+    </record>
+    <record model="sunat.document_type" id="01">
+        <field name="number">01</field>
+        <field name="description">Factura</field>
+    </record>
+    <record model="sunat.document_type" id="02">
+        <field name="number">02</field>
+        <field name="description">Recibo por Honorarios</field>
+    </record>
+    <record model="sunat.document_type" id="03">
+        <field name="number">03</field>
+        <field name="description">Boleta de Venta</field>
+    </record>
+    <record model="sunat.document_type" id="04">
+        <field name="number">04</field>
+        <field name="description">Liquidación de compra</field>
+    </record>
+    <record model="sunat.document_type" id="05">
+        <field name="number">05</field>
+        <field name="description">Boletos de Transporte Aéreo que emiten las Compañías de Aviación Comercial por el servicio de transporte aéreo regular de pasajeros, emitido de manera manual, mecanizada o por medios electrónicos (BME)</field>
+    </record>
+    <record model="sunat.document_type" id="06">
+        <field name="number">06</field>
+        <field name="description">Carta de porte aéreo por el servicio de transporte de carga aérea</field>
+    </record>
+    <record model="sunat.document_type" id="07">
+        <field name="number">07</field>
+        <field name="description">Nota de crédito</field>
+    </record>
+    <record model="sunat.document_type" id="08">
+        <field name="number">08</field>
+        <field name="description">Nota de débito</field>
+    </record>
+    <record model="sunat.document_type" id="09">
+        <field name="number">09</field>
+        <field name="description">Guía de remisión - Remitente</field>
+    </record>
+    <record model="sunat.document_type" id="10">
+        <field name="number">10</field>
+        <field name="description">Recibo por Arrendamiento</field>
+    </record>
+    <record model="sunat.document_type" id="11">
+        <field name="number">11</field>
+        <field name="description">Póliza emitida por las Bolsas de Valores, Bolsas de Productos o Agentes de Intermediación por operaciones realizadas en las Bolsas de Valores o Productos o fuera de las mismas, autorizadas por SMV</field>
+    </record>
+    <record model="sunat.document_type" id="12">
+        <field name="number">12</field>
+        <field name="description">Ticket o cinta emitido por máquina registradora</field>
+    </record>
+    <record model="sunat.document_type" id="13">
+        <field name="number">13</field>
+        <field name="description">Documentos emitidos por las empresas del sistema financiero y de seguros, y por las cooperativas de ahorro y crédito no autorizadas a captar recursos del público, que se encuentren bajo el control de la Superintendencia de Banca, Seguros y AFP.</field>
+    </record>
+    <record model="sunat.document_type" id="14">
+        <field name="number">14</field>
+        <field name="description">Recibo por servicios públicos de suministro de energía eléctrica, agua, teléfono, telex y telegráficos y otros servicios complementarios que se incluyan en el recibo de servicio público</field>
+    </record>
+    <record model="sunat.document_type" id="15">
+        <field name="number">15</field>
+        <field name="description">Boletos emitidos por el servicio de transporte terrestre regular urbano de pasajeros y el ferroviario público de pasajeros prestado en vía férrea local.</field>
+    </record>
+    <record model="sunat.document_type" id="16">
+        <field name="number">16</field>
+        <field name="description">Boletos de viaje emitidos por las empresas de transporte nacional de pasajeros, siempre que cuenten con la autorización de la autoridad competente, en las rutas autorizadas. Vía terrestre o ferroviario público no emitido por medios electrónicos (BVME)</field>
+    </record>
+    <record model="sunat.document_type" id="17">
+        <field name="number">17</field>
+        <field name="description">Documento emitido por la Iglesia Católica por el arrendamiento de bienes inmuebles</field>
+    </record>
+    <record model="sunat.document_type" id="18">
+        <field name="number">18</field>
+        <field name="description">Documento emitido por las Administradoras Privadas de Fondo de Pensiones que se encuentran bajo la supervisión de la Superintendencia de Banca, Seguros y AFP</field>
+    </record>
+    <record model="sunat.document_type" id="19">
+        <field name="number">19</field>
+        <field name="description">Boleto o entrada por atracciones y espectáculos públicos</field>
+    </record>
+    <record model="sunat.document_type" id="20">
+        <field name="number">20</field>
+        <field name="description">Comprobante de Retención</field>
+    </record>
+    <record model="sunat.document_type" id="21">
+        <field name="number">21</field>
+        <field name="description">Conocimiento de embarque por el servicio de transporte de carga marítima</field>
+    </record>
+    <record model="sunat.document_type" id="22">
+        <field name="number">22</field>
+        <field name="description">Comprobante por Operaciones No Habituales</field>
+    </record>
+    <record model="sunat.document_type" id="23">
+        <field name="number">23</field>
+        <field name="description">Pólizas de Adjudicación emitidas con ocasión del remate o adjudicación de bienes por venta forzada, por los martilleros o las entidades que rematen o subasten bienes por cuenta de terceros</field>
+    </record>
+    <record model="sunat.document_type" id="24">
+        <field name="number">24</field>
+        <field name="description">Certificado de pago de regalías emitidas por PERUPETRO S.A</field>
+    </record>
+    <record model="sunat.document_type" id="25">
+        <field name="number">25</field>
+        <field name="description">Documento de Atribución (Ley del Impuesto General a las Ventas e Impuesto Selectivo al Consumo, Art. 19º, último párrafo, R.S. N° 022-98-SUNAT).</field>
+    </record>
+    <record model="sunat.document_type" id="26">
+        <field name="number">26</field>
+        <field name="description">Recibo por el Pago de la Tarifa por Uso de Agua Superficial con fines agrarios y por el pago de la Cuota para la ejecución de una determinada obra o actividad acordada por la Asamblea General de la Comisión de Regantes o Resolución expedida por el Jefe de la Unidad de Aguas y de Riego (Decreto Supremo N° 003-90-AG, Arts. 28 y 48)</field>
+    </record>
+    <record model="sunat.document_type" id="27">
+        <field name="number">27</field>
+        <field name="description">Seguro Complementario de Trabajo de Riesgo</field>
+    </record>
+    <record model="sunat.document_type" id="28">
+        <field name="number">28</field>
+        <field name="description">Documentos emitidos por los servicios aeroportuarios prestados a favor de los pasajeros, mediante mecanismo de etiquetas autoadhesivas.</field>
+    </record>
+    <record model="sunat.document_type" id="29">
+        <field name="number">29</field>
+        <field name="description">Documentos emitidos por la COFOPRI en calidad de oferta de venta de terrenos, los correspondientes a las subastas públicas y a la retribución de los servicios que presta</field>
+    </record>
+    <record model="sunat.document_type" id="30">
+        <field name="number">30</field>
+        <field name="description">Documentos emitidos por las empresas que desempeñan el rol adquirente en los sistemas de pago mediante tarjetas de crédito y débito, emitidas por bancos e instituciones financieras o crediticias, domiciliados o no en el país.</field>
+    </record>
+    <record model="sunat.document_type" id="31">
+        <field name="number">31</field>
+        <field name="description">Guía de Remisión - Transportista</field>
+    </record>
+    <record model="sunat.document_type" id="32">
+        <field name="number">32</field>
+        <field name="description">Documentos emitidos por las empresas recaudadoras de la denominada Garantía de Red Principal a la que hace referencia el numeral 7.6 del artículo 7° de la Ley N° 27133 – Ley de Promoción del Desarrollo de la Industria del Gas Natural</field>
+    </record>
+    <record model="sunat.document_type" id="33">
+        <field name="number">33</field>
+        <field name="description">Manifiesto de Pasajeros</field>
+    </record>
+    <record model="sunat.document_type" id="34">
+        <field name="number">34</field>
+        <field name="description">Documento del Operador</field>
+    </record>
+    <record model="sunat.document_type" id="35">
+        <field name="number">35</field>
+        <field name="description">Documento del Partícipe</field>
+    </record>
+    <record model="sunat.document_type" id="36">
+        <field name="number">36</field>
+        <field name="description">Recibo de Distribución de Gas Natural</field>
+    </record>
+    <record model="sunat.document_type" id="37">
+        <field name="number">37</field>
+        <field name="description">Documentos que emitan los concesionarios del servicio de revisiones técnicas vehiculares, por la prestación de dicho servicio</field>
+    </record>
+    <record model="sunat.document_type" id="40">
+        <field name="number">40</field>
+        <field name="description">Comprobante de Percepción</field>
+    </record>
+    <record model="sunat.document_type" id="41">
+        <field name="number">41</field>
+        <field name="description">Comprobante de Percepción - Venta interna</field>
+    </record>
+    <record model="sunat.document_type" id="42">
+        <field name="number">42</field>
+        <field name="description">Documentos emitidos por las empresas que desempeñan el rol adquiriente en los sistemas de pago mediante tarjetas de crédito emitidas por ellas mismas</field>
+    </record>
+    <record model="sunat.document_type" id="43">
+        <field name="number">43</field>
+        <field name="description">Boletos emitidos por las Compañías de Aviación Comercial que prestan servicios de transporte aéreo no regular de pasajeros y transporte aéreo especial de pasajeros.</field>
+    </record>
+    <record model="sunat.document_type" id="44">
+        <field name="number">44</field>
+        <field name="description">Billetes de lotería, rifas y apuestas.</field>
+    </record>
+    <record model="sunat.document_type" id="45">
+        <field name="number">45</field>
+        <field name="description">Documentos emitidos por centros educativos y culturales, universidades, asociaciones y fundaciones, en lo referente a actividades no gravadas con tributos administrados por la SUNAT.</field>
+    </record>
+    <record model="sunat.document_type" id="46">
+        <field name="number">46</field>
+        <field name="description">Formulario de Declaración - pago o Boleta de pago de tributos Internos</field>
+    </record>
+    <record model="sunat.document_type" id="48">
+        <field name="number">48</field>
+        <field name="description">Comprobante de Operaciones - Ley N° 29972</field>
+    </record>
+    <record model="sunat.document_type" id="49">
+        <field name="number">49</field>
+        <field name="description">Constancia de Depósito - IVAP (Ley 28211)</field>
+    </record>
+    <record model="sunat.document_type" id="50">
+        <field name="number">50</field>
+        <field name="description">Declaración Única de Aduanas - Importación definitiva</field>
+    </record>
+    <record model="sunat.document_type" id="51">
+        <field name="number">51</field>
+        <field name="description">Póliza o DUI Fraccionada</field>
+    </record>
+    <record model="sunat.document_type" id="52">
+        <field name="number">52</field>
+        <field name="description">Despacho Simplificado - Importación Simplificada</field>
+    </record>
+    <record model="sunat.document_type" id="53">
+        <field name="number">53</field>
+        <field name="description">Declaración de Mensajería o Courier</field>
+    </record>
+    <record model="sunat.document_type" id="54">
+        <field name="number">54</field>
+        <field name="description">Liquidación de Cobranza</field>
+    </record>
+    <record model="sunat.document_type" id="55">
+        <field name="number">55</field>
+        <field name="description">BVME para transporte ferroviario de pasajeros</field>
+    </record>
+    <record model="sunat.document_type" id="56">
+        <field name="number">56</field>
+        <field name="description">Comprobante de pago SEAE</field>
+    </record>
+    <record model="sunat.document_type" id="87">
+        <field name="number">87</field>
+        <field name="description">Nota de Crédito Especial</field>
+    </record>
+    <record model="sunat.document_type" id="88">
+        <field name="number">88</field>
+        <field name="description">Nota de Débito Especial</field>
+    </record>
+    <record model="sunat.document_type" id="89">
+        <field name="number">89</field>
+        <field name="description">Nota de Ajuste de Operaciones - Ley N° 29972</field>
+    </record>
+    <record model="sunat.document_type" id="91">
+        <field name="number">91</field>
+        <field name="description">Comprobante de No Domiciliado</field>
+    </record>
+    <record model="sunat.document_type" id="96">
+        <field name="number">96</field>
+        <field name="description">Exceso de crédito fiscal por retiro de bienes</field>
+    </record>
+    <record model="sunat.document_type" id="97">
+        <field name="number">97</field>
+        <field name="description">Nota de Crédito - No Domiciliado</field>
+    </record>
+    <record model="sunat.document_type" id="98">
+        <field name="number">98</field>
+        <field name="description">Nota de Débito - No Domiciliado</field>
+    </record>
+
+</odoo>
