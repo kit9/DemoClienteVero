@@ -14,7 +14,7 @@
                 </sheet>
                 <div class="o_row" position="before">
                     <div class="o_row">
-                        <field name="catalog_06_id" placeholder="Tipo Doc." colspan="1" nolabel="1" widget="selection"/>
+                        <field name="catalog_06_id" placeholder="Tipo Doc." colspan="1" nolabel="1" widget="selection" required="True"/>
                         <field name="vat" placeholder="Número de Documento" colspan="3" nolabel="1"/>   
                     </div>  
                     <field name="registration_name" placeholder="Razón social" attrs="{'invisible': [('is_company','=',False)],'required': [('is_company','=',True)]}"/> 

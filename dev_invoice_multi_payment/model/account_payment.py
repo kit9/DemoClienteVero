@@ -22,6 +22,7 @@ class account_payment(models.Model):
                                    string="Invoices", copy=False, readonly=False)
 
     number_payment = fields.Integer(string="Numero de Pago Masivo")
+    type = fields.Selection([('detraccion', 'Detracción'),('retencion', 'Retención'),('factura', 'Factura')], string='Tipo de Pago')
 
     @api.multi
     @api.onchange('payment_for')
@@ -145,7 +146,7 @@ class account_payment(models.Model):
                 debit, credit, amount_currency, currency_id = \
                     aml_obj.with_context(date=self.payment_date). \
                         _compute_amount_fields(amt, self.currency_id,
-                                               self.company_id.currency_id)
+                                              self.company_id.currency_id)
                 # Write line corresponding to invoice payment
                 counterpart_aml_dict = \
                     self._get_shared_move_line_vals(debit,
@@ -174,7 +175,7 @@ class account_payment(models.Model):
             debit, credit, amount_currency, currency_id = \
                 aml_obj.with_context(date=self.payment_date). \
                     _compute_amount_fields(o_amt, self.currency_id,
-                                           self.company_id.currency_id)
+                                          self.company_id.currency_id)
             # Write line corresponding to invoice payment
             counterpart_aml_dict = \
                 self._get_shared_move_line_vals(debit,

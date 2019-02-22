@@ -15,15 +15,28 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'sequence':0,
+    'sequence': 0,
     'category': 'Generic Modules/Base',
     'application': True,
     'version': '1.2',
     'installable': True,
-    'auto_install': True,
+    'auto_install': False,
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account'],
+    'depends': [
+        'base',
+        'account',
+        'purchase',
+        'sale_management',
+        'stock',
+        'base_automation',
+        'account_accountant',
+        'odoope_ruc_validation',
+        'odoope_currency',
+        'uom',
+        'sale_stock',
+        'purchase_stock'
+    ],
 
     # always loaded
     'data': [
@@ -34,19 +47,27 @@
         'views/customs_code.xml',
         'views/classification_goods.xml',
         'views/document_type_identity.xml',
+        'views/Stock_Catalog.xml',
+        'views/Type_Existence.xml',
+        'views/Type_Operation.xml',
         'views/views.xml',
         'views/templates.xml',
         'wizard/account_bill_txt_view.xml',
+        'wizard/withholding_record_view.xml',
+        'wizard/kardex_report_view.xml',
+        'wizard/inv_perm_val_view.xml',
+        'wizard/consolidated_journal_view.xml',
         'views/menu.xml',
+        'views/actions.xml',
         'data/data_detracciones.xml',
         'data/currency_type.xml',
         'data/customs_code.xml',
         'data/classification_goods.xml',
         'data/document_type.xml',
         'data/document_type_identity.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
+        'data/Stock_Catalog.xml',
+        'data/Type_Existence.xml',
+        'data/Type_Operation.xml',
+        'data/uom_data.xml',
     ],
 }

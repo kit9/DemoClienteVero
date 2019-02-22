@@ -51,8 +51,8 @@ def get_data_doc_number(tipo_doc, numero_doc, format='json'):
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    registration_name = fields.Char('Name', size=128, index=True, )
-    catalog_06_id = fields.Many2one('einvoice.catalog.06', 'Tipo Doc.', index=True, required=True)
+    registration_name = fields.Char('Name', size=128, index=True)
+    catalog_06_id = fields.Many2one('einvoice.catalog.06', 'Tipo Doc.', index=True)
     state = fields.Selection([('habido', 'Habido'), ('nhabido', 'No Habido')], 'State')
 
     # ~ tipo_contribuyente = fields.Char('Tipo de contribuyente')

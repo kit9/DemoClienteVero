@@ -33,7 +33,7 @@ class AccountInvoiceConfirm(models.TransientModel):
             raise ValidationError("No se encontraton facturas")
         content = ""
         if self.type != "out_invoice" and self.type != "in_invoice":
-            raise ValidationError("No se aceptan estoy documentos")
+            raise ValidationError("No se aceptan estos documentos")
         if self.type == "in_invoice":
             for inv in invoice_ids:
                 content = content + "" + inv._generate_txt_bill() + "\n"
