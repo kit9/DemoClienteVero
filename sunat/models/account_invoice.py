@@ -119,7 +119,7 @@ class account_invoice(models.Model):
             for line in rec.invoice_line_ids:
                 for imp in line.invoice_line_tax_ids:
                     if imp.name == "No Gravado":
-                        rec.inv_isc = rec.amount_total
+                        rec.inv_no_gravado = rec.amount_total
 
     @api.multi
     def _inv_isc(self):
