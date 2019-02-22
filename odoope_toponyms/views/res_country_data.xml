@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
-    <data noupdate="0">
+    <data noupdate="1">
         <!-- Lista de Departamentos/Regiones -->
-        <!-- <record model='res.country.state' id="ubigeos_01">
+        <record model='res.country.state' id="ubigeos_01">
             <field name="name">AMAZONAS</field>
             <field name="code">01</field>
             <field name="country_id" ref="base.pe"/>
-        </record> -->
+        </record>
         <record model='res.country.state' id="ubigeos_02">
             <field name="name">ANCASH</field>
             <field name="code">02</field>
