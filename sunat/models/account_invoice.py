@@ -161,7 +161,7 @@ class account_invoice(models.Model):
     @api.depends('amount_untaxed', 'type_operation')
     def _base_imp(self):
         for rec in self:
-            if rec.type_operation == "1" or (not rec.type_operation):
+            if (rec.type_operation == "1" or not rec.type_operation) and not rec.inv_no_gravado:
                 rec.base_imp = rec.amount_untaxed
 
     @api.multi
