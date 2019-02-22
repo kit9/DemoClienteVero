@@ -237,6 +237,7 @@ class account_move(models.Model):
             }
 
             account_move = self.env['account.move'].create(account_move_dic)
+            account_move.post()
 
 
 class Partner(models.Model):

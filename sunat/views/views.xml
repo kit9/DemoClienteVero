@@ -108,6 +108,7 @@
             </field>
             <field name="amount_untaxed" position="replace">
                 <field name="amount_untaxed" invisible="1"/>
+                <field name="inv_no_gravado"/>
                 <field name="base_imp"/>
                 <field name="base_igv"/>
             </field>

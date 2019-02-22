@@ -111,6 +111,16 @@ class account_invoice(models.Model):
 
     inv_otros = fields.Char(string='Otros')
 
+    inv_no_gravado = fields.Monetary(string="No Gravado", compute="_inv_no_gravado")
+
+    @api.multi
+    def _inv_no_gravado(self):
+        for rec in self:
+            for line in rec.invoice_line_ids:
+                for imp in line.invoice_line_tax_ids:
+                    if imp.name == "No Gravado":
+                        rec.inv_isc = rec.amount_total
+
     @api.multi
     def _inv_isc(self):
         for rec in self:

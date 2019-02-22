@@ -62,47 +62,26 @@ class Sunat(http.Controller):
         url = "http://www.sunat.gob.pe/descarga/BueCont/BueCont_TXT.zip"
 
         try:
-            respuesta = ""
             response = urlopen(url)
             zip = zipfile.ZipFile(BytesIO(response.read()))
-            _logger.info("----")
-            _logger.info("zip encontrado")
+
             file = zip.read('BueCont_TXT.txt')
-            datos = str(file)
-            respuesta = datos
-            _logger.info(file)
-            # file = StringIO(file)
-            # respuesta = str(StringIO(str(file)), "utf-8")
-            # respuesta = file.decode("utf8")
-            # respuesta = respuesta.replace("b'", "")
-            # respuesta = file
 
-            # encoding = 'utf-8'
-            # # with zipfile.ZipFile(zip) as zfile:
-            # for name in zip.namelist():
-            #     with zip.open(name) as readfile:
-            #         for line in TextIOWrapper(readfile, encoding):
-            #             _logger.info(repr(line))
+            datos = file.decode("windows-1252")
+            datos = datos.replace("\r", "\n")
 
-            # datos = respuesta.split("|")
-            # _logger.info("Archivo Leido")
-            # _logger.info(datos[0])
-            # _logger.info(datos[1])
-            # _logger.info(datos[2])
-            # _logger.info(datos[3])
-            # _logger.info(datos[4])
-            # _logger.info(datos[5])
-            # _logger.info(datos[6])
-            # _logger.info(datos[7])
-            # _logger.info(datos[8])
-            # _logger.info(datos[9])
-            # _logger.info(datos[10])
+            # _logger.info(datos)
+
+            for line in datos.split("\n"):
+                _logger.info(line)
+
+            _logger.info("Lineas Impresas")
 
         except requests.exceptions.ConnectionError as e:
             _logger.info("No se realizo la caneccion")
             return "Hola"
 
-        return respuesta
+        return datos
 
     @http.route('/demo', auth='public')
     def obtener_cambio(self):
