@@ -1,0 +1,40 @@
+<odoo>
+
+    <!-- Form Catálogo de Stock -->
+    <record id="stock_catalog_form_view" model="ir.ui.view">
+        <field name="name">sunat.stock_catalog.form.view</field>
+        <field name="model">sunat.stock_catalog</field>
+        <field name="arch" type="xml">
+            <form string="Form Catálogo de Stock">
+                <sheet>
+                    <group>
+                        <field name="number"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Thee -->
+    <record id="stock_catalog_tree_view" model="ir.ui.view">
+        <field name="name">sunat.stock_catalog.tree.view</field>
+        <field name="model">sunat.stock_catalog</field>
+        <field name="arch" type="xml">
+            <tree string="Tree Catálogo de Stock">
+                <field name="id"/>
+                <field name="number"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action Document Type -->
+    <record id="action_sunat_stock_catalog" model="ir.actions.act_window">
+        <field name="name">Catálogo de Stock</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sunat.stock_catalog</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

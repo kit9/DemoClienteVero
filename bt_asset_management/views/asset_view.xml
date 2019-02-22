@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Top menu item -->
+        <menuitem name="Asset Management"
+            id="asset_management_main_menu"
+            sequence="31" 
+            groups="bt_asset_management.group_asset_management_user"/>
+        
+        <menuitem
+            id= "asset_managment_main_submenu"
+            parent= "asset_management_main_menu"
+            sequence= "1"
+            name= "Asset Management"
+            /> 
+            
+        <menuitem
+            id= "asset_managment_main_submenu1"
+            parent= "asset_management_main_menu"
+            sequence= "3"
+            name = "Asset Location"
+            />
+            
+        <menuitem
+        	id= "asset_managment_main_submenu3"
+        	parent= "asset_management_main_menu"
+        	sequence= "4"
+        	name= "Asset Category"
+        	/>     
+  
+  <!-- Asset View -->          
+ 		
+ 		<record model="ir.ui.view" id="bt_asset_management_asset_kanban">
+            <field name="name">bt.asset.kanban</field>
+            <field name="model">bt.asset</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="id"/>
+                	<field name="image"/>
+                	<field name="name"/>
+                	<field name="asset_code"/>
+                	<field name="purchase_date"/>
+                    <field name="purchase_value"/>
+                    <field name="model_name"/>
+                    <field name="serial_no"/>
+                    
+                	<templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+	                            <div class="o_kanban_image o_kanban_content">
+	                             	<t t-if="record.image.raw_value">
+	                                   <img t-att-src="kanban_image('bt.asset', 'image', record.id.raw_value)" alt="Logo"/>
+	                                </t>
+	                            </div>  
+                                <div class="oe_kanban_details">
+                                    <strong class="oe_partner_heading">
+                                    	<field name="name"/>
+                                    </strong>
+                                    <ul>
+                                    	<li t-if="record.asset_code.raw_value">Code: <field name="asset_code"/></li>
+                                   		<li t-if="record.model_name.raw_value">Model: <field name="model_name"/></li>
+                                   		<li t-if="record.serial_no.raw_value">Serial #: <field name="serial_no"/></li>
+                                    </ul> 
+                                    </div>   
+                            </div>
+                         </t>
+                     </templates>                
+                </kanban>
+             </field>	
+         </record>       
+            
+         <record id="bt_asset_management_asset_tree" model="ir.ui.view">
+            <field name="name">bt.asset.tree</field>
+            <field name="model">bt.asset</field>
+            <field name="arch" type="xml">
+                <tree string="Asset">
+                	<field name="name"/>
+                	<field name="asset_code"/>
+                	<field name="purchase_date"/>
+                    <field name="purchase_value"/>
+                    <field name="current_loc_id"/>
+                    <field name="model_name"/>
+                    <field name="serial_no"/>
+                    <field name="manufacturer"/>
+                    <field name="warranty_start"/>
+                  	<field name="warranty_end"/>
+                </tree>
+            </field>
+        </record>  
+        
+        <record id="bt_asset_management_asset_search" model="ir.ui.view">
+            <field name="name">bt.asset.search.view</field>
+            <field name="model">bt.asset</field>
+            <field name="arch" type="xml">
+                <search string="Asset">
+                	<field name="name"/>
+                	<field name="asset_code"/>
+                	<field name="purchase_date"/>
+                    <field name="purchase_value"/>
+                    <field name="current_loc_id"/>
+                    <field name="model_name"/>
+                    <field name="serial_no"/>
+                    <field name="manufacturer"/>
+                    <field name="warranty_start"/>
+                    <field name="warranty_end"/>
+                    <separator/>
+                    <filter name="Scrapped" string="Scarpped" domain="[('state','=','scrapped')]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="category" string="Category" domain="[]" context="{'group_by':'category_id'}"/>
+                        <filter name="purchasedate" string="Purchase Date" domain="[]" context="{'group_by':'purchase_date'}"/>
+                        <filter name="states" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        
+        
+        <record id="bt_asset_management_asset_form" model="ir.ui.view">
+            <field name="name">bt.asset.form</field>
+            <field name="model">bt.asset</field>
+            <field name="arch" type="xml">
+                <form string="Asset">
+                	<header>
+                		<field name="state" widget="statusbar"  statusbar_visible="active,scrapped"/>
+                	</header>
+                	<sheet>
+                		<field name="image_medium" widget="image" class="oe_avatar"/>
+						    <div class="oe_title">
+                            	<div class="oe_edit_only">
+                                	<label for="name" string="Asset Name"/>
+                            	</div>
+                            	<div class="oe_right oe_button_box">
+									<button name= "action_move_vals" string="Scrap" type="object" class="btn-primary" style="height:40px;"/>
+								</div>
+                            	<h1>
+                                	<field name="name"/>
+                            	</h1>
+                            	
+                            	<div class="o_row">
+                            		<field name="category_id"  placeholder="Category"/>
+                        		</div>
+                            </div>
+                            <group>
+                            	<group>
+                            		<field name="is_created" invisible="1"/>
+                            		<field name="asset_code" attrs="{'readonly': [('is_created','=',True)]}"/>
+                            		<field name="purchase_date"/>
+                            		<field name="model_name"/>
+                            	</group>
+                            	<group>
+                            		<field name="purchase_value"/>
+                            		<field name="is_created" invisible="1"/>
+                            		<field name="current_loc_id"  attrs="{'readonly': [('is_created','=',True)]}"/>
+                            		<field name="serial_no"/>
+                            	</group>
+                            	 
+                            </group>
+                            <notebook>
+	                            <page string="Warranty">
+	                            	<group>
+	                            		<field name="manufacturer"/>
+	                                </group>
+	                                <group>		
+	                            		<field name="warranty_start"/>
+	                            		<field name="warranty_end"/>
+	                            	</group>	
+	                            </page>
+	                            <page string="Notes">
+	                            	<field name="note"/>
+	                            </page>
+	                        </notebook>    		 
+                	 </sheet>
+                	 <div class="oe_chatter">
+                	 	<!-- <field name="message_follower_ids" widget="mail_followers"/> -->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>  
+                 </form>
+             </field>
+        </record>
+
+<!-- Asset Location View -->
+
+        <record id="bt_asset_management_asset_location_tree" model="ir.ui.view">
+            <field name="name">bt.asset.location.tree</field>
+            <field name="model">bt.asset.location</field>
+            <field name="arch" type="xml">
+                <tree string="Asset Location">
+                	<field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="bt_asset_management_asset_location_search" model="ir.ui.view">
+            <field name="name">bt.asset.location.search</field>
+            <field name="model">bt.asset.location</field>
+            <field name="arch" type="xml">
+                <search string="Asset Location">
+                	<field name="name"/>
+                	<field name="asset_ids"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="bt_asset_management_asset_location_form" model="ir.ui.view">
+            <field name="name">bt.asset.location.form</field>
+            <field name="model">bt.asset.location</field>
+            <field name="arch" type="xml">
+                <form string="Asset Location">
+                	<sheet>
+				    	<div class="oe_title">
+                        	<div class="oe_edit_only">
+                            	<label for="name" string="Location Name"/>
+                            </div>
+                            <h1>
+                            	<field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                    		<field name="default"/>
+                       		<field name="default_scrap"/>
+                        </group>
+                        <group>
+                        	<notebook>
+                        		<page string="Assets">
+                        			<field name="asset_ids" nolabel="1" colspan="4" readonly="1">
+                        				<tree string="" editable="bottom">
+                        					<field name="name"/>
+                							<field name="asset_code"/>	
+                        				</tree>
+                        				<form string="Asset Details">
+                        					<sheet>
+                        						<group>
+                        							<field name="name"/>
+                									<field name="asset_code"/>
+                        						</group>
+                        					</sheet>	
+                        				</form>
+                        			</field>
+                        		</page>
+                        	</notebook>
+                        </group>	
+                	</sheet>	
+                </form>
+            </field>
+        </record>
+
+<!-- Asset Category View -->
+
+        <record id="bt_asset_management_asset_category_tree" model="ir.ui.view">
+            <field name="name">bt.asset.category.tree</field>
+            <field name="model">bt.asset.category</field>
+            <field name="arch" type="xml">
+                <tree string="Asset Category">
+                	<field name="name"/>
+                </tree>
+            </field>
+        </record> 
+        
+        <record id="bt_asset_management_asset_category_search" model="ir.ui.view">
+            <field name="name">bt.asset.category.search</field>
+            <field name="model">bt.asset.category</field>
+            <field name="arch" type="xml">
+                <search string="Asset Category">
+                	<field name="name"/>
+                </search>
+            </field>
+        </record>        
+        
+        <record id="bt_asset_management_asset_category_form" model="ir.ui.view">
+            <field name="name">bt.asset.category.form</field>
+            <field name="model">bt.asset.category</field>
+            <field name="arch" type="xml">
+                <form string="Asset Category">
+                	<sheet>
+                		<div class="oe_title">
+                        	<div class="oe_edit_only">
+                            	<label for="name" string="Category Name"/>
+                            </div>
+                            <h1>
+                            	<field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                        	<field name="categ_no"/>
+                        </group>
+                     </sheet>   
+                </form>
+            </field>
+         </record>       	
+        
+		<record id="action_bt_asset" model="ir.actions.act_window">
+	            <field name="name">Assets</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="res_model">bt.asset</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">kanban,tree,form</field>
+	            <field name="search_view_id" ref="bt_asset_management_asset_search"/>
+	            <field name="help" type="html">
+	                <p class="oe_view_nocontent_create">
+	                    Create Asset for the company
+	                </p>
+	            </field>
+	        </record>
+        
+	        <menuitem action="action_bt_asset" name="Asset"
+	            id="menu_action_bt_asset" parent="asset_managment_main_submenu"
+	            sequence="12"/>
+	            
+	    <record id="action_bt_asset_location" model="ir.actions.act_window">
+	            <field name="name">Asset Location</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="res_model">bt.asset.location</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form</field>
+	            <field name="search_view_id" ref="bt_asset_management_asset_location_search"/>
+	            <field name="help" type="html">
+	                <p class="oe_view_nocontent_create">
+	                    Create Asset Location for the Company
+	                </p>
+	            </field>
+	        </record>
+        
+	   <menuitem action="action_bt_asset_location" name="Asset Location"
+	            id="menu_action_bt_asset_location" parent="asset_managment_main_submenu"
+	            sequence="13"/> 
+	            
+	   <record id="action_bt_asset_category" model="ir.actions.act_window">
+	            <field name="name">Asset Category</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="res_model">bt.asset.category</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form</field>
+	            <field name="search_view_id" ref="bt_asset_management_asset_category_search"/>
+	            <field name="help" type="html">
+	                <p class="oe_view_nocontent_create">
+	                    Create Asset Category for the Company
+	                </p>
+	            </field>
+	        </record>
+           
+      <menuitem action="action_bt_asset_category" name="Asset Category"
+	            id="menu_action_bt_asset_category" parent="asset_managment_main_submenu"
+	            sequence="14"/> 
+	            
+</odoo>
+	

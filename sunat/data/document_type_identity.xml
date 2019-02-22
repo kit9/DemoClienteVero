@@ -1,0 +1,28 @@
+<odoo>
+
+    <record model="sunat.document_type_identity" id="0">
+        <field name="number">0</field>
+        <field name="description">OTROS TIPOS DE DOCUMENTOS</field>
+    </record>
+    <record model="sunat.document_type_identity" id="1">
+        <field name="number">1</field>
+        <field name="description">DOCUMENTO NACIONAL DE IDENTIDAD (DNI)</field>
+    </record>
+    <record model="sunat.document_type_identity" id="4">
+        <field name="number">4</field>
+        <field name="description">CARNET DE EXTRANJERIA</field>
+    </record>
+    <record model="sunat.document_type_identity" id="6">
+        <field name="number">6</field>
+        <field name="description">REGISTRO ÚNICO DE CONTRIBUYENTES</field>
+    </record>
+    <record model="sunat.document_type_identity" id="7">
+        <field name="number">7</field>
+        <field name="description">PASAPORTE</field>
+    </record>
+    <record model="sunat.document_type_identity" id="A">
+        <field name="number">A</field>
+        <field name="description">CÉDULA DIPLOMÁTICA DE IDENTIDAD</field>
+    </record>
+
+</odoo>

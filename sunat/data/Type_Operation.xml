@@ -1,0 +1,190 @@
+<odoo>
+    <record model="sunat.type_operation" id="01">
+        <field name="number">01</field>
+        <field name="description">VENTA NACIONAL</field>
+    </record>
+    <record model="sunat.type_operation" id="02">
+        <field name="number">02</field>
+        <field name="description">COMPRA NACIONAL</field>
+    </record>
+    <record model="sunat.type_operation" id="03">
+        <field name="number">03</field>
+        <field name="description">CONSIGNACIÓN RECIBIDA</field>
+    </record>
+    <record model="sunat.type_operation" id="04">
+        <field name="number">04</field>
+        <field name="description">CONSIGNACIÓN ENTREGADA</field>
+    </record>
+    <record model="sunat.type_operation" id="05">
+        <field name="number">05</field>
+        <field name="description">DEVOLUCIÓN RECIBIDA</field>
+    </record>
+    <record model="sunat.type_operation" id="06">
+        <field name="number">06</field>
+        <field name="description">DEVOLUCIÓN ENTREGADA</field>
+    </record>
+    <record model="sunat.type_operation" id="07">
+        <field name="number">07</field>
+        <field name="description">BONIFICACIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="08">
+        <field name="number">08</field>
+        <field name="description">PREMIO</field>
+    </record>
+    <record model="sunat.type_operation" id="09">
+        <field name="number">09</field>
+        <field name="description">DONACIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="10">
+        <field name="number">10</field>
+        <field name="description">SALIDA A PRODUCCIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="11">
+        <field name="number">11</field>
+        <field name="description">SALIDA POR TRANSFERENCIA ENTRE ALMACENES</field>
+    </record>
+    <record model="sunat.type_operation" id="12">
+        <field name="number">12</field>
+        <field name="description">RETIRO</field>
+    </record>
+    <record model="sunat.type_operation" id="13">
+        <field name="number">13</field>
+        <field name="description">MERMAS</field>
+    </record>
+    <record model="sunat.type_operation" id="14">
+        <field name="number">14</field>
+        <field name="description">DESMEDROS</field>
+    </record>
+    <record model="sunat.type_operation" id="15">
+        <field name="number">15</field>
+        <field name="description">DESTRUCCIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="16">
+        <field name="number">16</field>
+        <field name="description">SALDO INICIAL</field>
+    </record>
+    <record model="sunat.type_operation" id="17">
+        <field name="number">17</field>
+        <field name="description">EXPORTACIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="18">
+        <field name="number">18</field>
+        <field name="description">IMPORTACIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="19">
+        <field name="number">19</field>
+        <field name="description">ENTRADA DE PRODUCCIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="20">
+        <field name="number">20</field>
+        <field name="description">ENTRADA POR DEVOLUCIÓN DE PRODUCCIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="21">
+        <field name="number">21</field>
+        <field name="description">ENTRADA POR TRANSFERENCIA ENTRE ALMACENES</field>
+    </record>
+    <record model="sunat.type_operation" id="22">
+        <field name="number">22</field>
+        <field name="description">ENTRADA POR IDENTIFICACIÓN ERRONEA</field>
+    </record>
+    <record model="sunat.type_operation" id="23">
+        <field name="number">23</field>
+        <field name="description">SALIDA POR IDENTIFICACIÓN ERRONEA</field>
+    </record>
+    <record model="sunat.type_operation" id="24">
+        <field name="number">24</field>
+        <field name="description">ENTRADA POR DEVOLUCIÓN DEL CLIENTE</field>
+    </record>
+    <record model="sunat.type_operation" id="25">
+        <field name="number">25</field>
+        <field name="description">SALIDA POR DEVOLUCIÓN AL PROVEEDOR</field>
+    </record>
+    <record model="sunat.type_operation" id="26">
+        <field name="number">26</field>
+        <field name="description">ENTRADA PARA SERVICIO DE PRODUCCIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="27">
+        <field name="number">27</field>
+        <field name="description">SALIDA POR SERVICIO DE PRODUCCIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="28">
+        <field name="number">28</field>
+        <field name="description">AJUSTE POR DIFERENCIA DE INVENTARIO</field>
+    </record>
+    <record model="sunat.type_operation" id="29">
+        <field name="number">29</field>
+        <field name="description">ENTRADA DE BIENES EN PRÉSTAMO</field>
+    </record>
+    <record model="sunat.type_operation" id="30">
+        <field name="number">30</field>
+        <field name="description">SALIDA DE BIENES EN PRÉSTAMO</field>
+    </record>
+    <record model="sunat.type_operation" id="31">
+        <field name="number">31</field>
+        <field name="description">ENTRADA DE BIENES EN CUSTODIA</field>
+    </record>
+    <record model="sunat.type_operation" id="32">
+        <field name="number">32</field>
+        <field name="description">SALIDA DE BIENES EN CUSTODIA</field>
+    </record>
+    <record model="sunat.type_operation" id="33">
+        <field name="number">33</field>
+        <field name="description">MUESTRAS MÉDICAS</field>
+    </record>
+    <record model="sunat.type_operation" id="34">
+        <field name="number">34</field>
+        <field name="description">PUBLICIDAD</field>
+    </record>
+    <record model="sunat.type_operation" id="35">
+        <field name="number">35</field>
+        <field name="description">GASTOS DE REPRESENTACIÓN</field>
+    </record>
+    <record model="sunat.type_operation" id="36">
+        <field name="number">36</field>
+        <field name="description">RETIRO PARA ENTREGA A TRABAJADORES</field>
+    </record>
+    <record model="sunat.type_operation" id="37">
+        <field name="number">37</field>
+        <field name="description">RETIRO POR CONVENIO COLECTIVO</field>
+    </record>
+    <record model="sunat.type_operation" id="38">
+        <field name="number">38</field>
+        <field name="description">RETIRO POR SUSTITUCIÓN DE BIEN SINIESTRADO</field>
+    </record>
+    <record model="sunat.type_operation" id="91">
+        <field name="number">91</field>
+        <field name="description">OTROS 1</field>
+    </record>
+    <record model="sunat.type_operation" id="92">
+        <field name="number">92</field>
+        <field name="description">OTROS 2</field>
+    </record>
+    <record model="sunat.type_operation" id="93">
+        <field name="number">93</field>
+        <field name="description">OTROS 3</field>
+    </record>
+    <record model="sunat.type_operation" id="94">
+        <field name="number">94</field>
+        <field name="description">OTROS 4</field>
+    </record>
+    <record model="sunat.type_operation" id="95">
+        <field name="number">95</field>
+        <field name="description">OTROS 5</field>
+    </record>
+    <record model="sunat.type_operation" id="96">
+        <field name="number">96</field>
+        <field name="description">OTROS 6</field>
+    </record>
+    <record model="sunat.type_operation" id="97">
+        <field name="number">97</field>
+        <field name="description">OTROS 7</field>
+    </record>
+    <record model="sunat.type_operation" id="98">
+        <field name="number">98</field>
+        <field name="description">OTROS 8</field>
+    </record>
+    <record model="sunat.type_operation" id="99">
+        <field name="number">99</field>
+        <field name="description">OTROS</field>
+    </record>
+</odoo>

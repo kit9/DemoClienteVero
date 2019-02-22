@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<data>
+    <!-- Define the form view -->
+
+    <record model="ir.ui.view" id="view_id">
+        <field name="name">view.name</field>
+        <field name="model">wizard model name</field>
+        <field name="arch" type="xml">
+            <form string="any string" version="7.0">
+                <group>
+                    <!--<!–- Define fields-–>-->
+                </group>
+                <footer>
+                    <button string=" Any String" name="your_method_name" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--<!–- Define the action -–>-->
+
+    <record id="your_action_id" model="ir.actions.act_window">
+        <field name="name">Action name</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard model name</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <!--<!–- default is current -–>-->
+    </record>
+
+    <!--<!–- Define the menu -–>-->
+
+    <menuitem id="your_menu_id" action="your_action_id" parent="parent menu id with (.)module name"/>
+</data>
