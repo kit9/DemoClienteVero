@@ -48,7 +48,7 @@ Reportes incluidos:
     'data': [
         'views/res_partner_view.xml',
         'views/res_country_view.xml',
-        # 'views/res_country_data.xml',
+        'views/res_country_data.xml',
     ],
     'qweb' : [
 
