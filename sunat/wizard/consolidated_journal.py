@@ -105,7 +105,7 @@ class ConsolidatedJournal(models.TransientModel):
             )
 
             # Agregamos la linea al TXT
-            content_txt = content_txt + "" + txt_line + "\n"
+            content_txt = content_txt + "" + txt_line + "\r\n"
 
         self.write({
             'state': 'get',

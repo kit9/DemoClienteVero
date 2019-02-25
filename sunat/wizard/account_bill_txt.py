@@ -36,7 +36,7 @@ class AccountInvoiceConfirm(models.TransientModel):
             raise ValidationError("No se aceptan estos documentos")
         if self.type == "in_invoice":
             for inv in invoice_ids:
-                content = content + "" + inv._generate_txt_bill() + "\n"
+                content = content + "" + inv._generate_txt_bill() + "\r\n"
             self.write({
                 'state': 'get',
                 'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),
@@ -44,7 +44,7 @@ class AccountInvoiceConfirm(models.TransientModel):
             })
         if self.type == "out_invoice":
             for inv in invoice_ids:
-                content = content + "" + inv._generate_txt_invoice() + "\n"
+                content = content + "" + inv._generate_txt_invoice() + "\r\n"
             self.write({
                 'state': 'get',
                 'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),

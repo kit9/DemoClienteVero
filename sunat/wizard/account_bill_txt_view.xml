@@ -21,7 +21,7 @@
                     </group>
                     <div states="get">
                         <h2>Archivo Generado</h2>
-                        <p>Este es tu txt:
+                        <p>Este es tu archivo:
                             <field name="txt_binary" readonly="1" filename="txt_filename"/>
                         </p>
                     </div>
