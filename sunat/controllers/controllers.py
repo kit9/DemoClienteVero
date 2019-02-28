@@ -7,7 +7,7 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-
+from openerp.http import request
 from io import BytesIO, StringIO, TextIOWrapper
 import zipfile
 from zipfile import ZipFile
@@ -68,20 +68,30 @@ class Sunat(http.Controller):
             file = zip.read('BueCont_TXT.txt')
 
             datos = file.decode("windows-1252")
-            datos = datos.replace("\r", "\n")
+            datos = datos.replace("\r", "\r\n")
 
-            # _logger.info(datos)
+            lista = datos.split("\r\n");
+            _logger.info(len(lista))
+            lista[0] = ""
+            for line in datos.split("\r\n"):
+                # _logger.info(len(lista))
+                campos = line.split("|")
+                proveedor = request.env['res.partner'].sudo().search(
+                    [('is_company', '=', 'True'), ('vat', 'like', campos[0])], limit=1)
+                if proveedor.catalog_06_id.code == "6":
+                    proveedor.age_retencion = True
 
-            for line in datos.split("\n"):
-                _logger.info(line)
+            # proveedores = request.env['res.partner'].sudo().search([('is_company', '=', 'True')])
+            # for proveedor in proveedores:
+            #     _logger.info(proveedor.catalog_06_id.code)
 
-            _logger.info("Lineas Impresas")
+            # proveedor.age_retencion = True
 
         except requests.exceptions.ConnectionError as e:
             _logger.info("No se realizo la caneccion")
             return "Hola"
 
-        return datos
+        return "Completo"
 
     @http.route('/demo', auth='public')
     def obtener_cambio(self):

@@ -227,7 +227,7 @@
                                        attrs="{'readonly': [('parent_id','!=',False)]}"/>
                                 <!-- Agregado -->
                                 <field string="Detraccion" name="detrac_id"/>
-                                <field name="is_withholding_agent"/>
+                                <field name="age_retencion"/>
                             </group>
                             <group>
                                 <field name="function" placeholder="e.g. Sales Director"

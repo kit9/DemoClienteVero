@@ -35,7 +35,8 @@
         'odoope_currency',
         'uom',
         'sale_stock',
-        'purchase_stock'
+        'purchase_stock',
+        'account_asset',
     ],
 
     # always loaded
