@@ -22,6 +22,7 @@ STATE_COLOR_SELECTION = [
     ('9', 'SkyBlue')
 ]
 
+
 class asset_state(models.Model):
     """ 
     Model for asset states.
@@ -45,7 +46,7 @@ class asset_state(models.Model):
 
     def change_color(self):
         color = int(self.state_color) + 1
-        if (color>9): color = 0
+        if (color > 9): color = 0
         return self.write({'state_color': str(color)})
 
 
@@ -55,6 +56,19 @@ class asset_category(models.Model):
 
     name = fields.Char('Tag', required=True, translate=True)
     asset_ids = fields.Many2many('asset.asset', id1='category_id', id2='asset_id', string='Assets')
+
+
+class AccountAssetAsset(models.Model):
+    _inherit = "account.asset.asset"
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for asset in self:
+            res.append((asset.id, ("%(id)s") % {
+                'id': asset.id
+            }))
+        return res
 
 
 class asset_asset(models.Model):
@@ -76,13 +90,13 @@ class asset_asset(models.Model):
         # - ('id', 'in', 'ids'): add columns that should be present
         # - OR ('team','=',team): add default columns that belongs team
         search_domain = []
-        search_domain += ['|', ('team','=',team)]
+        search_domain += ['|', ('team', '=', team)]
         search_domain += [('id', 'in', ids)]
         stage_ids = stage_obj._search(search_domain, order=order, access_rights_uid=access_rights_uid)
         result = stage_obj.name_get(access_rights_uid, stage_ids)
         # restore order of the search
-        result.sort(lambda x,y: cmp(stage_ids.index(x[0]), stage_ids.index(y[0])))
-        return result, {}    
+        result.sort(lambda x, y: cmp(stage_ids.index(x[0]), stage_ids.index(y[0])))
+        return result, {}
 
     def _read_group_finance_state_ids(self, domain, read_group_order=None, access_rights_uid=None):
         return self._read_group_state_ids(domain, read_group_order, access_rights_uid, '0')
@@ -95,7 +109,7 @@ class asset_asset(models.Model):
 
     def _read_group_maintenance_state_ids(self, domain, read_group_order=None, access_rights_uid=None):
         return self._read_group_state_ids(domain, read_group_order, access_rights_uid, '3')
-        
+
     def _read_group_accounting_state_ids(self, domain, read_group_order=None, access_rights_uid=None):
         return self._read_group_state_ids(domain, read_group_order, access_rights_uid, '4')
 
@@ -115,12 +129,13 @@ class asset_asset(models.Model):
         for rec in self:
             rec.name = rec.asset_id.name
 
-    finance_state_id = fields.Many2one('asset.state', 'State', domain=[('team','=','0')])
-    warehouse_state_id = fields.Many2one('asset.state', 'State', domain=[('team','=','1')])
-    manufacture_state_id = fields.Many2one('asset.state', 'State', domain=[('team','=','2')])
-    maintenance_state_id = fields.Many2one('asset.state', 'State', domain=[('team','=','3')])
-    accounting_state_id = fields.Many2one('asset.state', 'State', domain=[('team','=','4')])
-    maintenance_state_color = fields.Selection(related='maintenance_state_id.state_color', selection=STATE_COLOR_SELECTION, string="Color", readonly=True)
+    finance_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '0')])
+    warehouse_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '1')])
+    manufacture_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '2')])
+    maintenance_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '3')])
+    accounting_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '4')])
+    maintenance_state_color = fields.Selection(related='maintenance_state_id.state_color',
+                                               selection=STATE_COLOR_SELECTION, string="Color", readonly=True)
     criticality = fields.Selection(CRITICALITY_SELECTION, 'Criticality')
     property_stock_asset = fields.Many2one(
         'stock.location', "Asset Location",
