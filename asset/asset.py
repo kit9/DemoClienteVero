@@ -127,7 +127,7 @@ class asset_asset(models.Model):
     @api.depends('asset_id')
     def _name_assets(self):
         for rec in self:
-            rec.name = rec.asset_id.name
+            rec.name = rec.asset_id.id
 
     finance_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '0')])
     warehouse_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '1')])
