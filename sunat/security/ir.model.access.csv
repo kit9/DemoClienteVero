@@ -9,3 +9,4 @@ access_sunat_exchange_rate_all,access_sunat_exchange_rate_all,model_sunat_exchan
 access_sunat_stock_catalog_all,access_sunat_stock_catalog_all,model_sunat_stock_catalog,,1,1,1,1
 access_sunat_type_existence_all,access_sunat_type_existence_all,model_sunat_type_existence,,1,1,1,1
 access_sunat_type_operation_all,access_sunat_type_operation_all,model_sunat_type_operation,,1,1,1,1
+access_hr_employee_all,access_hr_employee_all,hr.model_hr_employee,,1,1,1,1

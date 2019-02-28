@@ -155,6 +155,8 @@ class res_partner_bank(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
+    asset_id = fields.Many2one('account.asset.asset', 'Activo')
+
     @api.one
     def asset_create(self):
         if self.asset_category_id:
@@ -168,6 +170,8 @@ class AccountInvoiceLine(models.Model):
                 'currency_id': self.invoice_id.company_currency_id.id,
                 'date': self.invoice_id.date_invoice,
                 'invoice_id': self.invoice_id.id,
+                'first_depreciation_manual_date': str(datetime.now().date()) or False,
+                'invoice_line_ids': [(4, self.id)] or False,
             }
             changed_vals = self.env['account.asset.asset'].onchange_category_id_values(vals['category_id'])
             vals.update(changed_vals['value'])
@@ -175,3 +179,20 @@ class AccountInvoiceLine(models.Model):
             # if self.asset_category_id.open_asset:
             #     asset.validate()
         return True
+
+
+class AccountAssetAsset(models.Model):
+    _inherit = 'account.asset.asset'
+
+    employee_id = fields.Many2one('hr.employee', 'Asignado')
+
+    invoice_line_ids = fields.One2many('account.invoice.line', 'asset_id', string='Invoice Lines')
+
+    @api.multi
+    @api.depends('invoice_line_ids')
+    def update_cost(self):
+        for rec in self:
+            cost = 0
+            for line in rec.invoice_line_ids:
+                cost = cost + line.price_subtotal_signed
+            rec.value = cost
