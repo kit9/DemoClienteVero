@@ -117,7 +117,10 @@
                                 </div>
                                 <div class="oe_kanban_details">
                                     <h4>
-                                        <a type="open"><field name="name"/></a>
+                                        <a type="open">
+                                            <!--<field name="name"/>-->
+                                            <field name="asset_id"/>
+                                        </a>
                                     </h4>
                                     <ul>
                                         <li>Model: <field name="model"></field></li>
