@@ -200,11 +200,3 @@ class AccountAssetAsset(models.Model):
             for line in rec.invoice_line_ids:
                 cost = cost + line.price_subtotal_signed
             rec.value = cost
-
-    # @api.multi
-    # def set_to_close(self):
-    #     if self.reason_for_low:
-    #         return super(AccountAssetAsset, self).set_to_close()
-    #     else:
-    #         raise ValidationError("Por favor llene el campo Motivo de Baja")
-    #         return True

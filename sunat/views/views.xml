@@ -276,7 +276,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='invoice_id']" position="after">
                 <field name="employee_id"/>
-                <field name="reason_for_low"/>
+                <!--<field name="state"/>-->
+                <field name="reason_for_low" attrs="{'required': [('state','=', 'open')]}"/>
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="Historial de Costos">
