@@ -158,6 +158,13 @@ class AccountInvoiceLine(models.Model):
 
     asset_id = fields.Many2one('account.asset.asset', 'Activo')
 
+    move_number = fields.Char('Número de Asiento', compute="_move_number")
+
+    @api.multi
+    def _move_number(self):
+        for rec in self:
+            rec.move_number = rec.invoice_id.move_name
+
     @api.one
     def asset_create(self):
         if self.asset_category_id:
