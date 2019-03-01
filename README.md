@@ -1,1 +1,1 @@
-# DemoClienteVero - Odoo
+# DemoClienteVero
