@@ -304,7 +304,7 @@ class account_invoice(models.Model):
             content = "%s00|%s|M%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s|" \
                       "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                           # Periodo del Asiento -> 1
-                          rec.move_id.date.strftime("%Y/%m") or '',
+                          rec.move_id.date.strftime("%Y%m") or '',
                           # Correlativo de Factura -> 2
                           rec.move_id.name.replace("/", "") or '',
                           # Correlativo de todos los asientos no solo facturas -> 3
@@ -315,11 +315,12 @@ class account_invoice(models.Model):
                           rec.date_due.strftime("%d/%m/%Y") or '',
                           rec.document_type_id.number or '',  # N° del Tipo de Documento -> 6
 
-                          rec.invoice_serie or '',  # Numero de la Factura -> 7
+                          str(rec.invoice_serie if rec.invoice_serie else 0).zfill(4) or '',
+                          # Numero de la Factura -> 7
 
                           rec.year_emission_dua or '',  # Año de emision del DUA -> 8
 
-                          rec.invoice_number or '',  # Numero -> 9
+                          str(rec.invoice_number if rec.invoice_number else 0).zfill(8) or '',  # Numero -> 9
 
                           # Omitido -> 10
                           # N° Tipo de Documento Identidad -> 11
