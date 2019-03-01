@@ -277,12 +277,17 @@
             <xpath expr="//field[@name='invoice_id']" position="after">
                 <field name="employee_id"/>
                 <!--<field name="state"/>-->
-                <field name="reason_for_low" attrs="{'required': [('state','=', 'open')]}"/>
+                <!--<field name="reason_for_low" attrs="{'required': [('state','=', 'open')]}"/>-->
+                <field name="reason_for_low"/>
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="Historial de Costos">
                     <field name="invoice_line_ids" readonly="1"/>
                 </page>
+            </xpath>
+            <xpath expr="//button[@name='set_to_close']" position="replace">
+                <button name="set_to_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight" invisible="1"/>
+                <button name="set_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"/>
             </xpath>
         </field>
     </record>
@@ -294,8 +299,8 @@
         <field name="binding_model_id" ref="account_asset.model_account_asset_asset"/>
         <field name="state">code</field>
         <field name="code">
-for rec in records:
-    rec.validate()
+            for rec in records:
+            rec.validate()
         </field>
     </record>
 
