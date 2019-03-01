@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from datetime import datetime
 import logging
 
@@ -188,6 +189,9 @@ class AccountAssetAsset(models.Model):
 
     invoice_line_ids = fields.One2many('account.invoice.line', 'asset_id', string='Invoice Lines')
 
+    reason_for_low = fields.Selection(string="Motivo de baja", selection=[('Venta', 'Venta'),
+                                                                          ('Deterioro', 'Deterioro')])
+
     @api.multi
     @api.depends('invoice_line_ids')
     def update_cost(self):
@@ -196,3 +200,11 @@ class AccountAssetAsset(models.Model):
             for line in rec.invoice_line_ids:
                 cost = cost + line.price_subtotal_signed
             rec.value = cost
+
+    @api.multi
+    def set_to_close(self):
+        if self.reason_for_low:
+            return super(AccountAssetAsset, self).set_to_close()
+        else:
+            raise ValidationError("Por favor llene el campo Motivo de Baja")
+            return True

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
+    <data>
 
         <!-- Top menu item -->
         <menuitem name="Maintenance"
-            id="base.menu_mro_root"
-            sequence="80"
-            web_icon="asset,static/description/icon.png"/>
+                  id="base.menu_mro_root"
+                  sequence="80"
+                  web_icon="asset,static/description/icon.png"/>
 
         <!-- Asset menu -->
         <menuitem name="Assets"
-            id="menu_maintenance_assets"
-            parent="base.menu_mro_root"
-            groups="asset.group_mro_customer"
-            sequence="9"/>
+                  id="menu_maintenance_assets"
+                  parent="base.menu_mro_root"
+                  groups="asset.group_mro_customer"
+                  sequence="9"/>
 
         <!-- Asset Tree View  -->
         <record id="assets_tree_view" model="ir.ui.view">
@@ -22,7 +22,8 @@
             <field name="arch" type="xml">
                 <tree string="Assets">
                     <field name="asset_number"/>
-                    <!--<field name="name"/>-->
+                    <field name="name" class="oe_read_only"/>
+                    <!--<field name="asset_id"/>-->
                     <field name="asset_id"/>
                     <field name="property_stock_asset"/>
                     <field name="criticality"/>
@@ -38,7 +39,8 @@
             <field name="arch" type="xml">
                 <form string="Assets" version="7.0">
                     <header>
-                        <field name="maintenance_state_id" widget="statusbar" clickable="True" groups="asset.group_mro_user"/>
+                        <field name="maintenance_state_id" widget="statusbar" clickable="True"
+                               groups="asset.group_mro_user"/>
                     </header>
                     <sheet>
                         <div class="oe_right oe_button_box" style="width: 300px;" name="buttons">
@@ -47,7 +49,8 @@
                         <div class="oe_title">
                             <label for="asset_id" class="oe_edit_only"/>
                             <h1>
-                                <field name="asset_id"/>
+                                <field name="name" class="oe_read_only"/>
+                                <field name="asset_id" required="True" class="oe_edit_only"/>
                             </h1>
                             <field name="category_ids" widget="many2many_tags" placeholder="Tags..."/>
                         </div>
@@ -76,22 +79,22 @@
                                 </group>
                                 <group string="Warranty">
                                     <group>
-                                    <field name="manufacturer_id"/>
-                                    <field name="start_date"/>
-                                    <field name="warranty_start_date"/>
+                                        <field name="manufacturer_id"/>
+                                        <field name="start_date"/>
+                                        <field name="warranty_start_date"/>
                                     </group>
                                     <group>
-                                    <field name="vendor_id"/>
-                                    <field name="purchase_date"/>
-                                    <field name="warranty_end_date"/>
+                                        <field name="vendor_id"/>
+                                        <field name="purchase_date"/>
+                                        <field name="warranty_end_date"/>
                                     </group>
                                 </group>
                             </page>
                         </notebook>
-                     </sheet>
-                     <div class="oe_chatter">
-                            <field name="message_follower_ids" widget="mail_followers"/>
-                            <field name="message_ids" widget="mail_thread"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
                     </div>
                 </form>
             </field>
@@ -107,33 +110,63 @@
                     <field name="maintenance_state_color"/>
                     <field name="user_id"/>
                     <field name="criticality"/>
-                    <field name="id" />
+                    <field name="id"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div class="oe_kanban_vignette">
                                 <div class="codup_kanban_left">
-                                    <a type="open"><img t-att-src="kanban_image('asset.asset', 'image_small', record.id.value)" class="oe_kanban_image"/></a>
-                                    <div t-attf-title="#{record.maintenance_state_id.value}" t-attf-class="codup_status_color_#{record.maintenance_state_color.raw_value} codup_status"></div>
+                                    <a type="open">
+                                        <img t-att-src="kanban_image('asset.asset', 'image_small', record.id.value)"
+                                             class="oe_kanban_image"/>
+                                    </a>
+                                    <div t-attf-title="#{record.maintenance_state_id.value}"
+                                         t-attf-class="codup_status_color_#{record.maintenance_state_color.raw_value} codup_status"></div>
                                 </div>
                                 <div class="oe_kanban_details">
                                     <h4>
                                         <a type="open">
-                                            <!--<field name="name"/>-->
-                                            <field name="asset_id"/>
+                                            <field name="name"/>
+                                            <!--<field name="asset_id"/>-->
                                         </a>
                                     </h4>
                                     <ul>
-                                        <li>Model: <field name="model"></field></li>
-                                        <li>Manufacturer: <field name="manufacturer_id"></field></li>
-                                        <li>Serial No: <field name="serial"></field></li>
+                                        <li>Model:
+                                            <field name="model"></field>
+                                        </li>
+                                        <li>Manufacturer:
+                                            <field name="manufacturer_id"></field>
+                                        </li>
+                                        <li>Serial No:
+                                            <field name="serial"></field>
+                                        </li>
                                         <li class="codup_kanban_info">
-                                        <a t-if="record.criticality.raw_value == 0" t-attf-title="#{record.criticality.value}" class="codup_attention_off"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value gt 0" t-attf-title="#{record.criticality.value}" class="codup_attention_on"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value lte 1" t-attf-title="#{record.criticality.value}" class="codup_attention_off"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value gt 1" t-attf-title="#{record.criticality.value}" class="codup_attention_on"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value lte 2" t-attf-title="#{record.criticality.value}" class="codup_attention_off"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value gt 2" t-attf-title="#{record.criticality.value}" class="codup_attention_on"><span class="fa fa-exclamation-triangle"/></a>
-                                        <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar"/>
+                                            <a t-if="record.criticality.raw_value == 0"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_off">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value gt 0"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_on">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value lte 1"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_off">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value gt 1"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_on">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value lte 2"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_off">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value gt 2"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_on">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)"
+                                                 t-att-title="record.user_id.value" width="24" height="24"
+                                                 class="oe_kanban_avatar"/>
                                         </li>
                                     </ul>
                                 </div>
@@ -143,7 +176,7 @@
                 </kanban>
             </field>
         </record>
-        
+
         <!-- Asset Search  -->
         <record model="ir.ui.view" id="assets_search">
             <field name="name">Asset Search</field>
@@ -156,16 +189,16 @@
                     <field name="criticality"/>
                     <field name="user_id"/>
                     <field name="category_ids"/>
-                    <separator />
+                    <separator/>
                     <group expand="0" string="Group By">
-                      <filter name="group_name"
-                              string="Name"
-                              context="{'group_by': 'name'}"
-                              />
-                      <filter name="group_user"
-                              string="User"
-                              context="{'group_by': 'user_id'}"
-                              />
+                        <filter name="group_name"
+                                string="Name"
+                                context="{'group_by': 'name'}"
+                        />
+                        <filter name="group_user"
+                                string="User"
+                                context="{'group_by': 'user_id'}"
+                        />
                     </group>
                 </search>
             </field>
@@ -203,11 +236,11 @@
 
         <!-- Asset item -->
         <menuitem name="Assets"
-            action="action_assets"
-            id="menu_maintenance_assets_assets"
-            parent="menu_maintenance_assets"
-            groups="asset.group_mro_customer"
-            sequence="100"/>
+                  action="action_assets"
+                  id="menu_maintenance_assets_assets"
+                  parent="menu_maintenance_assets"
+                  groups="asset.group_mro_customer"
+                  sequence="100"/>
 
         <!-- Management Asset Kanban View  -->
         <record model="ir.ui.view" id="management_assets_kanban_view">
@@ -219,29 +252,59 @@
                     <field name="maintenance_state_color"/>
                     <field name="user_id"/>
                     <field name="criticality"/>
-                    <field name="id" />
+                    <field name="id"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card codup_kanban_status oe_kanban_global_click">
                                 <div class="codup_kanban_left">
-                                    <a type="open"><img t-att-src="kanban_image('asset.asset', 'image_small', record.id.value)" class="oe_kanban_image"/></a>
-                                    <div t-attf-title="#{record.maintenance_state_id.value}" t-attf-class="codup_status_color_#{record.maintenance_state_color.raw_value} codup_status"></div>
+                                    <a type="open">
+                                        <img t-att-src="kanban_image('asset.asset', 'image_small', record.id.value)"
+                                             class="oe_kanban_image"/>
+                                    </a>
+                                    <div t-attf-title="#{record.maintenance_state_id.value}"
+                                         t-attf-class="codup_status_color_#{record.maintenance_state_color.raw_value} codup_status"></div>
                                 </div>
                                 <div class="codup_kanban_details">
                                     <h4>
-                                        <a type="open"><field name="name"/></a>
+                                        <a type="open">
+                                            <field name="name"/>
+                                        </a>
                                     </h4>
                                     <ul>
-                                        <li title="Model"><field name="model"></field></li>
-                                        <li title="Manufacturer"><field name="manufacturer_id"></field></li>
+                                        <li title="Model">
+                                            <field name="model"></field>
+                                        </li>
+                                        <li title="Manufacturer">
+                                            <field name="manufacturer_id"></field>
+                                        </li>
                                         <li class="codup_kanban_info">
-                                        <a t-if="record.criticality.raw_value == 0" t-attf-title="#{record.criticality.value}" class="codup_attention_off"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value gt 0" t-attf-title="#{record.criticality.value}" class="codup_attention_on"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value lte 1" t-attf-title="#{record.criticality.value}" class="codup_attention_off"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value gt 1" t-attf-title="#{record.criticality.value}" class="codup_attention_on"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value lte 2" t-attf-title="#{record.criticality.value}" class="codup_attention_off"><span class="fa fa-exclamation-triangle"/></a>
-                                        <a t-if="record.criticality.raw_value gt 2" t-attf-title="#{record.criticality.value}" class="codup_attention_on"><span class="fa fa-exclamation-triangle"/></a>
-                                        <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar"/>
+                                            <a t-if="record.criticality.raw_value == 0"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_off">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value gt 0"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_on">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value lte 1"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_off">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value gt 1"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_on">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value lte 2"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_off">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <a t-if="record.criticality.raw_value gt 2"
+                                               t-attf-title="#{record.criticality.value}" class="codup_attention_on">
+                                                <span class="fa fa-exclamation-triangle"/>
+                                            </a>
+                                            <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)"
+                                                 t-att-title="record.user_id.value" width="24" height="24"
+                                                 class="oe_kanban_avatar"/>
                                         </li>
                                     </ul>
                                 </div>
@@ -270,27 +333,27 @@
 
         <!-- Management Asset item -->
         <menuitem name="Manage states"
-            action="action_management_assets"
-            id="menu_maintenance_assets_management"
-            parent="menu_maintenance_assets"
-            groups="asset.group_mro_user"
-            sequence="100"/>
+                  action="action_management_assets"
+                  id="menu_maintenance_assets_management"
+                  parent="menu_maintenance_assets"
+                  groups="asset.group_mro_user"
+                  sequence="100"/>
 
         <!-- Report menu -->
         <menuitem name="Reports"
-            id="menu_maintenance_report"
-            parent="base.menu_mro_root"
-            groups="asset.group_mro_customer"
-            sequence="30"/>
+                  id="menu_maintenance_report"
+                  parent="base.menu_mro_root"
+                  groups="asset.group_mro_customer"
+                  sequence="30"/>
 
         <!-- Configuration menu -->
         <menuitem name="Configuration"
-            id="menu_maintenance_config"
-            parent="base.menu_mro_root"
-            groups="asset.group_mro_manager"
-            sequence="200"/>
-            
-        <!-- Asset State Form View  -->        
+                  id="menu_maintenance_config"
+                  parent="base.menu_mro_root"
+                  groups="asset.group_mro_manager"
+                  sequence="200"/>
+
+        <!-- Asset State Form View  -->
         <record id="asset_state_form_view" model="ir.ui.view">
             <field name="name">asset.state.form</field>
             <field name="model">asset.state</field>
@@ -299,7 +362,9 @@
                     <sheet>
                         <div class="oe_title">
                             <label for="name"/>
-                            <h1><field name="name" class="oe_inline"/></h1>
+                            <h1>
+                                <field name="name" class="oe_inline"/>
+                            </h1>
                         </div>
                         <group>
                             <group>
@@ -313,7 +378,7 @@
                 </form>
             </field>
         </record>
-        
+
         <!-- Asset State Kanban View  -->
         <record model="ir.ui.view" id="asset_state_kanban_view">
             <field name="name">Asset State Kanban</field>
@@ -328,8 +393,10 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card codup_kanban_status oe_kanban_global_click">
                                 <h4>
-                                <a name="change_color" string="Change color" type="object"><span t-attf-class="codup_status_color_#{record.state_color.raw_value} codup_status"></span></a>
-                                <field name="name"/>
+                                    <a name="change_color" string="Change color" type="object">
+                                        <span t-attf-class="codup_status_color_#{record.state_color.raw_value} codup_status"></span>
+                                    </a>
+                                    <field name="name"/>
                                 </h4>
                             </div>
                         </t>
@@ -348,11 +415,11 @@
 
         <!-- Asset state item -->
         <menuitem name="Asset States"
-            action="action_asset_state"
-            id="menu_asset_state"
-            parent="menu_maintenance_config"
-            groups="asset.group_mro_manager"
-            sequence="100"/>
+                  action="action_asset_state"
+                  id="menu_asset_state"
+                  parent="menu_maintenance_config"
+                  groups="asset.group_mro_manager"
+                  sequence="100"/>
 
         <!-- Asset Tags Tree View -->
         <record id="asset_category_tree_view" model="ir.ui.view">
@@ -375,11 +442,11 @@
 
         <!-- Asset Tags item -->
         <menuitem name="Asset Tags"
-            action="action_asset_category"
-            id="menu_asset_category"
-            parent="menu_maintenance_config"
-            groups="asset.group_mro_manager"
-            sequence="100"/>
+                  action="action_asset_category"
+                  id="menu_asset_category"
+                  parent="menu_maintenance_config"
+                  groups="asset.group_mro_manager"
+                  sequence="100"/>
 
- 	</data>
+    </data>
 </openerp>
