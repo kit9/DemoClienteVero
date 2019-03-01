@@ -52,6 +52,8 @@
                                 <!-- Agregado -->
                                 <field string="Detraccion" name="detrac_id"/>
                                 <field name="age_retencion"/>
+                                <field name="buen_contribuyente"/>
+                                <field name="age_percepcion"/>
                             </group>
                             <group>
                                 <field name="function" placeholder="e.g. Sales Director"
@@ -155,7 +157,7 @@
         </field>
     </record>
 
-    <!-- Inherit Form View to Modify it -->
+    <!-- Formulario -  Movimiento de Producto-->
     <record id="stock_picking_inherit_form" model="ir.ui.view">
         <field name="name">stock.picking.inherit.form</field>
         <field name="model">stock.picking</field>
@@ -274,6 +276,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='invoice_id']" position="after">
                 <field name="employee_id"/>
+                <field name="reason_for_low"/>
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="Historial de Costos">

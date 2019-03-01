@@ -134,7 +134,7 @@ class bulk_inv_payment(models.TransientModel):
             for inv_line in res.get('values'):
                 invoice = inv_line.get('invoice_id')
                 total_payment = total_payment + invoice.amount_total_signed
-            if proveedor.is_withholding_agent:
+            if proveedor.age_retencion:
                 apply_retention = False
             if total_payment < 700:
                 apply_retention = False

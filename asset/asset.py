@@ -8,6 +8,9 @@
 
 from odoo import api, fields, models
 from odoo import tools
+import logging
+
+_logger = logging.getLogger(__name__)
 
 STATE_COLOR_SELECTION = [
     ('0', 'Red'),
@@ -120,14 +123,14 @@ class asset_asset(models.Model):
         ('3', 'Critical')
     ]
 
-    name = fields.Char(string='State', compute="_name_assets", translate=True, store=True)
+    name = fields.Char(string='State', compute="_name_assets", translate=True)
     asset_id = fields.Many2one('account.asset.asset', 'Activos')
 
     @api.multi
     @api.depends('asset_id')
     def _name_assets(self):
         for rec in self:
-            rec.name = rec.asset_id.id
+            rec.name = rec.asset_id.name
 
     finance_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '0')])
     warehouse_state_id = fields.Many2one('asset.state', 'State', domain=[('team', '=', '1')])
@@ -143,7 +146,7 @@ class asset_asset(models.Model):
         help="This location will be used as the destination location for installed parts during asset life.")
     user_id = fields.Many2one('res.users', 'Assigned to', track_visibility='onchange')
     active = fields.Boolean('Active', default=True)
-    asset_number = fields.Char('Asset Number', size=64)
+    asset_number = fields.Char('Asset Number', compute="_asset_number")
     model = fields.Char('Model', size=64)
     serial = fields.Char('Serial no.', size=64)
     vendor_id = fields.Many2one('res.partner', 'Vendor')
@@ -164,6 +167,13 @@ class asset_asset(models.Model):
         'maintenance_state_id': _read_group_maintenance_state_ids,
         'accounting_state_id': _read_group_accounting_state_ids,
     }
+
+    @api.multi
+    @api.depends('asset_id')
+    def _asset_number(self):
+        for rec in self:
+            if rec.asset_id:
+                rec.asset_number = str(rec.asset_id.id)
 
     @api.model
     def create(self, vals):
