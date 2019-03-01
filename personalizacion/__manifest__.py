@@ -23,7 +23,9 @@
     'auto_install': False,
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_management','stock'],
+    'depends': ['sale_management',
+                'stock',
+                'mrp'],
 
     # always loaded
     'data': [
