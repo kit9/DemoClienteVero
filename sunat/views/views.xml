@@ -322,6 +322,29 @@
         </field>
     </record>
 
+
+    <record id="account_move_line_inherit_tree" model="ir.ui.view">
+        <field name="name">account.move.line.inherit.tree</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="before">
+                <field name="id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_inherit_tree" model="ir.ui.view">
+        <field name="name">account.move.inherit.tree</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="before">
+                <field name="id"/>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Accion de Prueba -->
     <record id="asset_validate" model="ir.actions.server">
         <field name="name">Validar Activos</field>
@@ -329,8 +352,8 @@
         <field name="binding_model_id" ref="account_asset.model_account_asset_asset"/>
         <field name="state">code</field>
         <field name="code">
-for rec in records:
-    rec.validate()
+            for rec in records:
+            rec.validate()
         </field>
     </record>
 
@@ -341,8 +364,8 @@ for rec in records:
         <field name="binding_model_id" ref="account.model_account_move_line"/>
         <field name="state">code</field>
         <field name="code">
-for rec in records:
-    rec.update_ref_invoice()
+            for rec in records:
+            rec.update_ref_invoice()
         </field>
     </record>
 
