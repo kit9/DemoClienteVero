@@ -329,7 +329,8 @@
         <field name="binding_model_id" ref="account_asset.model_account_asset_asset"/>
         <field name="state">code</field>
         <field name="code">
-            record.validate()
+for rec in records:
+    rec.validate()
         </field>
     </record>
 
@@ -340,7 +341,8 @@
         <field name="binding_model_id" ref="account.model_account_move_line"/>
         <field name="state">code</field>
         <field name="code">
-            record.update_ref_invoice()
+for rec in records:
+    rec.update_ref_invoice()
         </field>
     </record>
 
