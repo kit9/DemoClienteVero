@@ -222,6 +222,7 @@ class account_invoice(models.Model):
             if rec.date_invoice != False:
                 rec.month_year_inv = rec.date_invoice.strftime("%m%Y")
 
+    # Generar txt de Compra
     def _generate_txt_bill(self):
         content = ''
         for rec in self:
@@ -303,35 +304,20 @@ class account_invoice(models.Model):
 
             content = "%s00|%s|M%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s|" \
                       "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                          # Periodo del Asiento -> 1
-                          rec.move_id.date.strftime("%Y%m") or '',
-                          # Correlativo de Factura -> 2
-                          rec.move_id.name.replace("/", "") or '',
-                          # Correlativo de todos los asientos no solo facturas -> 3
-                          str(correlativo).zfill(4) or '',
-                          # Fecha de la Factura -> 4
-                          rec.date_invoice.strftime("%d/%m/%Y") or '',
-                          # Fecha de Vencimiento -> 5
-                          rec.date_due.strftime("%d/%m/%Y") or '',
+                          rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
+                          rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
+                          str(correlativo).zfill(4) or '',  # Correlativo de todos los asientos no solo facturas -> 3
+                          rec.date_invoice.strftime("%d/%m/%Y") or '',  # Fecha de la Factura -> 4
+                          rec.date_due.strftime("%d/%m/%Y") or '',  # Fecha de Vencimiento -> 5
                           rec.document_type_id.number or '',  # N° del Tipo de Documento -> 6
-
-                          str(rec.invoice_serie if rec.invoice_serie else 0).zfill(4) or '',
-                          # Numero de la Factura -> 7
-
+                          str(rec.invoice_serie if rec.invoice_serie else 0).zfill(4),  # Numero de la Factura -> 7
                           rec.year_emission_dua or '',  # Año de emision del DUA -> 8
-
                           str(rec.invoice_number if rec.invoice_number else 0).zfill(8) or '',  # Numero -> 9
-
                           # Omitido -> 10
                           # N° Tipo de Documento Identidad -> 11
-
-                          #   rec.partner_id.document_type_identity_id.number or '',
-                          rec.partner_id.catalog_06_id.name or '',
+                          str(rec.partner_id.catalog_06_id.code if rec.partner_id.catalog_06_id.code else 0).zfill(2),
                           rec.partner_id.vat or '',  # N° de Documento de Identidad -> 12
-                          #   rec.partner_id.document_num_identity or '',  # N° de Documento de Identidad -> 12
-
                           rec.partner_id.name or '',  # Nombre del Proveedor -> 13
-
                           campo_14 or '',  # Base imponible -> 14
                           campo_15 or '',  # Total -> 15
                           campo_16 or '',  # Base imponible -> 16
@@ -364,6 +350,7 @@ class account_invoice(models.Model):
                       )
             return content
 
+    # Generar txt de Venta
     def _generate_txt_invoice(self):
         content = "-"
         for rec in self:
@@ -467,42 +454,44 @@ class account_invoice(models.Model):
                         else:
                             codigo_34 = '9'
 
-            content = "%s|%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s||||%s|" % (
-                rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
-                rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
-                str(correlativo).zfill(4) or '',  # Correlativo de todos los asientos no solo facturas -> 3
-                rec.date_invoice.strftime("%d/%m/%Y") or '',  # Fecha de la Factura -> 4
-                rec.date_due.strftime("%d/%m/%Y") or '',  # Fecha de Vencimiento -> 5
-                rec.document_type_id.number or '',  # N° del Tipo de Documento -> 6
-                rec.invoice_serie or '',  # Serie de Documento -> 7
-                rec.invoice_number or '',  # Numero de Documento -> 8
-                # Dejan en blanco -> 9
-                rec.partner_id.catalog_06_id.name or '',  # Tipo de Documento -> 10
-                rec.partner_id.vat or '',  # Numero de Documento -> 11
-                rec.partner_id.name or '',  # Nombre del Proveedor -> 12
-                # factura_exportacion or '',  # Factura de Exportacion -> 13
-                rec.inv_exonerada or '',  # Factura de Exportacion -> 13
-                rec.inv_amount_untax or '',  # Impuesto no incluido -> 14
-                '' or '',  # Impuesto -> 15 - Dejar en Blanco
-                rec.amount_tax or '',  # Impuesto -> 16
-                '' or '',  # Impuesto -> 17 - Dejar en Blanco
-                rec.inv_exonerada or '',  # Importe exonerado -> 18
-                rec.inv_inafecto or '',  # Importe inafecto -> 19
-                rec.inv_isc or '',  # Impuesto -> 20
-                '' or '',  # Base Imponible -> 21
-                '' or '',  # Impuesto -> 22
-                rec.inv_otros or '',  # Impuesto -> 23
-                rec.amount_total or '',  # Total -> 24
-                rec.currency_id.name or '',  # Tipo de moneda -> 25
-                rec.exchange_rate or 0.00,  # Tipo de Cambio-> 26
-                campo_27 or '',  # Fecha del Documento Asociado -> 27
-                rec.refund_invoice_id.document_type_id.number or '',  # Tipo del Documento Asociado -> 28
-                rec.refund_invoice_id.invoice_serie or '',  # Serie del Documento Asociado -> 29
-                rec.refund_invoice_id.invoice_number or '',  # Numero del Documento Asociado -> 30
-                # 3 campos en blanco -> 31, 32, 33
-                codigo_34 or '',  # -> 34
-                # 1 campo en blanco -> 35
-            )
+            content = "%s|%s|M%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s" \
+                      "||||%s|" % (
+                          rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
+                          rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
+                          str(correlativo).zfill(4) or '',  # Correlativo de todos los asientos no solo facturas -> 3
+                          rec.date_invoice.strftime("%d/%m/%Y") or '',  # Fecha de la Factura -> 4
+                          rec.date_due.strftime("%d/%m/%Y") or '',  # Fecha de Vencimiento -> 5
+                          rec.document_type_id.number or '',  # N° del Tipo de Documento -> 6
+                          str(rec.invoice_serie if rec.invoice_serie else 0).zfill(4),  # Serie de Documento -> 7
+                          rec.invoice_number or '',  # Numero de Documento -> 8
+                          # Dejan en blanco -> 9
+                          str(rec.partner_id.catalog_06_id.code if rec.partner_id.catalog_06_id.code else 0).zfill(2),
+                          # Tipo de Documento -> 10
+                          rec.partner_id.vat or '',  # Numero de Documento -> 11
+                          rec.partner_id.name or '',  # Nombre del Proveedor -> 12
+                          # rec.inv_exonerada or '',  # Factura de Exportacion -> 13
+                          rec.inv_fac_exp or '',  # Factura de Exportacion -> 13
+                          rec.inv_amount_untax or '',  # Impuesto no incluido -> 14
+                          '' or '',  # Impuesto -> 15 - Dejar en Blanco
+                          rec.amount_tax or '',  # Impuesto -> 16
+                          '' or '',  # Impuesto -> 17 - Dejar en Blanco
+                          rec.inv_exonerada or '',  # Importe exonerado -> 18
+                          rec.inv_inafecto or '',  # Importe inafecto -> 19
+                          rec.inv_isc or '',  # Impuesto -> 20
+                          '' or '',  # Base Imponible -> 21
+                          '' or '',  # Impuesto -> 22
+                          rec.inv_otros or '',  # Impuesto -> 23
+                          rec.amount_total or '',  # Total -> 24
+                          rec.currency_id.name or '',  # Tipo de moneda -> 25
+                          rec.exchange_rate or 0.00,  # Tipo de Cambio-> 26
+                          campo_27 or '',  # Fecha del Documento Asociado -> 27
+                          rec.refund_invoice_id.document_type_id.number or '',  # Tipo del Documento Asociado -> 28
+                          rec.refund_invoice_id.invoice_serie or '',  # Serie del Documento Asociado -> 29
+                          rec.refund_invoice_id.invoice_number or '',  # Numero del Documento Asociado -> 30
+                          # 3 campos en blanco -> 31, 32, 33
+                          codigo_34 or '',  # -> 34
+                          # 1 campo en blanco -> 35
+                      )
         return content
 
     # Method to hide Apply Retention
