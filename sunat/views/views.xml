@@ -335,7 +335,7 @@ for rec in records:
     </record>
 
         <!-- Accion de Prueba -->
-    <record id="asset_validate" model="ir.actions.server">
+    <record id="update_ref_account_move_line" model="ir.actions.server">
         <field name="name">Actualizar Referencia</field>
         <field name="model_id" ref="model_account_move_line"/>
         <field name="binding_model_id" ref="account.model_account_move_line"/>
