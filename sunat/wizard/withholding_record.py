@@ -29,8 +29,8 @@ class withholding_record_export(models.TransientModel):
         worksheet = workbook.add_worksheet()
 
         # Data - Jcondori
-        lst_payments = self.env['account.payment'].search([])
-        # lst_payments = self.env['account.payment'].search([('type', 'like', 'retencion')])
+        # lst_payments = self.env['account.payment'].search([])
+        lst_payments = self.env['account.payment'].search([('type', 'like', 'retencion')])
 
         # Start from the first cell. Rows and columns are zero indexed.
         row = 0
@@ -79,7 +79,7 @@ class withholding_record_export(models.TransientModel):
                 worksheet.write(row, col + 4, invoice.amount_total or 0)
                 worksheet.write(row, col + 5, payment.amount or 0)
                 worksheet.write(row, col + 6, invoice.amount_total - payment.amount or 0)
-                worksheet.write(row, col + 7, payment.type or '')
+                # worksheet.write(row, col + 7, payment.type or '')
                 row += 1
 
         workbook.close()
