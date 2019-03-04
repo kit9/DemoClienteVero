@@ -217,7 +217,7 @@ class account_invoice(models.Model):
     @api.depends('date_invoice')
     def _get_month_invoice(self):
         for rec in self:
-            if rec.date_invoice != False:
+            if rec.date_invoice:
                 rec.month_year_inv = rec.date_invoice.strftime("%m%Y")
 
     # Generar txt de Compra
@@ -246,8 +246,7 @@ class account_invoice(models.Model):
             # 26 -> Fecha
             campo_26 = ""
             if rec.refund_invoice_id.date_document:
-                campo_26 = rec.refund_invoice_id.date_document.strftime(
-                    "%d/%m/%Y")
+                campo_26 = rec.refund_invoice_id.date_document.strftime("%d/%m/%Y")
 
             # 14 Base imponible
             campo_14 = ""

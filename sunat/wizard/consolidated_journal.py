@@ -77,12 +77,13 @@ class ConsolidatedJournal(models.TransientModel):
                     if line.invoice_id.date_invoice.strftime("%Y") != line.invoice_id.date_document.strftime("%Y"):
                         campo_operacion = '9'
                     else:
-                        if int(line.invoice_id.date_invoice.strftime("%m")) == int(line.invoice_id.date_document.strftime("%m")) - 1:
+                        if int(line.invoice_id.date_invoice.strftime("%m")) == int(
+                                line.invoice_id.date_document.strftime("%m")) - 1:
                             campo_operacion = '0'
                         else:
                             campo_operacion = '9'
 
-            txt_line = "%s00|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s00|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m") or '',
                 name or '',
                 line.journal_id.id or '',
@@ -90,7 +91,7 @@ class ConsolidatedJournal(models.TransientModel):
                 line.company_id.id or '',
                 line.analytic_account_id.name or '',
                 line.invoice_id.currency_id.name or '',
-                line.partner_id.catalog_06_id.name or '',
+                str(line.partner_id.catalog_06_id.code if line.partner_id.catalog_06_id.code else 0).zfill(2),
                 line.partner_id.vat or '',
                 line.invoice_id.document_type_id.number or '',
                 line.invoice_id.invoice_serie or '',
