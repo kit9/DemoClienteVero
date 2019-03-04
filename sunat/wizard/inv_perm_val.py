@@ -20,23 +20,25 @@ class InventoryValorized(models.TransientModel):
     @api.multi
     def generate_file(self):
 
-        # Data - Jcondori
+        # Data
         lst_move_line = self.env['stock.move.line'].search([('state', 'like', 'done')], order="product_id,id")
 
         content_txt = ""
 
         # Iterador - Jcondori
         for line in lst_move_line:
+
+            # for move in line.move_id.account_move_ids:
             # Cantidad
             in_quantity = 0
-            out_quantity = 0
+            out_quantity = 0.00
             if "OUT" in line.reference:
                 out_quantity = line.qty_done
             else:
                 in_quantity = line.qty_done
 
             # Precio Unitario
-            in_price_unit = 0
+            in_price_unit = 0.00
             out_price_unit = 0
             if line.move_id.sale_line_id or "OUT" in line.reference:
                 out_price_unit = line.historical_cost
@@ -68,12 +70,15 @@ class InventoryValorized(models.TransientModel):
 
             # Código de establecimiento anexo
             codigo_esta = ""
+            if line.move_id.warehouse_id:
+                codigo_esta = line.move_id.warehouse_id.code
+
+            # Numeros
             num_serie = ""
             num_doc = ""
             if line.reference:
                 datos = line.reference.split("/")
                 if len(datos) > 2:
-                    codigo_esta = datos[0]
                     num_serie = datos[1]
                     num_doc = datos[2]
 
@@ -104,13 +109,8 @@ class InventoryValorized(models.TransientModel):
 
             # Metodo de Evaluación
             met_eva = ""
-            if line.product_id.categ_id.property_cost_method == "average":
-                met_eva = "01"
-            else:
-                if line.product_id.categ_id.property_cost_method == "fifo":
-                    met_eva = "02"
-                else:
-                    met_eva = "09"
+            if line.product_id.categ_id:
+                met_eva = line.product_id.categ_id.name
 
             # Estado de Operación
             estado_ope = ""
@@ -125,33 +125,34 @@ class InventoryValorized(models.TransientModel):
                     else:
                         estado_ope = "09"
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
-                line.date.strftime("%Y%m00") or "",
-                cuo or "",
-                journal.id or "",
-                codigo_esta or "",
-                catalogo or "",
-                existencia or "",
-                line.product_id.default_code or "",
-                line.product_id.existence_code or "",
-                journal_date or "",
-                type_doc or "",
-                num_serie or "",
-                num_doc or "",
-                type_ope or "",
-                line.product_id.display_name or "",
-                line.product_id.uom_id.sunat_code or "",
-                met_eva or "",
-                in_quantity or "",
-                in_price_unit,
-                in_total,
-                out_quantity or "",
-                out_price_unit,
-                out_total,
-                line.balance_quantity,
-                line.historical_cost,
-                total,
-                estado_ope
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%.2f|%s|%s|%s|%s|%s|%s|" % (
+                line.date.strftime("%Y%m00") or "",  # 1 -> Periodo
+                cuo or "",  # 2 ->
+                # len(line.move_id.account_move_ids),  # 3 ->
+                ("M" + str(journal.id)) if journal.id else '',  # 3 ->
+                codigo_esta or "",  # 4 -> Nombre corto de almacen
+                catalogo or "",  # 5 ->
+                existencia or "",  # 6 ->
+                line.product_id.default_code or "",  # 7 ->
+                line.product_id.existence_code or "",  # 8 ->
+                journal_date or "",  # 9 ->
+                type_doc or "",  # 10 ->
+                num_serie or "",  # 11 ->
+                num_doc or "",  # 12 ->
+                type_ope or "",  # 13 ->
+                line.product_id.display_name or "",  # 14 ->
+                line.product_id.uom_id.sunat_code or "",  # 15 ->
+                met_eva or "",  # 16 ->
+                in_quantity or "",  # 17 ->
+                in_price_unit if in_price_unit else 0.00,  # 18->
+                in_total,  # 19 ->
+                out_quantity if out_quantity else 0.00,  # 20 ->
+                out_price_unit,  # 21 ->
+                out_total,  # 22 ->
+                line.balance_quantity,  # 23 ->
+                line.historical_cost,  # 24 ->
+                total,  # 25 ->
+                estado_ope  # 26 ->
             )
 
             # Agregamos la linea al TXT
