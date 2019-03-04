@@ -13,9 +13,19 @@ class stock_move_line(models.Model):
     quantity = fields.Float(string="Cantidad", compute="_quantity", store=True)
     total_price = fields.Float(string="Total", compute="_total_price", store=True)
 
+    # Para filtrar
+    month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
+
     # Datos Historicos
     balance_quantity = fields.Integer(string="Cantidad Historico")
     historical_cost = fields.Float(string="Costo Historico")
+
+    @api.multi
+    @api.depends('date')
+    def _get_month_invoice(self):
+        for rec in self:
+            if rec.date:
+                rec.month_year_inv = rec.date.strftime("%m%Y")
 
     @api.multi
     @api.depends('product_id', 'qty_done', 'reference', 'move_id')

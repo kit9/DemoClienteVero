@@ -13,19 +13,24 @@ class KardexReport(models.TransientModel):
     _name = "sunat.kardex_report"
     _description = "Report Kardex"
 
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
     @api.multi
     def generate_file(self):
+        dominio = [('state', 'like', 'done'),
+                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
+
         output = BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet()
 
         # Data - Jcondori
-        lst_move_line = self.env['stock.move.line'].search([('state', 'like', 'done')],
-                                                           order="product_id,id")
+        lst_move_line = self.env['stock.move.line'].search(dominio, order="product_id,id")
 
         # Start from the first cell. Rows and columns are zero indexed.
         row = 0

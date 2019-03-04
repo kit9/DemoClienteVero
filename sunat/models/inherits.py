@@ -215,3 +215,26 @@ class AccountAssetAsset(models.Model):
         else:
             raise ValidationError("Por favor llene el campo Motivo de Baja")
         return True
+
+
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
+
+    # Para filtrar
+    month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
+
+    @api.multi
+    @api.depends('date')
+    def _get_month_invoice(self):
+        for rec in self:
+            if rec.date:
+                rec.month_year_inv = rec.date.strftime("%m%Y")
+
+    @api.multi
+    def update_ref_invoice(self):
+        for rec in self:
+            if not rec.ref:
+                if rec.invoice_id:
+                    rec.ref = rec.invoice_id.name
+                if rec.move_id:
+                    rec.ref = rec.move_id.name

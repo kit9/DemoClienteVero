@@ -10,6 +10,9 @@ class InventoryValorized(models.TransientModel):
     _name = "sunat.inventory_valorized"
     _description = "Estructura del Registro de Inventario Permanente Valorizado"
 
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -18,8 +21,7 @@ class InventoryValorized(models.TransientModel):
     def generate_file(self):
 
         # Data - Jcondori
-        lst_move_line = self.env['stock.move.line'].search([('state', 'like', 'done')],
-                                                           order="product_id,id")
+        lst_move_line = self.env['stock.move.line'].search([('state', 'like', 'done')], order="product_id,id")
 
         content_txt = ""
 
@@ -89,7 +91,7 @@ class InventoryValorized(models.TransientModel):
             journal_date = ""
             if line.date:
                 journal_date = line.date.strftime("%d/%m/%Y")
-                
+
             # Tipo de documento
             type_doc = ""
             if line.picking_id.document_type_id:

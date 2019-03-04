@@ -67,8 +67,7 @@ class account_invoice(models.Model):
     date_document = fields.Date(string="Fecha del Documento")
 
     # Hide or not Apply Retention
-    hide_apply_retention = fields.Boolean(
-        string='Hide', compute="_compute_hide_apply_retention")
+    hide_apply_retention = fields.Boolean(string='Hide', compute="_compute_hide_apply_retention")
     # Detraccion Aplica
     hide_detraction = fields.Boolean(compute="_compute_hide_detraction")
 
@@ -110,6 +109,9 @@ class account_invoice(models.Model):
     inv_otros = fields.Char(string='Otros')
 
     inv_no_gravado = fields.Monetary(string="No Gravado", compute="_inv_no_gravado")
+
+    # Para filtrar
+    month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
     @api.multi
     def _inv_no_gravado(self):
@@ -196,10 +198,6 @@ class account_invoice(models.Model):
         for rec in self:
             if rec.type_operation == "3":
                 rec.base_igv_no_gra = rec.amount_tax
-
-    # Para filtrar
-    month_year_inv = fields.Char(
-        compute="_get_month_invoice", store=True, copy=False)
 
     @api.multi
     @api.depends('partner_id')

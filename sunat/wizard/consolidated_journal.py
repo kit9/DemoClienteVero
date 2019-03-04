@@ -10,17 +10,20 @@ class ConsolidatedJournal(models.TransientModel):
     _name = "sunat.consolidated_journal"
     _description = "Diario Consolidado"
 
-    state = fields.Selection(
-        [('choose', 'choose'), ('get', 'get')], default='choose')
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
     @api.multi
     def generate_file(self):
+        dominio = [('move_id.state', 'not like', 'draft'),
+                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
 
         # Data - Jcondori
-        lst_account_move_line = self.env['account.move.line'].search(
-            [('move_id.state', 'not like', 'draft')])
+        lst_account_move_line = self.env['account.move.line'].search(dominio)
 
         content_txt = ""
 
