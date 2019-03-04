@@ -312,7 +312,7 @@ class account_invoice(models.Model):
                           str(rec.invoice_number if rec.invoice_number else 0).zfill(8) or '',  # Numero -> 9
                           # Omitido -> 10
                           # N° Tipo de Documento Identidad -> 11
-                          str(rec.partner_id.catalog_06_id.code if rec.partner_id.catalog_06_id.code else 0).zfill(2),
+                          rec.partner_id.catalog_06_id.code or '',
                           rec.partner_id.vat or '',  # N° de Documento de Identidad -> 12
                           rec.partner_id.name or '',  # Nombre del Proveedor -> 13
                           campo_14 or '',  # Base imponible -> 14
@@ -462,7 +462,7 @@ class account_invoice(models.Model):
                           str(rec.invoice_serie if rec.invoice_serie else 0).zfill(4),  # Serie de Documento -> 7
                           rec.invoice_number or '',  # Numero de Documento -> 8
                           # Dejan en blanco -> 9
-                          str(rec.partner_id.catalog_06_id.code if rec.partner_id.catalog_06_id.code else 0).zfill(2),
+                          rec.partner_id.catalog_06_id.code or '',
                           # Tipo de Documento -> 10
                           rec.partner_id.vat or '',  # Numero de Documento -> 11
                           rec.partner_id.name or '',  # Nombre del Proveedor -> 12
