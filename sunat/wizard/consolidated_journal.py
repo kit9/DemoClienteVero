@@ -114,7 +114,7 @@ class ConsolidatedJournal(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "diario_consolidado.txt"
+            'txt_filename': "LE2060158712320190200050100001111.txt"
         })
         return {
             'type': 'ir.actions.act_window',
