@@ -125,7 +125,7 @@ class InventoryValorized(models.TransientModel):
                     else:
                         estado_ope = "09"
 
-            if line.journal:
+            if journal:
                 txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%.2f|%s|%s|%s|%s|%s|%s|" % (
                     line.date.strftime("%Y%m00") or "",  # 1 -> Periodo
                     cuo or "",  # 2 ->
