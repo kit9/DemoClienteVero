@@ -238,3 +238,31 @@ class AccountMoveLine(models.Model):
                     rec.ref = rec.invoice_id.name
                 if rec.move_id:
                     rec.ref = rec.move_id.name
+
+
+class StockMoveLine(models.Model):
+    _inherit = 'stock.move.line'
+
+    # Para filtrar
+    month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
+
+    @api.multi
+    @api.depends('date')
+    def _get_month_invoice(self):
+        for rec in self:
+            if rec.date:
+                rec.month_year_inv = rec.date.strftime("%m%Y")
+
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    # Para filtrar
+    month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
+
+    @api.multi
+    @api.depends('date')
+    def _get_month_invoice(self):
+        for rec in self:
+            if rec.payment_date:
+                rec.month_year_inv = rec.payment_date.strftime("%m%Y")

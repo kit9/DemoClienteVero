@@ -19,9 +19,11 @@ class InventoryValorized(models.TransientModel):
 
     @api.multi
     def generate_file(self):
+        dominio = [('state', 'like', 'done'),
+                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
 
         # Data
-        lst_move_line = self.env['stock.move.line'].search([('state', 'like', 'done')], order="product_id,id")
+        lst_move_line = self.env['stock.move.line'].search(dominio, order="product_id,id")
 
         content_txt = ""
 

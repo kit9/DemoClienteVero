@@ -1,3 +1,5 @@
+from xml import dom
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from io import BytesIO
@@ -12,17 +14,18 @@ class withholding_record_export(models.TransientModel):
     _name = "withholding.record"
     _description = "Export Excel"
 
-    state = fields.Selection(
-        [('choose', 'choose'), ('get', 'get')], default='choose')
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
     @api.multi
     def generate_file(self):
-        # context = dict(self._context or {})
-        # active_ids = context.get('active_ids', []) or []
-        # object = self.env['account.invoice'].browse(active_ids);
-        # _logger.info("Cantidad -> " + str(len(object)))
+
+        dominio = [('type', 'like', 'retencion'),
+                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
 
         output = BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -30,7 +33,7 @@ class withholding_record_export(models.TransientModel):
 
         # Data - Jcondori
         # lst_payments = self.env['account.payment'].search([])
-        lst_payments = self.env['account.payment'].search([('type', 'like', 'retencion')])
+        lst_payments = self.env['account.payment'].search(dominio)
 
         # Start from the first cell. Rows and columns are zero indexed.
         row = 0
