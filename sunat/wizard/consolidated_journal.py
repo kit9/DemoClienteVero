@@ -20,7 +20,8 @@ class ConsolidatedJournal(models.TransientModel):
     @api.multi
     def generate_file(self):
         dominio = [('move_id.state', 'not like', 'draft'),
-                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
+                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)
+                   ]
 
         # Data - Jcondori
         lst_account_move_line = self.env['account.move.line'].search(dominio)

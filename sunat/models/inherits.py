@@ -261,7 +261,7 @@ class AccountPayment(models.Model):
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
     @api.multi
-    @api.depends('date')
+    @api.depends('payment_date')
     def _get_month_invoice(self):
         for rec in self:
             if rec.payment_date:
