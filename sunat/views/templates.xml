@@ -33,22 +33,17 @@
         </template>
 
         <template id="report_comp_reten">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
                         <div class="page">
-                            <h2>Report title</h2>
+                            <h2>Comprobante de Retenciones</h2>
                             <p>This object's name is
-                                <span t-field="o.number"/>
-                            </p>
-                            <p>Fecha
-                                <span t-field="o.date_invoice"/>
-                            </p>
-                            <p>Vence
-                                <span t-field="o.date_due"/>
+                                <span t-field="o.name"/>
                             </p>
                             <p>Servicio
-                                <span t-field="o.detrac_id.name"/>
+                                <span t-field="o.invoice_ids"/>
                             </p>
                         </div>
                     </t>
@@ -56,9 +51,9 @@
             </t>
         </template>
 
-        <report id="account_invoices_prueba"
-                model="account.invoice"
-                string="Invoices Prueba"
+        <report id="account_payment_comp_reten"
+                model="account.payment"
+                string="Comprobante Retenciones"
                 report_type="qweb-pdf"
                 name="sunat.report_comp_reten"
                 file="sunat.report_comp_reten"
