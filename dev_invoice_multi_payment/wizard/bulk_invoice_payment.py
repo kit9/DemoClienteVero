@@ -20,6 +20,7 @@ _logger = logging.getLogger(__name__)
 
 class bulk_invoice(models.TransientModel):
     _name = 'bulk.invoice'
+    _description = "Facturas"
 
     invoice_id = fields.Many2one('account.invoice', string='Invoice')
     partner_id = fields.Many2one('res.partner', string='Partner')
@@ -34,6 +35,7 @@ class bulk_invoice(models.TransientModel):
 
 class bulk_inv_payment(models.TransientModel):
     _name = 'bulk.inv.payment'
+    _description = "Pago de Facturas"
 
     @api.model
     def default_get(self, fields):
@@ -278,6 +280,7 @@ class bulk_inv_payment(models.TransientModel):
 
 class bulk_inv_detraction(models.TransientModel):
     _name = 'bulk.inv.detraction'
+    _description = "Pago de Detracciones"
 
     @api.model
     def default_get(self, fields):

@@ -9,6 +9,6 @@
 ##############################################################################
 from . import advnce_payment_line
 from . import account_payment
-from . import res_partner_bank
+# from . import res_partner_bank
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

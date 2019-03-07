@@ -25,9 +25,6 @@ class account_payment(models.Model):
     type = fields.Selection([('detraccion', 'Detracción'), ('retencion', 'Retención'), ('factura', 'Factura')],
                             string='Tipo de Pago')
 
-    back_partner_id = fields.Many2one('res.partner.bank', string='Banco')
-    vv_bank = fields.Char(string='Banco', compute="_get_banco")
-
     @api.multi
     @api.depends('back_partner_id')
     def _get_banco(self):

@@ -12,6 +12,7 @@ from odoo.exceptions import ValidationError
     
 class advance_payment_line(models.Model):
     _name = 'advance.payment.line'
+    _description = "Pago Linea"
 
     invoice_id = fields.Many2one('account.invoice',string='Invoice')
     account_id = fields.Many2one('account.account', string="Account")

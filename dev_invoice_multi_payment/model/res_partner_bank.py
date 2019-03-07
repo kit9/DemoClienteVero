@@ -10,10 +10,11 @@
 
 from odoo import models, fields, api, _
 
+
 class res_partner_bank(models.Model):
     _inherit = 'res.partner.bank'
-    
-    payment_type = fields.Many2one('dev.payment.type',string='Payment Type')
+
+    payment_type = fields.Many2one('dev.payment.type', 'Payment Type')
     acc_number = fields.Char('Account Number', required=False)
-            
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

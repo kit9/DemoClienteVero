@@ -10,7 +10,7 @@
 {
     'name': 'Multiple Invoice Payment',
     'version': '12.0.1.5',
-    'sequence':1,
+    'sequence': 1,
     'description': """
  App will allow multiple invoice payment from payment and invoice screen.
         
@@ -50,15 +50,15 @@
            
     """,
     "category": 'Generic Modules/Accounting',
-    'author': 'DevIntelle Consulting Service Pvt.Ltd', 
+    'author': 'DevIntelle Consulting Service Pvt.Ltd',
     'website': 'http://www.devintellecs.com',
-    'depends': ['account_voucher','sunat'],
+    'depends': ['account_voucher', 'sunat'],
     'data': [
-            'security/ir.model.access.csv',
-            'view/account_payment.xml',
-            'wizard/bulk_invoice_payment.xml',
-            'view/res_partner_bank.xml',
-            ],
+        'security/ir.model.access.csv',
+        'view/account_payment.xml',
+        'wizard/bulk_invoice_payment.xml',
+        # 'view/res_partner_bank.xml',
+    ],
     'demo': [],
     'test': [],
     'css': [],
@@ -68,8 +68,8 @@
     'installable': True,
     'application': True,
     'auto_install': False,
-    'price':35.0,
-    'currency':'EUR',
-    #'live_test_url':'https://youtu.be/A5kEBboAh_k',
+    'price': 35.0,
+    'currency': 'EUR',
+    # 'live_test_url':'https://youtu.be/A5kEBboAh_k',
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
