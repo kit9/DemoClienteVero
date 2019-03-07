@@ -23,7 +23,7 @@
     'auto_install': False,
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','account'],
 
     # always loaded
     'data': [
