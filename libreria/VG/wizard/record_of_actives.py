@@ -19,7 +19,7 @@ class chartofaccounts(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
         # lst_account_move_line = self.env['account.move.line'].search([]) # Todo
-        lst_account_move_line = self.env['account.account'].search([])
+        lst_account_move_line = self.env['account.asset.asset'].search([])
 
         content_txt = ""
 
@@ -31,10 +31,10 @@ class chartofaccounts(models.TransientModel):
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                           line.create_date.strftime("%Y%m00") or '',  # 1 jvalenzuela
-                           '',  # 2 jvalenzuela
-                           '',  # 3 jvalenzuela
-                           '',  # 4 jvalenzuela
+                           line.date("%Y%m00") or '',  # 1 jvalenzuela
+                           line.code or'',  # 2 jvalenzuela
+                           '',  # 3 jvalenzuela (no se encuentra)
+                           '',  # 4 jvalenzuela (no se encuentra)
                            '',  # 5 rloayza
                            '',  # 6 rloayza
                            '',  # 7 rloayza
