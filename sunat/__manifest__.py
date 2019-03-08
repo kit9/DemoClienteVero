@@ -45,7 +45,6 @@
         'security/ir.model.access.csv',
         'views/news/detraccion.xml',
         'views/news/document_type.xml',
-        'views/news/currency_type.xml',
         'views/news/customs_code.xml',
         'views/news/classification_goods.xml',
         'views/news/document_type_identity.xml',
@@ -64,7 +63,6 @@
         'views/menu.xml',
         'views/actions.xml',
         'data/data_detracciones.xml',
-        'data/currency_type.xml',
         'data/customs_code.xml',
         'data/classification_goods.xml',
         'data/document_type.xml',
@@ -72,6 +70,7 @@
         'data/Stock_Catalog.xml',
         'data/Type_Existence.xml',
         'data/Type_Operation.xml',
+        'data/TypeIncome.xml',
         'data/uom_data.xml',
     ],
 }

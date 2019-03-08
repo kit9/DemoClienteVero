@@ -38,16 +38,13 @@
             <field name="move_name" position="after">
                 <field name="exchange_rate"/>
             </field>
-            <!--<field name="partner_id" position="after">-->
-            <!--<field name="hide_apply_retention" invisible="1"/>-->
-            <!--</field>-->
-            <!--<field name="date_due" position="after">-->
-            <!--<field name="currency_type_id" invisible="1"/>-->
-            <!--</field>-->
             <field name="payments_widget" position="before">
                 <field name="hide_detraction" invisible="1"/>
                 <field name="detraccion" attrs="{'invisible':[('hide_detraction', '=', True)]}"/>
             </field>
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='currency_id']" position="after">
+                <field name="type_income_id"/>
+            </xpath>
             <field name="partner_bank_id" position="after">
                 <field name="type_operation" required="True"/>
                 <field string="Detraccion" name="detrac_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
@@ -73,10 +70,6 @@
                 <page string="Documento que Modifica">
                     <group>
                         <field name="refund_invoice_id"/>
-                        <!-- Pendientes de Eliminacion -->
-                        <!-- <field name="type_document_modifies_id"/> -->
-                        <!-- <field name="num_document_modifies"/> -->
-                        <!-- <field name="num_dua_document_modifies"/> -->
                     </group>
                 </page>
                 <page string="Detracciones">

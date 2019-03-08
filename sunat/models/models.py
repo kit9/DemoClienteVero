@@ -50,19 +50,6 @@ class document_type_identity(models.Model):
             rec.name = "%s %s" % (rec.number or '', rec.description or '')
 
 
-class currency_type(models.Model):
-    _name = 'sunat.currency_type'
-    _description = "Tipos de Monedas"
-
-    name = fields.Text(compute="_currency_type_full")
-    number = fields.Char(string="Número", size=2, translate=True, index=True)
-    description = fields.Text(string="Descripción", translate=True)
-
-    def _currency_type_full(self):
-        for rec in self:
-            rec.name = "%s %s" % (rec.number or '', rec.description or '')
-
-
 class customs_code(models.Model):
     _name = 'sunat.customs_code'
     _description = "Codigos de Aduana"
@@ -134,5 +121,20 @@ class TypeOperation(models.Model):
     @api.depends('number', 'description')
     @api.multi
     def _Type_Operation(self):
+        for rec in self:
+            rec.name = "%s %s" % (rec.number or '', rec.description or '')
+
+
+class TypeIncome(models.Model):
+    _name = 'sunat.type_income'
+    _description = "Tipo de Renta"
+
+    name = fields.Text(compute="_Type_Income", store=True)
+    number = fields.Char(string="Número", size=2, translate=True, index=True)
+    description = fields.Text(string="Descripción", translate=True)
+
+    @api.depends('number', 'description')
+    @api.multi
+    def _Type_Income(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')

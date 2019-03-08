@@ -35,9 +35,8 @@ class account_invoice(models.Model):
     year_emission_dua = fields.Char(string="Año de emisión de la DUA")
 
     # Document Type
-    document_type_id = fields.Many2one(
-        'sunat.document_type', 'Tipo de Documento')
-    currency_type_id = fields.Many2one('sunat.currency_type', 'Tipo de Moneda')
+    document_type_id = fields.Many2one('sunat.document_type', 'Tipo de Documento')
+    type_income_id = fields.Many2one('sunat.type_income', 'Tipo de Renta')
 
     # Detracciones
     date_detraction = fields.Date(string="Fecha de detracción")
@@ -47,18 +46,14 @@ class account_invoice(models.Model):
         'sunat.classification_goods', 'Clasificación del Bien')
 
     # Documento que Modifica
-    date_document_modifies = fields.Date(
-        string="Fecha del documento que modifica")
-    type_document_modifies_id = fields.Many2one(
-        'sunat.document_type', 'Tipo de Documento que Modifica')
-    num_document_modifies = fields.Char(
-        string="Numero del documento que modifica")
+    date_document_modifies = fields.Date(string="Fecha del documento que modifica")
+    type_document_modifies_id = fields.Many2one('sunat.document_type', 'Tipo de Documento que Modifica')
+    num_document_modifies = fields.Char(string="Numero del documento que modifica")
     num_dua_document_modifies = fields.Char(string="Número DUA")
     code_dua = fields.Many2one('sunat.customs_code', 'Código de la DUA')
     # code_dua = fields.Char(string="Código de la DUA")
     # Invoice
-    series_document_modifies = fields.Char(
-        string="Serie del documento que modifica")
+    series_document_modifies = fields.Char(string="Serie del documento que modifica")
     document_modify = fields.Boolean(string="Modifica Documento")
 
     # Factura de Cliente - Invoice

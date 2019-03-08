@@ -1,5 +1,5 @@
 <odoo>
-    <data noupdate="0">
+    <data noupdate="1">
         <!--Categorias de Unidades de Medida-->
         <record id="caja_product_uom_categ" model="uom.category">
             <field name="name">Caja</field>
