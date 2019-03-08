@@ -31,11 +31,42 @@ class chartofaccounts(models.TransientModel):
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                           line.create_date.strftime("%Y%m00") or '',
-                           '', '', '', '', '', '', '', '',
-                           '', '', '', '', '', '', '', '', '',
-                           '', '', '', '', '', '', '', '', '',
-                           '', '', '', '', '', '', '', '', ''
+                           line.create_date.strftime("%Y%m00") or '',  # 1 jvalenzuela
+                           '',  # 2 jvalenzuela
+                           '',  # 3 jvalenzuela
+                           '',  # 4 jvalenzuela
+                           '',  # 5 rloayza
+                           '',  # 6 rloayza
+                           '',  # 7 rloayza
+                           '',  # 8 rloayza
+                           '',  # 9 rloayza
+                           '',  # 10 rloayza
+                           '',  # 11 ldelacruz
+                           '',  # 12 ldelacruz
+                           '',  # 13 ldelacruz
+                           '',  # 14 ldelacruz
+                           '',  # 15 null
+                           '',  # 16 ldelacruz
+                           '',  # 17 ldelacruz
+                           '',  # 18 null
+                           '',  # 19 null
+                           '',  # 20 null
+                           '',  # 21 null
+                           '',  # 22 null
+                           '',  # 23 jrejas
+                           '',  # 24 jrejas
+                           '',  # 25 jrejas
+                           '',  # 26 null
+                           '',  # 27 jrejas
+                           '',  # 28 jrejas
+                           '',  # 29 null
+                           '',  # 30 null
+                           '',  # 31 null
+                           '',  # 32 null
+                           '',  # 33 null
+                           '',  # 34 null
+                           '',  # 35 null
+                           ''   # 36 jrejas
 
                        )
 
