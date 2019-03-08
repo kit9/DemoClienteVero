@@ -50,7 +50,7 @@ class Sunat(http.Controller):
     #     return Response(output.read(), mimetype='application/vnd.openxmlformats-'
     #                                             'officedocument.spreadsheetml.sheet', headers=headers)
 
-    @http.route('/jcondori', auth='public')
+    @http.route('/test', auth='public')
     def sunat_proveedores(self):
         model = request.env['sunat.general_actions'].sudo().search([], limit=1)
         resultado = model.sunat_buen_contribuyente()

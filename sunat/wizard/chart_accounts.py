@@ -18,12 +18,12 @@ class ConsolidatedJournal(models.TransientModel):
     @api.multi
     def generate_file(self):
 
-        # Data - Jcondori
+        # Data
         lst_chart_accounts = self.env['account.account'].search([])
 
         content_txt = ""
 
-        # Iterador - Jcondori
+        # Iterador
         for accounts in lst_chart_accounts:
             # Asiento Contable
 

@@ -31,7 +31,7 @@ class withholding_record_export(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet()
 
-        # Data - Jcondori
+        # Data
         # lst_payments = self.env['account.payment'].search([])
         lst_payments = self.env['account.payment'].search(dominio)
 
@@ -67,7 +67,7 @@ class withholding_record_export(models.TransientModel):
         worksheet.set_column('A:A', 15)
         worksheet.set_column('D:D', 30)
 
-        # Iterador - Jcondori
+        # Iterador
         for payment in lst_payments:
             # fecha
             fecha = ''

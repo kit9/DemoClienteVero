@@ -27,7 +27,7 @@ class InventoryValorized(models.TransientModel):
 
         content_txt = ""
 
-        # Iterador - Jcondori
+        # Iterador
         for line in lst_move_line:
 
             # for move in line.move_id.account_move_ids:

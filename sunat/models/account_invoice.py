@@ -63,7 +63,7 @@ class account_invoice(models.Model):
 
     # Factura de Cliente - Invoice
     export_invoice = fields.Boolean(string="Fac.- Exp.")
-    exchange_rate = fields.Float(string="Tipo de Cambio")
+    exchange_rate = fields.Float(string="Tipo de Cambio", compute="_get_exchange_rate", store=True, copy=False)
     date_document = fields.Date(string="Fecha del Documento")
 
     # Hide or not Apply Retention
@@ -112,6 +112,12 @@ class account_invoice(models.Model):
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
+
+    @api.multi
+    @api.depends('currency_id')
+    def _get_exchange_rate(self):
+        for rec in self:
+            rec.exchange_rate = rec.currency_id.rate_pe
 
     @api.multi
     def _inv_no_gravado(self):

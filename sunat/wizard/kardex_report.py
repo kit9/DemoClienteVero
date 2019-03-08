@@ -29,7 +29,7 @@ class KardexReport(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet()
 
-        # Data - Jcondori
+        # Data
         lst_move_line = self.env['stock.move.line'].search(dominio, order="product_id,id")
 
         # Start from the first cell. Rows and columns are zero indexed.

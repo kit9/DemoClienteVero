@@ -23,12 +23,12 @@ class ConsolidatedJournal(models.TransientModel):
                    ('month_year_inv', 'like', self.date_month + "" + self.date_year)
                    ]
 
-        # Data - Jcondori
+        # Data
         lst_account_move_line = self.env['account.move.line'].search(dominio)
 
         content_txt = ""
 
-        # Iterador - Jcondori
+        # Iterador
         for line in lst_account_move_line:
             # Asiento Contable
 
