@@ -35,12 +35,12 @@ class chartofaccounts(models.TransientModel):
                            line.code or'',  # 2 jvalenzuela
                            '',  # 3 jvalenzuela (no se encuentra)
                            '',  # 4 jvalenzuela (no se encuentra)
-                           '',  # 5 rloayza
-                           '',  # 6 rloayza
-                           '',  # 7 rloayza
-                           '',  # 8 rloayza
-                           '',  # 9 rloayza
-                           '',  # 10 rloayza
+                           line.name or '',  # 5 rloayza
+                           '',  # 6 rloayza (no se encontro)
+                           '',  # 7 rloayza (no se encontro)
+                           '',  # 8 rloayza falta (account.asset.category/account.asset.id) campo relacionado
+                           line.entry_count or '',  # 9 rloayza
+                           line.category_id or '',  # 10 rloayza
                            '',  # 11 ldelacruz
                            '',  # 12 ldelacruz
                            '',  # 13 ldelacruz
