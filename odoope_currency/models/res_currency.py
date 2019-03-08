@@ -9,7 +9,7 @@ import time
 
 from odoo import api, fields, models, tools, _
 
-TYPES = [('purchase','Compra'),('sale','Venta')]
+TYPES = [('purchase','Compra'),('sale','Venta'),('close','Cierre')]
 
 class Currency(models.Model):
     _inherit = "res.currency"
