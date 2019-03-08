@@ -26,14 +26,16 @@ class chartofaccounts(models.TransientModel):
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
-#por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            # por cada campo encontrado daran una linea como mostrare
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            line.create_date.strftime("%Y%m00") or '',
-                           '', '', '', '', '', '', '', '', '', '', ''
-                           , '', '', '', '', '', '', '', '', '', '', '', ''
-                           , '', '', '', '', '', '', '', '', '', '', '', ''
+                           '', '', '', '', '', '', '', '',
+                           '', '', '', '', '', '', '', '', '',
+                           '', '', '', '', '', '', '', '', '',
+                           '', '', '', '', '', '', '', '', ''
 
                        )
 
