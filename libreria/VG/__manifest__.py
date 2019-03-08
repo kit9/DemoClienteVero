@@ -31,6 +31,7 @@
         'views/views.xml',
         'views/templates.xml',
         'wizard/chart_of_accounts_view.xml',
+        #'wizard/record_of_actives_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
