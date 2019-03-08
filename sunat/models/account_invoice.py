@@ -54,8 +54,8 @@ class account_invoice(models.Model):
     num_document_modifies = fields.Char(
         string="Numero del documento que modifica")
     num_dua_document_modifies = fields.Char(string="Número DUA")
-    # code_dua = fields.Many2one('sunat.customs_code', 'Código DUA')
-    code_dua = fields.Char(string="Código de la DUA")
+    code_dua = fields.Many2one('sunat.customs_code', 'Código de la DUA')
+    # code_dua = fields.Char(string="Código de la DUA")
     # Invoice
     series_document_modifies = fields.Char(
         string="Serie del documento que modifica")
@@ -338,7 +338,7 @@ class account_invoice(models.Model):
                           rec.refund_invoice_id.document_type_id.number or '',
                           # Numero del documento que modifica -> 28
                           rec.refund_invoice_id.invoice_number or '',
-                          rec.refund_invoice_id.code_dua or '',  # Codigo DUA -> 29
+                          rec.refund_invoice_id.code_dua.number or '',  # Codigo DUA -> 29
                           rec.refund_invoice_id.invoice_number or '',  # Numero DUA -> 30
                           rec.date_detraction or '',  # Fecha de Detracciones -> 31
                           rec.num_detraction or '',  # Numero de Detracciones -> 32
