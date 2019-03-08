@@ -168,12 +168,20 @@ class bulk_inv_payment(models.TransientModel):
 
                 journal = False
                 banco = False
+                currency = False
                 if tipo == "retencion":
                     journal = retention_journal
                     banco = bank_retencion
+                    moneda_venta = self.env['res.currency'].search([('name', 'like', 'PEN'), ('type', 'like', 'sale')],
+                                                                   limit=1)
+                    if moneda_venta:
+                        currency = moneda_venta.id
+                    else:
+                        currency = res.get('values')[0].get('currency_id')
                 else:
                     journal = self.journal_id
                     banco = bank_factura
+                    currency = res.get('values')[0].get('currency_id')
 
                 # Pago 1
                 pay_val = {
@@ -188,7 +196,7 @@ class bulk_inv_payment(models.TransientModel):
                     'state': 'draft',
                     'type': tipo,
                     'back_partner_id': banco and banco.id or False,
-                    'currency_id': res.get('values')[0].get('currency_id'),
+                    'currency_id': currency,
                     'amount': 0.0,
                 }
                 payment_id1 = self.env['account.payment'].create(pay_val)
@@ -199,6 +207,7 @@ class bulk_inv_payment(models.TransientModel):
                 if is_retencion:
                     paid_amt1 = round(inv_line.get('paid_amount') * 0.03, 2)
                     paid_amt2 = inv_line.get('paid_amount') - paid_amt1
+                    paid_amt1 = paid_amt1 * invoice.exchange_rate
                 else:
                     paid_amt1 = inv_line.get('paid_amount')
 
