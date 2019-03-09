@@ -41,13 +41,13 @@ class chartofaccounts(models.TransientModel):
                            '',  # 8 rloayza falta (account.asset.category/account.asset.id) campo relacionado
                            line.entry_count or '',  # 9 rloayza
                            line.category_id or '',  # 10 rloayza
-                           '',  # 11 ldelacruz
-                           '',  # 12 ldelacruz
-                           '',  # 13 ldelacruz
-                           '',  # 14 ldelacruz
+                           '',  # 11 ldelacruz (no se encontro)
+                           '',  # 12 ldelacruz (no se encontro)
+                           '',  # 13 ldelacruz (no se encontro)
+                           line.depreciation_line_ids or '',  # 14 ldelacruz
                            '',  # 15 null
-                           '',  # 16 ldelacruz
-                           '',  # 17 ldelacruz
+                           line.invoice_line_ids or '',  # 16 ldelacruz
+                           line.reason_for_low or '',  # 17 ldelacruz
                            '',  # 18 null
                            '',  # 19 null
                            '',  # 20 null
