@@ -53,12 +53,12 @@ class chartofaccounts(models.TransientModel):
                            '',  # 20 null
                            '',  # 21 null
                            '',  # 22 null
-                           '',  # 23 jrejas(account.asset.asset/date)
-                           '',  # 24 jrejas(account.asset.asset/date)
-                           '',  # 25 jrejas(account.asset.category/method)(account.asset.category/prorata)
+                           '',  # 23 jrejas (account.asset.asset/date)
+                           '',  # 24 jrejas (account.asset.asset/date)
+                           '',  # 25 jrejas (account.asset.category/method)(account.asset.category/prorata)
                            '',  # 26 null
-                           '',  # 27 jrejas(account.asset.category/method_number)
-                           '',  # 28 jrejas(account.asset.asset/depreciation_line_ids)
+                           '',  # 27 jrejas (account.asset.category/method_number)
+                           '',  # 28 jrejas (account.asset.asset/depreciation_line_ids)
                            '',  # 29 null
                            '',  # 30 null
                            '',  # 31 null
@@ -66,7 +66,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 33 null
                            '',  # 34 null
                            '',  # 35 null
-                           ''   # 36 jrejas()
+                           ''   # 36 jrejas (no se encontro)
 
                        )
 
