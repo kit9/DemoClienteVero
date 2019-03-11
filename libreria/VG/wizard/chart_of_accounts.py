@@ -22,9 +22,22 @@ class chartofaccounts(models.TransientModel):
         lst_account_move_line = self.env['account.account'].search([])
 
         content_txt = ""
+        estado_ope = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
+
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "01"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "09"
+                else:
+                    if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
+                        estado_ope = "00"
+                    else:
+                        estado_ope = "09"
+
             # Asiento Conta
 
             txt_line = "%s|%s|%s|%s|%s|%s" % (
@@ -33,7 +46,7 @@ class chartofaccounts(models.TransientModel):
                 line.name or '',
                 line.x_studio_codigo_plan_cuenta or '',
                 line.x_studio_deudor_tributario or '',
-                ''
+                estado_ope or ''
 
             )
 
