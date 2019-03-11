@@ -18,14 +18,13 @@ class chartofaccounts(models.TransientModel):
     @api.multi
     def generate_file(self):
         # Data - Jcondori
-        # lst_account_move_line = self.env['account.move.line'].search([]) # Todo
+
         lst_account_move_line = self.env['account.asset.asset'].search([])
-
         content_txt = ""
-
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
+
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -41,13 +40,13 @@ class chartofaccounts(models.TransientModel):
                            line.account.asset.id.account.asset.category or '',  # 8 rloayza
                            line.entry_count or '',  # 9 rloayza
                            line.category_id or '',  # 10 rloayza
-                           '',  # 11 ldelacruz (no se encontro)
-                           '',  # 12 ldelacruz (no se encontro)
-                           '',  # 13 ldelacruz (no se encontro)
-                           line.depreciation_line_ids or '',  # 14 ldelacruz
+                           '',  # 11 ldelacruz (Campo no se encontro)
+                           '',  # 12 ldelacruz (Campo no se encontro)
+                           '',  # 13 ldelacruz (Campo no se encontro)
+                           line.depreciation_line_ids.remaining_value or '',  # 14 ldelacruz (Campo residual)
                            '',  # 15 null
-                           line.invoice_line_ids or '',  # 16 ldelacruz
-                           line.reason_for_low or '',  # 17 ldelacruz
+                           line.invoice_line_ids.price_unit or '',  # 16 ldelacruz
+                           line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
                            '',  # 18 null
                            '',  # 19 null
                            '',  # 20 null
