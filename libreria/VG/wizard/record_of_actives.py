@@ -58,7 +58,7 @@ class chartofaccounts(models.TransientModel):
                            line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or'',  # 27 jrejas
-                           line.depreciation_line_ids or '',  # 28 jrejas 
+                           line.depreciation_line_ids.depreciated_value or '',  # 28 jrejas
                            '',  # 29 null
                            '',  # 30 null
                            '',  # 31 null
