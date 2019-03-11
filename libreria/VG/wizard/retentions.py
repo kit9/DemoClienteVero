@@ -19,7 +19,7 @@ class chartofaccounts(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.invoice'].search([])
+        lst_account_move_line = self.env['account.payment'].search([])
         content_txt = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -28,7 +28,7 @@ class chartofaccounts(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        (
-                           line.date("%Y%m00") or '',  # 1 jvalenzuela
+                           line.payment_date("%Y%m00") or '',
                            '',  # 18 null
                            '',  # 19 null
                            '',  # 20 null
