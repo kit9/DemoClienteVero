@@ -27,7 +27,7 @@ class chartofaccounts(models.TransientModel):
         for line in lst_account_move_line:
             # Asiento Conta
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
@@ -53,12 +53,13 @@ class chartofaccounts(models.TransientModel):
                            '',  # 20 null
                            '',  # 21 null
                            '',  # 22 null
-                           '',  # 23 jrejas (account.asset.asset/date)
-                           '',  # 24 jrejas (account.asset.asset/date)
-                           '',  # 25 jrejas (account.asset.category/method)(account.asset.category/prorata)
+                           line.date or '',  # 23 jrejas
+                           line.date or '',  # 24 jrejas
+                           line.category_id.method or '',  # 25 jrejas
+                           line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
-                           '',  # 27 jrejas (account.asset.category/method_number)
-                           '',  # 28 jrejas (account.asset.asset/depreciation_line_ids)
+                           line.category_id.method_number or'',  # 27 jrejas
+                           line.depreciation_line_ids or '',  # 28 jrejas 
                            '',  # 29 null
                            '',  # 30 null
                            '',  # 31 null
