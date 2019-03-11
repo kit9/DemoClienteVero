@@ -169,7 +169,7 @@ class account_invoice(models.Model):
     @api.depends('amount_untaxed', 'type_operation')
     def _base_igv(self):
         for rec in self:
-            if rec.type_operation == "1" or (not rec.type_operation):
+            if (rec.type_operation == "1" and not rec.inv_isc) or (not rec.type_operation):
                 rec.base_igv = rec.amount_tax
 
     @api.multi
