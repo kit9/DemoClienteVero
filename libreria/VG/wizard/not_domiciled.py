@@ -48,24 +48,24 @@ class not_domiciled(models.TransientModel):
                            line.invoice_number or '',  # 15 Hoja 14 (Numero)
                            line.exchange_rate or'',  # 16 Hoja 16 (Tipo de Cambio)
                            '',  # 17 Hoja 17 null
-                           '',  # 18 Hoja 19
-                           '',  # 19 Hoja 21 (RUC objeto / campo, einvoice.catalog.06.catalog_06_id)
-                           '',  # 20 Hoja 22 null
-                           '',  # 21 Hoja 25 null
-                           '',  # 22 Hoja 26 null
-                           '',  # 23 Hoja 27 null
-                           '',  # 24 Hoja 28 null
-                           '',  # 25 Hoja 29 null
-                           '',  # 26 Hoja 30 null
-                           '',  # 27 Hoja
-                           '',  # 28 Hoja
-                           '',  # 29 Hoja
-                           '',  # 30 Hoja
-                           '',  # 31 Hoja
-                           '',  # 32 Hoja
-                           '',  # 33 Hoja
-                           '',  # 34 Hoja
-                           '',  # 35 Hoja
+                           '',  # 18 Hoja 18
+                           '',  # 19 Hoja 19
+                           '',  # 20 Hoja 20
+                           '',  # 21 Hoja 21 (RUC objeto / campo, einvoice.catalog.06.catalog_06_id)
+                           '',  # 22 Hoja 22 null
+                           '',  # 23 Hoja 23
+                           '',  # 24 Hoja 24
+                           '',  # 25 Hoja 25 null
+                           '',  # 26 Hoja 26 null
+                           '',  # 27 Hoja 27 null
+                           '',  # 28 Hoja 28 null
+                           '',  # 29 Hoja 29 null
+                           '',  # 30 Hoja 30 null
+                           '',  # 31 Hoja 31
+                           line.x_studio_exoneraciones or '',  # 32 Hoja 32 (Exoneraciones)
+                           '',  # 33 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id
+                           line.x_studio_modalidad_de_servicio or '',  # 34 Hoja 34 (Modalidad de Servicio)
+                           line.message_needaction or '',  # 35 Hoja 35 (Aplicacion parrafo art. 76)
                            ''  # 36 Hoja
 
             )
