@@ -37,7 +37,7 @@ class chartofaccounts(models.TransientModel):
                            line.name or '',  # 5 rloayza
                            '',  # 6 rloayza (no se encontro)
                            line.name or '',  # 7 rloayza
-                           line.account.asset.id.account.asset.category or '',  # 8 rloayza
+                           line.category_id.account_asset_id or '',  # 8 rloayza
                            line.entry_count or '',  # 9 rloayza
                            line.category_id or '',  # 10 rloayza
                            '',  # 11 ldelacruz (Campo no se encontro)

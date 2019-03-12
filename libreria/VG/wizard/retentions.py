@@ -28,8 +28,8 @@ class chartofaccounts(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        (
-                           line.payment_date("%Y%m00") or '',
-                           '',  # 18 null
+                           line.payment_date("%Y%m00") or '', # 1
+                           '',  # 2
                            '',  # 19 null
                            '',  # 20 null
                            '',  # 21 null
