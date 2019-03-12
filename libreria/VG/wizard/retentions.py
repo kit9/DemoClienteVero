@@ -21,26 +21,40 @@ class chartofaccounts(models.TransientModel):
 
         lst_account_move_line = self.env['account.payment'].search([])
         content_txt = ""
+        estado_ope = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
+
+
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "01"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "09"
+                else:
+                    if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
+                        estado_ope = "00"
+                    else:
+                        estado_ope = "09"
 
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        (
                            line.payment_date("%Y%m00") or '', # 1
-                           '',  # 2
-                           '',  # 19 null
-                           '',  # 20 null
-                           '',  # 21 null
-                           '',  # 29 null
-                           '',  # 30 null
-                           '',  # 31 null
-                           '',  # 32 null
-                           '',  # 33 null
-                           '',  # 34 null
-                           '',  # 35 null
-                           ''   # 36 jrejas (no se encontro)
+                           line.journal_id or '',  # 1
+                           line.state or '',  # 1 null
+                           #line.move_line_ids.move_id or '',  # 2
+                           #line.move_line_ids.id or '',  # 3
+                           line.payment_date("%Y%m00") or'',  # 4
+                           line.partner_id.catalog_06_id or '',  # 5
+                           line.partner_id.vat or '',  # 6
+                           line.partner_id.name or '',  # 7
+                           #'',  # 8
+                           #'',  # 8
+                           #'',  # 8
+                           #''   # 9
+                           estado_ope or ''   # 10
 
                        )
 
