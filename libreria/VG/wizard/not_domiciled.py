@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
+class not_domiciled(models.TransientModel):
     _name = "libreria.not_domiciled"
     _description = "No Domiciliados"
 
