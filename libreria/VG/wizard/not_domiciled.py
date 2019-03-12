@@ -45,18 +45,18 @@ class not_domiciled(models.TransientModel):
                            '',  # 12 Hoja 11 (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # 13 Hoja 12 (Numero)
                            line.year_emission_dua or '',  # 14 Hoja 13 (Año de la Emision de la DUA)
-                           '',  # 15 Hoja
-                           '',  # 16 Hoja
-                           '',  # 17 Hoja
-                           '',  # 18 Hoja
-                           '',  # 19 Hoja
-                           '',  # 20 Hoja
-                           '',  # 21 Hoja
-                           '',  # 22 Hoja
-                           '',  # 23 Hoja
-                           '',  # 24 Hoja
-                           '',  # 25 Hoja
-                           '',  # 26 Hoja
+                           line.invoice_number or '',  # 15 Hoja 14 (Numero)
+                           line.exchange_rate or'',  # 16 Hoja 16 (Tipo de Cambio)
+                           '',  # 17 Hoja 17 null
+                           '',  # 18 Hoja 19
+                           '',  # 19 Hoja 21 (RUC objeto / campo, einvoice.catalog.06.catalog_06_id)
+                           '',  # 20 Hoja 22 null
+                           '',  # 21 Hoja 25 null
+                           '',  # 22 Hoja 26 null
+                           '',  # 23 Hoja 27 null
+                           '',  # 24 Hoja 28 null
+                           '',  # 25 Hoja 29 null
+                           '',  # 26 Hoja 30 null
                            '',  # 27 Hoja
                            '',  # 28 Hoja
                            '',  # 29 Hoja
