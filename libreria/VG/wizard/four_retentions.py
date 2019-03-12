@@ -6,9 +6,9 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
-    _name = "libreria.chart_of_accounts"
-    _description = "Plan Contable"
+class four_retentions(models.TransientModel):
+    _name = "libreria.four_retentions"
+    _description = "retenciones_4ta"
 
     state = fields.Selection(
         [('choose', 'choose'), ('get', 'get')], default='choose')
@@ -36,7 +36,7 @@ class chartofaccounts(models.TransientModel):
                 line.document_type_id or'', #4 jrejas
                 line.invoice_serie or'', #5 jrejas
                 line.invoice_number or '', #6 jrejas
-                line.residual.price_subtotal or'', #7 jrejas
+                line.residual or'', #7 jrejas
                 line.date_document  or'', #9 jrejas
                 line.payment_ids.payment_date or'', #10 jrejas
                 line.amount_tax.price_subtotal or'', #11 jrejas
@@ -49,12 +49,12 @@ class chartofaccounts(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "plan_contable.txt"
+            'txt_filename': "retenciones_4ta.txt"
         })
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Plan Contable',
-            'res_model': 'libreria.chart_of_accounts',
+            'name': 'retenciones_4ta',
+            'res_model': 'libreria.four_retentions',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
