@@ -1,0 +1,11 @@
+<odoo>
+    <!-- Categorias -->
+    <data>
+        <menuitem id="chart_of_accounts_menu_root" name="Reportes PLE" parent="account.menu_finance_reports"
+                  sequence="0"/>
+        <menuitem id="chart_of_accounts_menu" name="Plan de Cuenta" parent="chart_of_accounts_menu_root"
+                  action="chart_of_accounts_VG" sequence="1"/>
+        <!--<menuitem id="record_of_actives_menu" name="Registro de Activos" parent="chart_of_accounts_menu_root"-->
+                  <!--action="record_of_actives_VG" sequence="1"/>-->
+    </data>
+</odoo>
