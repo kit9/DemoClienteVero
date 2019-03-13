@@ -4,7 +4,7 @@
         <menuitem id="chart_of_accounts_menu_root" name="Reportes PLE" parent="account.menu_finance_reports"
                   sequence="0"/>
         <menuitem id="chart_of_accounts_menu" name="Plan de Cuenta" parent="chart_of_accounts_menu_root"
-                  action="chart_of_accounts_VG" sequence="1"/>
+                  action="chart_accounts_VG" sequence="1"/>
         <menuitem id="four_retentions_menu" name="retenciones 4th" parent="chart_of_accounts_menu_root"
                   action="four_retentions_VG" sequence="1"/>
         <menuitem id="not_domiciled_menu" name="No Domiciliados" parent="chart_of_accounts_menu_root"

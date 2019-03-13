@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 
 class chartofaccounts(models.TransientModel):
-    _name = "libreria.chart_of_accounts"
+    _name = "libreria.chart_accounts"
     _description = "Plan Contable"
 
     state = fields.Selection(
@@ -61,7 +61,7 @@ class chartofaccounts(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Plan Contable',
-            'res_model': 'libreria.chart_of_accounts',
+            'res_model': 'libreria.chart_accounts',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
