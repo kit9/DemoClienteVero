@@ -28,9 +28,9 @@
         </record>
 
         <record id="chart_accounts_VG" model="ir.actions.act_window">
-            <field name="name">chart_of_accounts</field>
+            <field name="name">chart_accounts</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">libreria.chart_of_accounts</field>
+            <field name="res_model">libreria.chart_accounts</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
