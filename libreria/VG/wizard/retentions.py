@@ -22,10 +22,21 @@ class chartofaccounts(models.TransientModel):
         lst_account_move_line = self.env['account.payment'].search([])
         content_txt = ""
         estado_ope = ""
+        _locaciones = ""
+        _asiento = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
 
+            #allocation
+            for imp in line.line_ids:
+                if imp.allocation != "":
+                    _locaciones = imp.allocation
+
+            #asiento contable
+            for imp1 in line.move_line_ids:
+                if imp1.move_id != "":
+                    _asiento = imp1.move_id
 
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "01"
@@ -44,16 +55,16 @@ class chartofaccounts(models.TransientModel):
                            line.payment_date("%Y%m00") or '', # 1
                            line.journal_id or '',  # 1
                            line.state or '',  # 1 null
-                           #line.move_line_ids.move_id or '',  # 2
+                           _asiento or '',  # 2
                            #line.move_line_ids.id or '',  # 3
-                           line.payment_date("%Y%m00") or'',  # 4
+                           line.payment_date or'',  # 4
                            line.partner_id.catalog_06_id or '',  # 5
                            line.partner_id.vat or '',  # 6
                            line.partner_id.name or '',  # 7
                            #'',  # 8
                            #'',  # 8
                            #'',  # 8
-                           #''   # 9
+                           _locaciones or '',   # 9
                            estado_ope or ''   # 10
 
                        )
