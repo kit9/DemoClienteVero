@@ -26,7 +26,9 @@ class four_retentions(models.TransientModel):
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
-
+            for imp in line.payment_ids:
+                if imp.payment_date != "":
+                    estado_ope = imp.payment_date
             # Asiento Conta
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
@@ -38,7 +40,7 @@ class four_retentions(models.TransientModel):
                 line.invoice_number or '', #6 jrejas
                 line.residual or'', #7 jrejas
                 line.date_document  or'', #9 jrejas
-                line.payment_ids.payment_date or'', #10 jrejas          5
+                estado_ope or'', #10 jrejas          5
                 line.amount_tax or'', #11 jrejas
 
             )
