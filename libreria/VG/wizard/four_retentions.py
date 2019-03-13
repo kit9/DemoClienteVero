@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class four_retentions(models.TransientModel):
     _name = "libreria.four_retentions"
-    _description = "retenciones_4ta"
+    _description = "retenciones_4th"
 
     state = fields.Selection(
         [('choose', 'choose'), ('get', 'get')], default='choose')
