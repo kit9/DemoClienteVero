@@ -22,16 +22,18 @@ class not_domiciled(models.TransientModel):
         lst_account_move_line = self.env['account.invoice'].search([])
         content_txt = ""
         estado_ope = ""
+
         # Iterador - Jcondori
         for line in lst_account_move_line:
+
             # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
-             else:
-                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                     estado_ope = "0"
-                 else:
-                     estado_ope = "0"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "0"
+                else:
+                    estado_ope = "0"
 
             # por cada campo encontrado daran una linea como mostrare , Hay 11,10,10,10
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -79,7 +81,7 @@ class not_domiciled(models.TransientModel):
                            line.type_income_id or '',                   # 38 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
                            line.x_studio_modalidad_de_servicio or '',   # 39 Hoja 34 (Modalidad de Servicio)
                            line.message_needaction or '',               # 40 Hoja 35 (Aplicacion parrafo art. 76)
-                           ''                                           # 41 Hoja 36
+                           estado_ope or ''                                           # 41 Hoja 36
 
             )
 
