@@ -33,6 +33,7 @@
         'wizard/chart_of_accounts_view.xml',
         #'wizard/record_of_actives_view.xml',
         'wizard/four_retentions_view.xml',
+        'wizard/not_domiciled_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
