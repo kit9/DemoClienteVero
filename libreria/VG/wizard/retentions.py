@@ -39,7 +39,7 @@ class chartofaccounts(models.TransientModel):
                         estado_ope = "09"
 
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        (
                            line.payment_date("%Y%m00") or '', # 1
                            line.journal_id or '',  # 1
