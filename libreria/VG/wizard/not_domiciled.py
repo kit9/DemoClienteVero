@@ -22,10 +22,14 @@ class not_domiciled(models.TransientModel):
         lst_account_move_line = self.env['account.invoice'].search([])
         content_txt = ""
         estado_ope = ""
+        impuesto=""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
-
+            for imp in line.invoice_line_ids:
+                for imp1 in imp.invoice_line_tax_ids:
+                    if imp1.name != "":
+                        impuesto = imp1.name
             # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
@@ -50,7 +54,7 @@ class not_domiciled(models.TransientModel):
                            line.invoice_number or '',                   # 07 Hoja 7 (Numero)
                            line.amount_untaxed or '',                   # 08 Hoja 8 (Base Imponible)
                            line.exchange_rate or '',                    # 09 Hoja 8 (Tipo de Cambio)
-                           line.tax_line_ids or '',                     # 10 Hoja 9 (Impuestos)
+                           impuesto or '',                     # 10 Hoja 9 (Impuestos)
                            line.amount_untaxed or '',                   # 11 Hoja 9 (Base Imponible)
                            line.exchange_rate or '',                    # 12 Hoja 9 (Tipo de Cambio)
                            line.amount_total or '',                     # 13 Hoja 10 (Total)
