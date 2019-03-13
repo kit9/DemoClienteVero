@@ -23,6 +23,7 @@ class not_domiciled(models.TransientModel):
         content_txt = ""
         estado_ope = ""
         impuesto = ""
+        cantidad = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -30,6 +31,9 @@ class not_domiciled(models.TransientModel):
                 for imp1 in imp.invoice_line_tax_ids:
                     if imp1.name != "":
                         impuesto = imp1.name
+            for p2 in line.payment_ids:
+                if p2.amount != "":
+                    cantidad = p2.amount
             # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
@@ -63,7 +67,7 @@ class not_domiciled(models.TransientModel):
                            line.invoice_number or '',  # 16 Hoja 12 (Numero)
                            line.year_emission_dua or '',  # 17 Hoja 13 (Año de la Emision de la DUA)
                            line.invoice_number or '',  # 18 Hoja 14 (Numero)
-                           line.amount or '',  # 19 Hoja 15 (Cantidad a Pagar)
+                           cantidad or '',  # 19 Hoja 15 (Cantidad a Pagar)
                            line.state or '',  # 20 Hoja 15 (Estado)
                            line.exchange_rate or '',  # 21 Hoja 16 (Tipo de Cambio)
                            '',  # 22 Hoja 17 null
