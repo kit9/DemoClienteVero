@@ -38,7 +38,7 @@ class four_retentions(models.TransientModel):
                 line.invoice_number or '', #6 jrejas
                 line.residual or'', #7 jrejas
                 line.date_document  or'', #9 jrejas
-                line.payment_ids.payment_date or'', #10 jrejas          5
+                line.payment_ids or'', #10 jrejas          5
                 line.amount_tax or'', #11 jrejas
 
             )
