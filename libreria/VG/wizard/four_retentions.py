@@ -29,19 +29,18 @@ class four_retentions(models.TransientModel):
             for imp in line.payment_ids:
                 if imp.payment_date != "":
                     estado_ope = imp.payment_date
-            # Asiento Conta
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.document_type_id or '', #1 jrejas
-                line.type_ident or'', #2 jrejas
-                line.num_ident or'', #3 jrejas
-                line.document_type_id or'', #4 jrejas
-                line.invoice_serie or'', #5 jrejas
-                line.invoice_number or '', #6 jrejas
-                line.residual or'', #7 jrejas
-                line.date_document  or'', #9 jrejas
-                estado_ope or'', #10 jrejas          5
-                line.amount_tax or'', #11 jrejas
+                line.document_type_id or '',  # 1 jrejas
+                line.type_ident or '',  # 2 jrejas
+                line.num_ident or '',  # 3 jrejas
+                line.document_type_id or '',  # 4 jrejas
+                line.invoice_serie or '',  # 5 jrejas
+                line.invoice_number or '',  # 6 jrejas
+                line.residual or '',  # 7 jrejas
+                line.date_document or '',  # 9 jrejas
+                estado_ope or '',  # 10 jrejas          5
+                line.amount_tax or '',  # 11 jrejas
 
             )
 

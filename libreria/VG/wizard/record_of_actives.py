@@ -21,17 +21,21 @@ class chartofaccounts(models.TransientModel):
 
         lst_account_move_line = self.env['account.asset.asset'].search([])
         content_txt = ""
+        valor = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
-            # Asiento Conta
 
+            # Asiento Conta
+            for cat1 in line.drepreciation_line_ids:
+                if cat1.depreciated_value != "":
+                    valor = cat1.depreciated_value
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            line.date("%Y%m00") or '',  # 1 jvalenzuela
-                           line.code or'',  # 2 jvalenzuela
+                           line.code or '',  # 2 jvalenzuela
                            '',  # 3 jvalenzuela (no se encuentra)
                            '',  # 4 jvalenzuela (no se encuentra)
                            line.name or '',  # 5 rloayza
@@ -57,8 +61,8 @@ class chartofaccounts(models.TransientModel):
                            line.category_id.method or '',  # 25 jrejas
                            line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
-                           line.category_id.method_number or'',  # 27 jrejas
-                           line.depreciation_line_ids.depreciated_value or '',  # 28 jrejas
+                           line.category_id.method_number or '',  # 27 jrejas
+                           valor or '',  # 28 jrejas
                            '',  # 29 null
                            '',  # 30 null
                            '',  # 31 null
@@ -66,7 +70,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 33 null
                            '',  # 34 null
                            '',  # 35 null
-                           ''   # 36 jrejas (no se encontro)
+                           ''  # 36 jrejas (no se encontro)
 
                        )
 
