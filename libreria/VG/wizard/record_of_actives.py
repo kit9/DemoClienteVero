@@ -44,12 +44,12 @@ class chartofaccounts(models.TransientModel):
                            line.category_id.account_asset_id or '',  # 8 rloayza
                            line.entry_count or '',  # 9 rloayza
                            line.category_id or '',  # 10 rloayza
-                           '',  # 11 ldelacruz (Campo no se encontro)
-                           '',  # 12 ldelacruz (Campo no se encontro)
-                           '',  # 13 ldelacruz (Campo no se encontro)
+                           '',  # 11 ldelacruz (Campo Marca no se encontro)
+                           '',  # 12 ldelacruz (Campo Modelo no se encontro)
+                           '',  # 13 ldelacruz (Campo Serie no se encontro)
                            line.depreciation_line_ids.remaining_value or '',  # 14 ldelacruz (Campo residual)
                            '',  # 15 null
-                           line.invoice_line_ids.price_unit or '',  # 16 ldelacruz
+                           line.invoice_line_ids.price_unit or '',  # 16 ldelacruz (Campo Precio unitario)
                            line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
                            '',  # 18 null
                            '',  # 19 null
