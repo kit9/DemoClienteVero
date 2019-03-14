@@ -74,7 +74,7 @@ class chartofaccounts(models.TransientModel):
                            line.partner_id.catalog_06_id or '',  # 5
                            line.partner_id.vat or '',  # 6
                            line.partner_id.name or '',  # 7
-                           _factura or '',  # 8 # aun falta convetir a soles
+                           _factura or '',  # 8 #
                            _locaciones or '',   # 9
                            estado_ope or ''   # 10
 
