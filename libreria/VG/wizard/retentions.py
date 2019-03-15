@@ -37,8 +37,8 @@ class chartofaccounts(models.TransientModel):
 
             # asiento contable
             for imp1 in line.move_line_ids:
-                if imp1.move_id != "":
-                    _asiento = imp1.move_id
+                if imp1.move_id.ref != "":
+                    _asiento = imp1.move_id.ref
 
             # id
             for imp2 in line.move_line_ids:
