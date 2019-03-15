@@ -9,19 +9,17 @@ _logger = logging.getLogger(__name__)
 class chartofaccounts(models.TransientModel):
     _name = "libreria.chart_accounts"
     _description = "Plan Contable"
-    _fecha = fields.time()
+
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
+    txt_filename = fields.Char('filename', readonly=True)
+    txt_binary = fields.Binary('file', readonly=True)
     date_month = fields.Char(string="Mes", size=2)
     date_year = fields.Char(string="Año", size=4)
 
-    state = fields.Selection(
-        [('choose', 'choose'), ('get', 'get')], default='choose')
-    txt_filename = fields.Char('filename', readonly=True)
-    txt_binary = fields.Binary('file', readonly=True)
-
     @api.multi
     def generate_file(self):
-        _fecha.strftime("%d" + date_month + date_year)
-        dominio = [('create_date', 'like', _fecha)]
+
+        dominio = [('create_date', 'like', fields.Datetime.from_string("" + date_month + date_year, "%d%m%Y"))]
         # Data - Jcondori
         # lst_account_move_line = self.env['account.move.line'].search([])
         lst_account_move_line = self.env['account.account'].search(dominio)
@@ -49,8 +47,8 @@ class chartofaccounts(models.TransientModel):
                 line.create_date.strftime("%Y%m00") or '|',
                 line.code or '|',
                 line.name or '|',
-                '|',#line.x_studio_codigo_plan_cuenta or ''
-                '|',#line.x_studio_deudor_tributario or ''
+                '|',  # line.x_studio_codigo_plan_cuenta or ''
+                '|',  # line.x_studio_deudor_tributario or ''
                 estado_ope or '|'
 
             )
