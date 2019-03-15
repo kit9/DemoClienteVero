@@ -49,6 +49,14 @@ class AccountAccount(models.Model):
 class account_move(models.Model):
     _inherit = 'account.move'
 
+    person_type = fields.Char(string="Inafecto", compute="_person_type")
+
+    @api.multi
+    @api.depends('partner_id')
+    def _person_type(self):
+        for rec in self:
+            rec.person_type = rec.partner_id.person_type
+
     def asiento_destino(self):
         accounts = []
         if self.state == "posted":
