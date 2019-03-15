@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 class chartofaccounts(models.TransientModel):
     _name = "libreria.chart_accounts"
     _description = "Plan Contable"
-    _fecha = fields.time()
+
     date_month = fields.Char(string="Mes", size=2)
     date_year = fields.Char(string="Año", size=4)
 
@@ -20,8 +20,8 @@ class chartofaccounts(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-        _fecha.strftime("%d" + date_month + date_year)
-        dominio = [('create_date', 'like', _fecha)]
+
+        dominio = [('create_date', 'like', time.strftime("%d" + date_month + date_year))]
         # Data - Jcondori
         # lst_account_move_line = self.env['account.move.line'].search([])
         lst_account_move_line = self.env['account.account'].search(dominio)
