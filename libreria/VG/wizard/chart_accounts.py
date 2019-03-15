@@ -10,6 +10,9 @@ class chartofaccounts(models.TransientModel):
     _name = "libreria.chart_accounts"
     _description = "Plan Contable"
 
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
     state = fields.Selection(
         [('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
@@ -17,9 +20,11 @@ class chartofaccounts(models.TransientModel):
 
     @api.multi
     def generate_file(self):
+        dominio = [('state', 'like', 'done'),
+                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
         # Data - Jcondori
         # lst_account_move_line = self.env['account.move.line'].search([]) # Todo
-        lst_account_move_line = self.env['account.account'].search([])
+        lst_account_move_line = self.env['account.account'].search(dominio)
 
         content_txt = ""
         estado_ope = ""
@@ -41,12 +46,12 @@ class chartofaccounts(models.TransientModel):
             # Asiento Conta
 
             txt_line = "%s|%s|%s|%s|%s|%s" % (
-                line.create_date.strftime("%Y%m00") or '',
-                line.code or '',
-                line.name or '',
-                '',#line.x_studio_codigo_plan_cuenta or ''
-                '',#line.x_studio_deudor_tributario or ''
-                estado_ope or ''
+                line.create_date.strftime("%Y%m00") or '|',
+                line.code or '|',
+                line.name or '|',
+                '|',#line.x_studio_codigo_plan_cuenta or ''
+                '|',#line.x_studio_deudor_tributario or ''
+                estado_ope or '|'
 
             )
 
