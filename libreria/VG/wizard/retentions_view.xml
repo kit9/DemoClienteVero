@@ -28,7 +28,7 @@
         </record>
 
         <record id="retentions_VG" model="ir.actions.act_window">
-            <field name="name">chart_of_accounts</field>
+            <field name="name">retentions</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">libreria.retentions</field>
             <field name="view_type">form</field>

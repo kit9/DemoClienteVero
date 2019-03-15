@@ -21,7 +21,7 @@ class chartofaccounts(models.TransientModel):
 
         lst_account_move_line = self.env['account.payment'].search([])
         content_txt = ""
-        estado_ope = ""
+        _estado_ope = ""
         _locaciones = ""
         _asiento = ""
         _codigo = ""
@@ -30,12 +30,12 @@ class chartofaccounts(models.TransientModel):
         for line in lst_account_move_line:
             # Asiento Conta
 
-            #allocation
+            # allocation
             for imp in line.line_ids:
                 if imp.allocation != "":
                     _locaciones = imp.allocation
 
-            #asiento contable
+            # asiento contable
             for imp1 in line.move_line_ids:
                 if imp1.move_id != "":
                     _asiento = imp1.move_id
@@ -43,42 +43,40 @@ class chartofaccounts(models.TransientModel):
             # id
             for imp2 in line.move_line_ids:
                 if imp2.id != "":
-                   _codigo = imp2.id
+                    _codigo = imp2.id
 
             # factura
             for imp3 in line.payment_ids:
-                if imp3.amount_total*exchange_rate != "":
-                   _factura = imp3.amount_total*exchange_rate
-
+                if imp3.amount_total * exchange_rate != "":
+                    _factura = imp3.amount_total * exchange_rate
 
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                estado_ope = "01"
+                _estado_ope = "01"
             else:
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "09"
+                    _estado_ope = "09"
                 else:
                     if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
-                        estado_ope = "00"
+                        _estado_ope = "00"
                     else:
-                        estado_ope = "09"
+                        _estado_ope = "09"
 
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" \
-                       (
-                           line.payment_date("%Y%m00") or '', # 1
-                           line.journal_id or '',  # 1
-                           line.state or '',  # 1 null
-                           _asiento or '',  # 2
-                           _codigo or '',  # 3
-                           line.payment_date or'',  # 4
-                           line.partner_id.catalog_06_id or '',  # 5
-                           line.partner_id.vat or '',  # 6
-                           line.partner_id.name or '',  # 7
-                           _factura or '',  # 8 #
-                           _locaciones or '',   # 9
-                           estado_ope or ''   # 10
-
-                       )
+                    (
+                    line.payment_date("%Y%m00") or '',  # 1
+                    line.journal_id or '',  # 1
+                    line.state or '',  # 1 null
+                    _asiento or '',  # 2
+                    _codigo or '',  # 3
+                    line.payment_date or '',  # 4
+                    line.partner_id.catalog_06_id or '',  # 5
+                    line.partner_id.vat or '',  # 6
+                    line.partner_id.name or '',  # 7
+                    _factura or '',  # 8 #
+                    _locaciones or '',  # 9
+                    _estado_ope or ''  # 10
+                )
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
