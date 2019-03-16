@@ -16,5 +16,5 @@ class AccountAccount(models.Model):
     @api.depends('create_date')
     def _get_month_invoice(self):
         for rec in self:
-            if rec.date:
-                rec.month_year_inv = rec.date.strftime("%m%Y")
+            if rec.create_date:
+                rec.month_year_inv = rec.create_date.strftime("%m%Y")
