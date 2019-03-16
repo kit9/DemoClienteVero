@@ -1,12 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-from datetime import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
 
 
-class AccountAccount(models.Model):
+class chartacocounts(models.Model):
     _inherit = 'account.account'
 
     # Para filtrar
