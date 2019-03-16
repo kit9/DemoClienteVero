@@ -10,16 +10,17 @@ class chartofaccounts(models.TransientModel):
     _name = "libreria.chart_accounts"
     _description = "Plan Contable"
 
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
-    date_month = fields.Char(string="Mes", size=2)
-    date_year = fields.Char(string="Año", size=4)
 
     @api.multi
     def generate_file(self):
 
-        dominio = [('create_date', 'like', fields.Datetime.from_string("" + date_month + date_year, "%d%m%Y"))]
+        dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
         # Data - Jcondori
         # lst_account_move_line = self.env['account.move.line'].search([])
         lst_account_move_line = self.env['account.account'].search(dominio)
