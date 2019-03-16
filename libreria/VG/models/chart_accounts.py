@@ -13,7 +13,7 @@ class chartacocounts(models.Model):
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
     @api.multi
-    @api.depends('date')
+    @api.depends('create_date')
     def _get_month_invoice(self):
         for rec in self:
             if rec.date:
