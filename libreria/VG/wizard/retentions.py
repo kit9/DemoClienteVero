@@ -67,7 +67,7 @@ class chartofaccounts(models.TransientModel):
                     line.journal_id or '',  # 1
                     line.state or '',  # 1 null
                     _asiento or '',  # 2
-                    _codigo or '',  # 3
+                    _codigo or ''   ,  # 3
                     line.payment_date or '',  # 4
                     line.partner_id.catalog_06_id or '',  # 5
                     line.partner_id.vat or '',  # 6
