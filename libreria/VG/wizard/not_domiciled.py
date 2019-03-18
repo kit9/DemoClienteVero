@@ -71,10 +71,10 @@ class not_domiciled(models.TransientModel):
                            line.state or '',  # 20 Hoja 15 (Estado)
                            line.exchange_rate or '',  # 21 Hoja 16 (Tipo de Cambio)
                            '|',  # 22 Hoja 17 null
-                           line.partner_id.country_id or '',  # 23 Hoja 18
+                           line.partner_id.country_id.name or '',  # 23 Hoja 18
                            line.partner_id.commercial_company_name or '',  # 24 Hoja 19 (Proveedor)
                            line.partner_id.street or '',  # 25 Hoja 20 (Address, Direccion)
-                           line.partner_id.catalog_06_id or '',  # 26 Hoja 21 (RUC)
+                           line.partner_id.catalog_06_id.name or '',  # 26 Hoja 21 (RUC)
                            '|',  # 27 Hoja 22 null
                            line.partner_id.name or '',  # 28 Hoja 23 (Nombre de Contacto)
                            line.partner_id.title or '',  # 29 Hoja 24 (El contacto es : "socio")
