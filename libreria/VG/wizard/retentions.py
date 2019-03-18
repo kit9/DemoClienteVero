@@ -64,9 +64,8 @@ class chartofaccounts(models.TransientModel):
                 # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                     line.payment_date.strftime("%Y%m00") or '',  # 1
-                    #line.journal_id or '',  # 1
-                    _codigo or '',  # 3
                     _asiento or '',  # 2
+                    _codigo or '',  # 3
                     line.payment_date or '',  # 4
                     line.partner_id.id or '',  # 5
                     line.partner_id.vat or '',  # 6
