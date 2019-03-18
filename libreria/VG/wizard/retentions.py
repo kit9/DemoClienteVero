@@ -69,7 +69,7 @@ class chartofaccounts(models.TransientModel):
                     _asiento or '',  # 2
                     _codigo or ''   ,  # 3
                     line.payment_date or '',  # 4
-                    line.partner_id.catalog_06_id or '',  # 5
+                    line.partner_id.id or '',  # 5
                     line.partner_id.vat or '',  # 6
                     line.partner_id.name or '',  # 7
                     _factura or '',  # 8 #
