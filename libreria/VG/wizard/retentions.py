@@ -48,7 +48,7 @@ class chartofaccounts(models.TransientModel):
             # factura
             for imp3 in line.move_line_ids:
                 if imp3.invoice_id:
-                    _factura = imp3.invoice_id.amount_total * imp3.invoice_id.exchange_rate
+                    _factura = imp3.invoice_id.amount_total_signed * imp3.invoice_id.exchange_rate
 
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 _estado_ope = "01"
