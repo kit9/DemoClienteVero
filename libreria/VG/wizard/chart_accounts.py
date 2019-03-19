@@ -19,9 +19,9 @@ class chartofaccounts(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-
+        # filtro de fecha
         dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
-        # Data - Jcondori
+
         # lst_account_move_line = self.env['account.move.line'].search([])
         lst_account_move_line = self.env['account.account'].search(dominio)
 
