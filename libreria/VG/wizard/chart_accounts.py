@@ -22,17 +22,18 @@ class chartofaccounts(models.TransientModel):
         # filtro de fecha
         dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
 
-        # lst_account_move_line = self.env['account.move.line'].search([])
+        # modelo a buscar
         lst_account_move_line = self.env['account.account'].search(dominio)
 
+        # variables creadas
         content_txt = ""
         estado_ope = ""
         campo = ""
         campo1 = ""
 
-        # Iterador - Jcondori
+        # Iterador
         for line in lst_account_move_line:
-
+            # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "01"
             else:
@@ -43,12 +44,13 @@ class chartofaccounts(models.TransientModel):
                         estado_ope = "00"
                     else:
                         estado_ope = "09"
+            # validador de campo vacio
             if line.x_studio_codigo_de_plan_de_cuenta:
                 campo = line.x_studio_codigo_de_plan_de_cuenta
             if line.x_studio_codigo_de_plan_de_cuenta:
                 campo1 = line.x_studio_codigo_de_plan_de_cuenta
 
-                # Asiento Conta
+            # datos a exportar a txt
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s" % (
                 line.create_date.strftime("%Y%m00") or '|', # Periodo
