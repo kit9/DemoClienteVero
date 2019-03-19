@@ -27,7 +27,7 @@ class chartofaccounts(models.TransientModel):
 
             # Asiento Conta
             for cat1 in line.drepreciation_line_ids:
-                if cat1.depreciated_value != "":
+                if cat1.depreciated_value:
                     valor = cat1.depreciated_value
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \

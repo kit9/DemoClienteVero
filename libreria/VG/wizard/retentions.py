@@ -32,22 +32,22 @@ class chartofaccounts(models.TransientModel):
 
             # allocation
             for imp in line.line_ids:
-                if imp.allocation != "":
+                if imp.allocation:
                     _locaciones = imp.allocation
 
             # asiento contable
             for imp1 in line.move_line_ids:
-                if imp1.move_id.ref != "":
+                if imp1.move_id.ref:
                     _asiento = imp1.move_id.ref
 
             # id
             for imp2 in line.move_line_ids:
-                if imp2.id != "":
+                if imp2.id:
                     _codigo = imp2.id
 
             # factura
             for imp3 in line.move_line_ids:
-                if imp3.invoice_id != "":
+                if imp3.invoice_id:
                     _factura = imp3.invoice_id.amount_total * imp3.invoice_id.exchange_rate
 
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
