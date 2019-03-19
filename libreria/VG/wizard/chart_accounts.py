@@ -43,7 +43,7 @@ class chartofaccounts(models.TransientModel):
                     else:
                         estado_ope = "09"
             if line.x_studio_codigo_de_plan_de_cuenta != "":
-                campo[0:2] = line.x_studio_codigo_de_plan_de_cuenta
+                campo = line.x_studio_codigo_de_plan_de_cuenta
 
                 # Asiento Conta
 
