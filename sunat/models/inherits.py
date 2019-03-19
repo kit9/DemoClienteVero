@@ -266,8 +266,10 @@ class StockMoveLine(models.Model):
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    seat_name = fields.Char(string="Asiento", related="journal_id.name")
-    seat_code = fields.Integer(string="ID Asiento", related="journal_id.id")
+    # seat_name = fields.Char(string="Asiento", related="journal_id.name")
+    seat_name = fields.Char(string="Asiento", related="journal_id.sequence_id.name")
+    # seat_code = fields.Integer(string="ID Asiento", related="journal_id.id")
+    seat_code = fields.Integer(string="ID Asiento", related="journal_id.sequence_id.id")
 
     # Usados por la libreria de Pagos Masivos
     back_partner_id = fields.Many2one('res.partner.bank', string='Banco')
