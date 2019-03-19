@@ -42,8 +42,9 @@ class AccountAccount(models.Model):
     target_credit_id = fields.Many2one('account.account', string='Cuenta de amarre al Haber')
     target_account = fields.Boolean(string='Tiene cuenta destino', default=False)
 
-    def imprimir(self):
-        _logger.info("Crear asiento")
+    account_plan_code = fields.Selection(string="Codigo de Plan de Cuenta", selection=[
+        ('02 plan contable general revisado', '02 plan contable general revisado'),
+    ])
 
 
 class account_move(models.Model):
@@ -264,6 +265,9 @@ class StockMoveLine(models.Model):
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
+
+    seat_name = fields.Char(string="Asiento", related="journal_id.name")
+    seat_code = fields.Integer(string="ID Asiento", related="journal_id.id")
 
     # Usados por la libreria de Pagos Masivos
     back_partner_id = fields.Many2one('res.partner.bank', string='Banco')
