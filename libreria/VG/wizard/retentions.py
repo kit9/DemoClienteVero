@@ -47,7 +47,7 @@ class chartofaccounts(models.TransientModel):
 
             # factura
             for imp3 in line.invoice_ids:
-                if imp3.amount_total * imp3.exchange_rate
+                if imp3.amount_total * imp3.exchange_rate:
                    _factura = imp3.amount_total * imp3.exchange_rate
 
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
