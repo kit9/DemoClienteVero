@@ -27,6 +27,7 @@ class chartofaccounts(models.TransientModel):
 
         content_txt = ""
         estado_ope = ""
+        campo = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -41,6 +42,7 @@ class chartofaccounts(models.TransientModel):
                         estado_ope = "00"
                     else:
                         estado_ope = "09"
+            campo = line.x_studio_codigo_de_plan_de_cuenta.replace(" ", "|")
 
             # Asiento Conta
 
@@ -48,7 +50,7 @@ class chartofaccounts(models.TransientModel):
                 line.create_date.strftime("%Y%m00") or '|',
                 line.code or '|',
                 line.name or '|',
-                line.x_studio_codigo_de_plan_de_cuenta or '|',
+                campo or '|',
                 estado_ope or '|'
 
             )
