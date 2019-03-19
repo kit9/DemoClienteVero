@@ -45,7 +45,8 @@ class chartofaccounts(models.TransientModel):
         for record in line.x_studio_codigo_de_plan_de_cuenta:
             if recod.name != "":
                 campo = record.name
-
+            else:
+                campo = ""
 
             # Asiento Conta
 
