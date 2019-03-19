@@ -2,7 +2,6 @@ from odoo import models, fields, api
 import base64
 import logging
 import time
-import re
 
 _logger = logging.getLogger(__name__)
 
@@ -28,8 +27,6 @@ class chartofaccounts(models.TransientModel):
 
         content_txt = ""
         estado_ope = ""
-        cod_pl = ""
-        # char_pl = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -44,17 +41,14 @@ class chartofaccounts(models.TransientModel):
                         estado_ope = "00"
                     else:
                         estado_ope = "09"
-            cod_pl = re.sub("\D", "", line.x_studio_codigo_de_plan_de_cuenta)
-            # char_pl = line.x_studio_codigo_de_plan_de_cuenta
 
             # Asiento Conta
 
-            txt_line = "%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s" % (
                 line.create_date.strftime("%Y%m00") or '|',
                 line.code or '|',
                 line.name or '|',
-                cod_pl or '|',
-                '|',
+                line.x_studio_codigo_de_plan_de_cuenta or '|',
                 estado_ope or '|'
 
             )
