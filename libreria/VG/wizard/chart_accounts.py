@@ -42,7 +42,7 @@ class chartofaccounts(models.TransientModel):
                         estado_ope = "00"
                     else:
                         estado_ope = "09"
-            if line.x_studio_codigo_de_plan_de_cuenta != "":
+            if line.x_studio_codigo_de_plan_de_cuenta:
                 campo = line.x_studio_codigo_de_plan_de_cuenta
 
                 # Asiento Conta
@@ -51,7 +51,7 @@ class chartofaccounts(models.TransientModel):
                 line.create_date.strftime("%Y%m00") or '|',
                 line.code or '|',
                 line.name or '|',
-                campo or '|',
+                campo[0:2] or '|',
                 estado_ope or '|'
 
             )
