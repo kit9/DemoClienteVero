@@ -50,16 +50,15 @@ class chartofaccounts(models.TransientModel):
 
                 # Asiento Conta
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.create_date.strftime("%Y%m00") or '|',
-                line.code or '|',
-                line.name or '|',
-                campo[0:2] or '|',
-                campo1[2:50] or '|',
-                '|',
-                '|',
-                estado_ope or '|',
-                '|'
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
+                line.create_date.strftime("%Y%m00") or '|', # Periodo
+                line.code or '|', # codigo cuenta contable
+                line.name or '|', # descripcion de cuenta
+                campo[0:2] or '|', # Codigo Plan de Cuenta
+                campo1[2:50] or '|', # Descripcion del plan de cuenta
+                '|', # dejar en blanco
+                estado_ope or '|', # estado de operacion
+                '|' # dejar en blanco
 
             )
 
