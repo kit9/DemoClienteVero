@@ -48,8 +48,8 @@ class chartofaccounts(models.TransientModel):
                 line.create_date.strftime("%Y%m00") or '|',
                 line.code or '|',
                 line.name or '|',
-                '|',  # line.x_studio_codigo_plan_cuenta or ''
-                '|',  # line.x_studio_deudor_tributario or ''
+                line.x_studio_codigo_de_plan_de_cuenta or '|',
+                '|',
                 estado_ope or '|'
 
             )
