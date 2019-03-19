@@ -28,7 +28,7 @@ class chartofaccounts(models.TransientModel):
         content_txt = ""
         estado_ope = ""
         campo = ""
-        campo| = ""
+        campo1 = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
