@@ -27,8 +27,8 @@ class chartofaccounts(models.TransientModel):
 
         content_txt = ""
         estado_ope = ""
-        cod_pl=""
-        char_pl=""
+        cod_pl = ""
+        char_pl = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -43,8 +43,8 @@ class chartofaccounts(models.TransientModel):
                         estado_ope = "00"
                     else:
                         estado_ope = "09"
-            cod_pl =line.x_studio_codigo_de_plan_de_cuenta[2:50]
-            char_pl =line.x_studio_codigo_de_plan_de_cuenta[0:3]
+            cod_pl = line.x_studio_codigo_de_plan_de_cuenta[2: 50]
+            char_pl = line.x_studio_codigo_de_plan_de_cuenta[: 3]
 
             # Asiento Conta
 
