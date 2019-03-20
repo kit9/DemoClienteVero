@@ -32,9 +32,9 @@ class chartofaccounts(models.TransientModel):
             # Asiento Conta
 
             # fecha
-            for imp4 in line.move_line_ids.move_id:
-                if imp4.date.strftime("%Y%m00"):
-                   _fecha = date.strftime("%Y%m00")
+            for imp4 in line.move_line_ids:
+                if imp4.move_iddate.strftime("%Y%m00"):
+                   _fecha = move_id.date.strftime("%Y%m00")
 
             # allocation
             for imp in line.line_ids:
