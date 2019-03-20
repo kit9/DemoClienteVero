@@ -27,6 +27,7 @@ class chartofaccounts(models.TransientModel):
         _codigo = ""
         _factura = ""
         _fecha = ""
+        _estado = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
@@ -67,6 +68,11 @@ class chartofaccounts(models.TransientModel):
                     else:
                         _estado_ope = "09"
 
+            # estado
+            for imp5 in line.move_line_ids:
+                if imp5.move_id.state:
+                   _estado= imp5.move_id.state
+
                 # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                     _fecha or '',  # 1
@@ -78,7 +84,7 @@ class chartofaccounts(models.TransientModel):
                     line.partner_id.name or '',  # 7
                     _factura or '',  # 8 #
                     _locaciones or '',  # 9
-                    line.state or '',  # 1
+                    _estado or '',  # 1
                     _estado_ope or ''  # 10
                 )
 
