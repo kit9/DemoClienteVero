@@ -26,9 +26,15 @@ class chartofaccounts(models.TransientModel):
         _asiento = ""
         _codigo = ""
         _factura = ""
+        _fecha = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
+
+            # fecha
+            for imp4 in line.move_line_ids.move_id:
+                if imp4.date.strftime("%Y%m00"):
+                   _fecha = date.strftime("%Y%m00")
 
             # allocation
             for imp in line.line_ids:
@@ -63,7 +69,7 @@ class chartofaccounts(models.TransientModel):
 
                 # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                    line.payment_date.strftime("%Y%m00") or '',  # 1
+                    _fecha or '',  # 1
                     _asiento or '',  # 2
                     _codigo or '',  # 3
                     line.payment_date or '',  # 4
