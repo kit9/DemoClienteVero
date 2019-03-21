@@ -223,7 +223,7 @@ class bulk_inv_payment(models.TransientModel):
 
                 line_list1 = []
                 line_list1.append((0, 0, {
-                    'invoice_id': invoice.id,
+                    'invoice_id': invoice and invoice.id or False,
                     'account_id': invoice.account_id and invoice.account_id.id or False,
                     'date': invoice.date_invoice,
                     'due_date': invoice.date_due,
@@ -261,7 +261,7 @@ class bulk_inv_payment(models.TransientModel):
 
                     line_list2 = []
                     line_list2.append((0, 0, {
-                        'invoice_id': invoice.id,
+                        'invoice_id': invoice and invoice.id or False,
                         'account_id': invoice.account_id and invoice.account_id.id or False,
                         'date': invoice.date_invoice,
                         'due_date': invoice.date_due,

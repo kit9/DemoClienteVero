@@ -38,7 +38,6 @@
         'purchase_stock',
         'account_asset',
         'hr',
-        'sunat',
     ],
 
     # always loaded
@@ -54,7 +53,7 @@
         'views/news/Type_Operation.xml',
         'views/account_invoice.xml',
         'views/views.xml',
-        'views/templates.xml',
+        #'views/templates.xml',
         'wizard/account_bill_txt_view.xml',
         'wizard/withholding_record_view.xml',
         'wizard/kardex_report_view.xml',

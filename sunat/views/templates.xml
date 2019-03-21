@@ -36,16 +36,16 @@
                                 <thead>
                                     <tr>
                                         <th class="text-left">
-                                            <span>Description</span>
+                                            <span>Description2</span>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="invoice_tbody">
-                                    <t t-foreach="o.invoice_ids" t-as="invoice">
+                                    <t t-foreach="o.line_ids" t-as="line">
                                         <tr>
-                                            <t t-if="not invoice.display_type" name="account_invoice_line_accountable">
+                                            <t name="account_invoice_line_accountable">
                                                 <td name="account_invoice_line_name">
-                                                    <span t-field="invoice.name"/>
+                                                    <span t-field="line.original_amount"/>
                                                 </td>
                                             </t>
                                         </tr>
