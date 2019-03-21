@@ -19,72 +19,15 @@ class chartofaccounts(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.payment'].search([])
+        lst_account_move_line = self.env['account.move'].search([])
         content_txt = ""
-        _estado_ope = ""
-        _locaciones = ""
-        _asiento = ""
-        _codigo = ""
-        _factura = ""
-        _fecha = ""
-        #_estado = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
 
-            # fecha
-            for imp4 in line.move_line_ids:
-                if imp4.move_id.date.strftime("%Y%m00"):
-                   _fecha = imp4.move_id.date.strftime("%Y%m00")
-
-            # allocation
-            for imp in line.line_ids:
-                if imp.allocation:
-                    _locaciones = imp.allocation
-
-            # asiento contable
-            for imp1 in line.move_line_ids:
-                if imp1.move_id.ref:
-                    _asiento = imp1.move_id.ref
-
-            # id
-            for imp2 in line.move_line_ids:
-                if imp2.id:
-                    _codigo = imp2.id
-
-            # factura
-            for imp3 in line.invoice_ids:
-                if imp3.amount_total * imp3.exchange_rate:
-                   _factura = imp3.amount_total * imp3.exchange_rate
-
-            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                _estado_ope = "01"
-            else:
-                if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    _estado_ope = "09"
-                else:
-                    if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
-                        _estado_ope = "00"
-                    else:
-                        _estado_ope = "09"
-
-            # estado
-            #for imp5 in line.move_line_ids:
-            #    if imp5.move_id.state:
-            #       _estado= imp5.move_id.state
-
                 # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
-                    _fecha or '',  # 1
-                    _asiento or '',  # 2
-                    _codigo or '',  # 3
-                    line.payment_date or '',  # 4
-                    line.partner_id.id or '',  # 5
-                    line.partner_id.vat or '',  # 6
-                    line.partner_id.name or '',  # 7
-                    _factura or '',  # 8 #
-                    _locaciones or '',  # 9
-                    _estado_ope or ''  # 10
+            txt_line = "%s" % (
+                    line.date.strftime("%Y%m00") or '',  # 1
                 )
 
             # Agregamos la linea al TXT
