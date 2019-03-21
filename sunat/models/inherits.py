@@ -290,3 +290,9 @@ class MrpWorkcenter(models.Model):
     _inherit = 'mrp.workcenter'
 
     employee_id = fields.Many2one('hr.employee', string='Empleado')
+
+
+class Employee(models.Model):
+    _inherit = "hr.employee"
+
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
