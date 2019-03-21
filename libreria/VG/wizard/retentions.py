@@ -21,13 +21,53 @@ class chartofaccounts(models.TransientModel):
 
         lst_account_move_line = self.env['account.move'].search([])
         content_txt = ""
+        _factura = ""
+        _numero = ""
+        _total = ""
+        _estado_ope = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
 
+            # factura
+            for imp in line.line_ids:
+                if imp.invoice_id.id:
+                    _factura = imp.invoice_id.id
+
+            # numero
+            for imp2 in line.line_ids:
+                if imp2.invoice_id.invoice_number:
+                   _numero = imp2.invoice_id.invoice_number
+
+            #total
+            for imp3 in line.line_ids:
+                if imp3.invoice_id.amount_total:
+                    _total = imp3.invoice_id.amount_total
+
+            #10
+                if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                    _estado_ope = "01"
+                else:
+                    if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                        _estado_ope = "09"
+                    else:
+                        if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
+                            _estado_ope = "00"
+                        else:
+                            _estado_ope = "09"
+
                 # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s" % (
-                    line.date.strftime("%Y%m00") or '',  # 1
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
+                line.date.strftime("%Y%m00") or '',  # 1
+                line.name or '',  # 2
+                line.id or '',  # 3
+                line.date or '',  # 4
+                _factura or '', #5
+                _numero or '', #6
+                line.partner_id.name or '', #7
+                _total or '', #8
+                line.amount or '', #9
+                _estado_ope or '', #10
                 )
 
             # Agregamos la linea al TXT
