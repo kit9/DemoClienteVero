@@ -45,10 +45,10 @@ class chartofaccounts(models.TransientModel):
                     else:
                         estado_ope = "09"
             # validador de campo vacio
-            if line.x_studio_codigo_de_plan_de_cuenta:
-                campo = line.x_studio_codigo_de_plan_de_cuenta
-            if line.x_studio_codigo_de_plan_de_cuenta:
-                campo1 = line.x_studio_codigo_de_plan_de_cuenta
+            if line.account_plan_code:
+                campo = line.account_plan_code
+            if line.account_plan_code:
+                campo1 = line.account_plan_code
 
             # datos a exportar a txt
 
