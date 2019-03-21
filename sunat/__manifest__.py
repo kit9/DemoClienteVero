@@ -38,6 +38,7 @@
         'purchase_stock',
         'account_asset',
         'hr',
+        'mrp_maintenance',
     ],
 
     # always loaded
