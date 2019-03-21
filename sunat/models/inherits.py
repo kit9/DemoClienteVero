@@ -284,3 +284,9 @@ class AccountPayment(models.Model):
         for rec in self:
             if rec.payment_date:
                 rec.month_year_inv = rec.payment_date.strftime("%m%Y")
+
+
+class MrpWorkcenter(models.Model):
+    _inherit = 'mrp.workcenter'
+
+    employee_id = fields.Many2one('hr.employee', string='Empleado')

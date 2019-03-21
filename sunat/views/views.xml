@@ -324,6 +324,17 @@
         </field>
     </record>
 
+    <!--Formulario - Centro de Produccion-->
+    <record id="mrp_workcenter_form_inherit" model="ir.ui.view">
+        <field name="name">mrp.workcenter.form.inherit</field>
+        <field name="model">mrp.workcenter</field>
+        <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='name']" position="after">
+                <field name="employee_id"/>
+            </xpath>
+        </field>
+    </record>
 
     <record id="account_move_line_inherit_tree" model="ir.ui.view">
         <field name="name">account.move.line.inherit.tree</field>
