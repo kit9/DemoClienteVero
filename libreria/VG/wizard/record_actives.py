@@ -6,8 +6,8 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
-    _name = "libreria.record_of_actives"
+class record_actives(models.TransientModel):
+    _name = "libreria.record_actives"
     _description = "Registro de Activos"
 
     state = fields.Selection(
@@ -85,7 +85,7 @@ class chartofaccounts(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Registro de Activos',
-            'res_model': 'libreria.record_of_actives',
+            'res_model': 'libreria.record_actives',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
