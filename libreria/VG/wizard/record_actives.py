@@ -23,7 +23,7 @@ class record_actives(models.TransientModel):
         content_txt = ""
         valor = ""
         residual = ""
-        residual1 = ""
+        res = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
@@ -35,8 +35,8 @@ class record_actives(models.TransientModel):
                 if cat0.remaining_value:
                     residual = cat0.remaining_value
             for cat2 in line.invoice_line_ids:
-                if cat2.invoice_line_ids:
-                    residual1 = cat2.price_unit
+                if cat2.price_unit:
+                    res = cat2.price_unit
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -57,7 +57,7 @@ class record_actives(models.TransientModel):
                            '',  # 13 ldelacruz (Campo Serie no se encontro)
                            residual or '',  # 14 ldelacruz (Campo residual)
                            '',  # 15 null
-                           residual1 or '',  # 16 ldelacruz (Campo Precio unitario)
+                           res or '',  # 16 ldelacruz (Campo Precio unitario)
                            line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
                            '',  # 18 null
                            '',  # 19 null
