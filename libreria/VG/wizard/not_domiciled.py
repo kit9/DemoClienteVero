@@ -34,6 +34,8 @@ class not_domiciled(models.TransientModel):
             for p2 in line.payment_ids:
                 if p2.amount:
                     cantidad = p2.amount
+        for
+            if line.res_partner("")
             # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
@@ -56,7 +58,7 @@ class not_domiciled(models.TransientModel):
                            line.document_type_id.display_name or '',  # 05 Hoja 5 (Tipo de Documento)
                            line.invoice_serie or '',  # 06 Hoja 6 (Serie)
                            line.invoice_number or '',  # 07 Hoja 7 (Numero)
-                           line.amount_untaxed*line.exchange_rate or '',  # 08 Hoja 8 (Base Imponible)
+                           line.amount_untaxed*line.exchange_rate or '',  # 08 Hoja 8 (Base Imponible*Tipo de Cambio)
                            impuesto or '',  # 9 Hoja 9 (Impuestos)
                            line.amount_untaxed*line.exchange_rate or '', #10 Hoja 9 (Base Imponible * Tipo de Cambio)
                            line.amount_total*line.exchange_rate or '',  # 11 Hoja 10 (Total * Tipo de Cambio)
