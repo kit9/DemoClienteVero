@@ -34,9 +34,7 @@ class not_domiciled(models.TransientModel):
             for p2 in line.payment_ids:
                 if p2.amount:
                     cantidad = p2.amount
-        for
-            if line.res_partner("")
-            # Asiento Contable
+                # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
             else:
