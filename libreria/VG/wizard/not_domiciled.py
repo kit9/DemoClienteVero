@@ -61,7 +61,7 @@ class not_domiciled(models.TransientModel):
                            impuesto or '',  # 10 Hoja 9 (Impuestos)
                            line.amount_untaxed or '',  # 11 Hoja 9 (Base Imponible)
                            line.exchange_rate or '',  # 12 Hoja 9 (Tipo de Cambio)
-                           line.amount_total or '',  # 13 Hoja 10 (Total)
+                           line.amount_total*line.exchange_rate or '',  # 13 Hoja 10 (Total)
                            line.exchange_rate or '',  # 14  Hoja 10 (Tipo de Cambio)
                            line.partner_id.person_type or '',  # 15 Hoja 11 (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # 16 Hoja 12 (Numero)
