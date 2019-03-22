@@ -6,8 +6,8 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
-    _name = "libreria.record_of_actives"
+class record_actives(models.TransientModel):
+    _name = "libreria.record_actives"
     _description = "Registro de Activos"
 
     state = fields.Selection(
@@ -22,13 +22,21 @@ class chartofaccounts(models.TransientModel):
         lst_account_move_line = self.env['account.asset.asset'].search([])
         content_txt = ""
         valor = ""
+        residual = ""
+        residual1 = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
             # Asiento Conta
-            for cat1 in line.drepreciation_line_ids:
+            for cat1 in line.depreciation_line_ids:
                 if cat1.depreciated_value:
                     valor = cat1.depreciated_value
+            for cat0 in line.depreciation_line_ids:
+                if cat0.remaining_value:
+                    residual = cat0.remaining_value
+            for cat2 in line.invoice_line_ids:
+                if cat2.invoice_line_ids:
+                    residual1 = cat2.price_unit
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -47,9 +55,9 @@ class chartofaccounts(models.TransientModel):
                            '',  # 11 ldelacruz (Campo Marca no se encontro)
                            '',  # 12 ldelacruz (Campo Modelo no se encontro)
                            '',  # 13 ldelacruz (Campo Serie no se encontro)
-                           line.depreciation_line_ids.remaining_value or '',  # 14 ldelacruz (Campo residual)
+                           residual or '',  # 14 ldelacruz (Campo residual)
                            '',  # 15 null
-                           line.invoice_line_ids.price_unit or '',  # 16 ldelacruz (Campo Precio unitario)
+                           residual1 or '',  # 16 ldelacruz (Campo Precio unitario)
                            line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
                            '',  # 18 null
                            '',  # 19 null
@@ -85,7 +93,7 @@ class chartofaccounts(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Registro de Activos',
-            'res_model': 'libreria.record_of_actives',
+            'res_model': 'libreria.record_actives',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
