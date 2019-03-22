@@ -296,3 +296,9 @@ class Employee(models.Model):
     _inherit = "hr.employee"
 
     analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
+
+
+class ProductCategory(models.Model):
+    _inherit = "product.category"
+
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
