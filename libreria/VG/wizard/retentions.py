@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
+class retencion(models.TransientModel):
     _name = "libreria.retentions"
     _description = "Retenciones"
 
@@ -19,7 +19,7 @@ class chartofaccounts(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.move'].search([('journal_id.name','like','retenciones')])
+        lst_account_move_line = self.env['account.move'].search([('journal_id.name','like','journal_id')])
         content_txt = ""
         _factura = ""
         _numero = ""
@@ -68,7 +68,8 @@ class chartofaccounts(models.TransientModel):
                 _total or '', #8
                 line.amount or '', #9
                 _estado_ope or '', #10
-                #line.journal_id.name or '',
+                # line.journal_id.name or '',
+                #line.journal_id.currency_id.name or '',
                 )
 
             # Agregamos la linea al TXT
