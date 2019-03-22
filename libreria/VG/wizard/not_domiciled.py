@@ -43,11 +43,11 @@ class not_domiciled(models.TransientModel):
                 else:
                     estado_ope = "0"
 
-            # por cada campo encontrado daran una linea como mostrare , Hay 11,10,10,10
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+            # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,9
+            txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Facturas de proveedor
                            line.date_invoice or '',  # 01 Hoja 1 (Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
@@ -56,40 +56,38 @@ class not_domiciled(models.TransientModel):
                            line.document_type_id.display_name or '',  # 05 Hoja 5 (Tipo de Documento)
                            line.invoice_serie or '',  # 06 Hoja 6 (Serie)
                            line.invoice_number or '',  # 07 Hoja 7 (Numero)
-                           line.amount_untaxed or '',  # 08 Hoja 8 (Base Imponible)
-                           line.exchange_rate or '',  # 09 Hoja 8 (Tipo de Cambio)
-                           impuesto or '',  # 10 Hoja 9 (Impuestos)
-                           line.amount_untaxed or '',  # 11 Hoja 9 (Base Imponible)
-                           line.exchange_rate or '',  # 12 Hoja 9 (Tipo de Cambio)
-                           line.amount_total*line.exchange_rate or '',  # 13 Hoja 10 (Total)
-                           line.exchange_rate or '',  # 14  Hoja 10 (Tipo de Cambio)
-                           line.partner_id.person_type or '',  # 15 Hoja 11 (Tipo de persona: natural-juridica)
-                           line.invoice_number or '',  # 16 Hoja 12 (Numero)
-                           line.year_emission_dua or '',  # 17 Hoja 13 (Año de la Emision de la DUA)
-                           line.invoice_number or '',  # 18 Hoja 14 (Numero)
-                           cantidad or '',  # 19 Hoja 15 (Cantidad a Pagar)
-                           line.state or '',  # 20 Hoja 15 (Estado)
-                           line.exchange_rate or '',  # 21 Hoja 16 (Tipo de Cambio)
-                           '|',  # 22 Hoja 17 null
-                           line.partner_id.country_id.name or '',  # 23 Hoja 18
-                           line.partner_id.commercial_company_name or '',  # 24 Hoja 19 (Proveedor)
-                           line.partner_id.street or '',  # 25 Hoja 20 (Address, Direccion)
-                           line.partner_id.vat or '',  # 26 Hoja 21 (RUC, NIF)
-                           '|',  # 27 Hoja 22 null
-                           line.partner_id.name or '',  # 28 Hoja 23 (Nombre de Contacto)
-                           line.partner_id.title or '',  # 29 Hoja 24 (El contacto es : "socio")
-                           '|',  # 30 Hoja 25 null
-                           '|',  # 31 Hoja 26 null
-                           '|',  # 32 Hoja 27 null
-                           '|',  # 33 Hoja 28 null
-                           '|',  # 34 Hoja 29 null
-                           '|',  # 35 Hoja 30 null
-                           line.partner_id.x_studio_convenios or '',  # 36 Hoja 31 (Convenios)
-                           line.x_studio_exoneraciones or '',  # 37 Hoja 32 (Exoneraciones)
-                           line.type_income_id or '', # 38 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
-                           line.x_studio_modalidad_de_servicio or '',  # 39 Hoja 34 (Modalidad de Servicio)
-                           line.message_needaction or '',  # 40 Hoja 35 (Aplicacion parrafo art. 76)
-                           estado_ope or ''  # 41 Hoja 36
+                           line.amount_untaxed*line.exchange_rate or '',  # 08 Hoja 8 (Base Imponible)
+                           impuesto or '',  # 9 Hoja 9 (Impuestos)
+                           line.amount_untaxed*line.exchange_rate or '', #10 Hoja 9 (Base Imponible * Tipo de Cambio)
+                           line.amount_total*line.exchange_rate or '',  # 11 Hoja 10 (Total * Tipo de Cambio)
+                           line.exchange_rate or '',  # 12  Hoja 10 (Tipo de Cambio)
+                           line.partner_id.person_type or '',  # 13 Hoja 11 (Tipo de persona: natural-juridica)
+                           line.invoice_number or '',  # 14 Hoja 12 (Numero)
+                           line.year_emission_dua or '',  # 15 Hoja 13 (Año de la Emision de la DUA)
+                           line.invoice_number or '',  # 16 Hoja 14 (Numero)
+                           cantidad or '',  # 17 Hoja 15 (Cantidad a Pagar)
+                           line.state or '',  # 18 Hoja 15 (Estado)
+                           line.exchange_rate or '',  # 19 Hoja 16 (Tipo de Cambio)
+                           '|',  # 20 Hoja 17 null
+                           line.partner_id.country_id.name or '',  # 21 Hoja 18
+                           line.partner_id.commercial_company_name or '',  # 22 Hoja 19 (Proveedor)
+                           line.partner_id.street or '',  # 23 Hoja 20 (Address, Direccion)
+                           line.partner_id.vat or '',  # 24 Hoja 21 (RUC, NIF)
+                           '|',  # 25 Hoja 22 null
+                           line.partner_id.name or '',  # 26 Hoja 23 (Nombre de Contacto)
+                           line.partner_id.title or '',  # 27 Hoja 24 (El contacto es : "socio")
+                           '|',  # 28 Hoja 25 null
+                           '|',  # 29 Hoja 26 null
+                           '|',  # 30 Hoja 27 null
+                           '|',  # 31 Hoja 28 null
+                           '|',  # 32 Hoja 29 null
+                           '|',  # 33 Hoja 30 null
+                           line.partner_id.x_studio_convenios or '',  # 34 Hoja 31 (Convenios)
+                           line.x_studio_exoneraciones or '',  # 35 Hoja 32 (Exoneraciones)
+                           line.type_income_id or '', # 36 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
+                           line.x_studio_modalidad_de_servicio or '',  # 37 Hoja 34 (Modalidad de Servicio)
+                           line.message_needaction or '',  # 38 Hoja 35 (Aplicacion parrafo art. 76)
+                           estado_ope or ''  # 39 Hoja 36
 
                        )
 
