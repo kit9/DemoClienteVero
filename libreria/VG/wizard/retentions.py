@@ -19,7 +19,7 @@ class retencion(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.move'].search([])
+        lst_account_move_line = self.env['account.move'].search([('journal_id.name','journal_id.currency_id.name','like','journal_id')])
         content_txt = ""
         _factura = ""
         _numero = ""
@@ -57,12 +57,8 @@ class retencion(models.TransientModel):
                         else:
                             _estado_ope = "09"
 
-            for imp9 in line.journal_id:
-                if imp9.currency_id.name:
-                    _moneda = imp9.currency_id.name
-
                 # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
                 line.name or '',  # 2
                 line.id or '',  # 3
@@ -73,7 +69,7 @@ class retencion(models.TransientModel):
                 _total or '', #8
                 line.amount or '', #9
                 _estado_ope or '', #10
-                _moneda or '',
+
                 )
 
             # Agregamos la linea al TXT
