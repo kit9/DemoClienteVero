@@ -28,11 +28,11 @@ class record_actives(models.TransientModel):
         for line in lst_account_move_line:
 
             # Asiento Conta
-            for cat1 in line.drepreciation_line_ids:
+            for cat1 in line.depreciation_line_ids:
                 if cat1.depreciated_value:
                     valor = cat1.depreciated_value
-            for cat0 in line.drepreciation_line_ids:
-                if cat0.depreciated_value:
+            for cat0 in line.depreciation_line_ids:
+                if cat0.remaining_value:
                     residual = cat0.remaining_value
             for cat2 in line.invoice_line_ids:
                 if cat2.invoice_line_ids:
