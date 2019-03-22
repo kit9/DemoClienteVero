@@ -19,7 +19,7 @@ class chartofaccounts(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.move'].search([])
+        lst_account_move_line = self.env['account.move'('id','=','5')].search([])
         content_txt = ""
         _factura = ""
         _numero = ""
