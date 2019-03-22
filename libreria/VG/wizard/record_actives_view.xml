@@ -26,10 +26,10 @@
         </field>
     </record>
 
-    <record id="record_of_actives_VG" model="ir.actions.act_window">
+    <record id="record_actives_VG" model="ir.actions.act_window">
         <field name="name">record_actives</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">libreria.record_of_actives</field>
+        <field name="res_model">libreria.record_actives</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
