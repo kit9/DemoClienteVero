@@ -25,6 +25,7 @@ class retencion(models.TransientModel):
         _numero = ""
         _total = ""
         _estado_ope = ""
+        _moneda = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
             # Asiento Conta
@@ -56,6 +57,10 @@ class retencion(models.TransientModel):
                         else:
                             _estado_ope = "09"
 
+            for imp9 in line.journal_id:
+                if imp9.currency_id.name:
+                    _moneda = imp9.currency_id.name
+
                 # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
@@ -68,7 +73,7 @@ class retencion(models.TransientModel):
                 _total or '', #8
                 line.amount or '', #9
                 _estado_ope or '', #10
-                line.journal_id.currency_id.name or '',
+                _moneda or '',
                 )
 
             # Agregamos la linea al TXT
