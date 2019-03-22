@@ -33,10 +33,10 @@ class record_actives(models.TransientModel):
                     valor = cat1.depreciated_value
             for cat0 in line.drepreciation_line_ids:
                 if cat0.depreciated_value:
-                    residual = cat1.remaining_value
+                    residual = cat0.remaining_value
             for cat2 in line.invoice_line_ids:
                 if cat2.invoice_line_ids:
-                    residual1 = cat1.price_unit
+                    residual1 = cat2.price_unit
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
