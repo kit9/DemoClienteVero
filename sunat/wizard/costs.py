@@ -37,26 +37,31 @@ class InventoryValorized(models.TransientModel):
         ])
 
         for line in lst_move_line:
-            saldo_inicial_2 = line.debit - line.credit
+            saldo_inicial_2 = saldo_inicial_2 + (line.debit - line.credit)
 
         # 3 -> Saldo de Producción
         saldo_inicial_3 = 0
         lst_saldo_ini_3 = self.env['account.move.line'].search([
-            ('account_id.code', 'like', '6211.01'),
+            # ('account_id.code', 'like', '6211.01'),
+            ('account_id.code', 'in', ['6211.01', '241000']),
             ('filter_year', 'like', str(filter_year - 1))
         ])
         for line_i in lst_saldo_ini_3:
-            saldo_inicial_3 = line_i.debit - line_i.credit
+            saldo_inicial_3 = saldo_inicial_3 + (line_i.debit - line_i.credit)
 
         saldo_final_3 = 0
         lst_saldo_fin_3 = self.env['account.move.line'].search([
-            ('account_id.code', 'like', '6211.01'),
+            # ('account_id.code', 'like', '6211.01'),
+            ('account_id.code', 'in', ['6211.01', '241000']),
             ('filter_year', 'like', date_year)
         ])
         for line_f in lst_saldo_fin_3:
-            saldo_final_3 = line_f.debit - line_f.credit
+            saldo_final_3 = saldo_final_3 + (line_f.debit - line_f.credit)
 
         saldo_final_3 = saldo_final_3 + saldo_inicial_3
+        _logger.info("Costo de Pruduccion")
+        _logger.info(saldo_final_3)
+        _logger.info(len(lst_saldo_fin_3))
 
         # 4 -> Saldo Final
         saldo_final_4 = 0
@@ -65,7 +70,7 @@ class InventoryValorized(models.TransientModel):
             ('filter_year', 'like', date_year)
         ])
         for line_4 in lst_saldo_fin_4:
-            saldo_final_4 = line_4.debit - line_4.credit
+            saldo_final_4 = saldo_final_4 + (line_4.debit - line_4.credit)
 
         saldo_final_4 = saldo_final_4 + saldo_inicial_2
 
