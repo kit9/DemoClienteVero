@@ -61,6 +61,7 @@
         'wizard/inv_perm_val_view.xml',
         'wizard/consolidated_journal_view.xml',
         'wizard/merge_assets_view.xml',
+        'wizard/costs_view.xml',
         'views/menu.xml',
         'views/actions.xml',
         'data/data_detracciones.xml',

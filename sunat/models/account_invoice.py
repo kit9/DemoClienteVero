@@ -227,10 +227,8 @@ class account_invoice(models.Model):
         for rec in self:
             # Obtener el correlativo General de la Factura en el Mes
             correlativo = ""
-            dominio = [('month_year_inv', 'like',
-                        rec.date_invoice.strftime("%m%Y"))]
-            facturas = self.env['account.invoice'].search(
-                dominio, order="id asc")
+            dominio = [('month_year_inv', 'like',rec.date_invoice.strftime("%m%Y"))]
+            facturas = self.env['account.invoice'].search(dominio, order="id asc")
             contador = 0
             for inv in facturas:
                 contador = contador + 1
