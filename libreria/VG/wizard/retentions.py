@@ -19,7 +19,7 @@ class retencion(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.move'].search([('journal_id.name','journal_id.currency_id.name','like','journal_id')])
+        lst_account_move_line = self.env['account.move'].search([])
         content_txt = ""
         _factura = ""
         _numero = ""
