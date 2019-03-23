@@ -42,7 +42,8 @@ class InventoryValorized(models.TransientModel):
         # 3 -> Saldo de Producción
         saldo_inicial_3 = 0
         lst_saldo_ini_3 = self.env['account.move.line'].search([
-            ('account_id.code', 'like', '6211.01'),
+            # ('account_id.code', 'like', '6211.01'),
+            ('account_id.code', 'in', ['6211.01', '241000']),
             ('filter_year', 'like', str(filter_year - 1))
         ])
         for line_i in lst_saldo_ini_3:
@@ -50,7 +51,8 @@ class InventoryValorized(models.TransientModel):
 
         saldo_final_3 = 0
         lst_saldo_fin_3 = self.env['account.move.line'].search([
-            ('account_id.code', 'like', '6211.01'),
+            # ('account_id.code', 'like', '6211.01'),
+            ('account_id.code', 'in', ['6211.01', '241000']),
             ('filter_year', 'like', date_year)
         ])
         for line_f in lst_saldo_fin_3:
