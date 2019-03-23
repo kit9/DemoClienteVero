@@ -19,7 +19,7 @@ class four_retentions(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.invoice'].search(['document_type_id.id','like','2'])
+        lst_account_move_line = self.env['account.invoice'].search([('document_type_id.id','like','2')])
 
         content_txt = ""
         estado_ope = ""
