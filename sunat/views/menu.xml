@@ -33,6 +33,7 @@
     <menuitem id="kardex_report_menu" name="Reporte Kardex" sequence="2" parent="tributario_menu_root" action="kardex_report_sunat"/>
     <menuitem id="inv_perm_val_menu" name="Inventario Valorizado" sequence="1" parent="tributario_menu_root" action="inventory_valorized_sunat"/>
     <menuitem id="consolidated_journal_menu" name="Diario Consolidado" sequence="1" parent="tributario_menu_root" action="consolidated_journal_sunat"/>
+    <menuitem id="costs_menu" name="Costos" sequence="1" parent="tributario_menu_root" action="costs_sunat"/>
     <!-- <menuitem id="chart_accounts_menu" name="Plan de Cuentas" sequence="1" parent="tributario_menu_root" action="chart_accounts_sunat"/> -->
 
 </odoo>

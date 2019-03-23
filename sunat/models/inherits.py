@@ -231,6 +231,7 @@ class AccountMoveLine(models.Model):
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
+    filter_year = fields.Char(compute="_get_year", store=True, copy=False)
 
     @api.multi
     @api.depends('date')
@@ -238,6 +239,13 @@ class AccountMoveLine(models.Model):
         for rec in self:
             if rec.date:
                 rec.month_year_inv = rec.date.strftime("%m%Y")
+
+    @api.multi
+    @api.depends('date')
+    def _get_year(self):
+        for rec in self:
+            if rec.date:
+                rec.filter_year = rec.date.strftime("%Y")
 
     @api.multi
     def update_ref_invoice(self):
