@@ -84,7 +84,7 @@ class not_domiciled(models.TransientModel):
                            '',  # 33 Hoja 30 null
                            line.partner_id.x_studio_convenios or '',  # 34 Hoja 31 (Convenios)
                            line.x_studio_exoneraciones or '',  # 35 Hoja 32 (Exoneraciones)
-                           line.type_income_id or '', # 36 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
+                           line.type_income_id.number or '', # 36 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
                            line.x_studio_modalidad_de_servicio or '',  # 37 Hoja 34 (Modalidad de Servicio)
                            line.message_needaction or '',  # 38 Hoja 35 (Aplicacion parrafo art. 76)
                            estado_ope or ''  # 39 Hoja 36
