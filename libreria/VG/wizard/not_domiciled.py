@@ -75,7 +75,7 @@ class not_domiciled(models.TransientModel):
                            line.partner_id.vat or '',  # 24 Hoja 21 (RUC, NIF)
                            '',  # 25 Hoja 22 null
                            line.partner_id.name or '',  # 26 Hoja 23 (Nombre de Contacto)
-                           line.partner_id.title.display_name or '',  # 27 Hoja 24 (El contacto es : "socio")
+                           line.partner_id.title.name or '',  # 27 Hoja 24 (El contacto es : "socio")
                            '',  # 28 Hoja 25 null
                            '',  # 29 Hoja 26 null
                            '',  # 30 Hoja 27 null
