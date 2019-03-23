@@ -68,20 +68,20 @@ class not_domiciled(models.TransientModel):
                            cantidad or '',  # 17 Hoja 15 (Cantidad a Pagar)
                            line.state or '',  # 18 Hoja 15 (Estado)
                            line.exchange_rate or '',  # 19 Hoja 16 (Tipo de Cambio)
-                           '|',  # 20 Hoja 17 null
+                           '',  # 20 Hoja 17 null
                            line.partner_id.country_id.name or '',  # 21 Hoja 18
                            line.partner_id.commercial_company_name or '',  # 22 Hoja 19 (Proveedor)
                            line.partner_id.street or '',  # 23 Hoja 20 (Address, Direccion)
                            line.partner_id.vat or '',  # 24 Hoja 21 (RUC, NIF)
-                           '|',  # 25 Hoja 22 null
+                           '',  # 25 Hoja 22 null
                            line.partner_id.name or '',  # 26 Hoja 23 (Nombre de Contacto)
                            line.partner_id.title or '',  # 27 Hoja 24 (El contacto es : "socio")
-                           '|',  # 28 Hoja 25 null
-                           '|',  # 29 Hoja 26 null
-                           '|',  # 30 Hoja 27 null
-                           '|',  # 31 Hoja 28 null
-                           '|',  # 32 Hoja 29 null
-                           '|',  # 33 Hoja 30 null
+                           '',  # 28 Hoja 25 null
+                           '',  # 29 Hoja 26 null
+                           '',  # 30 Hoja 27 null
+                           '',  # 31 Hoja 28 null
+                           '',  # 32 Hoja 29 null
+                           '',  # 33 Hoja 30 null
                            line.partner_id.x_studio_convenios or '',  # 34 Hoja 31 (Convenios)
                            line.x_studio_exoneraciones or '',  # 35 Hoja 32 (Exoneraciones)
                            line.type_income_id or '', # 36 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
