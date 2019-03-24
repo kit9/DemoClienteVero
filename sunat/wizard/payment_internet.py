@@ -51,7 +51,7 @@ class InventoryValorized(models.TransientModel):
                 num_cuenta = 0
                 for banco in line_pay.invoice_id.partner_id.bank_ids:
                     if not num_cuenta and banco.is_detraction:
-                        num_cuenta = banco.acc_number
+                        num_cuenta = banco.acc_number if banco.acc_number else 0
 
                 txt_line_detalle = "%s%s%s%s%s%s%s%s%s%s%s%s" % (
                     '6',  # 1 ->
