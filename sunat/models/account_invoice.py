@@ -28,8 +28,7 @@ class account_invoice(models.Model):
 
     # Campos necesarios para el TXT
     fourth_suspension = fields.Boolean(string="Suspencion de Cuarta")
-    operation_type = fields.Selection(string="Tipo de Operación", selection=[
-        ('1.-Exportación', '1.-Exportación')])
+    operation_type = fields.Selection(string="Tipo de Operación", selection=[('1.-Exportación', '1.-Exportación')])
     hide_dua_fields = fields.Boolean(compute="_hide_dua_fields")
     num_dua = fields.Char(string="N° DUA")
     year_emission_dua = fields.Char(string="Año de emisión de la DUA")
@@ -42,8 +41,7 @@ class account_invoice(models.Model):
     date_detraction = fields.Date(string="Fecha de detracción")
     num_detraction = fields.Char(string="Número de detración")
     proof_mark = fields.Char(string="Marca del comprobante")
-    classifier_good = fields.Many2one(
-        'sunat.classification_goods', 'Clasificación del Bien')
+    classifier_good = fields.Many2one('sunat.classification_goods', 'Clasificación del Bien')
 
     # Documento que Modifica
     date_document_modifies = fields.Date(string="Fecha del documento que modifica")
@@ -67,8 +65,7 @@ class account_invoice(models.Model):
     hide_detraction = fields.Boolean(compute="_compute_hide_detraction")
 
     retencion = fields.Selection(
-        [('ARET', 'ARET(Detección Automática Retención)'),
-         ('SRET', 'SRET(Siempre Retención)')],
+        [('ARET', 'ARET(Detección Automática Retención)'), ('SRET', 'SRET(Siempre Retención)')],
         string='Tipo de Pago')
 
     # Datos del Proveedor
@@ -81,6 +78,10 @@ class account_invoice(models.Model):
          ('2', 'ADQ. GRAV. PARA OPE. GRAV. Y/O DE EXP.Y A OP. NO GRAV.'),
          ('3', 'ADQ. GRAV. PARA  OP-  NO GRAV.')],
         string='Tipo de Operación')
+
+    type_operation_id = fields.Many2one('sunat.type_operation_detraction', 'Tipo de Operación de Detracción')
+    code_goods_id = fields.Many2one('sunat.code_goods', 'Código de Bienes')
+
     base_imp = fields.Monetary(string="Base Imponible", compute="_base_imp")
     base_igv = fields.Monetary(string="IGV", compute="_base_igv")
 
@@ -91,9 +92,8 @@ class account_invoice(models.Model):
     base_igv_no_gra = fields.Monetary(string="Igv/des/op no Grav.", compute="_base_igv_no_gra")
 
     # Datos de Factura de Cliente
-    inv_type_operation = fields.Selection(
-        [('exonerado', 'Exonerado'), ('inafecto', 'Inafecto')],
-        string='Tipo de Operación')
+    inv_type_operation = fields.Selection([('exonerado', 'Exonerado'), ('inafecto', 'Inafecto')],
+                                          string='Tipo de Operación')
 
     inv_isc = fields.Monetary(string="ISC", compute="_inv_isc")
     inv_inafecto = fields.Monetary(string="Inafecto", compute="_inv_inafecto")
@@ -227,7 +227,7 @@ class account_invoice(models.Model):
         for rec in self:
             # Obtener el correlativo General de la Factura en el Mes
             correlativo = ""
-            dominio = [('month_year_inv', 'like',rec.date_invoice.strftime("%m%Y"))]
+            dominio = [('month_year_inv', 'like', rec.date_invoice.strftime("%m%Y"))]
             facturas = self.env['account.invoice'].search(dominio, order="id asc")
             contador = 0
             for inv in facturas:

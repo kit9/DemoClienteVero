@@ -1,0 +1,168 @@
+<odoo>
+
+    <record model="sunat.code_goods" id="001">
+        <field name="number">001</field>
+        <field name="description">AZÚCAR</field>
+    </record>
+    <record model="sunat.code_goods" id="002">
+        <field name="number">002</field>
+        <field name="description">ARROZ</field>
+    </record>
+    <record model="sunat.code_goods" id="003">
+        <field name="number">003</field>
+        <field name="description">ALCOHOL ETÍLICO</field>
+    </record>
+    <record model="sunat.code_goods" id="004">
+        <field name="number">004</field>
+        <field name="description">RECURSOS HIDROBIOLÓGICOS</field>
+    </record>
+    <record model="sunat.code_goods" id="005">
+        <field name="number">005</field>
+        <field name="description">MAÍZ AMARILLO DURO</field>
+    </record>
+    <record model="sunat.code_goods" id="006">
+        <field name="number">006</field>
+        <field name="description">ALGODÓN FIBRA</field>
+    </record>
+    <record model="sunat.code_goods" id="007">
+        <field name="number">007</field>
+        <field name="description">CAÑA DE AZÚCAR</field>
+    </record>
+    <record model="sunat.code_goods" id="008">
+        <field name="number">008</field>
+        <field name="description">MADERA</field>
+    </record>
+    <record model="sunat.code_goods" id="009">
+        <field name="number">009</field>
+        <field name="description">ARENA Y PIEDRA</field>
+    </record>
+    <record model="sunat.code_goods" id="010">
+        <field name="number">010</field>
+        <field name="description">RESIDUOS, SUBPRODUCTOS, DESECHOS, RECORTES, DESPERDICIOS Y FORMAS PRIMARIAS DERIVADAS DE LOS MISMOS</field>
+    </record>
+    <record model="sunat.code_goods" id="011">
+        <field name="number">011</field>
+        <field name="description">BIENES GRAVADOS CON EL IGV. POR RENUNCIA A LA EXONERACIÓN</field>
+    </record>
+    <record model="sunat.code_goods" id="012">
+        <field name="number">012</field>
+        <field name="description">INTERMED. LABORAL Y TERCERIZACIÓN</field>
+    </record>
+    <record model="sunat.code_goods" id="013">
+        <field name="number">013</field>
+        <field name="description">ANIMALES VIVOS</field>
+    </record>
+    <record model="sunat.code_goods" id="014">
+        <field name="number">014</field>
+        <field name="description">CARNES Y DESPOJOS COMESTIBLES</field>
+    </record>
+    <record model="sunat.code_goods" id="015">
+        <field name="number">015</field>
+        <field name="description">ABONOS, CUEROS Y PIELES</field>
+    </record>
+    <record model="sunat.code_goods" id="016">
+        <field name="number">016</field>
+        <field name="description">ACEITE DE PESCADO</field>
+    </record>
+    <record model="sunat.code_goods" id="017">
+        <field name="number">017</field>
+        <field name="description">HARINA, POLVO, MOLUSCOS Y DEMÁS</field>
+    </record>
+    <record model="sunat.code_goods" id="018">
+        <field name="number">018</field>
+        <field name="description">EMBARCACIONES PESQUERAS</field>
+    </record>
+    <record model="sunat.code_goods" id="019">
+        <field name="number">019</field>
+        <field name="description">ARRENDAMIENTO BIENES</field>
+    </record>
+    <record model="sunat.code_goods" id="020">
+        <field name="number">020</field>
+        <field name="description">MANTEN. REPARACIÓN BIENES MUEBLES</field>
+    </record>
+    <record model="sunat.code_goods" id="021">
+        <field name="number">021</field>
+        <field name="description">MOVIMIENTO DE CARGA</field>
+    </record>
+    <record model="sunat.code_goods" id="022">
+        <field name="number">022</field>
+        <field name="description">OTROS SERVICIOS EMPRESARIALES</field>
+    </record>
+    <record model="sunat.code_goods" id="023">
+        <field name="number">023</field>
+        <field name="description">LECHE</field>
+    </record>
+    <record model="sunat.code_goods" id="024">
+        <field name="number">024</field>
+        <field name="description">COMISIÓN MERCANTIL</field>
+    </record>
+    <record model="sunat.code_goods" id="025">
+        <field name="number">025</field>
+        <field name="description">FABRICACIÓN DE BIENES POR ENCARGO</field>
+    </record>
+    <record model="sunat.code_goods" id="026">
+        <field name="number">026</field>
+        <field name="description">TRANSPORTE DE PERSONAS</field>
+    </record>
+    <record model="sunat.code_goods" id="027">
+        <field name="number">027</field>
+        <field name="description">TRANSPORTE DE BIENES</field>
+    </record>
+    <record model="sunat.code_goods" id="028">
+        <field name="number">028</field>
+        <field name="description">TRANSPORTE DE PASAJEROS</field>
+    </record>
+    <record model="sunat.code_goods" id="029">
+        <field name="number">029</field>
+        <field name="description">ALGODÓN RAMA</field>
+    </record>
+    <record model="sunat.code_goods" id="030">
+        <field name="number">030</field>
+        <field name="description">CONTRATO DE CONSTRUCCIÓN</field>
+    </record>
+    <record model="sunat.code_goods" id="031">
+        <field name="number">031</field>
+        <field name="description">ORO GRAVADO CON EL IGV.</field>
+    </record>
+    <record model="sunat.code_goods" id="032">
+        <field name="number">032</field>
+        <field name="description">PAPRIKA Y OTROS FRUTOS DE LOS GÉNEROS CAPSICUM O PIMIENTA</field>
+    </record>
+    <record model="sunat.code_goods" id="033">
+        <field name="number">033</field>
+        <field name="description">ESPARRAGOS</field>
+    </record>
+    <record model="sunat.code_goods" id="034">
+        <field name="number">034</field>
+        <field name="description">MINERALES METÁLICOS NO AURÍFEROS</field>
+    </record>
+    <record model="sunat.code_goods" id="035">
+        <field name="number">035</field>
+        <field name="description">BIENES EXONERADOS DEL IGV</field>
+    </record>
+    <record model="sunat.code_goods" id="036">
+        <field name="number">036</field>
+        <field name="description">ORO Y DEMÁS MINERALES METÁLICOS EXONERADOS DEL IGV</field>
+    </record>
+    <record model="sunat.code_goods" id="037">
+        <field name="number">037</field>
+        <field name="description">DEMÁS SERVICIOS GRAVADOS CON EL IGV</field>
+    </record>
+    <record model="sunat.code_goods" id="038">
+        <field name="number">038</field>
+        <field name="description">ESPECTÁCULOS PÚBLICOS NO DEPORTIVOS GRABADOS CON EL IGV</field>
+    </record>
+    <record model="sunat.code_goods" id="039">
+        <field name="number">039</field>
+        <field name="description">MINERALES NO METÁLICOS</field>
+    </record>
+    <record model="sunat.code_goods" id="040">
+        <field name="number">040</field>
+        <field name="description">PRIMERA VENTA DE INMUEBLES GRAVADOS CON EL IGV</field>
+    </record>
+    <record model="sunat.code_goods" id="041">
+        <field name="number">041</field>
+        <field name="description">PLOMO</field>
+    </record>
+
+</odoo>

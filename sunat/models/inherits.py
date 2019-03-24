@@ -282,6 +282,10 @@ class AccountPayment(models.Model):
     # Usados por la libreria de Pagos Masivos
     back_partner_id = fields.Many2one('res.partner.bank', string='Banco')
     vv_bank = fields.Char(string='Banco', compute="_get_banco")
+    number_payment = fields.Integer(string="Numero de Pago Masivo")
+    correlative_payment = fields.Integer(string="Numero Correlativo")
+    type = fields.Selection([('detraccion', 'Detracción'), ('retencion', 'Retención'), ('factura', 'Factura')],
+                            string='Tipo de Pago')
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)

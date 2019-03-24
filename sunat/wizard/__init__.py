@@ -5,3 +5,4 @@ from . import inv_perm_val
 from . import consolidated_journal
 from . import merge_assets
 from . import costs
+from . import payment_internet

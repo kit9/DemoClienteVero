@@ -21,10 +21,6 @@ class account_payment(models.Model):
     invoice_ids = fields.Many2many('account.invoice', 'account_invoice_payment_rel', 'payment_id', 'invoice_id',
                                    string="Invoices", copy=False, readonly=False)
 
-    number_payment = fields.Integer(string="Numero de Pago Masivo")
-    type = fields.Selection([('detraccion', 'Detracción'), ('retencion', 'Retención'), ('factura', 'Factura')],
-                            string='Tipo de Pago')
-
     @api.multi
     @api.depends('back_partner_id')
     def _get_banco(self):

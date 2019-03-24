@@ -21,7 +21,7 @@ class advance_payment_line(models.Model):
     original_amount = fields.Float(string="Original Amount")
     balance_amount = fields.Float(string="Balance Amount")
     full_reconclle = fields.Boolean(string="Full Reconclle")
-    allocation = fields.Float(string="Allocation")
+    allocation = fields.Monetary(string="Allocation")
     account_payment_id = fields.Many2one('account.payment')
     diff_amt = fields.Float('Remaining Amount', compute='get_diff_amount', )
     currency_id = fields.Many2one('res.currency', string='Currency')
