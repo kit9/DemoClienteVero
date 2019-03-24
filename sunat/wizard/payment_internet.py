@@ -73,15 +73,16 @@ class InventoryValorized(models.TransientModel):
                 # Agregamos la linea al TXT
                 content_txt = content_txt + "" + txt_line_detalle + salto_linea
 
-        txt_line_cabezera = "%s%s%s%s%s" % (
-            '*',  # 1 ->
-            '20547582510',  # 2 ->
-            company.name.ljust(35, ' ') or "",  # 3 ->
-            num_lote or "",  # 4 ->
-            str("{:.2f}".format(total_monto).replace('.', '')).zfill(15) or "0".zfill(15),  # 5 ->
-        )
+        if len(lst_move_line) > 0:
+            txt_line_cabezera = "%s%s%s%s%s" % (
+                '*',  # 1 ->
+                '20547582510',  # 2 ->
+                company.name.ljust(35, ' ') if company else "",  # 3 ->
+                num_lote or "",  # 4 ->
+                str("{:.2f}".format(total_monto).replace('.', '')).zfill(15) or "0".zfill(15),  # 5 ->
+            )
 
-        content_txt = txt_line_cabezera + salto_linea + content_txt
+            content_txt = txt_line_cabezera + salto_linea + content_txt
 
         self.write({
             'state': 'get',
