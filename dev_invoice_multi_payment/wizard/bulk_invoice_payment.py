@@ -386,33 +386,43 @@ class bulk_inv_detraction(models.TransientModel):
         # Fin de Modificado
 
         for res in result:
+
             payment_method_id = self.env['account.payment.method'].search([('name', '=', 'Manual')], limit=1)
             if not payment_method_id:
                 payment_method_id = self.env['account.payment.method'].search([], limit=1)
             payment_date = False
             if self.payment_date:
                 payment_date = self.payment_date.strftime("%Y-%m-%d")
-            pay_val = {
-                'payment_type': self.payment_type,
-                'payment_date': payment_date,
-                'partner_type': self.partner_type,
-                'payment_for': 'multi_payment',
-                'partner_id': res.get('partner_id'),
-                'journal_id': self.journal_id and self.journal_id.id or False,
-                'communication': self.communication,
-                'payment_method_id': payment_method_id and payment_method_id.id or False,
-                'state': 'draft',
-                'number_payment': num_lote or 0,
-                'correlative_payment': correlativo or 0,
-                'type': 'detraccion',
-                'currency_id': res.get('values')[0].get('currency_id'),
-                'amount': 0.0,
-            }
-            payment_id = self.env['account.payment'].create(pay_val)
-            line_list = []
-            paid_amt = 0
-            inv_ids = []
+            bank_detraccion = False
+            proveedor = self.env['res.partner'].search([('id', 'like', res.get('partner_id'))], limit=1)
+            for bank in proveedor.bank_ids:
+                if bank.is_detraction and not bank_detraccion and not bank.is_retention:
+                    bank_detraccion = bank
+
             for inv_line in res.get('values'):
+
+                pay_val = {
+                    'payment_type': self.payment_type,
+                    'payment_date': payment_date,
+                    'partner_type': self.partner_type,
+                    'payment_for': 'multi_payment',
+                    'partner_id': res.get('partner_id'),
+                    'journal_id': self.journal_id and self.journal_id.id or False,
+                    'communication': self.communication,
+                    'payment_method_id': payment_method_id and payment_method_id.id or False,
+                    'state': 'draft',
+                    'number_payment': num_lote or 0,
+                    'correlative_payment': correlativo or 0,
+                    'type': 'detraccion',
+                    'back_partner_id': bank_detraccion and bank_detraccion.id or False,
+                    'currency_id': res.get('values')[0].get('currency_id'),
+                    'amount': 0.0,
+                }
+                payment_id = self.env['account.payment'].create(pay_val)
+                line_list = []
+                paid_amt = 0
+                inv_ids = []
+
                 invoice = inv_line.get('invoice_id')
                 inv_ids.append(invoice.id)
                 full_reco = False
@@ -430,14 +440,14 @@ class bulk_inv_detraction(models.TransientModel):
                     'account_payment_id': payment_id and payment_id.id or False
                 }))
                 paid_amt += inv_line.get('paid_amount')
-            payment_id.write({
-                'line_ids': line_list,
-                'amount': paid_amt,
-                'invoice_ids': [(6, 0, inv_ids)]
-            })
-            #            payment_id.post()
-            correlativo = correlativo + 1
-            new_payment_ids.append(payment_id)
+                payment_id.write({
+                    'line_ids': line_list,
+                    'amount': paid_amt,
+                    'invoice_ids': [(6, 0, inv_ids)]
+                })
+                #            payment_id.post()
+                correlativo = correlativo + 1
+                new_payment_ids.append(payment_id)
         for pay in new_payment_ids:
             pay.post()
         return True
