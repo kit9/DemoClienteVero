@@ -223,7 +223,7 @@ class bulk_inv_payment(models.TransientModel):
 
                 line_list1 = []
                 line_list1.append((0, 0, {
-                    'invoice_id': invoice.id,
+                    'invoice_id': invoice and invoice.id or False,
                     'account_id': invoice.account_id and invoice.account_id.id or False,
                     'date': invoice.date_invoice,
                     'due_date': invoice.date_due,
@@ -261,7 +261,7 @@ class bulk_inv_payment(models.TransientModel):
 
                     line_list2 = []
                     line_list2.append((0, 0, {
-                        'invoice_id': invoice.id,
+                        'invoice_id': invoice and invoice.id or False,
                         'account_id': invoice.account_id and invoice.account_id.id or False,
                         'date': invoice.date_invoice,
                         'due_date': invoice.date_due,
@@ -376,12 +376,13 @@ class bulk_inv_detraction(models.TransientModel):
         new_payment_ids = []
 
         # Inicio de Modificado
-        correlativo = 0
+        num_lote = 0
+        correlativo = 1
         pago_anterior = self.env['account.payment'].search([], order="id desc", limit=1)
         if pago_anterior.number_payment:
-            correlativo = pago_anterior.number_payment + 1
+            num_lote = pago_anterior.number_payment + 1
         else:
-            correlativo = 1
+            num_lote = 1
         # Fin de Modificado
 
         for res in result:
@@ -401,7 +402,8 @@ class bulk_inv_detraction(models.TransientModel):
                 'communication': self.communication,
                 'payment_method_id': payment_method_id and payment_method_id.id or False,
                 'state': 'draft',
-                'number_payment': correlativo or 0,
+                'number_payment': num_lote or 0,
+                'correlative_payment': correlativo or 0,
                 'type': 'detraccion',
                 'currency_id': res.get('values')[0].get('currency_id'),
                 'amount': 0.0,
@@ -434,6 +436,7 @@ class bulk_inv_detraction(models.TransientModel):
                 'invoice_ids': [(6, 0, inv_ids)]
             })
             #            payment_id.post()
+            correlativo = correlativo + 1
             new_payment_ids.append(payment_id)
         for pay in new_payment_ids:
             pay.post()

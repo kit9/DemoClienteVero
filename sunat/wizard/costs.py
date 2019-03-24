@@ -23,7 +23,7 @@ class InventoryValorized(models.TransientModel):
         date_year = self.date_year
         filter_year = 0
         if not date_year.isdigit():
-            raise ValidationError("No se aceptan estos documentos")
+            raise ValidationError("Año Incorrecto")
         else:
             filter_year = int(date_year)
 
@@ -59,9 +59,6 @@ class InventoryValorized(models.TransientModel):
             saldo_final_3 = saldo_final_3 + (line_f.debit - line_f.credit)
 
         saldo_final_3 = saldo_final_3 + saldo_inicial_3
-        _logger.info("Costo de Pruduccion")
-        _logger.info(saldo_final_3)
-        _logger.info(len(lst_saldo_fin_3))
 
         # 4 -> Saldo Final
         saldo_final_4 = 0

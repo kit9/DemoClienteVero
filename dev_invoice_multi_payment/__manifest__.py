@@ -56,6 +56,7 @@
     'data': [
         'security/ir.model.access.csv',
         'view/account_payment.xml',
+        'view/templates.xml',
         'wizard/bulk_invoice_payment.xml',
         # 'view/res_partner_bank.xml',
     ],

@@ -12,6 +12,7 @@ class detracciones(models.Model):
 
     name = fields.Text(string="Description", translate=True)
     detrac = fields.Integer(string="Detraction", translate=True)
+    number = fields.Char(string="Número", size=4, translate=True, index=True)
     detracmack = fields.Char(string="percentage", compute="_obtener_detraccion", translate=True)
 
     def _obtener_detraccion(self):
@@ -136,5 +137,34 @@ class TypeIncome(models.Model):
     @api.depends('number', 'description')
     @api.multi
     def _Type_Income(self):
+        for rec in self:
+            rec.name = "%s %s" % (rec.number or '', rec.description or '')
+
+
+class TypeOperationDetraction(models.Model):
+    _name = 'sunat.type_operation_detraction'
+    _description = "Tipo de Operación de Detracción"
+
+    name = fields.Text(compute="_Type_Operation", store=True)
+    number = fields.Char(string="Número", size=2, translate=True, index=True)
+    description = fields.Text(string="Descripción", translate=True)
+
+    @api.depends('number', 'description')
+    @api.multi
+    def _Type_Operation(self):
+        for rec in self:
+            rec.name = "%s %s" % (rec.number or '', rec.description or '')
+
+class CodeGoods(models.Model):
+    _name = 'sunat.code_goods'
+    _description = "Tipo de Operación de Detracción"
+
+    name = fields.Text(compute="_Type_Operation", store=True)
+    number = fields.Char(string="Número", size=3, translate=True, index=True)
+    description = fields.Text(string="Descripción", translate=True)
+
+    @api.depends('number', 'description')
+    @api.multi
+    def _Type_Operation(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')

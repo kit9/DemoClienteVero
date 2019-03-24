@@ -47,6 +47,7 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
 
             <xpath expr="//field[@name='name']" position="after">
                 <field name="number_payment"/>
+                <field name="correlative_payment"/>
                 <field name="type"/>
                 <field name="vv_bank"/>
             </xpath>

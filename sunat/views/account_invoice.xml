@@ -78,6 +78,8 @@
                         <field name="num_detraction"/>
                         <field name="proof_mark"/>
                         <field name="classifier_good"/>
+                        <field name="type_operation_id"/>
+                        <field name="code_goods_id"/>
                     </group>
                 </page>
                 <page string="Honorarios">
