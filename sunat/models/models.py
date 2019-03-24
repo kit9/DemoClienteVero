@@ -10,15 +10,26 @@ class detracciones(models.Model):
     _name = 'sunat.detracciones'
     _description = "Codigos de Detracciones"
 
-    name = fields.Text(string="Description", translate=True)
+    # name = fields.Text(string="Description", translate=True)
+    name = fields.Text(string="Description", compute="_detracciones_full", store=True)
+    description = fields.Text(string="Descripción", translate=True)
     detrac = fields.Integer(string="Detraction", translate=True)
-    number = fields.Char(string="Número", size=4, translate=True, index=True)
+    number = fields.Char(string="Número", size=3, translate=True, index=True)
     detracmack = fields.Char(string="percentage", compute="_obtener_detraccion", translate=True)
 
     def _obtener_detraccion(self):
         for rec in self:
             detrac = str(rec.detrac)
             rec.detracmack = "{}%".format(detrac)
+
+    @api.depends('number', 'description')
+    @api.multi
+    def _detracciones_full(self):
+        for rec in self:
+            if rec.description == 'No Aplica':
+                rec.name = rec.description
+            else:
+                rec.name = "%s %s" % (rec.number or '', rec.description or '')
 
 
 class document_type(models.Model):
@@ -154,6 +165,7 @@ class TypeOperationDetraction(models.Model):
     def _Type_Operation(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')
+
 
 class CodeGoods(models.Model):
     _name = 'sunat.code_goods'

@@ -315,7 +315,7 @@ class bulk_inv_detraction(models.TransientModel):
             cuenta_bank_detrac = ""
             for rec in inv.partner_id.bank_ids:
                 if rec.is_detraction:
-                    cuenta_bank_detrac = rec.bank_id.name + " - " + rec.bank_id.bic
+                    cuenta_bank_detrac = rec.bank_id.name + (" - " + rec.bank_id.bic if rec.bank_id.bic else "")
             # Fin Codigo Optimiza
 
             vals.append((0, 0, {

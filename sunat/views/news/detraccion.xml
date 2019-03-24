@@ -9,7 +9,7 @@
                 <sheet>
                     <group>
                         <field name="number"/>
-                        <field name="name"/>
+                        <field name="description"/>
                         <label for="detrac"/>
                         <div>
                             <field name="detrac" class="oe_inline"/>
