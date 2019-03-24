@@ -58,7 +58,8 @@ class InventoryValorized(models.TransientModel):
                     line.partner_id.vat,  # 2 ->
                     line.partner_id.name.ljust(35, ' ') or "",  # 3 ->
                     '000000000',  # 4 ->
-                    str(line_pay.invoice_id.code_goods_id.number).zfill(3) or '',  # 5 ->
+                    str(line_pay.invoice_id.code_goods_id.number).zfill(3) \
+                        if line_pay.invoice_id.code_goods_id else "0".zfill(3),  # 5 ->
                     str(num_cuenta).zfill(11) or '',  # 6 ->
                     str("{:.2f}".format(line.amount).replace('.', '')).zfill(15) or "0".zfill(15),  # 7 ->
                     line_pay.invoice_id.type_operation_id.number or '',  # 8 ->
