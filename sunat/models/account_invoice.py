@@ -91,6 +91,11 @@ class account_invoice(models.Model):
     base_imp_no_gra = fields.Monetary(string="B.I.  Dest.Op. no Grav.", compute="_base_imp_no_gra")
     base_igv_no_gra = fields.Monetary(string="Igv/des/op no Grav.", compute="_base_igv_no_gra")
 
+    type_purchase = fields.Selection([
+        ('01 Compra Interna', '01 Compra Interna'),
+        ('02 Compra Externa', '02 Compra Externa')],
+        string='Tipo de Compra')
+
     # Datos de Factura de Cliente
     inv_type_operation = fields.Selection([('exonerado', 'Exonerado'), ('inafecto', 'Inafecto')],
                                           string='Tipo de Operación')
