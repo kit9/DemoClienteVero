@@ -51,7 +51,8 @@
             </field>
             <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
                 <field name="payment_ids">
-                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']" edit="false">
+                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
+                          edit="false">
                         <field name="payment_date"/>
                         <field name="vv_bank"/>
                         <field name="name"/>
@@ -87,6 +88,10 @@
                         <field name="fourth_suspension"/>
                     </group>
                 </page>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other_info']/group[1]/group[1]/field[@name='name']"
+                   position="after">
+                <field name="type_purchase" string="Tipo de Compra"/>
             </xpath>
         </field>
     </record>
