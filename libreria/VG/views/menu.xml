@@ -1,18 +1,18 @@
 <odoo>
     <!-- Categorias -->
     <data>
-        <menuitem id="chart_of_accounts_menu_root" name="Reportes PLE" parent="account.menu_finance_reports"
+        <menuitem id="PLE_reports" name="Reportes PLE" parent="account.menu_finance_reports"
                   sequence="0"/>
         <!--reportes PLE-->
-        <menuitem id="chart_of_accounts_menu" name="Plan de Cuenta" parent="chart_of_accounts_menu_root"
-                  action="chart_accounts_VG" sequence="1"/>
-        <menuitem id="four_retentions_menu" name="retenciones 4th" parent="chart_of_accounts_menu_root"
+        <menuitem id="chart_account_menu" name="Plan de Cuenta" parent="PLE_reports"
+                  action="chart_account_VG" sequence="1"/>
+        <menuitem id="four_retentions_menu" name="retenciones 4th" parent="PLE_reports"
                   action="four_retentions_VG" sequence="1"/>
-        <menuitem id="not_domiciled_menu" name="No Domiciliados" parent="chart_of_accounts_menu_root"
+        <menuitem id="not_domiciled_menu" name="No Domiciliados" parent="PLE_reports"
                   action="not_domiciled_VG" sequence="1"/>
-        <menuitem id="retentions_menu" name="Retenciones" parent="chart_of_accounts_menu_root"
+        <menuitem id="retentions_menu" name="Retenciones" parent="PLE_reports"
                   action="retentions_VG" sequence="1"/>
-        <menuitem id="record_actives_menu" name="Registro de Activos" parent="chart_of_accounts_menu_root"
+        <menuitem id="record_actives_menu" name="Registro de Activos" parent="PLE_reports"
                   action="record_actives_VG" sequence="1"/>
     </data>
 </odoo>

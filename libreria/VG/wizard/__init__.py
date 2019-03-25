@@ -1,4 +1,4 @@
-from . import chart_accounts
+from . import chart_account
 from . import four_retentions
 from . import not_domiciled
 from . import retentions

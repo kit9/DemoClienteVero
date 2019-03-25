@@ -30,7 +30,7 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'wizard/chart_accounts_view.xml',
+        'wizard/chart_account_view.xml',
         'wizard/retentions_view.xml',
         'wizard/record_actives_view.xml',
         'wizard/four_retentions_view.xml',
