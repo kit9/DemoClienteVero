@@ -21,9 +21,9 @@ class retentions(models.TransientModel):
     @api.multi
     def generate_file(self):
         #filtro fecha
-        dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
+        dominio = [('month_year_move', 'like', self.date_month + "" + self.date_year)]
 
-        lst_account_move_line = self.env['account.move'].search([(dominio),('journal_id.name','like','Retenciones')])
+        lst_account_move_line = self.env['account.move'].search([(dominio)])
         content_txt = ""
         _factura = ""
         _numero = ""
