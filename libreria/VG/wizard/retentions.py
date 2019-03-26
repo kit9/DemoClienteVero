@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class retencion(models.TransientModel):
+class retentions(models.TransientModel):
     _name = "libreria.retentions"
     _description = "Retenciones"
 
