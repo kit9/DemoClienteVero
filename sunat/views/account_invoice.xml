@@ -51,7 +51,7 @@
                         <field name="vv_bank"/>
                         <field name="name"/>
                         <field name="journal_id"/>
-                        <field name="payment_method_id"/>
+                        <field name="payment_methods_id"/>
                         <field name="partner_id" string="Cliente"/>
                         <field name="amount" sum="Importe"/>
                         <field name="state"/>

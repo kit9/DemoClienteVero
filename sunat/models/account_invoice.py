@@ -103,8 +103,11 @@ class account_invoice(models.Model):
         string='Tipo de Venta')
 
     # Datos de Factura de Cliente
-    inv_type_operation = fields.Selection([('exonerado', 'Exonerado'), ('inafecto', 'Inafecto')],
-                                          string='Tipo de Operación')
+    inv_type_operation = fields.Selection([
+        ('1', 'Operación gravada con el IGV'),
+        ('2', 'Operación no gravada con el IGV'),
+        ('3', 'Mixto')
+    ], string='Tipo de Operación')
 
     inv_isc = fields.Monetary(string="ISC", compute="_inv_isc")
     inv_inafecto = fields.Monetary(string="Inafecto", compute="_inv_inafecto")
