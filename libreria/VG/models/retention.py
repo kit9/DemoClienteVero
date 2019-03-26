@@ -14,7 +14,7 @@ class retentions(models.Model):
 
     @api.multi
     @api.depends('create_date')
-    def _get_month_invoice(self):
+    def _get_month_move(self):
         for rec in self:
             if rec.create_date:
                 rec.month_year_move = rec.create_date.strftime("%m%Y")
