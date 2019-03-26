@@ -82,6 +82,8 @@ class account_invoice(models.Model):
     type_operation_id = fields.Many2one('sunat.type_operation_detraction', 'Tipo de Operación de Detracción')
     code_goods_id = fields.Many2one('sunat.code_goods', 'Código de Bienes')
     payment_methods_id = fields.Many2one('sunat.payment_methods', 'Formas de Pago')
+    perception_id = fields.Many2one('sunat.perception', 'Sujeto a Percepción')
+    perception_value = fields.Monetary(string="Percepción", compute="_perception_value")
 
     base_imp = fields.Monetary(string="Base Imponible", compute="_base_imp")
     base_igv = fields.Monetary(string="IGV", compute="_base_igv")
@@ -121,6 +123,13 @@ class account_invoice(models.Model):
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
+
+    @api.multi
+    @api.depends('perception_id', 'amount_total')
+    def _perception_value(self):
+        for rec in self:
+            if rec.perception_id:
+                rec.perception_value = rec.perception_id.percentage * rec.amount_total
 
     @api.multi
     @api.depends('currency_id')

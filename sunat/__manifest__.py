@@ -80,6 +80,7 @@
         'data/Type_Operation_Detraction.xml',
         'data/CodeGoods.xml',
         'data/PaymentMethods.xml',
+        'data/Perception.xml',
         'data/uom_data.xml',
     ],
 }

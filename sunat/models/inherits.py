@@ -163,6 +163,7 @@ class res_partner_bank(models.Model):
 
     account_type = fields.Selection([('C', 'Cuenta Corriente'), ('M', 'Cuenta Maestra'), ],
                                     string='Tipo de Cuenta')
+    branch_office = fields.Char(string="Sucursal")
 
 
 class AccountInvoiceLine(models.Model):

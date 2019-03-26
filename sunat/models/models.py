@@ -195,3 +195,19 @@ class PaymentMethods(models.Model):
     def _payment_methods(self):
         for rec in self:
             rec.name = "%s %s" % (rec.number or '', rec.description or '')
+
+
+class Perception(models.Model):
+    _name = 'sunat.perception'
+    _description = "Porcentaje de Percepción"
+
+    name = fields.Text(compute="_perception", store=True)
+    number = fields.Char(string="Número", size=3, translate=True, index=True)
+    percentage = fields.Float(string="Porcentaje", translate=True)
+    description = fields.Text(string="Descripción", translate=True)
+
+    @api.depends('number', 'description')
+    @api.multi
+    def _perception(self):
+        for rec in self:
+            rec.name = "%s %s" % (rec.number or '', rec.description or '')

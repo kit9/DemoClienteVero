@@ -168,6 +168,7 @@
             </xpath>
             <xpath expr="//group/group/div" position="after">
                 <field name="exchange_rate"/>
+                <field name="perception_id"/>
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="SUNAT">
@@ -184,6 +185,9 @@
                         </group>
                     </group>
                 </page>
+            </xpath>
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="perception_value"/>
             </xpath>
         </field>
     </record>

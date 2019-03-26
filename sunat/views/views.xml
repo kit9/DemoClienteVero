@@ -372,7 +372,7 @@
         </field>
     </record>
 
-    <!--Formulario - Categoria de Producto-->
+    <!--Formulario - Rest Partner Bank-->
     <record id="res_partner_bank_form_inherit" model="ir.ui.view">
         <field name="name">res.partner.bank.form.inherit</field>
         <field name="model">res.partner.bank</field>
@@ -381,6 +381,9 @@
             <xpath expr="//field[@name='acc_type']" position="replace">
                 <field name="acc_type" invisible="1"/>
                 <field name="account_type" required="True"/>
+            </xpath>
+            <xpath expr="//field[@name='acc_holder_name']" position="after">
+                <field name="branch_office"/>
             </xpath>
         </field>
     </record>
