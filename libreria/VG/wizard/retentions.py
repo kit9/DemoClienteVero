@@ -10,6 +10,9 @@ class retencion(models.TransientModel):
     _name = "libreria.retentions"
     _description = "Retenciones"
 
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
     state = fields.Selection(
         [('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
@@ -17,18 +20,19 @@ class retencion(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-        # Data - Jcondori
+        #filtro fecha
+        dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
 
-        lst_account_move_line = self.env['account.move'].search([('journal_id.name','like','Retenciones')])
+        lst_account_move_line = self.env['account.move'].search([(dominio),('journal_id.name','like','Retenciones')])
         content_txt = ""
         _factura = ""
         _numero = ""
         _total = ""
         _estado_ope = ""
 
-        # Iterador - Jcondori
+        # Iterador
         for line in lst_account_move_line:
-            # Asiento Conta
+
 
             # factura
             for imp in line.line_ids:
@@ -45,7 +49,7 @@ class retencion(models.TransientModel):
                 if imp3.invoice_id.amount_total:
                     _total = imp3.invoice_id.amount_total
 
-            #10
+            #10 valilador de estado de fecha
                 if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                     _estado_ope = "01"
                 else:
