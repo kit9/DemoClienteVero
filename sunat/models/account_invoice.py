@@ -96,6 +96,11 @@ class account_invoice(models.Model):
         ('02 Compra Externa', '02 Compra Externa')],
         string='Tipo de Compra')
 
+    type_sales = fields.Selection([
+        ('01 Interna', '01 Interna'),
+        ('02 Externa', '02 Externa')],
+        string='Tipo de Venta')
+
     # Datos de Factura de Cliente
     inv_type_operation = fields.Selection([('exonerado', 'Exonerado'), ('inafecto', 'Inafecto')],
                                           string='Tipo de Operación')

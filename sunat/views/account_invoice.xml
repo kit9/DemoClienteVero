@@ -152,6 +152,7 @@
                 <field name="type_ident" readonly="1"/>
                 <field name="num_ident" readonly="1"/>
                 <field name="inv_type_operation"/>
+                <field name="type_sales"/>
             </field>
             <xpath expr="//group/group/div" position="after">
                 <field name="exchange_rate"/>
