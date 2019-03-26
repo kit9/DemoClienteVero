@@ -51,7 +51,7 @@ class not_domiciled(models.TransientModel):
                            # Facturas de proveedor
                            line.date_invoice or '',  # 01 Hoja 1 (Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
-                           line.move_id.display_name or '',  # 03 Hoja 3 (Asiento Contable)
+                           line.move_id.ref or '',  # 03 Hoja 3 (Asiento Contable)
                            line.date_document or '',  # 04 Hoja 4 (Fecha de Documento)
                            line.document_type_id.number or '',  # 05 Hoja 5 (Tipo de Documento)
                            line.invoice_serie or '',  # 06 Hoja 6 (Serie)
