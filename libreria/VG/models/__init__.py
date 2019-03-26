@@ -3,4 +3,4 @@
 from . import models
 from . import inherits
 from . import chart_accounts
-from . import retentions
+from . import retention
