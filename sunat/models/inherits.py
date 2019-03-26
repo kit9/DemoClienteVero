@@ -161,6 +161,9 @@ class res_partner_bank(models.Model):
     is_retention = fields.Boolean(string="Retención")
     priority = fields.Integer(string="Prioridad")
 
+    account_type = fields.Selection([('C', 'Cuenta Corriente'), ('M', 'Cuenta Maestra'), ],
+                                    string='Tipo de Cuenta')
+
 
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
