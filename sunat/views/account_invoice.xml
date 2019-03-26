@@ -49,7 +49,7 @@
                           edit="false">
                         <field name="payment_date"/>
                         <field name="vv_bank"/>
-                        <field name="name"/>
+                        <field name="operation_number"/>
                         <field name="journal_id"/>
                         <field name="payment_methods_id"/>
                         <field name="partner_id" string="Cliente"/>

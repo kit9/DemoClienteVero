@@ -286,6 +286,7 @@ class AccountPayment(models.Model):
                             string='Tipo de Pago')
 
     payment_methods_id = fields.Many2one('sunat.payment_methods', string='Forma de Pago')
+    operation_number = fields.Char(string='Número de Operación')
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
