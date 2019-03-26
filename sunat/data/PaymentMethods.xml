@@ -1,0 +1,85 @@
+<odoo>
+
+    <record model="sunat.payment_methods" id="001">
+        <field name="number">001</field>
+        <field name="description">DEPÓSITO EN CUENTA</field>
+    </record>
+    <record model="sunat.payment_methods" id="002">
+        <field name="number">002</field>
+        <field name="description">GIRO</field>
+    </record>
+    <record model="sunat.payment_methods" id="003">
+        <field name="number">003</field>
+        <field name="description">TRANSFERENCIA DE FONDOS</field>
+    </record>
+    <record model="sunat.payment_methods" id="004">
+        <field name="number">004</field>
+        <field name="description">ORDEN DE PAGO</field>
+    </record>
+    <record model="sunat.payment_methods" id="005">
+        <field name="number">005</field>
+        <field name="description">TARJETA DE DÉBITO</field>
+    </record>
+    <record model="sunat.payment_methods" id="006">
+        <field name="number">006</field>
+        <field name="description">TARJETA DE CRÉDITO</field>
+    </record>
+    <record model="sunat.payment_methods" id="007">
+        <field name="number">007</field>
+        <field name="description">CHEQUES CON LA CLÁUSULA DE "NO NEGOCIABLE", "INTRANSFERIBLES", "NO A LA ORDEN" U OTRA EQUIVALENTE, A QUE SE REFIERE EL INCISO F) DEL ARTICULO 5° DEL DECRETO LEGISLATIVO.
+        </field>
+    </record>
+    <record model="sunat.payment_methods" id="008">
+        <field name="number">008</field>
+        <field name="description">EFECTIVO, POR OPERACIONES EN LAS QUE NO EXISTE OBLIGACIÓN DE UTILIZAR MEDIOS DE PAGO</field>
+    </record>
+    <record model="sunat.payment_methods" id="009">
+        <field name="number">009</field>
+        <field name="description">EFECTIVO, EN LOS DEMÁS CASOS</field>
+    </record>
+    <record model="sunat.payment_methods" id="010">
+        <field name="number">010</field>
+        <field name="description">MEDIOS DE PAGO DE COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="011">
+        <field name="number">011</field>
+        <field name="description">LETRAS DE CAMBIO</field>
+    </record>
+    <record model="sunat.payment_methods" id="101">
+        <field name="number">101</field>
+        <field name="description">TRANSFERENCIAS - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="102">
+        <field name="number">102</field>
+        <field name="description">CHEQUES BANCARIOS - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="103">
+        <field name="number">103</field>
+        <field name="description">ORDEN DE PAGO SIMPLE - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="104">
+        <field name="number">104</field>
+        <field name="description">ORDEN DE PAGO DOCUMENTARIO - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="105">
+        <field name="number">105</field>
+        <field name="description">REMESA SIMPLE - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="106">
+        <field name="number">106</field>
+        <field name="description">REMESA DOCUMENTARIA - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="107">
+        <field name="number">107</field>
+        <field name="description">CARTA DE CRÉDITO SIMPLE - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="108">
+        <field name="number">108</field>
+        <field name="description">CARTA DE CRÉDITO DOCUMENTARIO - COMERCIO EXTERIOR</field>
+    </record>
+    <record model="sunat.payment_methods" id="999">
+        <field name="number">999</field>
+        <field name="description">OTROS MEDIOS DE PAGO (ESPECIFICAR)</field>
+    </record>
+
+</odoo>

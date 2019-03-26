@@ -81,6 +81,7 @@ class account_invoice(models.Model):
 
     type_operation_id = fields.Many2one('sunat.type_operation_detraction', 'Tipo de Operación de Detracción')
     code_goods_id = fields.Many2one('sunat.code_goods', 'Código de Bienes')
+    payment_methods_id = fields.Many2one('sunat.payment_methods', 'Formas de Pago')
 
     base_imp = fields.Monetary(string="Base Imponible", compute="_base_imp")
     base_igv = fields.Monetary(string="IGV", compute="_base_igv")

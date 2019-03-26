@@ -78,6 +78,7 @@
         'data/TypeIncome.xml',
         'data/Type_Operation_Detraction.xml',
         'data/CodeGoods.xml',
+        'data/PaymentMethods.xml',
         'data/uom_data.xml',
     ],
 }
