@@ -21,7 +21,7 @@ class AccountInvoiceConfirm(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-        dominio = [('type', 'in', ['out_invoice', 'in_refund']),
+        dominio = [('type', 'in', ['out_invoice', 'out_refund']),
                    ('state', 'not like', 'draft'),
                    ('month_year_inv', 'like', self.date_month + "" + self.date_year)
                    # ('month_year_inv', 'like', '032019')
