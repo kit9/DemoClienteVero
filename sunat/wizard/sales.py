@@ -95,7 +95,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                     content = content + "" + txt_line_detalle + "\r\n"
             else:
                 txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" \
-                                   "%s|%s|%s|%s|%s|%s|%s|%s" % (
+                                   "%s|%s|%s|%s|%s|%s|%s|%s|" % (
                                        inv.type_sales[:2] if inv.type_sales else '',
                                        inv.document_type_id.number or '',
                                        '',
