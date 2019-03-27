@@ -28,7 +28,7 @@ class InventoryValorized(models.TransientModel):
             filter_year = int(date_year)
 
         content_txt = ""
-        lst_move_line = self.env['account.payment'].search([
+        lst_payments = self.env['account.payment'].search([
             ('type', 'like', 'detraccion'),
             ('month_year_inv', 'like', self.date_month + "" + self.date_year)
         ])
@@ -40,7 +40,7 @@ class InventoryValorized(models.TransientModel):
         salto_linea = "\r\n"
         # salto_linea = "<br/>"
 
-        for line in lst_move_line:
+        for line in lst_payments:
 
             if not company:
                 company = line.company_id
@@ -74,7 +74,7 @@ class InventoryValorized(models.TransientModel):
                 # Agregamos la linea al TXT
                 content_txt = content_txt + "" + txt_line_detalle + salto_linea
 
-        if len(lst_move_line) > 0:
+        if len(lst_payments) > 0:
             txt_line_cabezera = "%s%s%s%s%s" % (
                 '*',  # 1 ->
                 '20547582510',  # 2 ->

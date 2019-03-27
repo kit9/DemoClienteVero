@@ -84,15 +84,18 @@ class bulk_inv_payment(models.TransientModel):
         return res
 
     name = fields.Char('Name', default='hello')
-    payment_type = fields.Selection(
-        [('outbound', 'Send Money'), ('inbound', 'Receive Money'), ('transfer', 'Transfer')], string="Payment Type",
-        required="1")
+    payment_type = fields.Selection([('outbound', 'Send Money'),
+                                     ('inbound', 'Receive Money'),
+                                     ('transfer', 'Transfer')],
+                                    string="Payment Type", required="1")
     payment_date = fields.Date('Payment Date', required="1")
     communication = fields.Char('Memo')
     partner_type = fields.Selection([('customer', 'Customer'), ('supplier', 'Supplier')], string='Partner Type')
     journal_id = fields.Many2one('account.journal', string='Payment Method', required=True,
                                  domain=[('type', 'in', ('bank', 'cash'))])
     invoice_ids = fields.One2many('bulk.invoice', 'bulk_invoice_id', string='Invoice')
+
+    payment_methods_id = fields.Many2one('sunat.payment_methods', string='Forma de Pago')
 
     @api.multi
     def process_payment(self):
@@ -160,15 +163,12 @@ class bulk_inv_payment(models.TransientModel):
                 else:
                     is_retencion = False
 
-                tipo = ""
                 if is_retencion:
                     tipo = "retencion"
                 else:
                     tipo = "factura"
 
-                journal = False
-                banco = False
-                currency = False
+                Tipo_Pago = False
                 if tipo == "retencion":
                     journal = retention_journal
                     banco = bank_retencion
@@ -182,6 +182,7 @@ class bulk_inv_payment(models.TransientModel):
                     journal = self.journal_id
                     banco = bank_factura
                     currency = res.get('values')[0].get('currency_id')
+                    Tipo_Pago = self.payment_methods_id
 
                 # Pago 1
                 pay_val = {
@@ -195,6 +196,7 @@ class bulk_inv_payment(models.TransientModel):
                     'payment_method_id': payment_method_id and payment_method_id.id or False,
                     'state': 'draft',
                     'type': tipo,
+                    'payment_methods_id': Tipo_Pago and Tipo_Pago.id or False,
                     'back_partner_id': banco and banco.id or False,
                     'currency_id': currency,
                     'amount': 0.0,
@@ -253,6 +255,7 @@ class bulk_inv_payment(models.TransientModel):
                         'payment_method_id': payment_method_id and payment_method_id.id or False,
                         'state': 'draft',
                         'type': 'factura',
+                        'payment_methods_id': self.payment_methods_id and self.payment_methods_id.id or False,
                         'back_partner_id': bank_factura and bank_factura.id or False,
                         'currency_id': res.get('values')[0].get('currency_id'),
                         'amount': 0.0,

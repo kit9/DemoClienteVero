@@ -161,6 +161,10 @@ class res_partner_bank(models.Model):
     is_retention = fields.Boolean(string="Retención")
     priority = fields.Integer(string="Prioridad")
 
+    account_type = fields.Selection([('C', 'Cuenta Corriente'), ('M', 'Cuenta Maestra'), ],
+                                    string='Tipo de Cuenta')
+    branch_office = fields.Char(string="Sucursal")
+
 
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
@@ -274,9 +278,7 @@ class StockMoveLine(models.Model):
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    # seat_name = fields.Char(string="Asiento", related="journal_id.name")
     seat_name = fields.Char(string="Asiento", related="journal_id.sequence_id.name")
-    # seat_code = fields.Integer(string="ID Asiento", related="journal_id.id")
     seat_code = fields.Integer(string="ID Asiento", related="journal_id.sequence_id.id")
 
     # Usados por la libreria de Pagos Masivos
@@ -286,6 +288,9 @@ class AccountPayment(models.Model):
     correlative_payment = fields.Integer(string="Numero Correlativo")
     type = fields.Selection([('detraccion', 'Detracción'), ('retencion', 'Retención'), ('factura', 'Factura')],
                             string='Tipo de Pago')
+
+    payment_methods_id = fields.Many2one('sunat.payment_methods', string='Forma de Pago')
+    operation_number = fields.Char(string='Número de Operación')
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)

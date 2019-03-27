@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class retencion(models.TransientModel):
+class retentions(models.TransientModel):
     _name = "libreria.retentions"
     _description = "Retenciones"
 
@@ -21,9 +21,9 @@ class retencion(models.TransientModel):
     @api.multi
     def generate_file(self):
         #filtro fecha
-        dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
+        dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),('journal_id.name','like','Retenciones')]
 
-        lst_account_move_line = self.env['account.move'].search([(dominio),('journal_id.name','like','Retenciones')])
+        lst_account_move_line = self.env['account.move'].search(dominio1)
         content_txt = ""
         _factura = ""
         _numero = ""
@@ -73,6 +73,7 @@ class retencion(models.TransientModel):
                 _total or '', #8
                 line.amount or '', #9
                 _estado_ope or '', #10
+                #line.journal_id.name or '',
                 )
 
             # Agregamos la linea al TXT
