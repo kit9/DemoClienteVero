@@ -41,6 +41,7 @@
     <menuitem id="purchase_report_sunat_menu" name="Compras" sequence="1" parent="tributario_menu_root" action="purchase_report_txt"/>
     <menuitem id="payment_methods_report_menu" name="Formas de Pago pdb" sequence="1" parent="tributario_menu_root" action="payment_methods_report_txt"/>
     <menuitem id="sales_report_menu" name="Ventas pdb" sequence="1" parent="tributario_menu_root" action="sales_report_txt"/>
+    <menuitem id="payment_provider_menu" name="Pago a Proveedores" sequence="1" parent="tributario_menu_root" action="payment_provider_sunat"/>
     <!-- <menuitem id="chart_accounts_menu" name="Plan de Cuentas" sequence="1" parent="tributario_menu_root" action="chart_accounts_sunat"/> -->
 
 </odoo>
