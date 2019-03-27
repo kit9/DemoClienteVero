@@ -48,8 +48,8 @@ class not_domiciled(models.TransientModel):
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                           # Facturas de proveedor
-                line.date_invoice.strftime("%Y%m00") or '',  # 01 Hoja 1 (Fecha Contable)
+                # Facturas de proveedor
+                line.date_invoice or '',  # 01 Hoja 1 (Fecha Contable)
                 line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
                 line.move_id.ref or '',  # 03 Hoja 3 (Asiento Contable)
                 line.date_document or '',  # 04 Hoja 4 (Fecha de Documento)
