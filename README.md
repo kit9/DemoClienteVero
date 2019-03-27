@@ -1,1 +1,1 @@
-#   https://github.com/odooerpdevelopers/odoo11-course - Produccion
+#   https://github.com/odooerpdevelopers/odoo11-course
