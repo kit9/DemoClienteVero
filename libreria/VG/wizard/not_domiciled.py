@@ -49,7 +49,7 @@ class not_domiciled(models.TransientModel):
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Facturas de proveedor
-                           line.date_invoice or '',  # 01 Hoja 1 (Fecha Contable)
+                           line.date_invoice.strftime("%Y%m00") or '',  # 01 Hoja 1 (Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
                            line.move_id.display_name or '',  # 03 Hoja 3 (Asiento Contable)
                            line.date_document or '',  # 04 Hoja 4 (Fecha de Documento)
@@ -84,7 +84,7 @@ class not_domiciled(models.TransientModel):
                            '',  # 33 Hoja 30 null
                            line.partner_id.x_studio_convenios or '',  # 34 Hoja 31 (Convenios)
                            line.x_studio_exoneraciones or '',  # 35 Hoja 32 (Exoneraciones)
-                           line.type_income_id.number or '', # 36 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
+                           line.type_income_id.number or '', # 36 Hoja 33 (2 tipos de renta)
                            line.x_studio_modalidad_de_servicio or '',  # 37 Hoja 34 (Modalidad de Servicio)
                            line.message_needaction or '',  # 38 Hoja 35 (Aplicacion parrafo art. 76)
                            estado_ope or ''  # 39 Hoja 36
