@@ -55,7 +55,7 @@ class AccountInvoiceConfirm(models.TransientModel):
             if len(inv.payment_ids) > 0:
                 for payment in inv.payment_ids:
                     txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" \
-                                       "%s|%s|%s|%s|%s|%s|%s|%s" % (
+                                       "%s|%s|%s|%s|%s|%s|%s|%s|" % (
                                            inv.type_sales[:2] if inv.type_sales else '',
                                            inv.document_type_id.number or '',
                                            payment.payment_date.strftime("%d/%m/%Y") \
