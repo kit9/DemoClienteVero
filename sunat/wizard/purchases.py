@@ -110,7 +110,7 @@ class AccountInvoiceConfirm(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content.encode('ISO-8859-1')),
-            'txt_filename': "c%s%s%s.txt" % (
+            'txt_filename': "C%s%s%s.txt" % (
                 ruc or '00000000000',
                 self.date_year,
                 self.date_month
