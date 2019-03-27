@@ -74,7 +74,7 @@ class InventoryValorized(models.TransientModel):
                     line.communication.ljust(40, ' ') \
                         if line.communication else ' '.ljust(40, ' '),  # 8 ->
                     'N',  # 9 ->
-                    num_cuenta.zfill(15),  # 10 ->
+                    str(num_cuenta).zfill(15),  # 10 ->
                 )
 
                 total_monto = total_monto + line.amount
