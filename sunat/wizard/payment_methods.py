@@ -44,7 +44,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                 if not ruc or len(ruc) < 7:
                     ruc = line.invoice_id.company_id.vat
 
-                txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                     line.invoice_id.type_purchase[:2] if line.invoice_id.type_purchase else '',
                     line.invoice_id.document_type_id.number or '',
                     line.invoice_id.invoice_serie or '',

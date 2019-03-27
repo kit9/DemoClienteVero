@@ -69,7 +69,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                 Campo30 = inv.amount_tax
 
             txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" \
-                               "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                               "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                                    inv.type_purchase[:2] if inv.type_purchase else '',
                                    inv.document_type_id.number or '',
                                    inv.date_document.strftime("%d/%m/%Y") if inv.date_document else '',
