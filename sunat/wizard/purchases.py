@@ -76,8 +76,8 @@ class AccountInvoiceConfirm(models.TransientModel):
                                    str(inv.document_type_id.number) + str(inv.invoice_number) \
                                        if inv.document_type_id.number and inv.invoice_number else '',
                                    inv.partner_id.person_type[:2] if inv.partner_id.person_type else '',
-                                   inv.partner_id.catalog_06_id.code.zfill(
-                                       2) if inv.partner_id.catalog_06_id.code else '',
+                                   inv.partner_id.catalog_06_id.code.zfill(2) \
+                                       if inv.partner_id.catalog_06_id.code else '',
                                    inv.partner_id.vat or '',
                                    inv.partner_id.name or '',
                                    inv.partner_id.ape_pat or '',

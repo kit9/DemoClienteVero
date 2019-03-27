@@ -182,12 +182,14 @@
                         <group>
                             <h2>Exportación</h2>
                             <field name="export_invoice"/>
+                            <field name="num_comp_serie"/>
+                            <field name="num_perception"/>
                         </group>
                     </group>
                 </page>
             </xpath>
-            <xpath expr="//field[@name='amount_total']" position="after">
-                <field name="perception_value"/>
+            <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="perception_value" attrs="{'invisible':[('perception_id', '=', False)]}"/>
             </xpath>
         </field>
     </record>

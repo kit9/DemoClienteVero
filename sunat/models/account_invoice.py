@@ -83,7 +83,7 @@ class account_invoice(models.Model):
     code_goods_id = fields.Many2one('sunat.code_goods', 'Código de Bienes')
     payment_methods_id = fields.Many2one('sunat.payment_methods', 'Formas de Pago')
     perception_id = fields.Many2one('sunat.perception', 'Sujeto a Percepción')
-    perception_value = fields.Monetary(string="Percepción", compute="_perception_value")
+    perception_value = fields.Monetary(string="Percepción", compute="_compute_amount")
 
     base_imp = fields.Monetary(string="Base Imponible", compute="_base_imp")
     base_igv = fields.Monetary(string="IGV", compute="_base_igv")
@@ -119,17 +119,20 @@ class account_invoice(models.Model):
 
     inv_otros = fields.Char(string='Otros')
 
+    num_comp_serie = fields.Char(string='Numero de Comp. N1 de Serie')
+    num_perception = fields.Char(string='Numero de Percepción')
+
     inv_no_gravado = fields.Monetary(string="No Gravado", compute="_inv_no_gravado")
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
-    @api.multi
-    @api.depends('perception_id', 'amount_total')
-    def _perception_value(self):
-        for rec in self:
-            if rec.perception_id:
-                rec.perception_value = rec.perception_id.percentage * rec.amount_total
+    # @api.multi
+    # @api.depends('perception_id', 'amount_total')
+    # def _perception_value(self):
+    #     for rec in self:
+    #         if rec.perception_id:
+    #             rec.perception_value = rec.perception_id.percentage * rec.amount_total
 
     @api.multi
     @api.depends('currency_id')
@@ -580,8 +583,7 @@ class account_invoice(models.Model):
     @api.multi
     def _calcular_detrac(self):
         for rec in self:
-            rec.detraccion = rec.amount_total * \
-                             (rec.detrac_id.detrac / 100)
+            rec.detraccion = rec.amount_total * (rec.detrac_id.detrac / 100)
 
     # # Trial Action
     # @api.multi
@@ -600,3 +602,30 @@ class account_invoice(models.Model):
                     rec.total_pagar = 0
             else:
                 rec.total_pagar = rec.residual_signed
+
+    # Reemplazamos un metodo de odoo para agregar la Percepcion
+    @api.one
+    @api.depends('invoice_line_ids.price_subtotal', 'tax_line_ids.amount', 'tax_line_ids.amount_rounding',
+                 'currency_id', 'company_id', 'date_invoice', 'type', 'perception_id')
+    def _compute_amount(self):
+        round_curr = self.currency_id.round
+        self.amount_untaxed = sum(line.price_subtotal for line in self.invoice_line_ids)
+        self.amount_tax = sum(round_curr(line.amount_total) for line in self.tax_line_ids)
+
+        self.amount_total = self.amount_untaxed + self.amount_tax + self.perception_value
+        self.perception_value = self.amount_total * (self.perception_id.percentage / 100)
+
+        self.amount_total = self.amount_total + self.perception_value
+        amount_total_company_signed = self.amount_total
+        amount_untaxed_signed = self.amount_untaxed
+        if self.currency_id and self.company_id and self.currency_id != self.company_id.currency_id:
+            currency_id = self.currency_id
+            amount_total_company_signed = currency_id._convert(self.amount_total, self.company_id.currency_id,
+                                                               self.company_id,
+                                                               self.date_invoice or fields.Date.today())
+            amount_untaxed_signed = currency_id._convert(self.amount_untaxed, self.company_id.currency_id,
+                                                         self.company_id, self.date_invoice or fields.Date.today())
+        sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
+        self.amount_total_company_signed = amount_total_company_signed * sign
+        self.amount_total_signed = self.amount_total * sign
+        self.amount_untaxed_signed = amount_untaxed_signed * sign
