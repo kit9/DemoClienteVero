@@ -127,13 +127,6 @@ class account_invoice(models.Model):
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
-    # @api.multi
-    # @api.depends('perception_id', 'amount_total')
-    # def _perception_value(self):
-    #     for rec in self:
-    #         if rec.perception_id:
-    #             rec.perception_value = rec.perception_id.percentage * rec.amount_total
-
     @api.multi
     @api.depends('currency_id')
     def _get_exchange_rate(self):
