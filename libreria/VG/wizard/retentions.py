@@ -62,18 +62,18 @@ class retentions(models.TransientModel):
                             _estado_ope = "09"
 
                 # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date.strftime("%Y%m00") or '',  # 1
-                line.name or '',  # 2
-                line.id or '',  # 3
-                line.date or '',  # 4
-                _factura or '',  # 5
-                _numero or '',  # 6
-                line.partner_id.name or '',  # 7
-                _total or '',  # 8
-                line.amount or '',  # 9
-                _estado_ope or '',  # 10
-                # line.journal_id.name or '',
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                line.date.strftime("%Y%m00") or '|',  # 1
+                line.name or '|',  # 2
+                line.id or '|',  # 3
+                line.date or '|',  # 4
+                _factura or '|',  # 5
+                _numero or '|',  # 6
+                line.partner_id.name or '|',  # 7
+                _total or '|',  # 8
+                line.amount or '|',  # 9
+                _estado_ope or '|',  # 10
+                line.journal_id.name or '|'
             )
 
             # Agregamos la linea al TXT
