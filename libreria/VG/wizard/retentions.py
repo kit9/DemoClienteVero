@@ -20,10 +20,11 @@ class retentions(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-        #filtro fecha
-        dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),('journal_id.name','like','Retenciones')]
+        # filtro fecha
+        dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),
+                    ('journal_id.name', 'like', 'Retenciones')]
 
-        lst_account_move_line = self.env['account.move'].search(dominio1)
+        lst_account_move_line = self.env['account.move'].search([])
         content_txt = ""
         _factura = ""
         _numero = ""
@@ -33,7 +34,6 @@ class retentions(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-
             # factura
             for imp in line.line_ids:
                 if imp.invoice_id.id:
@@ -42,14 +42,14 @@ class retentions(models.TransientModel):
             # numero
             for imp2 in line.line_ids:
                 if imp2.invoice_id.invoice_number:
-                   _numero = imp2.invoice_id.invoice_number
+                    _numero = imp2.invoice_id.invoice_number
 
-            #total
+            # total
             for imp3 in line.line_ids:
                 if imp3.invoice_id.amount_total:
                     _total = imp3.invoice_id.amount_total
 
-            #10 valilador de estado de fecha
+                # 10 valilador de estado de fecha
                 if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                     _estado_ope = "01"
                 else:
@@ -67,14 +67,14 @@ class retentions(models.TransientModel):
                 line.name or '',  # 2
                 line.id or '',  # 3
                 line.date or '',  # 4
-                _factura or '', #5
-                _numero or '', #6
-                line.partner_id.name or '', #7
-                _total or '', #8
-                line.amount or '', #9
-                _estado_ope or '', #10
-                #line.journal_id.name or '',
-                )
+                _factura or '',  # 5
+                _numero or '',  # 6
+                line.partner_id.name or '',  # 7
+                _total or '',  # 8
+                line.amount or '',  # 9
+                _estado_ope or '',  # 10
+                # line.journal_id.name or '',
+            )
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
