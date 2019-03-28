@@ -42,6 +42,12 @@ class AccountInvoiceConfirm(models.TransientModel):
             if not ruc or len(ruc) < 7:
                 ruc = inv.company_id.vat
 
+            campo14 = 9
+            if inv.currency_id.name == "PEN":
+                campo14 = 1
+            elif inv.currency_id.name == "USD":
+                campo14 = 2
+
             Campo20 = 0
             for line in inv.invoice_line_ids:
                 for imp in line.invoice_line_tax_ids:
@@ -69,12 +75,12 @@ class AccountInvoiceConfirm(models.TransientModel):
                 Campo30 = inv.amount_tax
 
             txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" \
-                               "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
+                               "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
                                    inv.type_purchase[:2] if inv.type_purchase else '',
                                    inv.document_type_id.number or '',
                                    inv.date_document.strftime("%d/%m/%Y") if inv.date_document else '',
-                                   str(inv.document_type_id.number) + str(inv.invoice_number) \
-                                       if inv.document_type_id.number and inv.invoice_number else '',
+                                   inv.document_type_id.number or '',
+                                   inv.invoice_number or '',
                                    inv.partner_id.person_type[:2] if inv.partner_id.person_type else '',
                                    inv.partner_id.catalog_06_id.code.zfill(2) \
                                        if inv.partner_id.catalog_06_id.code else '',
@@ -84,7 +90,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                                    inv.partner_id.ape_mat or '',
                                    inv.partner_id.nombres or '',
                                    '',
-                                   inv.currency_id.name,
+                                   campo14,
                                    inv.type_operation,
                                    '1' if inv.type_operation else '',
                                    inv.base_imp or '',

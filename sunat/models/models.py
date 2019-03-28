@@ -194,7 +194,10 @@ class PaymentMethods(models.Model):
     @api.multi
     def _payment_methods(self):
         for rec in self:
-            rec.name = "%s %s" % (rec.number or '', rec.description or '')
+            if len(rec.description) < 51:
+                rec.name = "%s %s" % (rec.number or '', rec.description or '')
+            else:
+                rec.name = "%s %s..." % (rec.number or '', rec.description[:50] or '')
 
 
 class Perception(models.Model):
