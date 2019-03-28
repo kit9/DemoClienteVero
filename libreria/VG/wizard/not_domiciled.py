@@ -25,6 +25,7 @@ class not_domiciled(models.TransientModel):
         impuesto = ""
         cantidad = ""
         check = ""
+        orden = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -45,14 +46,15 @@ class not_domiciled(models.TransientModel):
                     estado_ope = "0"
                 else:
                     estado_ope = "0"
-
+            if line.date_invoice:
+                orden = line.date_invoice.strftime("%Y%m00")
             # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,9
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 # Facturas de proveedor
-                line.date_invoice.strftime("%Y%m00") or '',  # 01 Hoja 1 (Fecha Contable)
+                orden or '',  # 01 Hoja 1 (Fecha Contable)
                 line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
                 line.move_id.ref or '',  # 03 Hoja 3 (Asiento Contable)
                 line.date_document or '',  # 04 Hoja 4 (Fecha de Documento)
