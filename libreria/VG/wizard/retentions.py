@@ -35,7 +35,7 @@ class retentions(models.TransientModel):
 
 
             # factura
-            for imp in line.line_ids:
+            for imp in account.move.line_ids:
                 if imp.invoice_id.id:
                     _factura = imp.invoice_id.id
 
