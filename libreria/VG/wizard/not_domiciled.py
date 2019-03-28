@@ -24,6 +24,7 @@ class not_domiciled(models.TransientModel):
         estado_ope = ""
         impuesto = ""
         cantidad = ""
+        check = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -34,6 +35,8 @@ class not_domiciled(models.TransientModel):
             for p2 in line.payment_ids:
                 if p2.amount:
                     cantidad = p2.amount
+                if line.message_needaction:
+                    check = "1"
                 # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
@@ -86,7 +89,7 @@ class not_domiciled(models.TransientModel):
                 line.x_studio_exoneraciones or '',  # 35 Hoja 32 (Exoneraciones)
                 line.type_income_id.number or '', # 36 Hoja 33 (2 tipos de renta)
                 line.x_studio_modalidad_de_servicio or '',  # 37 Hoja 34 (Modalidad de Servicio)
-                line.message_needaction or '',  # 38 Hoja 35 (Aplicacion parrafo art. 76)
+                check or '',  # 38 Hoja 35 (Aplicacion parrafo art. 76, marcado = 1, sino 0)
                 estado_ope or ''  # 39 Hoja 36
 
                        )
