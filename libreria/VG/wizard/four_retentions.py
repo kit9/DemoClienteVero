@@ -10,8 +10,10 @@ class four_retentions(models.TransientModel):
     _name = "libreria.four_retentions"
     _description = "retenciones_4th"
 
-    state = fields.Selection(
-        [('choose', 'choose'), ('get', 'get')], default='choose')
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
@@ -19,7 +21,10 @@ class four_retentions(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.invoice'].search([('document_type_id.id','like','2')])
+        lst_account_move_line = self.env['account.invoice'].search([
+            ('document_type_id.id', 'like', '2'),
+            ('month_year_inv', 'like', self.date_month + "" + self.date_year)
+        ])
 
         content_txt = ""
         estado_ope = ""

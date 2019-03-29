@@ -212,6 +212,15 @@ class AccountAssetAsset(models.Model):
     reason_for_low = fields.Selection(string="Motivo de baja", selection=[('Venta', 'Venta'),
                                                                           ('Deterioro', 'Deterioro')])
 
+    filter_year = fields.Char(compute="_get_year", store=True, copy=False)
+
+    @api.multi
+    @api.depends('date')
+    def _get_year(self):
+        for rec in self:
+            if rec.date:
+                rec.filter_year = rec.date.strftime("%Y")
+
     @api.multi
     @api.depends('invoice_line_ids')
     def update_cost(self):

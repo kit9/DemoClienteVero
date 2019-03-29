@@ -10,8 +10,9 @@ class record_actives(models.TransientModel):
     _name = "libreria.record_actives"
     _description = "Registro de Activos"
 
-    state = fields.Selection(
-        [('choose', 'choose'), ('get', 'get')], default='choose')
+    date_year = fields.Char(string="Año", size=4)
+
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
@@ -19,7 +20,9 @@ class record_actives(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.asset.asset'].search([])
+        lst_account_move_line = self.env['account.asset.asset'].search([
+            ('filter_year', 'like', self.date_year)
+        ])
         content_txt = ""
         valor = ""
         residual = ""
