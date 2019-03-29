@@ -1,8 +1,11 @@
 <odoo>
 
     <!-- Categorias -->
+    <menuitem id="reporte_ple_menu_root" name="Reportes PLE" sequence="0" parent="account.menu_finance_reports"/>
+    <menuitem id="reporte_pdb_menu_root" name="Reportes PDB" sequence="0" parent="account.menu_finance_reports"/>
+    <menuitem id="formas_pago_menu_root" name="Formas de Pago" sequence="0" parent="account.menu_finance_reports"/>
+    <menuitem id="reporte_excel_menu_root" name="Reporte Excel" sequence="0" parent="account.menu_finance_reports"/>
     <menuitem id="sunat_menu_root" name="Sunat" sequence="1" parent="account.menu_finance_configuration"/>
-    <menuitem id="tributario_menu_root" name="Tributario" sequence="0" parent="account.menu_finance_reports"/>
 
     <!--Items-->
     <menuitem id="sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_menu_root" action="action_sunat_detracciones"/>
@@ -29,19 +32,20 @@
     <!--<field name="code">model.sunat_type_currency()</field>-->
     <!--</record>-->
 
-    <!--<menuitem id="reg_retenciones_menu" name="Accion URL" sequence="2" parent="tributario_menu_root" action="action_make_testing"/>-->
-    <menuitem id="reg_retenciones_menu" name="Registro de Retenciones" sequence="2" parent="tributario_menu_root" action="excel_report_retentions"/>
-    <menuitem id="kardex_report_menu" name="Reporte Kardex" sequence="2" parent="tributario_menu_root" action="kardex_report_sunat"/>
-    <menuitem id="inv_perm_val_menu" name="Inventario Valorizado" sequence="1" parent="tributario_menu_root" action="inventory_valorized_sunat"/>
-    <menuitem id="consolidated_journal_menu" name="Diario Consolidado" sequence="1" parent="tributario_menu_root"
-              action="consolidated_journal_sunat"/>
-    <menuitem id="costs_menu" name="Costos" sequence="1" parent="tributario_menu_root" action="costs_sunat"/>
-    <menuitem id="ple_report_txt_menu" name="Generar PLE" sequence="1" parent="tributario_menu_root" action="ple_report_txt"/>
-    <menuitem id="payment_internet_sunat_menu" name="Pago Detracciónes" sequence="1" parent="tributario_menu_root" action="payment_internet_sunat"/>
-    <menuitem id="purchase_report_sunat_menu" name="Compras pdb" sequence="1" parent="tributario_menu_root" action="purchase_report_txt"/>
-    <menuitem id="payment_methods_report_menu" name="Formas de Pago pdb" sequence="1" parent="tributario_menu_root" action="payment_methods_report_txt"/>
-    <menuitem id="sales_report_menu" name="Ventas pdb" sequence="1" parent="tributario_menu_root" action="sales_report_txt"/>
-    <menuitem id="payment_provider_menu" name="Pago a Proveedores" sequence="1" parent="tributario_menu_root" action="payment_provider_sunat"/>
-    <!-- <menuitem id="chart_accounts_menu" name="Plan de Cuentas" sequence="1" parent="tributario_menu_root" action="chart_accounts_sunat"/> -->
+    <!--<menuitem id="reg_retenciones_menu" name="Accion URL" sequence="2" parent="reporte_ple_menu_root" action="action_make_testing"/>-->
+    <menuitem id="ple_report_txt_menu" name="Ple Comp. Ventas" sequence="1" parent="reporte_ple_menu_root" action="ple_report_txt"/>
+    <menuitem id="inv_perm_val_menu" name="Ple. Inv. Valorizado" sequence="7" parent="reporte_ple_menu_root" action="inventory_valorized_sunat"/>
+    <menuitem id="consolidated_journal_menu" name="Ple. Diario" sequence="4" parent="reporte_ple_menu_root" action="consolidated_journal_sunat"/>
+    <menuitem id="costs_menu" name="Ple . Reg.Costos" sequence="8" parent="reporte_ple_menu_root" action="costs_sunat"/>
+
+    <menuitem id="purchase_report_sunat_menu" name="Compras pdb" sequence="1" parent="reporte_pdb_menu_root" action="purchase_report_txt"/>
+    <menuitem id="payment_methods_report_menu" name="Formas de Pago pdb" sequence="2" parent="reporte_pdb_menu_root" action="payment_methods_report_txt"/>
+    <menuitem id="sales_report_menu" name="Ventas pdb" sequence="3" parent="reporte_pdb_menu_root" action="sales_report_txt"/>
+
+    <menuitem id="payment_internet_sunat_menu" name="Pago Detracciónes" sequence="1" parent="formas_pago_menu_root" action="payment_internet_sunat"/>
+    <menuitem id="payment_provider_menu" name="Pago a Proveedores" sequence="2" parent="formas_pago_menu_root" action="payment_provider_sunat"/>
+
+    <menuitem id="reg_retenciones_menu" name="Registro de Retenciones" sequence="1" parent="reporte_excel_menu_root" action="excel_report_retentions"/>
+    <menuitem id="kardex_report_menu" name="Reporte Kardex" sequence="2" parent="reporte_excel_menu_root" action="kardex_report_sunat"/>
 
 </odoo>
