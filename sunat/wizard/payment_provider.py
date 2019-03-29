@@ -85,7 +85,7 @@ class InventoryValorized(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Pago_Proveedores.txt"
+            'txt_filename': "telecredito bcp.txt"
         })
 
         return {
