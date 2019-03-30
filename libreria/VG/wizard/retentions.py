@@ -38,7 +38,7 @@ class retentions(models.TransientModel):
             for imp in line.line_ids:
                 if imp.invoice_id:
                     if imp.invoice_id.document_type_id:
-                        _factura = imp.invoice_id.document_type_id.id
+                        _factura = imp.invoice_id.document_type_id.number
 
             # numero
             for imp2 in line.line_ids:
