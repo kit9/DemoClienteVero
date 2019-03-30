@@ -43,10 +43,10 @@ class retentions(models.TransientModel):
                 if imp2.invoice_id.invoice_number:
                     _numero = imp2.invoice_id.invoice_number
 
-            # total
-            for imp3 in line.line_ids:
-                if imp3.invoice_id.amount_total:
-                    _total = imp3.invoice_id.amount_total
+            # # total
+            # for imp3 in line.line_ids:
+            #     if imp3.invoice_id.amount_total:
+            #         _total = imp3.invoice_id.amount_total
 
                 # 10 valilador de estado de fecha
                 if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -69,7 +69,7 @@ class retentions(models.TransientModel):
                 _factura or '|',  # 5
                 _numero or '|',  # 6
                 line.partner_id.name or '|',  # 7
-                _total or '|',  # 8
+                line.line_ids.invoice_id.amount_total or '|',  # 8
                 line.amount or '|',  # 9
                 _estado_ope or '|',  # 10
                 line.journal_id.name or '|'
