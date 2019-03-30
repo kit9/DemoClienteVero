@@ -22,9 +22,8 @@ class retentions(models.TransientModel):
     def generate_file(self):
         # filtro fecha
         # dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),('journal_id.name', 'like', 'Retenciones')]
-        dominio = [('journal_id.name', 'like', 'Retenciones'),('journal_id.name','like','Bank')]
 
-        lst_account_move_line = self.env['account.move'].search([dominio])
+        lst_account_move_line = self.env['account.move'].search([('journal_id.name', 'like', 'Retenciones')])
         content_txt = ""
         _factura = ""
         _numero = ""
@@ -36,14 +35,21 @@ class retentions(models.TransientModel):
         for line in lst_account_move_line:
 
             # factura
-            for imp in line.line_ids:
-                if imp.invoice_id:
-                    if imp.invoice_id.document_type_id:
-                        _factura = imp.invoice_id.document_type_id.number
+            #for imp in line.line_ids:
+            #   if imp.invoice_id:
+            #        if imp.invoice_id.document_type_id:
+             #           _factura = imp.invoice_id.document_type_id.number
+
+            for imp in line.journal_id:
+                if imp.company_partner_id:
+                   if imp.unreconciled_aml_ids:
+                      if imp.invoice_id:
+                         if imp.document_type_id:
+                            _factura = imp.document_type_id.number
 
             # numero
             for imp2 in line.line_ids:
-                if imp2.invoice_id.invoice_number:
+                if imp2.invoice_id:
                     _numero = imp2.invoice_id.invoice_number
 
             # total
