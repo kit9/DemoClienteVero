@@ -41,9 +41,8 @@ class retentions(models.TransientModel):
              #           _factura = imp.invoice_id.document_type_id.number
 
             for imp in line.journal_id.company_partner_id.unreconciled_aml_ids:
-                      if imp.invoice_id:
-                         if imp.document_type_id.number:
-                            _factura = imp.document_type_id.number
+                      if imp.invoice_id.document_type_id:
+                            _factura = imp.invoice_id.document_type_id.number
 
             # numero
             for imp2 in line.line_ids:
