@@ -22,8 +22,9 @@ class retentions(models.TransientModel):
     def generate_file(self):
         # filtro fecha
         # dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),('journal_id.name', 'like', 'Retenciones')]
+        dominio = [('journal_id.name', 'like', 'Retenciones'),('journal_id.name','like','Bank')]
 
-        lst_account_move_line = self.env['account.move'].search([('journal_id.name', 'like', 'Retenciones','Bank','Vendor')])
+        lst_account_move_line = self.env['account.move'].search([dominio])
         content_txt = ""
         _factura = ""
         _numero = ""
