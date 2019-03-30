@@ -21,7 +21,7 @@ class retentions(models.TransientModel):
     @api.multi
     def generate_file(self):
         # filtro fecha
-        #dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),('journal_id.name', 'like', 'Retenciones')]
+        # dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),('journal_id.name', 'like', 'Retenciones')]
 
         lst_account_move_line = self.env['account.move'].search([('journal_id.name', 'like', 'Retenciones')])
         content_txt = ""
@@ -29,6 +29,7 @@ class retentions(models.TransientModel):
         _numero = ""
         _total = ""
         _estado_ope = ""
+        _logger.info(len(lst_account_move_line))
 
         # Iterador
         for line in lst_account_move_line:
