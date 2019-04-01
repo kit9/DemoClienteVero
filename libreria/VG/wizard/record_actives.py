@@ -20,15 +20,19 @@ class record_actives(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.asset.asset'].search([
-            ('filter_year', 'like', self.date_year)
-        ])
+        lst_account_move_line = self.env['account.asset.asset'].search([('filter_year', 'like', self.date_year)])
         content_txt = ""
         valor = ""
         residual = ""
         res = ""
+        v1= ""
+        _depre = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
+
+            for imp in line.depreciation_line_ids:
+                if imp.sequence:
+                    _depre = imp.sequence
 
             # Asiento Conta
             for cat1 in line.depreciation_line_ids:
@@ -40,25 +44,27 @@ class record_actives(models.TransientModel):
             for cat2 in line.invoice_line_ids:
                 if cat2.price_unit:
                     res = cat2.price_unit
+                if line.category_id.account_asset_id.company_id.id:
+                    v1 = line.category_id.account_asset_id.company_id.id
+
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                           line.date.strftime("%Y%m00") or '',  # 1 jvalenzuela
-                           line.code or '',  # 2 jvalenzuela
-                           '',  # 3 jvalenzuela (no se encuentra)
-                           '',  # 4 jvalenzuela (no se encuentra)
-                           line.name or '',  # 5 rloayza
-                           '',  # 6 rloayza (no se encontro)
-                           line.name or '',  # 7 rloayza
-                           line.category_id.account_asset_id or '',  # 8 rloayza
-                           line.entry_count or '',  # 9 rloayza
-                           line.category_id or '',  # 10 rloayza
-                           '',  # 11 ldelacruz (Campo Marca no se encontro)
-                           '',  # 12 ldelacruz (Campo Modelo no se encontro)
-                           '',  # 13 ldelacruz (Campo Serie no se encontro)
-                           residual or '',  # 14 ldelacruz (Campo residual)
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+
+                           line.date.strftime("%Y%m00") or '',  # 1
+                           line.invoice_id.move_id.name or '',  # 2
+                           '',  # 3 cbarraza (no se encuentra)
+                           '',  # 4 cbarraza (no se encuentra)
+                           line.name or '',  # 5
+                           '',  # 6 cbarraza (no se encontro)
+                           line.name or '',  # 7
+                           line.category_id.account_asset_id.code or '',  # 8
+                           line.entry_count or '',  # 9
+                           line.name or '',  # 10
+                           '',  # 11 cbarraza (Campo Marca no se encontro)
+                           '',  # 12 cbarraza (Campo Modelo no se encontro)
+                           '',  # 13 cbarraza (Campo Serie no se encontro)
+                           _depre or '',  # 14 (Campo residual)
                            '',  # 15 null
                            res or '',  # 16 ldelacruz (Campo Precio unitario)
                            line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
@@ -67,21 +73,21 @@ class record_actives(models.TransientModel):
                            '',  # 20 null
                            '',  # 21 null
                            '',  # 22 null
-                           line.date or '',  # 23 jrejas
-                           line.date or '',  # 24 jrejas
-                           line.category_id.method or '',  # 25 jrejas
-                           line.category_id.prorata or '',  # 25 jrejas
-                           '',  # 26 null
-                           line.category_id.method_number or '',  # 27 jrejas
-                           valor or '',  # 28 jrejas
-                           '',  # 29 null
-                           '',  # 30 null
-                           '',  # 31 null
-                           '',  # 32 null
-                           '',  # 33 null
-                           '',  # 34 null
-                           '',  # 35 null
-                           ''  # 36 jrejas (no se encontro)
+                           line.date.strftime("%d/%m/%Y") or '',  # 23
+                           line.date.strftime("%d/%m/%Y") or '',  # 24
+                           line.category_id.method or '',  # 25 
+                           # line.category_id.prorata or '',  # 25 jrejas
+                           # '',  # 26 null
+                           # line.category_id.method_number or '',  # 27 jrejas
+                           # valor or '',  # 28 jrejas
+                           # '',  # 29 null
+                           # '',  # 30 null
+                           # '',  # 31 null
+                           # '',  # 32 null
+                           # '',  # 33 null
+                           # '',  # 34 null
+                           # '',  # 35 null
+                           # ''  # 36 jrejas (no se encontro)
 
                        )
 

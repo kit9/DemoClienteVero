@@ -22,7 +22,7 @@ class not_domiciled(models.TransientModel):
         # Data - Jcondori
 
         lst_account_move_line = self.env['account.invoice'].search([
-            ('month_year_inv', 'like', self.date_month + "" + self.date_year)
+            ('month_year_inv', 'like', self.date_month + "" + self.date_year),('partner_id.person_type','like','Persona')
         ])
         content_txt = ""
         estado_ope = ""
@@ -56,7 +56,7 @@ class not_domiciled(models.TransientModel):
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s" % (
                            # Facturas de proveedor
                            orden or '',  # 01 Hoja 1 (Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
@@ -65,17 +65,16 @@ class not_domiciled(models.TransientModel):
                            line.document_type_id.number or '',  # 05 Hoja 5 (Tipo de Documento)
                            line.invoice_serie or '',  # 06 Hoja 6 (Serie)
                            line.invoice_number or '',  # 07 Hoja 7 (Numero)
-                           line.amount_untaxed * line.exchange_rate or '',  # 08 Hoja 8 (Base Imponible*Tipo de Cambio)
-                           impuesto or '',  # 9 Hoja 9 (Impuestos)
-                           line.amount_untaxed * line.exchange_rate or '',
-                           # 10 Hoja 9 (Base Imponible * Tipo de Cambio)
-                           line.amount_total * line.exchange_rate or '',  # 11 Hoja 10 (Total * Tipo de Cambio)
-                           line.exchange_rate or '',  # 12  Hoja 10 (Tipo de Cambio)
+                           line.amount_untaxed*line.exchange_rate or '',  # 08 Hoja 8 (Base Imponible*Tipo de Cambio)
+                           impuesto or '',  # 9 Hoja 9 (Impuestos IGV)
+                          # line.amount_untaxed * line.exchange_rate or '',
+                           # 11 Hoja 9 (Base Imponible * Tipo de Cambio)
+                           line.amount_total * line.exchange_rate or '',  # 12 Hoja 10 (Total * Tipo de Cambio)
                            line.partner_id.person_type or '',  # 13 Hoja 11 (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # 14 Hoja 12 (Numero)
                            line.year_emission_dua or '',  # 15 Hoja 13 (Año de la Emision de la DUA)
                            line.invoice_number or '',  # 16 Hoja 14 (Numero)
-                           cantidad or '',  # 17 Hoja 15 (Cantidad a Pagar)
+                           line.amount or '',  # 17 Hoja 15 (Cantidad a Pagar)
                            line.state or '',  # 18 Hoja 15 (Estado)
                            line.exchange_rate or '',  # 19 Hoja 16 (Tipo de Cambio)
                            '',  # 20 Hoja 17 null
