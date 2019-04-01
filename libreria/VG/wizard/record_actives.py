@@ -26,8 +26,13 @@ class record_actives(models.TransientModel):
         residual = ""
         res = ""
         v1= ""
+        _depre = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
+
+            for imp in line.depreciation_line_ids:
+                if imp.remaining_value:
+                    _depre = remaining_value
 
             # Asiento Conta
             for cat1 in line.depreciation_line_ids:
@@ -56,7 +61,7 @@ class record_actives(models.TransientModel):
                            '',  # 11 cbarraza (Campo Marca no se encontro)
                            '',  # 12 cbarraza (Campo Modelo no se encontro)
                            '',  # 13 cbarraza (Campo Serie no se encontro)
-                           line.residual or '',  # 14 (Campo residual)
+                           _depre or '',  # 14 (Campo residual)
                            '',  # 15 null
                            # res or '',  # 16 ldelacruz (Campo Precio unitario)
                            # line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
