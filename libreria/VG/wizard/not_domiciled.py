@@ -68,8 +68,8 @@ class not_domiciled(models.TransientModel):
                            line.amount_untaxed*line.exchange_rate or '',  # 08 Hoja 8 (Base Imponible*Tipo de Cambio)
                            impuesto or '',  # 9 Hoja 9 (Impuestos IGV)
                           # line.amount_untaxed * line.exchange_rate or '',
-                           # 10 Hoja 9 (Base Imponible * Tipo de Cambio)
-                           line.amount_total * line.exchange_rate or '',  # 11 Hoja 10 (Total * Tipo de Cambio)
+                           # 11 Hoja 9 (Base Imponible * Tipo de Cambio)
+                           line.amount_total * line.exchange_rate or '',  # 12 Hoja 10 (Total * Tipo de Cambio)
                            line.partner_id.person_type or '',  # 13 Hoja 11 (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # 14 Hoja 12 (Numero)
                            line.year_emission_dua or '',  # 15 Hoja 13 (Año de la Emision de la DUA)
