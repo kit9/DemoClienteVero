@@ -22,7 +22,7 @@ class not_domiciled(models.TransientModel):
         # Data - Jcondori
 
         lst_account_move_line = self.env['account.invoice'].search([
-            ('month_year_inv', 'like', self.date_month + "" + self.date_year),('res.partner','like','Persona')
+            ('month_year_inv', 'like', self.date_month + "" + self.date_year),('partner_id.person_type','like','Persona')
         ])
         content_txt = ""
         estado_ope = ""
