@@ -20,7 +20,7 @@ class record_actives(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.asset.asset','account.move'].search([('filter_year', 'like', self.date_year),('journal_id','like','ACTIVO')])
+        lst_account_move_line = self.env['account.asset.asset'].search([('filter_year', 'like', self.date_year),('journal_id','like','ACTIVO')])
         content_txt = ""
         valor = ""
         residual = ""
@@ -42,12 +42,12 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s" % (
                            line.date.strftime("%Y%m00") or '',  # 1 jvalenzuela
                            line.invoice_id.move_id.name or '',  # 2 jvalenzuela
                            '',  # 3 jvalenzuela (no se encuentra)
-                           # '',  # 4 jvalenzuela (no se encuentra)
-                           # # line.name or '',  # 5 rloayza
+                           '',  # 4 jvalenzuela (no se encuentra)
+                           line.name or '',  # 5 rloayza
                            # # '',  # 6 rloayza (no se encontro)
                            # # line.name or '',  # 7 rloayza
                            # # v1[0:6] or '',  # 8 rloayza
