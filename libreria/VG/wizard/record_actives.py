@@ -31,8 +31,8 @@ class record_actives(models.TransientModel):
         for line in lst_account_move_line:
 
             for imp in line.depreciation_line_ids:
-                if imp.remaining_value:
-                    _depre = imp.remaining_value
+                if imp.sequence:
+                    _depre = imp.sequence
 
             # Asiento Conta
             for cat1 in line.depreciation_line_ids:
@@ -46,8 +46,11 @@ class record_actives(models.TransientModel):
                     res = cat2.price_unit
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
+
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s" % (
+
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
                            '',  # 3 cbarraza (no se encuentra)
@@ -63,8 +66,8 @@ class record_actives(models.TransientModel):
                            '',  # 13 cbarraza (Campo Serie no se encontro)
                            _depre or '',  # 14 (Campo residual)
                            '',  # 15 null
-                           # res or '',  # 16 ldelacruz (Campo Precio unitario)
-                           # line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
+                           res or '',  # 16 ldelacruz (Campo Precio unitario)
+                           line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
                            # '',  # 18 null
                            # '',  # 19 null
                            # '',  # 20 null
