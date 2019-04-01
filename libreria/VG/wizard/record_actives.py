@@ -50,7 +50,7 @@ class record_actives(models.TransientModel):
                            line.name or '',  # 5 rloayza
                            '',  # 6 rloayza (no se encontro)
                            line.name or '',  # 7 rloayza
-                           line.number or '',  # 8 rloayza
+                           line.category_id.account_asset_id.code or '',  # 8 rloayza
                            # # line.entry_count or '',  # 9 rloayza
                            # # line.category_id or '',  # 10 rloayza
                            # '',  # 11 ldelacruz (Campo Marca no se encontro)
