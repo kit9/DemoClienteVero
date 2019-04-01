@@ -48,8 +48,8 @@ class record_actives(models.TransientModel):
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                           line.date.strftime("%Y%m00") or '',  # 1 jvalenzuela
-                           line.code or '',  # 2 jvalenzuela
+                           line.date or '',  # 1 jvalenzuela
+                           line.invoice_id.move_id.name or '',  # 2 jvalenzuela
                            '',  # 3 jvalenzuela (no se encuentra)
                            '',  # 4 jvalenzuela (no se encuentra)
                            line.name or '',  # 5 rloayza
