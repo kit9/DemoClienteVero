@@ -20,7 +20,7 @@ class record_actives(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.asset.asset'].search([('filter_year', 'like', self.date_year),('journal_id','like','ACTIVO')])
+        lst_account_move_line = self.env['account.asset.asset','account.move'].search([('filter_year', 'like', self.date_year),('journal_id','like','ACTIVO')])
         content_txt = ""
         valor = ""
         residual = ""
