@@ -56,7 +56,7 @@ class not_domiciled(models.TransientModel):
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Facturas de proveedor
                            orden or '',  # 01 Hoja 1 (Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
@@ -70,7 +70,6 @@ class not_domiciled(models.TransientModel):
                            line.amount_untaxed * line.exchange_rate or '',
                            # 10 Hoja 9 (Base Imponible * Tipo de Cambio)
                            line.amount_total * line.exchange_rate or '',  # 11 Hoja 10 (Total * Tipo de Cambio)
-                           line.exchange_rate or '',  # 12  Hoja 10 (Tipo de Cambio)
                            line.partner_id.person_type or '',  # 13 Hoja 11 (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # 14 Hoja 12 (Numero)
                            line.year_emission_dua or '',  # 15 Hoja 13 (Año de la Emision de la DUA)
