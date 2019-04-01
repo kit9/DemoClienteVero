@@ -41,8 +41,8 @@ class record_actives(models.TransientModel):
             for cat2 in line.invoice_line_ids:
                 if cat2.price_unit:
                     res = cat2.price_unit
-                if line.category_id.account_asset_id.company_id:
-                    v1 = line.category_id.account_asset_id.company_id
+                if line.category_id.account_asset_id.company_id.account_no:
+                    v1 = line.category_id.account_asset_id.company_id.account_no
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
