@@ -32,7 +32,7 @@ class four_retentions(models.TransientModel):
         # Iterador - Jcondori
         for line in lst_account_move_line:
             for imp in line.payment_ids:
-                if imp.payment_date != "":
+                if imp.payment_date:
                     estado_ope = imp.payment_date
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
