@@ -47,17 +47,17 @@ class record_actives(models.TransientModel):
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                           line.date.strftime("%Y%m00") or '',  # 1 jvalenzuela
-                           line.code or '',  # 2 jvalenzuela
+                       "|%s|%s|%s" % (
+                           line.date or '',  # 1 jvalenzuela
+                           line.invoice_id.move_id.name or '',  # 2 jvalenzuela
                            '',  # 3 jvalenzuela (no se encuentra)
                            '',  # 4 jvalenzuela (no se encuentra)
-                           line.name or '',  # 5 rloayza
-                           '',  # 6 rloayza (no se encontro)
-                           line.name or '',  # 7 rloayza
-                           v1[0:6] or '',  # 8 rloayza
-                           line.entry_count or '',  # 9 rloayza
-                           line.category_id or '',  # 10 rloayza
+                           # line.name or '',  # 5 rloayza
+                           # '',  # 6 rloayza (no se encontro)
+                           # line.name or '',  # 7 rloayza
+                           # v1[0:6] or '',  # 8 rloayza
+                           # line.entry_count or '',  # 9 rloayza
+                           # line.category_id or '',  # 10 rloayza
                            '',  # 11 ldelacruz (Campo Marca no se encontro)
                            '',  # 12 ldelacruz (Campo Modelo no se encontro)
                            '',  # 13 ldelacruz (Campo Serie no se encontro)
