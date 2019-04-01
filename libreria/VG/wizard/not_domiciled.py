@@ -66,7 +66,7 @@ class not_domiciled(models.TransientModel):
                            line.invoice_serie or '',  # 06 Hoja 6 (Serie)
                            line.invoice_number or '',  # 07 Hoja 7 (Numero)
                            line.amount_untaxed * line.exchange_rate or '',  # 08 Hoja 8 (Base Imponible*Tipo de Cambio)
-                           impuesto or '',  # 9 Hoja 9 (Impuestos)
+                           impuesto or '',  # 9 Hoja 9 (Impuestos IGV)
                            line.amount_untaxed * line.exchange_rate or '',
                            # 10 Hoja 9 (Base Imponible * Tipo de Cambio)
                            line.amount_total * line.exchange_rate or '',  # 11 Hoja 10 (Total * Tipo de Cambio)
