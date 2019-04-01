@@ -20,9 +20,7 @@ class record_actives(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.asset.asset'].search([
-            ('filter_year', 'like', self.date_year)
-        ])
+        lst_account_move_line = self.env['account.asset.asset'].search([('filter_year', 'like', self.date_year),('journal_id','like','ACTIVO')])
         content_txt = ""
         valor = ""
         residual = ""
@@ -44,47 +42,44 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s" % (
+            txt_line = "%s|%s|%s" % (
                            line.date.strftime("%Y%m00") or '',  # 1 jvalenzuela
                            line.invoice_id.move_id.name or '',  # 2 jvalenzuela
                            '',  # 3 jvalenzuela (no se encuentra)
-                           '',  # 4 jvalenzuela (no se encuentra)
-                           # line.name or '',  # 5 rloayza
-                           # '',  # 6 rloayza (no se encontro)
-                           # line.name or '',  # 7 rloayza
-                           # v1[0:6] or '',  # 8 rloayza
-                           # line.entry_count or '',  # 9 rloayza
-                           # line.category_id or '',  # 10 rloayza
-                           '',  # 11 ldelacruz (Campo Marca no se encontro)
-                           '',  # 12 ldelacruz (Campo Modelo no se encontro)
-                           '',  # 13 ldelacruz (Campo Serie no se encontro)
-                           residual or '',  # 14 ldelacruz (Campo residual)
-                           '',  # 15 null
-                           res or '',  # 16 ldelacruz (Campo Precio unitario)
-                           line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
-                           '',  # 18 null
-                           '',  # 19 null
-                           '',  # 20 null
-                           '',  # 21 null
-                           '',  # 22 null
-                           line.date or '',  # 23 jrejas
-                           line.date or '',  # 24 jrejas
-                           line.category_id.method or '',  # 25 jrejas
-                           line.category_id.prorata or '',  # 25 jrejas
-                           '',  # 26 null
-                           line.category_id.method_number or '',  # 27 jrejas
-                           valor or '',  # 28 jrejas
-                           '',  # 29 null
-                           '',  # 30 null
-                           '',  # 31 null
-                           '',  # 32 null
-                           '',  # 33 null
-                           '',  # 34 null
-                           '',  # 35 null
-                           ''  # 36 jrejas (no se encontro)
+                           # '',  # 4 jvalenzuela (no se encuentra)
+                           # # line.name or '',  # 5 rloayza
+                           # # '',  # 6 rloayza (no se encontro)
+                           # # line.name or '',  # 7 rloayza
+                           # # v1[0:6] or '',  # 8 rloayza
+                           # # line.entry_count or '',  # 9 rloayza
+                           # # line.category_id or '',  # 10 rloayza
+                           # '',  # 11 ldelacruz (Campo Marca no se encontro)
+                           # '',  # 12 ldelacruz (Campo Modelo no se encontro)
+                           # '',  # 13 ldelacruz (Campo Serie no se encontro)
+                           # residual or '',  # 14 ldelacruz (Campo residual)
+                           # '',  # 15 null
+                           # res or '',  # 16 ldelacruz (Campo Precio unitario)
+                           # line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
+                           # '',  # 18 null
+                           # '',  # 19 null
+                           # '',  # 20 null
+                           # '',  # 21 null
+                           # '',  # 22 null
+                           # line.date or '',  # 23 jrejas
+                           # line.date or '',  # 24 jrejas
+                           # line.category_id.method or '',  # 25 jrejas
+                           # line.category_id.prorata or '',  # 25 jrejas
+                           # '',  # 26 null
+                           # line.category_id.method_number or '',  # 27 jrejas
+                           # valor or '',  # 28 jrejas
+                           # '',  # 29 null
+                           # '',  # 30 null
+                           # '',  # 31 null
+                           # '',  # 32 null
+                           # '',  # 33 null
+                           # '',  # 34 null
+                           # '',  # 35 null
+                           # ''  # 36 jrejas (no se encontro)
 
                        )
 
