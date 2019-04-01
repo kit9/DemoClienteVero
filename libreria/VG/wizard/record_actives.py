@@ -42,7 +42,7 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            line.date.strftime("%Y%m00") or '',  # 1 jvalenzuela
                            line.invoice_id.move_id.name or '',  # 2 jvalenzuela
                            '',  # 3 jvalenzuela (no se encuentra)
@@ -52,7 +52,7 @@ class record_actives(models.TransientModel):
                            line.name or '',  # 7 rloayza
                            line.category_id.account_asset_id.code or '',  # 8 rloayza
                            line.entry_count or '',  # 9 rloayza
-                           # # line.category_id or '',  # 10 rloayza
+                           line.category_id or '',  # 10 rloayza
                            # '',  # 11 ldelacruz (Campo Marca no se encontro)
                            # '',  # 12 ldelacruz (Campo Modelo no se encontro)
                            # '',  # 13 ldelacruz (Campo Serie no se encontro)
