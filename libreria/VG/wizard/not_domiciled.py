@@ -74,7 +74,7 @@ class not_domiciled(models.TransientModel):
                            line.invoice_number or '',  # 14 Hoja 12 (Numero)
                            line.year_emission_dua or '',  # 15 Hoja 13 (Año de la Emision de la DUA)
                            line.invoice_number or '',  # 16 Hoja 14 (Numero)
-                           cantidad or '',  # 17 Hoja 15 (Cantidad a Pagar)
+                           line.amount or '',  # 17 Hoja 15 (Cantidad a Pagar)
                            line.state or '',  # 18 Hoja 15 (Estado)
                            line.exchange_rate or '',  # 19 Hoja 16 (Tipo de Cambio)
                            '',  # 20 Hoja 17 null
