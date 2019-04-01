@@ -27,6 +27,7 @@ class record_actives(models.TransientModel):
         valor = ""
         residual = ""
         res = ""
+        v1= ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
@@ -40,6 +41,8 @@ class record_actives(models.TransientModel):
             for cat2 in line.invoice_line_ids:
                 if cat2.price_unit:
                     res = cat2.price_unit
+                if line.category_id.account_asset_id.company_id:
+                    v1 = line.category_id.account_asset_id.company_id
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -52,7 +55,7 @@ class record_actives(models.TransientModel):
                            line.name or '',  # 5 rloayza
                            '',  # 6 rloayza (no se encontro)
                            line.name or '',  # 7 rloayza
-                           line.category_id.account_asset_id or '',  # 8 rloayza
+                           v1[0:6] or '',  # 8 rloayza
                            line.entry_count or '',  # 9 rloayza
                            line.category_id or '',  # 10 rloayza
                            '',  # 11 ldelacruz (Campo Marca no se encontro)
