@@ -211,6 +211,12 @@ class AccountAssetAsset(models.Model):
 
     reason_for_low = fields.Selection(string="Motivo de baja", selection=[('Venta', 'Venta'),
                                                                           ('Deterioro', 'Deterioro')])
+    brand = fields.Char(string="Marca")
+    model = fields.Char(string="Modelo")
+    serie = fields.Char(string="N° Serie")
+    active_status = fields.Selection(string="Estado de Activo", selection=[('1', 'Activos en Desuso'),
+                                                                            ('2', 'Activos Obsoletos'),
+                                                                            ('3', 'Resto de Activos')])
 
     filter_year = fields.Char(compute="_get_year", store=True, copy=False)
 
