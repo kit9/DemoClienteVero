@@ -36,15 +36,15 @@ class four_retentions(models.TransientModel):
                     estado_ope = imp.payment_date
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.document_type_id.display_name or '',  # 1 jrejas
+                line.document_type_id.display_name[0:2] or '',  # 1 jrejas
                 line.type_ident or '',  # 2 jrejas
                 line.num_ident or '',  # 3 jrejas
-                line.document_type_id.name or '',  # 4 jrejas
+                line.document_type_id.name[0:2] or '',  # 4 jrejas
                 line.invoice_serie or '',  # 5 jrejas
                 line.invoice_number or '',  # 6 jrejas
                 line.residual or '',  # 7 jrejas
-                line.date_document or '',  # 9 jrejas
-                estado_ope or '',  # 10 jrejas          5
+                line.date_document.strftime("%Y%m%d") or '',  # 9 jrejas
+                estado_ope.strftime("%Y%m%d") or '',  # 10 jrejas          5
                 line.amount_tax or '',  # 11 jrejas
 
             )
