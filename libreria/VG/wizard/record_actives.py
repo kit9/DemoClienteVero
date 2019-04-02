@@ -48,7 +48,7 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
 
-            if line.category_id.method("Método de cálculo") ==  value.method("Método de cálculo") :
+            if line.category_id.method ==  value.method("Método de cálculo") :
                 _estado_ope = "01"
 
             # else:
