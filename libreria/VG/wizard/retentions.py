@@ -79,7 +79,7 @@ class retentions(models.TransientModel):
                 line.journal_id.company_partner_id.unreconciled_aml_ids or '|',  # 5
                 imp_numero or '|',  # 6
                 line.partner_id.name or '|',  # 7
-                _total.strftime("") or '|',  # 8
+                _total.strftime("%") or '|',  # 8
                 line.amount or '|',  # 9
                 _estado_ope or '|',  # 10
                 line.journal_id.name or '|'
