@@ -27,6 +27,7 @@ class record_actives(models.TransientModel):
         res = ""
         v1= ""
         _depre = ""
+        _estado_ope = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
