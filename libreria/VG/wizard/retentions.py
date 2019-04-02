@@ -24,7 +24,7 @@ class retentions(models.TransientModel):
         dominio1 = [('month_year_move', 'like', self.date_month + "" + self.date_year),('journal_id.name', 'like', 'Retenciones')]
         # dominio2 = fields.Many2one ('account.journal.name', string='Retenciones')
 
-        lst_account_move_line = self.env['account.move'].search([dominio1])
+        lst_account_move_line = self.env['account.move'].search(dominio1)
         content_txt = ""
         _factura = ""
         _numero = ""
