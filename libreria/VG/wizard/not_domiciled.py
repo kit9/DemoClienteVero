@@ -52,7 +52,7 @@ class not_domiciled(models.TransientModel):
                     estado_ope = "0"
             if line.date_invoice:
                 orden = line.date_invoice.strftime("%Y%m00")
-            # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,9
+            # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,7
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -74,7 +74,7 @@ class not_domiciled(models.TransientModel):
                            line.invoice_number or '',  # 14 Hoja 12 (Numero)
                            line.year_emission_dua or '',  # 15 Hoja 13 (Año de la Emision de la DUA)
                            line.invoice_number or '',  # 16 Hoja 14 (Numero)
-                           line.amount or '',  # 17 Hoja 15 (Cantidad a Pagar)
+                           cantidad or '',  # 17 Hoja 15 (Cantidad a Pagar)
                            line.state or '',  # 18 Hoja 15 (Estado)
                            line.exchange_rate or '',  # 19 Hoja 16 (Tipo de Cambio)
                            '',  # 20 Hoja 17 null
