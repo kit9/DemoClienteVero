@@ -61,7 +61,7 @@ class record_actives(models.TransientModel):
                            line.category_id.account_asset_id.code or '',  # 8
                            line.entry_count or '',  # 9
                            line.name or '',  # 10
-                           '',  # 11 cbarraza (Campo Marca no se encontro)
+                           line.brand or '',  # 11 cbarraza (Campo Marca no se encontro)
                            '',  # 12 cbarraza (Campo Modelo no se encontro)
                            '',  # 13 cbarraza (Campo Serie no se encontro)
                            _depre or '',  # 14 (Campo residual)
@@ -75,7 +75,7 @@ class record_actives(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           line.category_id.method or '',  # 25 
+                           line.category_id.method or '',  # 25
                            # line.category_id.prorata or '',  # 25 jrejas
                            # '',  # 26 null
                            # line.category_id.method_number or '',  # 27 jrejas
