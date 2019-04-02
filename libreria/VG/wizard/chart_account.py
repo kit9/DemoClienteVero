@@ -40,7 +40,7 @@ class chartofaccount(models.TransientModel):
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
                     estado_ope = "09"
                 else:
-                    if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
                         estado_ope = "00"
                     else:
                         estado_ope = "09"
