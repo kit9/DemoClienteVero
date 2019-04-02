@@ -47,6 +47,13 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
 
+            if line.category_id.method("Método de cálculo") == method("Método de cálculo")  :
+                _estado_ope = "01"
+            else:
+                if line.category_id.prorata("Tiempo prorrateado") == category_id.prorata("Tiempo prorrateado"):
+                    _estado_ope = "09"
+
+
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
@@ -75,7 +82,7 @@ class record_actives(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           line.category_id.method or '',  # 25
+                           _estado_ope or '',  # 25
                            # line.category_id.prorata or '',  # 25 jrejas
                            # '',  # 26 null
                            # line.category_id.method_number or '',  # 27 jrejas
