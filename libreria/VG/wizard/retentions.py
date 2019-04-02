@@ -30,6 +30,7 @@ class retentions(models.TransientModel):
         _numero = ""
         _total = ""
         _estado_ope = ""
+        imp = ""
         _logger.info(len(lst_account_move_line))
 
         # Iterador
