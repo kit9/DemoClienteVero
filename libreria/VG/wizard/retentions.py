@@ -27,7 +27,7 @@ class retentions(models.TransientModel):
         lst_account_move_line = self.env['account.move'].search(dominio2)
         content_txt = ""
         _factura = ""
-        _numero = ""
+        imp_numero = ""
         _total = ""
         _estado_ope = ""
 
@@ -50,7 +50,7 @@ class retentions(models.TransientModel):
             # numero
             for imp2 in line.line_ids:
                 if imp2.invoice_id.invoice_number:
-                    _numero = imp2.invoice_id.invoice_number
+                    imp_numero = imp2.invoice_id.invoice_number
 
             # total
             for imp3 in line.line_ids:
