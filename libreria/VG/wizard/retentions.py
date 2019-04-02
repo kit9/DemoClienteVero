@@ -30,16 +30,17 @@ class retentions(models.TransientModel):
         _numero = ""
         _total = ""
         _estado_ope = ""
-        imp = ""
+
         _logger.info(len(lst_account_move_line))
 
         # Iterador
         for line in lst_account_move_line:
 
             # factura
-            if imp in line.line_ids:
-                     if imp.invoice_id:
-                        _factura = imp.invoice_id
+            #for imp in line.line_ids:
+             #        if imp.invoice_id:
+              #          if imp.invoice_id.document_type_id:
+               #            _factura = imp.invoice_id.document_type_id.number
 
 
              #for imp in line.journal_id.company_partner_id.unreconciled_aml_ids:
@@ -74,7 +75,7 @@ class retentions(models.TransientModel):
                 line.name or '|',  # 2
                 line.id or '|',  # 3
                 line.date or '|',  # 4
-                _factura or '|',  # 5
+                line.journal_id.company_partner_id.unreconciled_aml_ids.invoice_id or '|',  # 5
                 _numero or '|',  # 6
                 line.partner_id.name or '|',  # 7
                 _total or '|',  # 8
