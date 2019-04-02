@@ -76,7 +76,7 @@ class retentions(models.TransientModel):
                 line.id or '|',  # 3
                 line.date or '|',  # 4
                 line.journal_id.company_partner_id.unreconciled_aml_ids or '|',  # 5
-                _numero or '|',  # 6
+                imp_numero or '|',  # 6
                 line.partner_id.name or '|',  # 7
                 _total or '|',  # 8
                 line.amount or '|',  # 9
