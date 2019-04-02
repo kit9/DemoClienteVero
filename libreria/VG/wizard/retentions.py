@@ -36,10 +36,10 @@ class retentions(models.TransientModel):
         for line in lst_account_move_line:
 
             # factura
-            for dominio2 in line.line_ids:
-              if dominio2.invoice_id:
-                   if dominio2.invoice_id.document_type_id:
-                       _factura = dominio2.invoice_id.document_type_id.number
+            for imp in dominio2.line_ids:
+              if imp.invoice_id:
+                   if imp.invoice_id.document_type_id:
+                       _factura = imp.invoice_id.document_type_id.number
 
             # for imp in line.journal_id.company_partner_id.unreconciled_aml_ids:
             #           if imp.invoice_id.document_type_id:
