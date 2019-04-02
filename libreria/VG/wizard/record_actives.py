@@ -49,7 +49,7 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
 
-            if line.category_id.method == lineal.method:
+            if line.category_id.method == linear.method:
                 _estado_ope = "01"
 
             # else:
