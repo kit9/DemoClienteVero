@@ -29,6 +29,7 @@ class record_actives(models.TransientModel):
         _depre = ""
         _estado_ope = ""
         # Iterador - Jcondori
+
         for line in lst_account_move_line:
 
             for imp in line.depreciation_line_ids:
@@ -48,7 +49,7 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
 
-            if line.category_id.method == method("Método de cálculo")  :
+            if line.category_id.method == lineal.method:
                 _estado_ope = "01"
 
             # else:
