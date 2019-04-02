@@ -72,7 +72,7 @@ class not_domiciled(models.TransientModel):
                            line.amount_total * line.exchange_rate or '',  # 12 Hoja 10 (Total * Tipo de Cambio)
                            line.partner_id.person_type or '',  # 13 Hoja 11 (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # 14 Hoja 12 (Numero)
-                           line.year_emission_dua or '',  # 15 Hoja 13 (Año de la Emision de la DUA)
+                           line.year_emission_dua or '',  #15 Hoja 13 (Año de la Emision de la DUA)
                            line.invoice_number or '',  # 16 Hoja 14 (Numero)
                            cantidad or '',  # 17 Hoja 15 (Cantidad a Pagar)
                            line.state or '',  # 18 Hoja 15 (Estado)
