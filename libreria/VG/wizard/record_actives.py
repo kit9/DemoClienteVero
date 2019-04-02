@@ -61,9 +61,9 @@ class record_actives(models.TransientModel):
                            line.category_id.account_asset_id.code or '',  # 8
                            line.entry_count or '',  # 9
                            line.name or '',  # 10
-                           line.brand or '',  # 11 cbarraza (Campo Marca no se encontro)
-                           '',  # 12 cbarraza (Campo Modelo no se encontro)
-                           '',  # 13 cbarraza (Campo Serie no se encontro)
+                           line.brand or '',  # 11
+                           line.model or '',  # 12
+                           line.serie or '',  # 13 
                            _depre or '',  # 14 (Campo residual)
                            '',  # 15 null
                            res or '',  # 16 ldelacruz (Campo Precio unitario)
