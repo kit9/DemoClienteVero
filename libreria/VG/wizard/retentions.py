@@ -13,8 +13,7 @@ class retentions(models.TransientModel):
     date_month = fields.Char(string="Mes", size=2)
     date_year = fields.Char(string="Año", size=4)
 
-    state = fields.Selection(
-        [('choose', 'choose'), ('get', 'get')], default='choose')
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
@@ -33,7 +32,7 @@ class retentions(models.TransientModel):
         _total = ""
         _estado_ope = ""
 
-        _logger.info(len(lst_account_move_line))
+        #_logger.info(len(lst_account_move_line))
 
         # Iterador
         for line in lst_account_move_line:
@@ -92,11 +91,11 @@ class retentions(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Retenciones.txt"
+            'txt_filename': "retenciones.txt"
         })
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Retenciones',
+            'name': 'retenciones',
             'res_model': 'libreria.retentions',
             'view_mode': 'form',
             'view_type': 'form',
