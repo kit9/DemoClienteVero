@@ -93,7 +93,7 @@ class record_actives(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           _estado_ope or '',  # 25
+                           funcion_met or '',  # 25
                            #line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
