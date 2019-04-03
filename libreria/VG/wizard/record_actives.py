@@ -64,7 +64,7 @@ class record_actives(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
@@ -90,7 +90,7 @@ class record_actives(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           #_estado_ope or '',  # 25
+                           _estado_ope or '',  # 25
                            #line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
