@@ -99,7 +99,6 @@ class not_domiciled(models.TransientModel):
                            '',  #C28 H28 null (Renta Neta)
                            '',  #C29 H29 null (Tasa de Retencion)
                            '',  #C30 H30 null (Impuesto Retenido)
-                           #HOJA 31 AL 37
                            line.partner_id.x_studio_convenios or '',  #C31 H31 (Convenios --- evitar la doble imposicion)
                            line.x_studio_exoneraciones or '',  #C32 Hoja 32 (Exoneraciones)
                            line.type_income_id.number or '',  #C33 Hoja 33 (tipo de renta)
