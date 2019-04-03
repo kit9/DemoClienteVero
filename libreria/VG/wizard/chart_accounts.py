@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 
 class chart_account(models.TransientModel):
-    _name = "VG.chart_account"
+    _name = "chart_account"
     _description = "Plan Contable"
 
     date_month = fields.Char(string="Mes", size=2)
