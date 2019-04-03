@@ -52,13 +52,12 @@ class chartofaccount(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.create_date.strftime("%Y%m00") or '',  # Periodo
                 line.code or '',  # codigo cuenta contable
                 line.name or '',  # descripcion de cuenta
                 campo[0:2] or '',  # Codigo Plan de Cuenta
                 campo1[2:50] or '',  # Descripcion del plan de cuenta
-                '',  # dejar en blanco
                 '',  # dejar en blanco
                 '',  # dejar en blanco
                 estado_ope or ''  # estado de operacion
