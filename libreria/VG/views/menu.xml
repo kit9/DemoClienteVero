@@ -1,22 +1,22 @@
 <odoo>
     <!-- Categorias -->
     <data>
-        <!--<menuitem id="PLE_reports" name="Reportes PLE" parent="account.menu_finance_reports"-->
-                  <!--sequence="0"/>-->
-        <!--reportes PLE-->
-        <menuitem id="chart_account_menu" name="Ple. Plan de Cuentas" parent="sunat.reporte_ple_menu_root"
+        <menuitem id="PLE_reports" name="Reportes PLE" parent="account.menu_finance_reports"
+                  sequence="0"/>
+        reportes PLE
+        <menuitem id="chart_account_menu" name="Ple. Plan de Cuentas" parent="PLE_reports"
                   action="chart_account_VG" sequence="5"/>
 
-        <menuitem id="four_retentions_menu" name="Ple.Retenciones 4ta" parent="sunat.reporte_ple_menu_root"
+        <menuitem id="four_retentions_menu" name="Ple.Retenciones 4ta" parent="PLE_reports"
                   action="four_retentions_VG" sequence="6"/>
 
-        <menuitem id="not_domiciled_menu" name="Ple. No Domiciliados" parent="sunat.reporte_ple_menu_root"
+        <menuitem id="not_domiciled_menu" name="Ple. No Domiciliados" parent="PLE_reports"
                   action="not_domiciled_VG" sequence="2"/>
 
-        <menuitem id="retentions_menu" name="Ple. Retenciones IGV" parent="sunat.reporte_ple_menu_root"
+        <menuitem id="retentions_menu" name="Ple. Retenciones IGV" parent="PLE_reports"
                   action="retentions_VG" sequence="3"/>
 
-        <menuitem id="record_actives_menu" name="Ple. Reg. Activos" parent="sunat.reporte_ple_menu_root"
+        <menuitem id="record_actives_menu" name="Ple. Reg. Activos" parent="PLE_reports"
                   action="record_actives_VG" sequence="9"/>
     </data>
 </odoo>
