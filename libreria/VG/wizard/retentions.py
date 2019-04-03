@@ -20,11 +20,9 @@ class retentions(models.TransientModel):
     @api.multi
     def generate_file(self):
         # filtro fecha
-        #dominio1 = [,('journal_id.name', 'like', 'Retenciones')]
 
         lst_account_move_line = self.env['account.move'].search()
         content_txt = ""
-        _factura = ""
         imp_numero = ""
         _total = ""
         _estado_ope = ""
@@ -34,16 +32,7 @@ class retentions(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            # factura
-            #for imp in line.line_ids:
-             #        if imp.invoice_id:
-              #          if imp.invoice_id.document_type_id:
-               #            _factura = imp.invoice_id.document_type_id.number
 
-
-             #for imp in line.journal_id.company_partner_id.unreconciled_aml_ids:
-             #          if imp.invoice_id.document_type_id:
-             #                _factura = imp.invoice_id.document_type_id.number
 
             # numero
             for imp2 in line.line_ids:
@@ -73,7 +62,7 @@ class retentions(models.TransientModel):
                 line.name or '|',  # 2
                 line.id or '|',  # 3
                 line.date or '|',  # 4
-                line.journal_id or '|',  # 5
+                line.journal_id.id or '|',  # 5
                 imp_numero or '|',  # 6
                 line.invoice_id.name or '|',  # 7
                 _total or '|',  # 8
