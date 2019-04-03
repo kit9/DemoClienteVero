@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccount(models.TransientModel):
+class chart_account(models.TransientModel):
     _name = "VG.chart_account"
     _description = "Plan Contable"
 
