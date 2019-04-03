@@ -13,8 +13,8 @@
         <menuitem id="not_domiciled_menu" name="Ple. No Domiciliados" parent="sunat.reporte_ple_menu_root"
                   action="not_domiciled_VG" sequence="2"/>
 
-        <menuitem id="retentions_menu" name="Ple. Retenciones IGV" parent="sunat.reporte_ple_menu_root"
-                  action="retentions_VG" sequence="3"/>
+        <!--<menuitem id="retentions_menu" name="Ple. Retenciones IGV" parent="sunat.reporte_ple_menu_root"-->
+                  <!--action="retentions_VG" sequence="3"/>-->
 
         <menuitem id="record_actives_menu" name="Ple. Reg. Activos" parent="sunat.reporte_ple_menu_root"
                   action="record_actives_VG" sequence="9"/>
