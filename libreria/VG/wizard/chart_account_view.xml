@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="chart_account_view" model="ir.ui.view">
         <field name="name">libreria.chart_account.form</field>
         <field name="model">libreria.chart_account</field>
@@ -37,6 +36,4 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
-
 </odoo>
