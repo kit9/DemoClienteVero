@@ -4,8 +4,8 @@
         <!--<menuitem id="PLE_reports" name="Reportes PLE" parent="account.menu_finance_reports"-->
                   <!--sequence="0"/>-->
         <!--reportes PLE-->
-        <menuitem id="chart_account_menu" name="Ple. Plan de Cuentas" parent="sunat.reporte_ple_menu_root"
-                  action="chart_account_VG" sequence="5"/>
+        <!--<menuitem id="chart_account_menu" name="Ple. Plan de Cuentas" parent="sunat.reporte_ple_menu_root"-->
+                  <!--action="chart_account_VG" sequence="5"/>-->
 
         <menuitem id="four_retentions_menu" name="Ple.Retenciones 4ta" parent="sunat.reporte_ple_menu_root"
                   action="four_retentions_VG" sequence="6"/>
