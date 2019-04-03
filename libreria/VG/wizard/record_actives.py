@@ -53,8 +53,11 @@ class record_actives(models.TransientModel):
                 if cat3.depreciated_value:
                     amortizacion = cat3.depreciated_value
 
-            if line.category_id.method("Método de cálculo") ==  value("Método de cálculo") :
-               _estado_ope = "01"
+            # if line.category_id.method("Método de cálculo") ==  value("Método de cálculo") :
+            #    _estado_ope = "01"
+
+            if line.category_id.method == 'Metodo de calculo':
+                funcion_met(1)
 
             # else:
             #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
