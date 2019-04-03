@@ -1,18 +1,22 @@
 <odoo>
     <!-- Categorias -->
     <data>
-        <menuitem id="chart_of_accounts_menu_root" name="Reportes PLE" parent="account.menu_finance_reports"
-                  sequence="0"/>
+        <!--<menuitem id="PLE_reports" name="Reportes PLE" parent="account.menu_finance_reports"-->
+                  <!--sequence="0"/>-->
         <!--reportes PLE-->
-        <menuitem id="chart_of_accounts_menu" name="Plan de Cuenta" parent="chart_of_accounts_menu_root"
-                  action="chart_accounts_VG" sequence="1"/>
-        <menuitem id="four_retentions_menu" name="retenciones 4th" parent="chart_of_accounts_menu_root"
-                  action="four_retentions_VG" sequence="1"/>
-        <menuitem id="not_domiciled_menu" name="No Domiciliados" parent="chart_of_accounts_menu_root"
-                  action="not_domiciled_VG" sequence="1"/>
-        <menuitem id="retentions_menu" name="Retenciones" parent="chart_of_accounts_menu_root"
-                  action="retentions_VG" sequence="1"/>
-        <!--<menuitem id="record_of_actives_menu" name="Registro de Activos" parent="chart_of_accounts_menu_root"-->
-                  <!--action="record_of_actives_VG" sequence="1"/>-->
+        <menuitem id="chart_account_menu" name="Ple. Plan de Cuentas" parent="sunat.reporte_ple_menu_root"
+                  action="chart_account_VG" sequence="5"/>
+
+        <menuitem id="four_retentions_menu" name="Ple.Retenciones 4ta" parent="sunat.reporte_ple_menu_root"
+                  action="four_retentions_VG" sequence="6"/>
+
+        <menuitem id="not_domiciled_menu" name="Ple. No Domiciliados" parent="sunat.reporte_ple_menu_root"
+                  action="not_domiciled_VG" sequence="2"/>
+
+        <menuitem id="retentions_menu" name="Ple. Retenciones IGV" parent="sunat.reporte_ple_menu_root"
+                  action="retentions_VG" sequence="3"/>
+
+        <menuitem id="record_actives_menu" name="Ple. Reg. Activos" parent="sunat.reporte_ple_menu_root"
+                  action="record_actives_VG" sequence="9"/>
     </data>
 </odoo>
