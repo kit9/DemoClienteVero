@@ -1,7 +1,8 @@
 <odoo>
-    <record id="chart_account_view" model="ir.ui.view">
-        <field name="name">VG.chart_account.form</field>
-        <field name="model">VG.chart_account</field>
+
+    <record id="chart_accounts_view" model="ir.ui.view">
+        <field name="name">libreria.chart_accounts.form</field>
+        <field name="model">libreria.chart_accounts</field>
         <field name="arch" type="xml">
             <form string="Generar Archivo">
                 <field name="state" invisible="1"/>
@@ -28,12 +29,14 @@
         </field>
     </record>
 
-    <record id="chart_account_VG" model="ir.actions.act_window">
-        <field name="name">VG.chart_account</field>
+    <record id="chart_accounts_VG" model="ir.actions.act_window">
+        <field name="name">chart_accounts</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">VG.chart_account</field>
+        <field name="res_model">libreria.chart_accounts</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
+
+
 </odoo>
