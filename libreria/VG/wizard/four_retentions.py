@@ -19,8 +19,6 @@ class four_retentions(models.TransientModel):
 
 
 @api.multi
-
-
 def generate_file(self):
     # Data - Jcondori
 
