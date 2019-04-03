@@ -73,7 +73,7 @@ class retentions(models.TransientModel):
                 line.name or '|',  # 2
                 line.id or '|',  # 3
                 line.date or '|',  # 4
-                line.journal_id.id or '|',  # 5
+                line.journal_id or '|',  # 5
                 imp_numero or '|',  # 6
                 line.invoice_id.name or '|',  # 7
                 _total or '|',  # 8
