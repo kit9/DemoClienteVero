@@ -48,6 +48,10 @@ class record_actives(models.TransientModel):
                 if line.category_id.account_asset_id.company_id.id:
                     v1 = line.category_id.account_asset_id.company_id.id
 
+            for cat3 in line.depreciation_line_ids:
+                if cat3.depreciated_value:
+                    amortizacion = cat3.depreciated_value
+
             #if line.category_id.method ==  ("Método de cálculo") :
             #  _estado_ope = "01"
 
@@ -85,10 +89,10 @@ class record_actives(models.TransientModel):
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
                            #_estado_ope or '',  # 25
-                           line.category_id.prorata or '',  # 25 jrejas
+                           #line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27 jrejas
-                           # valor or '',  # 28 jrejas
+                           amortizacion or '',  # 28 jrejas
                            # '',  # 29 null
                            # '',  # 30 null
                            # '',  # 31 null
