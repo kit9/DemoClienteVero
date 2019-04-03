@@ -1,8 +1,8 @@
 <odoo>
 
     <record id="four_retentions" model="ir.ui.view">
-        <field name="name">libreria.four_retentions.form</field>
-        <field name="model">libreria.four_retentions</field>
+        <field name="name">VG.four_retentions.form</field>
+        <field name="model">VG.four_retentions</field>
         <field name="arch" type="xml">
             <form string="Generar Archivo">
                 <field name="state" invisible="1"/>
@@ -32,7 +32,7 @@
     <record id="four_retentions_VG" model="ir.actions.act_window">
         <field name="name">four_retentions</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">libreria.four_retentions</field>
+        <field name="res_model">VG.four_retentions</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

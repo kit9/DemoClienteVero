@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 
 class four_retentions(models.TransientModel):
-    _name = "libreria.four_retentions"
+    _name = "VG.four_retentions"
     _description = "retenciones_4th"
 
     date_month = fields.Char(string="Mes", size=2)
@@ -60,7 +60,7 @@ class four_retentions(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'retenciones_4ta',
-            'res_model': 'libreria.four_retentions',
+            'res_model': 'VG.four_retentions',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,

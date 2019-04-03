@@ -1,6 +1,6 @@
 <odoo>
 
-        <record id="ratentions_view" model="ir.ui.view">
+        <record id="retentions_view" model="ir.ui.view">
             <field name="name">VG.retentions.form</field>
             <field name="model">VG.retentions</field>
             <field name="arch" type="xml">

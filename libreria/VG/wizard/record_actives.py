@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 
 class record_actives(models.TransientModel):
-    _name = "libreria.record_actives"
+    _name = "VG.record_actives"
     _description = "Registro de Activos"
 
     date_year = fields.Char(string="Año", size=4)
@@ -118,7 +118,7 @@ class record_actives(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Registro de Activos',
-            'res_model': 'libreria.record_actives',
+            'res_model': 'VG.record_actives',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,

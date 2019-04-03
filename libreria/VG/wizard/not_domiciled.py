@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 
 class not_domiciled(models.TransientModel):
-    _name = "libreria.not_domiciled"
+    _name = "VG.not_domiciled"
     _description = "No Domiciliados"
 
     date_month = fields.Char(string="Mes", size=2)
@@ -121,7 +121,7 @@ class not_domiciled(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'No Domiciliados',
-            'res_model': 'libreria.not_domiciled',
+            'res_model': 'VG.not_domiciled',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
