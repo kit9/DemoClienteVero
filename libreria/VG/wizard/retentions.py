@@ -22,10 +22,7 @@ class retentions(models.TransientModel):
         # filtro fecha
         #dominio1 = [,('journal_id.name', 'like', 'Retenciones')]
 
-        lst_account_move_line = self.env['account.move'].search([
-            ('journal_id.name','ilike','Retenciones'),
-            ('month_year_move', 'like', self.date_month + "" + self.date_year)
-        ])
+        lst_account_move_line = self.env['account.move'].search()
         content_txt = ""
         _factura = ""
         imp_numero = ""
