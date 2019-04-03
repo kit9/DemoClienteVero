@@ -59,7 +59,7 @@ class chart_account(models.TransientModel):
                 campo[0:2] or '',  # Codigo Plan de Cuenta
                 campo1[2:50] or '',  # Descripcion del plan de cuenta
                 '',  # dejar en blanco
-                '',  # dejar en blanco
+                'de',  # dejar en blanco
                 estado_ope or ''  # estado de operacion
 
             )
