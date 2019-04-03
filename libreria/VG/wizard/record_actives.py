@@ -28,7 +28,7 @@ class record_actives(models.TransientModel):
         v1= ""
         _depre = ""
         _estado_ope = ""
-        funcion_met = ""
+        funcion_met
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -58,7 +58,7 @@ class record_actives(models.TransientModel):
             #    _estado_ope = "01"
 
             if line.category_id.method == 'Metodo de calculo':
-                funcion_met = (1)
+                funcion_met(1)
 
             # else:
             #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
@@ -94,7 +94,7 @@ class record_actives(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           funcion_met or '',  # 25
+                           funcion_met(1) or '',  # 25
                            #line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
