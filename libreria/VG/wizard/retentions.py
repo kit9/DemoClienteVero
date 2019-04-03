@@ -6,52 +6,50 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class retentions(models.TransientModel):
+class chartofaccounts(models.TransientModel):
     _name = "libreria.retentions"
-    _description = "retenciones"
+    _description = "Retenciones"
 
-    date_month = fields.Char(string="Mes", size=2)
-    date_year = fields.Char(string="Año", size=4)
-
-    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
+    state = fields.Selection(
+        [('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
     @api.multi
     def generate_file(self):
-        # filtro fecha
+        # Data - Jcondori
 
-        lst_account_move_line = self.env['account.move'].search(
-            [('month_year_move', 'like', self.date_month + "" + self.date_year),
-             ('journal_id.name', 'ilike', 'Retenciones')])
-
+        lst_account_move_line = self.env['account.payment'].search([])
         content_txt = ""
-        imp_numero = ""
-        _total = ""
         _estado_ope = ""
+        _locaciones = ""
+        _asiento = ""
+        _codigo = ""
         _factura = ""
-
-        _logger.info(len(lst_account_move_line))
-
-        # Iterador
+        # Iterador - Jcondori
         for line in lst_account_move_line:
-            # factura
+            # Asiento Conta
+
+            # allocation
             for imp in line.line_ids:
-                if imp.invoice_id:
-                    if imp.invoice_id.document_type_id:
-                        _factura = imp.invoice_id.document_type_id.number
+                if imp.allocation != "":
+                    _locaciones = imp.allocation
 
-            # numero
-            for imp2 in line.line_ids:
-                if imp2.invoice_id.invoice_number:
-                    imp_numero = imp2.invoice_id.invoice_number
+            # asiento contable
+            for imp1 in line.move_line_ids:
+                if imp1.move_id.ref != "":
+                    _asiento = imp1.move_id.ref
 
-            # total
-            for imp3 in line.line_ids:
-                if imp3.invoice_id.amount_total:
-                    _total = imp3.invoice_id.amount_total
+            # id
+            for imp2 in line.move_line_ids:
+                if imp2.id != "":
+                    _codigo = imp2.id
 
-            # 10 valilador de estado de fecha
+            # factura
+            for imp3 in line.move_line_ids:
+                if imp3.invoice_id != "":
+                    _factura = imp3.invoice_id.amount_total * imp3.invoice_id.exchange_rate
+
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 _estado_ope = "01"
             else:
@@ -63,20 +61,21 @@ class retentions(models.TransientModel):
                     else:
                         _estado_ope = "09"
 
-            # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date.strftime("%Y%m00") or '',  # 1
-                line.name or '',  # 2
-                line.id or '',  # 3
-                line.date or '',  # 4
-                _factura or '',  # 5
-                imp_numero or '',  # 6
-                line.partner_id.name or '',  # 7
-                _total or '',  # 8
-                line.amount or '',  # 9
-                _estado_ope or '',  # 10
-                line.journal_id.name or ''
-            )
+                # por cada campo encontrado daran una linea como mostrare
+            txt_line = "%s|%s|%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
+                    line.payment_date.strftime("%Y%m00") or '',  # 1
+                    line.journal_id or '',  # 1
+                    line.state or '',  # 1 null
+                    _asiento or '',  # 2
+                    _codigo or ''   ,  # 3
+                    line.payment_date or '',  # 4
+                    line.partner_id.catalog_06_id or '',  # 5
+                    line.partner_id.vat or '',  # 6
+                    line.partner_id.name or '',  # 7
+                    _factura or '',  # 8 #
+                    _locaciones or '',  # 9
+                    _estado_ope or ''  # 10
+                )
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
@@ -84,11 +83,11 @@ class retentions(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "retenciones.txt"
+            'txt_filename': "Retenciones.txt"
         })
         return {
             'type': 'ir.actions.act_window',
-            'name': 'libreria.retentions',
+            'name': 'Retenciones',
             'res_model': 'libreria.retentions',
             'view_mode': 'form',
             'view_type': 'form',
