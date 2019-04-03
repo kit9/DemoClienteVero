@@ -21,7 +21,7 @@ class retentions(models.TransientModel):
     def generate_file(self):
         # filtro fecha
 
-        lst_account_move_line = self.env['account.move'].search()
+        lst_account_move_line = self.env['account.move'].search([('month_year_move', 'like', self.date_month + "" + self.date_year)])
         content_txt = ""
         imp_numero = ""
         _total = ""
