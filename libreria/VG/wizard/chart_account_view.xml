@@ -1,6 +1,6 @@
 <odoo>
     <record id="chart_account_view" model="ir.ui.view">
-        <field name="name">VG.wizard.chart_account.form</field>
+        <field name="name">chart_account.form</field>
         <field name="model">VG.wizard.chart_account</field>
         <field name="arch" type="xml">
             <form string="Generar Archivo">
