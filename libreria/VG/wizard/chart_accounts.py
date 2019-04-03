@@ -25,32 +25,42 @@ class chartofaccounts(models.TransientModel):
         # lst_account_move_line = self.env['account.move.line'].search([])
         lst_account_move_line = self.env['account.account'].search(dominio)
 
+        # variables creadas
         content_txt = ""
         estado_ope = ""
+        campo = ""
+        campo1 = ""
 
-        # Iterador - Jcondori
+        # Iterador
         for line in lst_account_move_line:
-
+            # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "01"
             else:
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
                     estado_ope = "09"
                 else:
-                    if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
                         estado_ope = "00"
                     else:
                         estado_ope = "09"
+            # validador de campo vacio
+            if line.account_plan_code:
+                campo = line.account_plan_code
+            if line.account_plan_code:
+                campo1 = line.account_plan_code
 
-            # Asiento Conta
+            # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s" % (
-                line.create_date.strftime("%Y%m00") or '|',
-                line.code or '|',
-                line.name or '|',
-                '|',  # line.x_studio_codigo_plan_cuenta or ''
-                '|',  # line.x_studio_deudor_tributario or ''
-                estado_ope or '|'
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
+                line.create_date.strftime("%Y%m00") or '',  # Periodo
+                line.code or '',  # codigo cuenta contable
+                line.name or '',  # descripcion de cuenta
+                campo[0:2] or '',  # Codigo Plan de Cuenta
+                campo1[2:50] or '',  # Descripcion del plan de cuenta
+                '',  # dejar en blanco
+                '',  # dejar en blanco
+                estado_ope or ''  # estado de operacion
 
             )
 
