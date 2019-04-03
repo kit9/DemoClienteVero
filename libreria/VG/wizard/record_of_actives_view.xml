@@ -1,8 +1,8 @@
 <odoo>
 
-        <record id="record_of_actives_view" model="ir.ui.view">
-            <field name="name">libreria.record_actives.form</field>
-            <field name="model">libreria.record_activess</field>
+        <record id="chart_of_accounts_view" model="ir.ui.view">
+            <field name="name">libreria.record_of_actives.form</field>
+            <field name="model">libreria.record_of_actives</field>
             <field name="arch" type="xml">
                 <form string="Generar Archivo">
                     <field name="state" invisible="1"/>
