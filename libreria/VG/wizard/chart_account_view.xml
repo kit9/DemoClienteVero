@@ -29,7 +29,7 @@
     </record>
 
     <record id="chart_account_VG" model="ir.actions.act_window">
-        <field name="name">chart_account</field>
+        <field name="name">VG.chart_account</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">VG.chart_account</field>
         <field name="view_type">form</field>
