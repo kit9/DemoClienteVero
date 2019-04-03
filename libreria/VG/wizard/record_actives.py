@@ -28,6 +28,7 @@ class record_actives(models.TransientModel):
         v1= ""
         _depre = ""
         _estado_ope = ""
+        value = ""
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
@@ -52,8 +53,8 @@ class record_actives(models.TransientModel):
                 if cat3.depreciated_value:
                     amortizacion = cat3.depreciated_value
 
-            #if line.category_id.method ==  ("Método de cálculo") :
-            #  _estado_ope = "01"
+            if line.category_id.method ==  value("Método de cálculo") :
+               _estado_ope = "01"
 
             # else:
             #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
@@ -62,7 +63,8 @@ class record_actives(models.TransientModel):
 
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
@@ -91,15 +93,15 @@ class record_actives(models.TransientModel):
                            #_estado_ope or '',  # 25
                            #line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
-                           line.category_id.method_number or '',  # 27 jrejas
-                           amortizacion or '',  # 28 jrejas
-                           # '',  # 29 null
-                           # '',  # 30 null
-                           # '',  # 31 null
-                           # '',  # 32 null
-                           # '',  # 33 null
-                           # '',  # 34 null
-                           # '',  # 35 null
+                           line.category_id.method_number or '',  # 27
+                           amortizacion or '',  # 28
+                           '',  # 29 null
+                           '',  # 30 null
+                           '',  # 31 null
+                           '',  # 32 null
+                           '',  # 33 null
+                           '',  # 34 null
+                           '',  # 35 null
                            # ''  # 36 jrejas (no se encontro)
 
                        )
