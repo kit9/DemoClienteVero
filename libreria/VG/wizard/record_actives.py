@@ -28,7 +28,7 @@ class record_actives(models.TransientModel):
         v1= ""
         _depre = ""
         _estado_ope = ""
-        funcion_met(1)
+
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -57,9 +57,6 @@ class record_actives(models.TransientModel):
             # if line.category_id.method("Método de cálculo") ==  value("Método de cálculo") :
             #    _estado_ope = "01"
 
-            if line.category_id.method == 'Metodo de calculo':
-                funcion_met(1)
-
             # else:
             #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
             #         _estado_ope = "09"
@@ -68,7 +65,7 @@ class record_actives(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
@@ -94,7 +91,7 @@ class record_actives(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           funcion_met(1) or '',  # 25
+                           # or '',  # 25
                            #line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
