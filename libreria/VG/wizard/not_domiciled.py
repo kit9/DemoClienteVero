@@ -10,8 +10,10 @@ class not_domiciled(models.TransientModel):
     _name = "libreria.not_domiciled"
     _description = "No Domiciliados"
 
-    state = fields.Selection(
-        [('choose', 'choose'), ('get', 'get')], default='choose')
+    date_month = fields.Char(string="Mes", size=2)
+    date_year = fields.Char(string="Año", size=4)
+
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
@@ -19,22 +21,29 @@ class not_domiciled(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.invoice'].search([])
+        lst_account_move_line = self.env['account.invoice'].search([
+            ('month_year_inv', 'like', self.date_month + "" + self.date_year),
+            ('partner_id.person_type', 'like', 'Persona')
+        ])
         content_txt = ""
         estado_ope = ""
         impuesto = ""
         cantidad = ""
+        check = ""
+        orden = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
             for imp in line.invoice_line_ids:
                 for imp1 in imp.invoice_line_tax_ids:
-                    if imp1.name != "":
+                    if imp1.name:
                         impuesto = imp1.name
             for p2 in line.payment_ids:
-                if p2.amount != "":
+                if p2.amount:
                     cantidad = p2.amount
-            # Asiento Contable
+                if line.message_needaction:
+                    check = "1"
+                # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
             else:
@@ -42,55 +51,65 @@ class not_domiciled(models.TransientModel):
                     estado_ope = "0"
                 else:
                     estado_ope = "0"
-
-            # por cada campo encontrado daran una linea como mostrare , Hay 11,10,10,10
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+            if line.date_invoice:
+                orden = line.date_invoice.strftime("%Y%m00")
+            # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,10
+            txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                           # Facturas de proveedor
-                           line.date_invoice or '',  # 01 Hoja 1 (Fecha Contable)
-                           line.move_id.x_studio_field_fwlP9 or '',  # 02 Hoja 2 (Asiento Contable/ID)
-                           line.move_id.display_name or '',  # 03 Hoja 3 (Asiento Contable)
-                           line.date_document or '',  # 04 Hoja 4 (Fecha de Documento)
-                           line.document_type_id or '',  # 05 Hoja 5 (Tipo de Documento)
-                           line.invoice_serie or '',  # 06 Hoja 6 (Serie)
-                           line.invoice_number or '',  # 07 Hoja 7 (Numero)
-                           line.amount_untaxed or '',  # 08 Hoja 8 (Base Imponible)
-                           line.exchange_rate or '',  # 09 Hoja 8 (Tipo de Cambio)
-                           impuesto or '',  # 10 Hoja 9 (Impuestos)
-                           line.amount_untaxed or '',  # 11 Hoja 9 (Base Imponible)
-                           line.exchange_rate or '',  # 12 Hoja 9 (Tipo de Cambio)
-                           line.amount_total or '',  # 13 Hoja 10 (Total)
-                           line.exchange_rate or '',  # 14  Hoja 10 (Tipo de Cambio)
-                           line.partner_id.person_type or '',  # 15 Hoja 11 (Tipo de persona: natural-juridica)
-                           line.invoice_number or '',  # 16 Hoja 12 (Numero)
-                           line.year_emission_dua or '',  # 17 Hoja 13 (Año de la Emision de la DUA)
-                           line.invoice_number or '',  # 18 Hoja 14 (Numero)
-                           cantidad or '',  # 19 Hoja 15 (Cantidad a Pagar)
-                           line.state or '',  # 20 Hoja 15 (Estado)
-                           line.exchange_rate or '',  # 21 Hoja 16 (Tipo de Cambio)
-                           '',  # 22 Hoja 17 null
-                           line.partner_id.country_id or '',  # 23 Hoja 18
-                           line.partner_id or '',  # 24 Hoja 19 (Proveedor)
-                           line.partner_id.street or '',  # 25 Hoja 20 (Address, Direccion)
-                           line.partner_id.catalog_06_id or '',  # 26 Hoja 21 (RUC)
-                           '',  # 27 Hoja 22 null
-                           line.partner_id.name or '',  # 28 Hoja 23 (Nombre de Contacto)
-                           line.partner_id.title or '',  # 29 Hoja 24 (El contacto es : "socio")
-                           '',  # 30 Hoja 25 null
-                           '',  # 31 Hoja 26 null
-                           '',  # 32 Hoja 27 null
-                           '',  # 33 Hoja 28 null
-                           '',  # 34 Hoja 29 null
-                           '',  # 35 Hoja 30 null
-                           line.partner_id.x_studio_convenios or '',  # 36 Hoja 31 (Convenios)
-                           line.x_studio_exoneraciones or '',  # 37 Hoja 32 (Exoneraciones)
-                           line.type_income_id or '',
-                           # 38 Hoja 33 (Hay dos tipos de renta: x_studio_tipo_de_renta, type_income_id)
-                           line.x_studio_modalidad_de_servicio or '',  # 39 Hoja 34 (Modalidad de Servicio)
-                           line.message_needaction or '',  # 40 Hoja 35 (Aplicacion parrafo art. 76)
-                           estado_ope or ''  # 41 Hoja 36
+                           # Proveedor / Facturas
+                           # HOJA 1 AL 10
+                           orden or '',  # C1 H1(Fecha Contable)
+                           line.move_id.x_studio_field_fwlP9 or '',  # C2 H2(Asiento Contable/ID)
+                           line.move_id.ref or '',  # C3 H3(Asiento Contable)
+                           line.date_document or '',  # C4 H4(Fecha de Documento)
+                           line.document_type_id.number or '',  # C5 H5(Tipo de Documento)
+                           line.invoice_serie or '',  # C6 H6(Serie de comp. pago o doc.)
+                           line.invoice_number or '',  # C7 H7(Numero de comp. pago o doc.)
+                           line.amount_untaxed * line.exchange_rate or '',
+                           # C8 H8(Base Imponible*Tipo de Cambio ----- valor de las adquisiciones)
+                           impuesto or '',  # C9 H9(Impuestos IGV --- Otros Conceptos Adicionales)
+                           line.amount_total * line.exchange_rate or '',
+                           # C10 H10(Total * Tipo de Cambio --- Importe total de las adq. registradas)
+                           # HOJA 11 AL 20
+                           '',  # C11 Tipo de comp. de pago o doc. que sustenta el credito fiscal -- -Factura
+                           # line.partner_id.person_type or '',  #H11  (Tipo de persona: natural-juridica)
+                           line.invoice_number or '',  # C12 H12(Numero)
+                           line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
+                           line.invoice_number or '',  # C14 H14(Numero)
+                           cantidad or '',  # C15 H15(Cantidad a Pagar --- Monto de retencion del IGV)
+                           # line.state or '',  #H15 (Estado)
+                           line.currency_id.name or '',  # C16 (Codigo de la moneda / TABLA 4)
+                           line.exchange_rate or '',  # C17 (Tipo de Cambio)
+                           '',  # H17 null
+                           # Sujeto No Domiciliado
+                           line.partner_id.country_id.name or '',  # C18 H18(Pais)
+                           line.partner_id.commercial_company_name or '',  # C19 H19(Proveedor)
+                           line.partner_id.street or '',  # C20 H20 (Address, Direccion)
+                           # HOJA 21 AL 30
+                           line.partner_id.vat or '',  # C21 H21(RUC, NIF - Numero de Identificacion del Fiscal)
+                           # Beneficiario de los Pagos
+                           '',  # C22 NIF - Numero de Identificacion del Fiscal)
+                           '',  # H22 null
+                           line.partner_id.name or '',  # C23 H23(Nombre de Contacto)
+                           line.partner_id.title.name or '',  # H24 (El contacto es : "socio")
+                           line.partner_id.country_id.name or '',  # C24 (Pais)
+                           '',  # C25  (Vinculo Contribuyente y residente en el extranjero)
+                           '',  # H25 null
+                           '',  # C26 H26 null (Renta Bruta)
+                           '',  # C27 H27 null (Deduccion/Costo de Enajenacion de bienes de Capital)
+                           '',  # C28 H28 null (Renta Neta)
+                           '',  # C29 H29 null (Tasa de Retencion)
+                           '',  # C30 H30 null (Impuesto Retenido)
+                           line.partner_id.x_studio_convenios or '',
+                           # C31 H31 (Convenios --- evitar la doble imposicion)
+                           line.x_studio_exoneraciones or '',  # C32 Hoja 32 (Exoneraciones)
+                           line.type_income_id.number or '',  # C33 Hoja 33 (tipo de renta)
+                           line.x_studio_modalidad_de_servicio or '',  # C34 H34 (Modalidad de Servicio)
+                           check or '',  # C35 H35  (Aplicacion parrafo art. 76, marcado = 1, sino 0)
+                           estado_ope or '',  # C36 H36 (Estado identifica la anotacion o indicacion)
+                           '',  # C37 campos de libre utilizacion
 
                        )
 
