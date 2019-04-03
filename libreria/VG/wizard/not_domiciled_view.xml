@@ -1,6 +1,6 @@
 <odoo>
 
-        <record id="chart_of_accounts_view" model="ir.ui.view">
+        <record id="not_domiciled_view" model="ir.ui.view">
             <field name="name">libreria.not_domiciled.form</field>
             <field name="model">libreria.not_domiciled</field>
             <field name="arch" type="xml">
