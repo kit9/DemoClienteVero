@@ -23,19 +23,16 @@
     'auto_install': False,
 
     # any module necessary for this one to work correctly
-    'depends': ['base',
-                'account',
-                'sunat',
-                ],
+    'depends': ['base', 'account'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        # 'wizard/chart_account_view.xml',
+        'wizard/chart_accounts_view.xml',
         'wizard/retentions_view.xml',
-        'wizard/record_actives_view.xml',
+        #'wizard/record_of_actives_view.xml',
         'wizard/four_retentions_view.xml',
         'wizard/not_domiciled_view.xml',
         'views/menu.xml',
