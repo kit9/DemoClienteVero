@@ -29,6 +29,7 @@ class chartofaccounts(models.TransientModel):
         _depre = ""
         _estado_ope = ""
         value = "linear"
+        estado_ope = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -59,10 +60,21 @@ class chartofaccounts(models.TransientModel):
             else:
                 _estado_ope = "09"
 
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "01"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "08"
+                else:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        estado_ope = "09"
+                    else:
+                        estado_ope = "01"
+
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
@@ -99,7 +111,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 33 null
                            '',  # 34 null
                            '',  # 35 null
-                           # ''  # 36 jrejas (no se encontro)
+                           estado_ope or ''  # 36 jrejas (no se encontro)
 
                        )
 
