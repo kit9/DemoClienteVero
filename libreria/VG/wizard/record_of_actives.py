@@ -28,7 +28,7 @@ class chartofaccounts(models.TransientModel):
         v1 = ""
         _depre = ""
         _estado_ope = ""
-        value = ""
+        value = "linear"
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -54,12 +54,10 @@ class chartofaccounts(models.TransientModel):
                 if cat3.depreciated_value:
                     amortizacion = cat3.depreciated_value
 
-            #if line.category_id.method ==  value :
-            #   _estado_ope = "01"
-
-            # else:
-            #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
-            #         _estado_ope = "09"
+            if line.category_id.method == value:
+                _estado_ope = "01"
+            else:
+                _estado_ope = "09"
 
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -68,7 +66,7 @@ class chartofaccounts(models.TransientModel):
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           line.invoice_id.move_id.name or '', # 3 cbarraza
+                           line.invoice_id.move_id.name or '',  # 3 cbarraza
                            '',  # 4 cbarraza (no se encuentra)
                            line.name or '',  # 5
                            '',  # 6 cbarraza (no se encontro)
@@ -90,7 +88,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           line.category_id.method or '',  # 25 jrejas
+                           _estado_ope or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
                            amortizacion or '',  # 28
