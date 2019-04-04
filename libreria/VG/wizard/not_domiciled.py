@@ -71,8 +71,8 @@ class not_domiciled(models.TransientModel):
                            impuesto or '',  # C9 H9(Impuestos IGV --- Otros Conceptos Adicionales)
                            line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Importe total de las adq. registradas)
                            # HOJA 11 AL 20
-                           '',  # C11 Tipo de comp. de pago o doc. que sustenta el credito fiscal, (Tipo de persona).... --
-                           # line.partner_id.person_type or '',  #H11  (Tipo de persona: natural-juridica)
+                           #'',  # C11 Tipo de comp. de pago o doc. que sustenta el credito fiscal, (Tipo de persona).... --
+                           line.partner_id.person_type or '',  #H11  (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # C12 H12(Numero)
                            line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
                            line.invoice_number or '',  # C14 H14(Numero)
