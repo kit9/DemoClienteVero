@@ -6,13 +6,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class AccountAssetAsset(models.Model):
-    _inherit = 'account.asset.asset'
-
-    Cod_Catalog = fields.Char(string="Codigo de catalogo")
-    Cod_Existent = fields.Char(string="Codigo de Existencia")
-
-
 class AccountAccount(models.Model):
     _inherit = 'account.account'
 
