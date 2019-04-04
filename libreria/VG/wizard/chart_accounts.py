@@ -43,8 +43,7 @@ class chartofaccounts(models.TransientModel):
                 else:
                     if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
                         estado_ope = "00"
-                    else:
-                        estado_ope = "09"
+                    
             # validador de campo vacio
             if line.account_plan_code:
                 campo = line.account_plan_code
