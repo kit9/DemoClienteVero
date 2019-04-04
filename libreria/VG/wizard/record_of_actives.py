@@ -28,7 +28,7 @@ class chartofaccounts(models.TransientModel):
         v1 = ""
         _depre = ""
         _estado_ope = ""
-        value="Método de cálculo"
+
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
@@ -53,22 +53,24 @@ class chartofaccounts(models.TransientModel):
                 if cat3.depreciated_value:
                     amortizacion = cat3.depreciated_value
 
-            # if line.category_id.method == value:
-            #     _estado_ope = "01"
+            # if line.category_id.method("Método de cálculo") ==  value("Método de cálculo") :
+            #    _estado_ope = "01"
+
             # else:
-            #        _estado_ope = "09"
+            #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
+            #         _estado_ope = "09"
 
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           line.invoice_id.move_id.name or '',  # 3
-                           line.Cod_Catalog or'',  # 4 cbarraza (campo creado)
+                           '',  # 3 cbarraza (no se encuentra)
+                           '',  # 4 cbarraza (no se encuentra)
                            line.name or '',  # 5
-                           line.Cod_Existent or '',  # 6 cbarraza (campo creado)
+                           '',  # 6 cbarraza (no se encontro)
                            line.name or '',  # 7
                            line.category_id.account_asset_id.code or '',  # 8
                            line.entry_count or '',  # 9
@@ -87,7 +89,8 @@ class chartofaccounts(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           line.category_id.method or '',  # 25 jrejas(comparacion)
+                           # or '',  # 25
+                           # line.category_id.prorata or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
                            amortizacion or '',  # 28
@@ -98,7 +101,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 33 null
                            '',  # 34 null
                            '',  # 35 null
-                           #'',  # 36 jrejas (comparacion)
+                           # ''  # 36 jrejas (no se encontro)
 
                        )
 
