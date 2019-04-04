@@ -22,8 +22,8 @@ class not_domiciled(models.TransientModel):
         # Data - Jcondori
 
         lst_account_move_line = self.env['account.invoice'].search([
-            ('month_year_inv', 'like', self.date_month + "" + self.date_year),
-            ('partner_id.person_type', 'like', 'Persona')
+            ('month_year_inv', 'like', self.date_month + "" + self.date_year)
+            #('partner_id.person_type', 'like', 'Persona')
         ])
         content_txt = ""
         estado_ope = ""
@@ -56,7 +56,7 @@ class not_domiciled(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,10
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Proveedor / Facturas
                            # HOJA 1 AL 10
@@ -67,13 +67,11 @@ class not_domiciled(models.TransientModel):
                            line.document_type_id.number or '',  # C5 H5(Tipo de Documento)
                            line.invoice_serie or '',  # C6 H6(Serie de comp. pago o doc.)
                            line.invoice_number or '',  # C7 H7(Numero de comp. pago o doc.)
-                           line.amount_untaxed * line.exchange_rate or '',
-                           # C8 H8(Base Imponible*Tipo de Cambio ----- valor de las adquisiciones)
+                           line.amount_untaxed * line.exchange_rate or '',  # C8 H8(BImp *TCambio ----- valor de las adquisiciones)
                            impuesto or '',  # C9 H9(Impuestos IGV --- Otros Conceptos Adicionales)
-                           line.amount_total * line.exchange_rate or '',
-                           # C10 H10(Total * Tipo de Cambio --- Importe total de las adq. registradas)
+                           line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Importe total de las adq. registradas)
                            # HOJA 11 AL 20
-                           '',  # C11 Tipo de comp. de pago o doc. que sustenta el credito fiscal -- -Factura
+                           '',  # C11 Tipo de comp. de pago o doc. que sustenta el credito fiscal, (Tipo de persona).... --
                            # line.partner_id.person_type or '',  #H11  (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # C12 H12(Numero)
                            line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
@@ -90,8 +88,7 @@ class not_domiciled(models.TransientModel):
                            # HOJA 21 AL 30
                            line.partner_id.vat or '',  # C21 H21(RUC, NIF - Numero de Identificacion del Fiscal)
                            # Beneficiario de los Pagos
-                           '',  # C22 NIF - Numero de Identificacion del Fiscal)
-                           '',  # H22 null
+                           '',  # C22 H22 NIF - Numero de Identificacion del Fiscal)
                            line.partner_id.name or '',  # C23 H23(Nombre de Contacto)
                            line.partner_id.title.name or '',  # H24 (El contacto es : "socio")
                            line.partner_id.country_id.name or '',  # C24 (Pais)
@@ -109,7 +106,7 @@ class not_domiciled(models.TransientModel):
                            line.x_studio_modalidad_de_servicio or '',  # C34 H34 (Modalidad de Servicio)
                            check or '',  # C35 H35  (Aplicacion parrafo art. 76, marcado = 1, sino 0)
                            estado_ope or '',  # C36 H36 (Estado identifica la anotacion o indicacion)
-                           '',  # C37 campos de libre utilizacion
+                           '|',  # C37 campos de libre utilizacion
 
                        )
 
