@@ -67,7 +67,7 @@ class chartofaccounts(models.TransientModel):
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           '',  # 3 cbarraza (no se encuentra)
+                           line.invoice_id.move_id.name.upper() or '',  # 3
                            '',  # 4 cbarraza (no se encuentra)
                            line.name or '',  # 5
                            '',  # 6 cbarraza (no se encontro)
