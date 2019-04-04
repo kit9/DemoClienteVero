@@ -18,9 +18,3 @@ class AccountAccount(models.Model):
             if rec.create_date:
                 rec.month_year_inv = rec.create_date.strftime("%m%Y")
 
-
-class AccountAssetAsset(models.Model):
-    _inherit = 'account.asset.asset'
-
-    cod_catalog = fields.Char(string="codigo catalogo   ")
-    cod_existent = fields.Char(string="codigo existencia")
