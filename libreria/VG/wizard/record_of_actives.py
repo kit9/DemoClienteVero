@@ -28,6 +28,7 @@ class chartofaccounts(models.TransientModel):
         v1 = ""
         _depre = ""
         _estado_ope = ""
+        value = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -53,8 +54,8 @@ class chartofaccounts(models.TransientModel):
                 if cat3.depreciated_value:
                     amortizacion = cat3.depreciated_value
 
-            # if line.category_id.method("Método de cálculo") ==  value("Método de cálculo") :
-            #    _estado_ope = "01"
+            #if line.category_id.method ==  value :
+            #   _estado_ope = "01"
 
             # else:
             #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
@@ -63,11 +64,11 @@ class chartofaccounts(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           '',  # 3 cbarraza (no se encuentra)
+                           line.invoice_id.move_id.name or '', # 3 cbarraza
                            '',  # 4 cbarraza (no se encuentra)
                            line.name or '',  # 5
                            '',  # 6 cbarraza (no se encontro)
@@ -89,8 +90,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           # or '',  # 25
-                           # line.category_id.prorata or '',  # 25 jrejas
+                           line.category_id.method or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
                            amortizacion or '',  # 28
