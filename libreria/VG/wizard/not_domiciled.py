@@ -90,7 +90,7 @@ class not_domiciled(models.TransientModel):
                            # Beneficiario de los Pagos
                            '',  # C22 H22 NIF - Numero de Identificacion del Fiscal)
                            line.partner_id.name or '',  # C23 H23(Nombre de Contacto)
-                           line.partner_id.title.name or '',  # H24 (El contacto es : "socio")
+                           line.partner_id.title.display_name or '',  # H24 (El contacto es : "socio")
                            line.partner_id.country_id.name or '',  # C24 (Pais)
                            '',  # C25  (Vinculo Contribuyente y residente en el extranjero)
                            '',  # H25 null
