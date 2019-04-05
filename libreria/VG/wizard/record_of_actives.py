@@ -78,7 +78,7 @@ class chartofaccounts(models.TransientModel):
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           line.invoice_id.move_id.journal_id.active or '',  # 3 cbarraza
+                           line.invoice_id.move_id.journal_id.name or '',  # 3 cbarraza
                            '',  # 4 cbarraza (crear campo)
                            line.name or '',  # 5
                            '',  # 6 cbarraza (crear campo)
