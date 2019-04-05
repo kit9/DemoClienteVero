@@ -39,6 +39,8 @@ class not_domiciled(models.TransientModel):
                 for imp1 in imp.invoice_line_tax_ids:
                     if imp1.name("Otros Conceptos"):
                         impuesto = line.amount_untaxed * line.exchange_rate
+                    else:
+                        impuesto = "0"
             for p2 in line.payment_ids:
                 if p2.amount:
                     cantidad = p2.amount
