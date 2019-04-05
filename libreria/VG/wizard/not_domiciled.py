@@ -32,13 +32,19 @@ class not_domiciled(models.TransientModel):
         check = ""
         AMD = ""
         DMA = ""
+        value = "Otros Conceptos"
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
+
             for imp in line.invoice_line_ids:
                 for imp1 in imp.invoice_line_tax_ids:
-                    if imp1.name:
-                        impuesto = imp1.name
+                    if imp1.name == value:
+                        impuesto = line.amount_untaxed * line.exchange_rate
+                    else:
+                        impuesto = ""
+                        #impuesto = imp1.name
+
             for p2 in line.payment_ids:
                 if p2.amount:
                     cantidad = p2.amount
