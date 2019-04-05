@@ -37,8 +37,8 @@ class not_domiciled(models.TransientModel):
         for line in lst_account_move_line:
             for imp in line.invoice_line_ids:
                 for imp1 in imp.invoice_line_tax_ids:
-                    if imp1.name:
-                        impuesto = imp1.name
+                    if imp1.name("Otros Conceptos"):
+                        impuesto = line.amount_untaxed * line.exchange_rate
             for p2 in line.payment_ids:
                 if p2.amount:
                     cantidad = p2.amount
@@ -56,6 +56,7 @@ class not_domiciled(models.TransientModel):
                 AMD = line.date_invoice.strftime("%Y%m00")
             if line.date_document:
                 DMA = line.date_document.strftime("%d/%m/%Y")
+
             # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,10
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -72,10 +73,9 @@ class not_domiciled(models.TransientModel):
                            line.invoice_number or '',  # C7 H7(Numero de comp. pago o doc.)
                            line.amount_untaxed * line.exchange_rate or '',  # C8 H8(BImp *TCambio ----- valor de las adquisiciones)
                            impuesto or '',  # C9 H9(Impuestos IGV --- Otros Conceptos Adicionales)
-                           line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Importe total de las adq. registradas)
+                           line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Imp. total de las adq. regstr)
                            # HOJA 11 AL 20
-                           #'',  # C11 Tipo de comp. de pago o doc. que sustenta el credito fiscal, (Tipo de persona).... --
-                           line.partner_id.person_type or '',  #H11  (Tipo de persona: natural-juridica)
+                           line.partner_id.person_type or '',  #C11 H11  (Tipo de persona: natural-juridica)
                            line.invoice_number or '',  # C12 H12(Numero)
                            line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
                            line.invoice_number or '',  # C14 H14(Numero)
