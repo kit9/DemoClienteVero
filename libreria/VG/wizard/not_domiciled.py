@@ -55,7 +55,7 @@ class not_domiciled(models.TransientModel):
             if line.date_invoice:
                 AMD = line.date_invoice.strftime("%Y%m00")
             if line.date_document:
-                DMA = line.date_document.strftime("00/%m/%Y")
+                DMA = line.date_document.strftime("%d/%m/%Y")
             # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,10
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
