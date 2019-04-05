@@ -30,7 +30,8 @@ class not_domiciled(models.TransientModel):
         impuesto = ""
         cantidad = ""
         check = ""
-        orden = ""
+        AMD = ""
+        DMA = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -52,7 +53,9 @@ class not_domiciled(models.TransientModel):
                 else:
                     estado_ope = "0"
             if line.date_invoice:
-                orden = line.date_invoice.strftime("%Y%m00")
+                AMD = line.date_invoice.strftime("%Y%m00")
+            if line.date_document:
+                DMA = line.date_document.strftime("00%m%Y")
             # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,10
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
@@ -60,10 +63,10 @@ class not_domiciled(models.TransientModel):
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Proveedor / Facturas
                            # HOJA 1 AL 10
-                           orden or '',  # C1 H1(Fecha Contable)
+                           AMD or '',  # C1 H1(Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # C2 H2(Asiento Contable/ID)
                            line.move_id.ref or '',  # C3 H3(Asiento Contable)
-                           line.date_document or '',  # C4 H4(Fecha de Documento)
+                           DMA or '',  # C4 H4(Fecha de Documento)
                            line.document_type_id.number or '',  # C5 H5(Tipo de Documento)
                            line.invoice_serie or '',  # C6 H6(Serie de comp. pago o doc.)
                            line.invoice_number or '',  # C7 H7(Numero de comp. pago o doc.)
