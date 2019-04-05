@@ -31,6 +31,7 @@ class not_domiciled(models.TransientModel):
         cantidad = ""
         check = ""
         value = "Otros Conceptos"
+        
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -44,8 +45,9 @@ class not_domiciled(models.TransientModel):
                         #impuesto = imp1.name
 
             for p2 in line.payment_ids:
-                if p2.amount:
-                    cantidad = p2.amount
+                cantidad = sum(line.amount for line in line.payment_ids)
+                # if p2.amount:
+                #     cantidad = sum(p2.amount)
                 if line.message_needaction:
                     check = "1"
                 # Asiento Contable
@@ -80,6 +82,7 @@ class not_domiciled(models.TransientModel):
                            line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
                            line.invoice_number or '',  # C14 H14(Numero)
                            cantidad or '',  # C15 H15(Cantidad a Pagar --- Monto de retencion del IGV)
+
                            # line.state or '',  #H15 (Estado)
                            line.currency_id.name or '',  # C16 (Codigo de la moneda / TABLA 4)
                            line.exchange_rate or '',  # C17 (Tipo de Cambio)
