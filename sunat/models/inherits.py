@@ -334,6 +334,3 @@ class ProductCategory(models.Model):
     _inherit = "product.category"
 
     analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
-
-    stock_catalog_id = fields.Many2one('sunat.stock_catalog', string='Cod. Catálogo')
-    type_existence_id = fields.Many2one('sunat.type_existence', string='Cod. Existencia')

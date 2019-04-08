@@ -375,10 +375,6 @@
             <xpath expr="//field[@name='property_account_expense_categ_id']" position="after">
                 <field name="analytic_account_id"/>
             </xpath>
-            <xpath expr="//field[@name='parent_id']" position="after">
-                <field name="stock_catalog_id"/>
-                <field name="type_existence_id"/>
-            </xpath>
         </field>
     </record>
 
