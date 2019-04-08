@@ -161,6 +161,10 @@ class res_partner_bank(models.Model):
     is_retention = fields.Boolean(string="Retención")
     priority = fields.Integer(string="Prioridad")
 
+    account_type = fields.Selection([('C', 'Cuenta Corriente'), ('M', 'Cuenta Maestra'), ],
+                                    string='Tipo de Cuenta')
+    branch_office = fields.Char(string="Sucursal")
+
 
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
@@ -207,6 +211,21 @@ class AccountAssetAsset(models.Model):
 
     reason_for_low = fields.Selection(string="Motivo de baja", selection=[('Venta', 'Venta'),
                                                                           ('Deterioro', 'Deterioro')])
+    brand = fields.Char(string="Marca")
+    model = fields.Char(string="Modelo")
+    serie = fields.Char(string="N° Serie")
+    active_status = fields.Selection(string="Estado de Activo", selection=[('1', 'Activos en Desuso'),
+                                                                            ('2', 'Activos Obsoletos'),
+                                                                            ('3', 'Resto de Activos')])
+
+    filter_year = fields.Char(compute="_get_year", store=True, copy=False)
+
+    @api.multi
+    @api.depends('date')
+    def _get_year(self):
+        for rec in self:
+            if rec.date:
+                rec.filter_year = rec.date.strftime("%Y")
 
     @api.multi
     @api.depends('invoice_line_ids')
@@ -274,9 +293,7 @@ class StockMoveLine(models.Model):
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    # seat_name = fields.Char(string="Asiento", related="journal_id.name")
     seat_name = fields.Char(string="Asiento", related="journal_id.sequence_id.name")
-    # seat_code = fields.Integer(string="ID Asiento", related="journal_id.id")
     seat_code = fields.Integer(string="ID Asiento", related="journal_id.sequence_id.id")
 
     # Usados por la libreria de Pagos Masivos
@@ -286,6 +303,9 @@ class AccountPayment(models.Model):
     correlative_payment = fields.Integer(string="Numero Correlativo")
     type = fields.Selection([('detraccion', 'Detracción'), ('retencion', 'Retención'), ('factura', 'Factura')],
                             string='Tipo de Pago')
+
+    payment_methods_id = fields.Many2one('sunat.payment_methods', string='Forma de Pago')
+    operation_number = fields.Char(string='Número de Operación')
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
@@ -314,3 +334,6 @@ class ProductCategory(models.Model):
     _inherit = "product.category"
 
     analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
+
+    stock_catalog_id = fields.Many2one('sunat.stock_catalog', string='Cod. Catálogo')
+    type_existence_id = fields.Many2one('sunat.type_existence', string='Cod. Existencia')

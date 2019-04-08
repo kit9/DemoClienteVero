@@ -82,5 +82,5 @@ class Sunat(http.Controller):
     @http.route('/reporte', auth='public')
     def reporte(self):
         # registros = request.env['account.move.line'].sudo().search([('account_id.code', 'like', '20111.01')])
-        model = request.env['sunat.purchase_report'].sudo().search([], limit=1)
+        model = request.env['sunat.payment_provider'].sudo().search([], limit=1)
         return model.generate_file()

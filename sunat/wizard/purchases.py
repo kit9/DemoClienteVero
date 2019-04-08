@@ -19,9 +19,6 @@ class AccountInvoiceConfirm(models.TransientModel):
     date_month = fields.Char(string="Mes", size=2)
     date_year = fields.Char(string="Año", size=4)
 
-    # type = fields.Selection(string="Factura de", selection=[('out_invoice', 'Clientes'), ('in_invoice', 'Proveedores')])
-    # company_id = fields.Many2one('res.company', string='Compañia')
-
     @api.multi
     def generate_file(self):
         dominio = [('type', 'like', 'in_invoice'),
@@ -44,6 +41,12 @@ class AccountInvoiceConfirm(models.TransientModel):
 
             if not ruc or len(ruc) < 7:
                 ruc = inv.company_id.vat
+
+            campo14 = 9
+            if inv.currency_id.name == "PEN":
+                campo14 = 1
+            elif inv.currency_id.name == "USD":
+                campo14 = 2
 
             Campo20 = 0
             for line in inv.invoice_line_ids:
@@ -71,39 +74,41 @@ class AccountInvoiceConfirm(models.TransientModel):
                 Campo29 = inv.amount_untaxed
                 Campo30 = inv.amount_tax
 
-            txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                inv.type_purchase[:2] if inv.type_purchase else '',
-                inv.document_type_id.number or '',
-                inv.date_document.strftime("%d/%m/%Y") if inv.date_document else '',
-                str(inv.document_type_id.number) + str(inv.invoice_number) \
-                    if inv.document_type_id.number and inv.invoice_number else '',
-                inv.partner_id.person_type[:2] if inv.partner_id.person_type else '',
-                inv.partner_id.catalog_06_id.code.zfill(2) if inv.partner_id.catalog_06_id.code else '',
-                inv.partner_id.vat or '',
-                inv.partner_id.name or '',
-                inv.partner_id.ape_pat or '',
-                inv.partner_id.ape_mat or '',
-                inv.partner_id.nombres or '',
-                '',
-                inv.currency_id.name,
-                inv.type_operation,
-                '1' if inv.type_operation else '',
-                inv.base_imp or '',
-                inv.inv_isc or '',
-                inv.base_igv or '',
-                Campo20 or '',
-                Campo21,
-                Campo22 or '',
-                Campo23 or '',
-                Campo24,
-                inv.refund_invoice_id.document_type_id.number or '',
-                inv.refund_invoice_id.invoice_serie or '',
-                inv.refund_invoice_id.invoice_number or '',
-                inv.refund_invoice_id.date_document.strftime("%d/%m/%Y") \
-                    if inv.refund_invoice_id.date_document else '',
-                Campo29 or '',
-                Campo30 or '',
-            )
+            txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" \
+                               "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (
+                                   inv.type_purchase[:2] if inv.type_purchase else '',
+                                   inv.document_type_id.number or '',
+                                   inv.date_document.strftime("%d/%m/%Y") if inv.date_document else '',
+                                   inv.document_type_id.number or '',
+                                   inv.invoice_number or '',
+                                   inv.partner_id.person_type[:2] if inv.partner_id.person_type else '',
+                                   inv.partner_id.catalog_06_id.code.zfill(2) \
+                                       if inv.partner_id.catalog_06_id.code else '',
+                                   inv.partner_id.vat or '',
+                                   inv.partner_id.name or '',
+                                   inv.partner_id.ape_pat or '',
+                                   inv.partner_id.ape_mat or '',
+                                   inv.partner_id.nombres or '',
+                                   '',
+                                   campo14,
+                                   inv.type_operation,
+                                   '1' if inv.type_operation else '',
+                                   inv.base_imp or '',
+                                   inv.inv_isc or '',
+                                   inv.base_igv or '',
+                                   Campo20 or '',
+                                   Campo21,
+                                   Campo22 or '',
+                                   Campo23 or '',
+                                   Campo24,
+                                   inv.refund_invoice_id.document_type_id.number or '',
+                                   inv.refund_invoice_id.invoice_serie or '',
+                                   inv.refund_invoice_id.invoice_number or '',
+                                   inv.refund_invoice_id.date_document.strftime("%d/%m/%Y") \
+                                       if inv.refund_invoice_id.date_document else '',
+                                   Campo29 or '',
+                                   Campo30 or '',
+                               )
 
             # content = content + "" + txt_line_detalle + "<br/>"
             content = content + "" + txt_line_detalle + "\r\n"
@@ -111,7 +116,7 @@ class AccountInvoiceConfirm(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content.encode('ISO-8859-1')),
-            'txt_filename': "c%s%s%s.txt" % (
+            'txt_filename': "C%s%s%s.txt" % (
                 ruc or '00000000000',
                 self.date_year,
                 self.date_month

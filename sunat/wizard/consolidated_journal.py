@@ -34,13 +34,11 @@ class ConsolidatedJournal(models.TransientModel):
 
             date_document = ""
             if line.invoice_id.date_document:
-                date_document = line.invoice_id.date_document.strftime(
-                    "%d/%m/%Y")
+                date_document = line.invoice_id.date_document.strftime("%d/%m/%Y")
 
             date_invoice = ""
             if line.invoice_id.date_invoice:
-                date_invoice = line.invoice_id.date_invoice.strftime(
-                    "%d/%m/%Y")
+                date_invoice = line.invoice_id.date_invoice.strftime("%d/%m/%Y")
 
             date_due = ""
             if line.invoice_id.date_due:

@@ -10,7 +10,6 @@
                 <field name="document_type_id" required="True"/>
                 <field name="invoice_serie" required="True"/>
                 <field name="invoice_number" required="True"/>
-                <!--<field name="operation_type"/>-->
                 <field name="code_dua"/>
                 <field name="year_emission_dua"/>
             </field>
@@ -18,10 +17,6 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <field name="reference" position="after">
-                <!--<field name="hide_dua_fields" invisible="1"/>-->
-                <!--<field name="num_dua"/>-->
-                <!--<field name="apply_retention" invisible="1"/>-->
-                <!--<field name="retencion"/>-->
                 <field name="type_ident" readonly="1"/>
                 <field name="num_ident" readonly="1"/>
             </field>
@@ -29,7 +24,6 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <field name="date_invoice" position="before">
-                <!--<field name="document_modify"/>-->
                 <field name="date_document"/>
             </field>
             <field name="date_invoice" position="replace">
@@ -55,9 +49,9 @@
                           edit="false">
                         <field name="payment_date"/>
                         <field name="vv_bank"/>
-                        <field name="name"/>
+                        <field name="operation_number"/>
                         <field name="journal_id"/>
-                        <field name="payment_method_id"/>
+                        <field name="payment_methods_id"/>
                         <field name="partner_id" string="Cliente"/>
                         <field name="amount" sum="Importe"/>
                         <field name="state"/>
@@ -152,9 +146,29 @@
                 <field name="type_ident" readonly="1"/>
                 <field name="num_ident" readonly="1"/>
                 <field name="inv_type_operation"/>
+                <field name="type_sales"/>
             </field>
+            <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+                <field name="payment_ids">
+                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
+                          edit="false">
+                        <field name="payment_date"/>
+                        <field name="vv_bank"/>
+                        <field name="name"/>
+                        <field name="journal_id"/>
+                        <field name="payment_method_id"/>
+                        <field name="partner_id" string="Cliente"/>
+                        <field name="amount" sum="Importe"/>
+                        <field name="state"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="partner_type" invisible="1"/>
+                    </tree>
+                </field>
+            </xpath>
             <xpath expr="//group/group/div" position="after">
                 <field name="exchange_rate"/>
+                <field name="perception_id"/>
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="SUNAT">
@@ -168,9 +182,14 @@
                         <group>
                             <h2>Exportación</h2>
                             <field name="export_invoice"/>
+                            <field name="num_comp_serie"/>
+                            <field name="num_perception"/>
                         </group>
                     </group>
                 </page>
+            </xpath>
+            <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="perception_value" attrs="{'invisible':[('perception_id', '=', False)]}"/>
             </xpath>
         </field>
     </record>

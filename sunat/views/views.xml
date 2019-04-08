@@ -288,6 +288,18 @@
         </field>
     </record>
 
+    <!--Formulario - Pago a Proveedores-->
+    <record id="account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="operation_number"/>
+            </xpath>
+        </field>
+    </record>
+
     <!--Formulario - Activos-->
     <record id="account_asset_asset_inherit_form" model="ir.ui.view">
         <field name="name">account.asset.asset.inherit.form</field>
@@ -297,6 +309,12 @@
             <xpath expr="//field[@name='invoice_id']" position="after">
                 <field name="employee_id"/>
                 <field name="reason_for_low"/>
+            </xpath>
+            <xpath expr="//field[@name='account_analytic_id']" position="after">
+                <field name="brand" required="True"/>
+                <field name="model" required="True"/>
+                <field name="serie" required="True"/>
+                <field name="active_status" required="True"/>
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="Historial de Costos">
@@ -356,6 +374,26 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='property_account_expense_categ_id']" position="after">
                 <field name="analytic_account_id"/>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="stock_catalog_id"/>
+                <field name="type_existence_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Rest Partner Bank-->
+    <record id="res_partner_bank_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.bank.form.inherit</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="base.view_partner_bank_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='acc_type']" position="replace">
+                <field name="acc_type" invisible="1"/>
+                <field name="account_type" required="True"/>
+            </xpath>
+            <xpath expr="//field[@name='acc_holder_name']" position="after">
+                <field name="branch_office"/>
             </xpath>
         </field>
     </record>

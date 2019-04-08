@@ -127,39 +127,39 @@ class InventoryValorized(models.TransientModel):
                     else:
                         estado_ope = "09"
 
-            if journal:
-                txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%.2f|%s|%s|%s|%s|%s|%s|" % (
-                    line.date.strftime("%Y%m00") or "",  # 1 -> Periodo
-                    cuo or "",  # 2 ->
-                    # len(line.move_id.account_move_ids),  # 3 ->
-                    ("M" + str(journal.id)) if journal.id else '',  # 3 ->
-                    codigo_esta or "",  # 4 -> Nombre corto de almacen
-                    catalogo or "",  # 5 ->
-                    existencia or "",  # 6 ->
-                    line.product_id.default_code or "",  # 7 ->
-                    line.product_id.existence_code or "",  # 8 ->
-                    journal_date or "",  # 9 ->
-                    type_doc or "",  # 10 ->
-                    num_serie or "",  # 11 ->
-                    num_doc or "",  # 12 ->
-                    type_ope or "",  # 13 ->
-                    line.product_id.display_name or "",  # 14 ->
-                    line.product_id.uom_id.sunat_code or "",  # 15 ->
-                    met_eva or "",  # 16 ->
-                    in_quantity or "",  # 17 ->
-                    in_price_unit if in_price_unit else 0.00,  # 18->
-                    in_total,  # 19 ->
-                    out_quantity if out_quantity else 0.00,  # 20 ->
-                    out_price_unit,  # 21 ->
-                    out_total,  # 22 ->
-                    line.balance_quantity,  # 23 ->
-                    line.historical_cost,  # 24 ->
-                    total,  # 25 ->
-                    estado_ope  # 26 ->
-                )
+                # if journal:
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%.2f|%s|%s|%s|%s|%s|%s|" % (
+                line.date.strftime("%Y%m00") or "",  # 1 -> Periodo
+                cuo or "",  # 2 ->
+                # len(line.move_id.account_move_ids),  # 3 ->
+                ("M" + str(journal.id)) if journal else '',  # 3 ->
+                codigo_esta or "",  # 4 -> Nombre corto de almacen
+                catalogo or "",  # 5 ->
+                existencia or "",  # 6 ->
+                line.product_id.default_code or "",  # 7 ->
+                line.product_id.existence_code or "",  # 8 ->
+                journal_date or "",  # 9 ->
+                type_doc or "",  # 10 ->
+                num_serie or "",  # 11 ->
+                num_doc or "",  # 12 ->
+                type_ope or "",  # 13 ->
+                line.product_id.display_name or "",  # 14 ->
+                line.product_id.uom_id.sunat_code or "",  # 15 ->
+                met_eva or "",  # 16 ->
+                in_quantity or "",  # 17 ->
+                in_price_unit if in_price_unit else 0.00,  # 18->
+                in_total,  # 19 ->
+                out_quantity if out_quantity else 0.00,  # 20 ->
+                out_price_unit,  # 21 ->
+                out_total,  # 22 ->
+                line.balance_quantity,  # 23 ->
+                line.historical_cost,  # 24 ->
+                total,  # 25 ->
+                estado_ope  # 26 ->
+            )
 
-                # Agregamos la linea al TXT
-                content_txt = content_txt + "" + txt_line + "\r\n"
+            # Agregamos la linea al TXT
+            content_txt = content_txt + "" + txt_line + "\r\n"
 
         self.write({
             'state': 'get',

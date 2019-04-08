@@ -7,3 +7,6 @@ from . import merge_assets
 from . import costs
 from . import payment_internet
 from . import purchases
+from . import payment_methods
+from . import sales
+from . import payment_provider
