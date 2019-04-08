@@ -73,7 +73,7 @@ class chartofaccounts(models.TransientModel):
                 line.name or '',  # 2
                 line.id or '',  # 3
                 line.date or '',  # 4
-                line.open_reconcile_view.AccountMove or '',  # 5
+                line.open_reconcile_view.id or '',  # 5
                 imp_numero or '',  # 6
                 line.partner_id.name or '',  # 7
                 _total or '',  # 8
