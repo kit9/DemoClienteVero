@@ -27,29 +27,31 @@ class not_domiciled(models.TransientModel):
         ])
         content_txt = ""
         estado_ope = ""
-        impuesto = ""
+        tip_imp = ""
         cantidad = ""
         check = ""
         value = "Otros Conceptos"
-        
+
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
             for imp in line.invoice_line_ids:
                 for imp1 in imp.invoice_line_tax_ids:
+                    # H9 cuando el impuesto (Value) sea Otros Conceptos, multiplicar Total con Tipo de Cambio
                     if imp1.name == value:
-                        impuesto = line.amount_untaxed * line.exchange_rate
+                        tip_imp = line.amount_untaxed * line.exchange_rate
                     else:
-                        impuesto = ""
-                        #impuesto = imp1.name
+                        tip_imp = ""
+                        #tip_imp = imp1.name
 
             for p2 in line.payment_ids:
-                cantidad = sum(line.amount for line in line.payment_ids)
-                # if p2.amount:
-                #     cantidad = sum(p2.amount)
-                if line.message_needaction:
+                cantidad = sum(line.amount for line in line.payment_ids) # H15 Sumar la cantidad de registros que haya
+
+                if line.message_needaction: # Si el Checkbox esta marcado, colocar 1, sino dejar en blanco
                     check = "1"
+                else:
+                    check = ""
                 # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
@@ -59,13 +61,13 @@ class not_domiciled(models.TransientModel):
                 else:
                     estado_ope = "0"
 
-            # por cada campo encontrado daran una linea como mostrare , Hay 10,10,10,10
+            # Hay 10,10,10,10
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Proveedor / Facturas
-                           # HOJA 1 AL 10
+                           # HOJA 1 AL 10 --- Completado
                            line.date_invoice.strftime("%Y%m00") or '',  # C1 H1(Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # C2 H2(Asiento Contable/ID)
                            line.move_id.ref or '',  # C3 H3(Asiento Contable)
@@ -74,7 +76,7 @@ class not_domiciled(models.TransientModel):
                            line.invoice_serie or '',  # C6 H6(Serie de comp. pago o doc.)
                            line.invoice_number or '',  # C7 H7(Numero de comp. pago o doc.)
                            line.amount_untaxed * line.exchange_rate or '',  # C8 H8(BImp *TCambio ----- valor de las adquisiciones)
-                           impuesto or '',  # C9 H9(Impuestos IGV --- Otros Conceptos Adicionales)
+                           tip_imp or '',  # C9 H9(Otros Conceptos Adicionales)
                            line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Imp. total de las adq. regstr)
                            # HOJA 11 AL 20
                            line.partner_id.person_type or '',  #C11 H11  (Tipo de persona: natural-juridica)
@@ -82,7 +84,6 @@ class not_domiciled(models.TransientModel):
                            line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
                            line.invoice_number or '',  # C14 H14(Numero)
                            cantidad or '',  # C15 H15(Cantidad a Pagar --- Monto de retencion del IGV)
-
                            # line.state or '',  #H15 (Estado)
                            line.currency_id.name or '',  # C16 (Codigo de la moneda / TABLA 4)
                            line.exchange_rate or '',  # C17 (Tipo de Cambio)
@@ -105,12 +106,12 @@ class not_domiciled(models.TransientModel):
                            '',  # C28 H28 null (Renta Neta)
                            '',  # C29 H29 null (Tasa de Retencion)
                            '',  # C30 H30 null (Impuesto Retenido)
-                           line.partner_id.x_studio_convenios or '',
-                           # C31 H31 (Convenios --- evitar la doble imposicion)
+                           # HOJA 31 AL campo 37
+                           line.partner_id.x_studio_convenios or '',  # C31 H31 (Convenios --- evitar la doble imposicion)
                            line.x_studio_exoneraciones or '',  # C32 Hoja 32 (Exoneraciones)
                            line.type_income_id.number or '',  # C33 Hoja 33 (tipo de renta)
                            line.x_studio_modalidad_de_servicio or '',  # C34 H34 (Modalidad de Servicio)
-                           check or '',  # C35 H35  (Aplicacion parrafo art. 76, marcado = 1, sino 0)
+                           check or '',  # C35 H35  (Aplicacion parrafo art. 76, marcado = 1, sino blanco)
                            estado_ope or '',  # C36 H36 (Estado identifica la anotacion o indicacion)
                            '|',  # C37 campos de libre utilizacion
 

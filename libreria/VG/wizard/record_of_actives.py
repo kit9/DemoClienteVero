@@ -85,7 +85,7 @@ class chartofaccounts(models.TransientModel):
                            line.name or '',  # 7
                            line.category_id.account_asset_id.code or '',  # 8
                            line.entry_count or '',  # 9
-                           line.name or '',  # 10
+                           line.category_id.name or '',  # 10
                            line.brand or '',  # 11
                            line.model or '',  # 12
                            line.serie or '',  # 13
