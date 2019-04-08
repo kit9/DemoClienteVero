@@ -30,19 +30,20 @@ class chartofaccounts(models.TransientModel):
         _total = ""
         _estado_ope = ""
         _factura = ""
+        object = "Asientos conciliados"
 
         _logger.info(len(lst_account_move_line))
 
         # Iterador
         for line in lst_account_move_line:
             # factura
-            for imp in line.line_ids:
+            for imp in line.object.line_ids:
                 if imp.invoice_id:
                     if imp.invoice_id.document_type_id:
                         _factura = imp.invoice_id.document_type_id.number
 
             # numero
-            for imp2 in line.object.line_ids:
+            for imp2 in line.line_ids:
                 if imp2.invoice_id.invoice_number:
                     imp_numero = imp2.invoice_id.invoice_number
 
