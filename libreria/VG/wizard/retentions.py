@@ -42,7 +42,7 @@ class chartofaccounts(models.TransientModel):
                         _factura = imp.invoice_id.document_type_id.number
 
             # numero
-            for imp2 in line.line_ids:
+            for imp2 in line.object.line_ids:
                 if imp2.invoice_id.invoice_number:
                     imp_numero = imp2.invoice_id.invoice_number
 
