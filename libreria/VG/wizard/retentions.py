@@ -36,7 +36,7 @@ class chartofaccounts(models.TransientModel):
         for line in lst_account_move_line:
 
             # factura
-            for imp in line.line_ids:
+            for imp in line.open_reconcile_view.line.line_ids:
                  if imp.invoice_id:
                      if imp.invoice_id.document_type_id.number:
                          _factura = imp.invoice_id.document_type_id.number
