@@ -22,14 +22,13 @@ class chartofaccounts(models.TransientModel):
         # Data - Jcondori
 
         lst_account_move_line = self.env['account.move'].search(
-            [('month_year_move', 'like', self.date_month + "" + self.date_year),
-             ('journal_id.name', 'ilike', 'Retenciones')])
+            [('month_year_move', 'like', self.date_month + "" + self.date_year)])
 
         content_txt = ""
         imp_numero = ""
         _total = ""
         _estado_ope = ""
-        #_factura = ""
+        _factura = ""
 
         _logger.info(len(lst_account_move_line))
 
@@ -37,13 +36,10 @@ class chartofaccounts(models.TransientModel):
         for line in lst_account_move_line:
 
             # factura
-            # for imp in line.open_reconcile_view.line_ids:
-            #     if imp.invoice_id:
-            #         _factura = invoice_id
-
-                # if imp.invoice_id:
-                #     if imp.invoice_id.document_type_id:
-                #         _factura = imp.invoice_id.document_type_id.number
+            for imp in line.line_ids:
+                 if imp.invoice_id:
+                     if imp.document_type_id.number:
+                         _factura = imp.invoice_id.document_type_id.number
 
             # numero
             for imp2 in line.line_ids:
@@ -73,7 +69,7 @@ class chartofaccounts(models.TransientModel):
                 line.name or '',  # 2
                 line.id or '',  # 3
                 line.date or '',  # 4
-                line.open_reconcile_view.self or '',  # 5
+                _factura or '',  # 5
                 imp_numero or '',  # 6
                 line.partner_id.name or '',  # 7
                 _total or '',  # 8
