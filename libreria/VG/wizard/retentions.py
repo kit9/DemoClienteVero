@@ -29,17 +29,18 @@ class chartofaccounts(models.TransientModel):
         imp_numero = ""
         _total = ""
         _estado_ope = ""
-        # _factura = ""
+        _factura = ""
 
         _logger.info(len(lst_account_move_line))
 
         # Iterador
         for line in lst_account_move_line:
+
             # factura
-            # for imp in line.tax_cash_basis_rec_id.line_ids:
-            #     if imp.invoice_id:
-            #         if imp.invoice_id.document_type_id:
-            #             _factura = imp.invoice_id.document_type_id.number
+            for imp in line.open_reconcile_view.line_ids:
+                if imp.invoice_id:
+                    if imp.invoice_id.document_type_id:
+                        _factura = imp.invoice_id.document_type_id.number
 
             # numero
             for imp2 in line.line_ids:
@@ -69,7 +70,7 @@ class chartofaccounts(models.TransientModel):
                 line.name or '',  # 2
                 line.id or '',  # 3
                 line.date or '',  # 4
-                line.open_reconcile_view.invoice_id.document_type_id.id or '',  # 5
+                _factura or '',  # 5
                 imp_numero or '',  # 6
                 line.partner_id.name or '',  # 7
                 _total or '',  # 8
