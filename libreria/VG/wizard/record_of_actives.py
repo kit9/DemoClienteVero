@@ -34,7 +34,7 @@ class chartofaccounts(models.TransientModel):
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
-            for imp in line.depreciation_line_ids:
+            for imp in line.depreciation_line_ids.remaining_value:
                 if imp.sequence:
                     _depre = imp.sequence
 
