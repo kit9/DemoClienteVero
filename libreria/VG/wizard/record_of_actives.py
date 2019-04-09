@@ -22,10 +22,9 @@ class RecordActives(models.TransientModel):
 
         lst_account_move_line = self.env['account.asset.asset'].search([('filter_year', 'like', self.date_year)])
         content_txt = ""
-        valor = ""
         residual = ""
         res = ""
-        v1 = ""
+        rest = ""
         _depre = ""
         _estado_ope = ""
         value = "linear"
@@ -34,32 +33,29 @@ class RecordActives(models.TransientModel):
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
+            #14
             for imp in line.depreciation_line_ids:
                 if imp.remaining_value:
                     _depre = imp.remaining_value
 
-            # Asiento Conta
-            for cat1 in line.depreciation_line_ids:
-                if cat1.depreciated_value:
-                    valor = cat1.depreciated_value
-            for cat0 in line.depreciation_line_ids:
-                if cat0.remaining_value:
-                    residual = cat0.remaining_value
+            #16
             for cat2 in line.invoice_line_ids:
                 if cat2.price_unit:
                     res = cat2.price_unit
                 if line.category_id.account_asset_id.company_id.id:
-                    v1 = line.category_id.account_asset_id.company_id.id
-
+                    rest = line.category_id.account_asset_id.company_id.id
+            #28
             for cat3 in line.depreciation_line_ids:
                 if cat3.depreciated_value:
                     amortizacion = cat3.depreciated_value
 
+            #25
             if line.category_id.method == value:
                 _estado_ope = "01"
             else:
                 _estado_ope = "09"
 
+            #36
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "01"
             else:
@@ -74,7 +70,7 @@ class RecordActives(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
@@ -111,8 +107,7 @@ class RecordActives(models.TransientModel):
                            '',  # 33 null
                            '',  # 34 null
                            '',  # 35 null
-                           estado_ope or '',  # 36 jrejas (no se encontro)
-                           line.value_residual or ''
+                           estado_ope or ''  # 36 jrejas (no se encontro)
                        )
 
             # Agregamos la linea al TXT
