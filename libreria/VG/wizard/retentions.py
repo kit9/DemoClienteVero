@@ -82,9 +82,11 @@ class retentions(models.TransientModel):
             content_txt = content_txt + "" + txt_line + "\r\n"
 
            #listando move.line
-        lst_account_move_line1 = self.env['account.move.line'].search([('month_year_move', 'like', self.date_month + "" + self.date_year)])
+        lst_account_move_line1 = self.env['account.move.line'].search()
 
         content_txt1 = ""
+
+        _logger.info(len(lst_account_move_line1))
 
         for line1 in lst_account_move_line1:
 
