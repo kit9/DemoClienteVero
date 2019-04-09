@@ -40,8 +40,7 @@ class RecordActives(models.TransientModel):
             for imp in line.depreciation_line_ids:
                 if imp.remaining_value:
                     _depres = imp.remaining_value
-                if line.category_id.account_asset_id.asset_id.id:
-                    rest = line.category_id.account_asset_id.asset_id.id
+                
 
             #16
             for cat2 in line.invoice_line_ids:
