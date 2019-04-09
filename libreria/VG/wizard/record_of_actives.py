@@ -35,7 +35,7 @@ class RecordActives(models.TransientModel):
         for line in lst_account_move_line:
 
             for imp in line.depreciation_line_ids:
-                if imp.sequence:
+                if imp.remaining_value:
                     _depre = imp.sequence
 
             # Asiento Conta
