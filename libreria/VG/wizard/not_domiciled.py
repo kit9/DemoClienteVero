@@ -28,9 +28,12 @@ class not_domiciled(models.TransientModel):
         content_txt = ""
         estado_ope = ""
         tip_imp = ""
+        tip_Prov = ""
+        serie_Comp = ""
         cantidad = ""
         check = ""
         value = "Otros Conceptos"
+        valueProv = "03-Sujeto no Domiciliado"
 
 
         # Iterador - Jcondori
@@ -52,6 +55,18 @@ class not_domiciled(models.TransientModel):
                     check = "1"
                 else:
                     check = ""
+
+            for prove in line.partner_id:
+                for t_prov in prove.person_type:
+                    #si es distinta a NO DOMICILIADO
+                    if t_prov.name != valueProv:
+                        tip_Prov = line.partner_id.person_type
+                        serie_Comp = line.invoice_number
+                    else:
+                        tip_Prov = ""
+                        serie_Comp = ""
+
+
                 # Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
@@ -65,7 +80,7 @@ class not_domiciled(models.TransientModel):
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Proveedor / Facturas
                            # HOJA 1 AL 10 --- Completado
                            line.date_invoice.strftime("%Y%m00") or '',  # C1 H1(Fecha Contable)
@@ -78,9 +93,9 @@ class not_domiciled(models.TransientModel):
                            line.amount_untaxed * line.exchange_rate or '',  # C8 H8(BImp *TCambio ----- valor de las adquisiciones)
                            tip_imp or '',  # C9 H9(Otros Conceptos Adicionales)
                            line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Imp. total de las adq. regstr)
-                           # HOJA 11 AL 20
-                           line.partner_id.person_type or '',  #C11 H11  (Tipo de persona: natural-juridica)
-                           line.invoice_number or '',  # C12 H12(Numero)
+                           # HOJA 11 AL 20 -- 11 y 12 se llena cuando es distinta a NO DOMICILIADO
+                           tip_Prov or '',  #C11 H11  (Tipo de persona: natural-juridica)
+                           serie_Comp or '',  # C12 H12(Numero)
                            line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
                            line.invoice_number or '',  # C14 H14(Numero)
                            cantidad or '',  # C15 H15(Cantidad a Pagar --- Monto de retencion del IGV)
@@ -88,7 +103,7 @@ class not_domiciled(models.TransientModel):
                            line.currency_id.name or '',  # C16 (Codigo de la moneda / TABLA 4)
                            line.exchange_rate or '',  # C17 (Tipo de Cambio)
                            '',  # H17 null
-                           # Sujeto No Domiciliado
+                           # 18 al 25 se llena si el proveedor es No Domiciliado
                            line.partner_id.country_id.name or '',  # C18 H18(Pais)
                            line.partner_id.commercial_company_name or '',  # C19 H19(Proveedor)
                            line.partner_id.street or '',  # C20 H20 (Address, Direccion)
@@ -100,7 +115,7 @@ class not_domiciled(models.TransientModel):
                            line.partner_id.title.id or '',  # H24 (El contacto es : "socio")
                            line.partner_id.country_id.name or '',  # C24 (Pais)
                            '',  # C25  (Vinculo Contribuyente y residente en el extranjero)
-                           '',  # H25 null
+
                            '',  # C26 H26 null (Renta Bruta)
                            '',  # C27 H27 null (Deduccion/Costo de Enajenacion de bienes de Capital)
                            '',  # C28 H28 null (Renta Neta)
