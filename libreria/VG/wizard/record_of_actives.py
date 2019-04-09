@@ -35,8 +35,8 @@ class RecordActives(models.TransientModel):
         for line in lst_account_move_line:
 
             for imp in line.depreciation_line_ids:
-                if imp.remaining_value:
-                    _depre = imp.remaining_value
+                if imp.value_residual:
+                    _depre = imp.value_residual
 
             # Asiento Conta
             for cat1 in line.depreciation_line_ids:
