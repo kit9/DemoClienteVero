@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
+class RecordActives(models.TransientModel):
     _name = "libreria.record_of_actives"
     _description = "Registro de Activos"
 
@@ -28,11 +28,13 @@ class chartofaccounts(models.TransientModel):
         v1 = ""
         _depre = ""
         _estado_ope = ""
+        value = "linear"
+        estado_ope = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
-            for imp in line.depreciation_line_ids:
+            for imp in line.depreciation_line_ids.remaining_value:
                 if imp.sequence:
                     _depre = imp.sequence
 
@@ -53,28 +55,37 @@ class chartofaccounts(models.TransientModel):
                 if cat3.depreciated_value:
                     amortizacion = cat3.depreciated_value
 
-            # if line.category_id.method("Método de cálculo") ==  value("Método de cálculo") :
-            #    _estado_ope = "01"
+            if line.category_id.method == value:
+                _estado_ope = "01"
+            else:
+                _estado_ope = "09"
 
-            # else:
-            #     if _estado_ope in line.category_id.prorata == "Tiempo prorrateado":
-            #         _estado_ope = "09"
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "01"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "08"
+                else:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        estado_ope = "09"
+                    else:
+                        estado_ope = "01"
 
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           '',  # 3 cbarraza (no se encuentra)
-                           '',  # 4 cbarraza (no se encuentra)
+                           line.invoice_id.move_id.name or '',  # 3 cbarraza
+                           '',  # 4 cbarraza (crear campo)
                            line.name or '',  # 5
-                           '',  # 6 cbarraza (no se encontro)
+                           '',  # 6 cbarraza (crear campo)
                            line.name or '',  # 7
                            line.category_id.account_asset_id.code or '',  # 8
                            line.entry_count or '',  # 9
-                           line.name or '',  # 10
+                           line.category_id.name or '',  # 10
                            line.brand or '',  # 11
                            line.model or '',  # 12
                            line.serie or '',  # 13
@@ -89,8 +100,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           # or '',  # 25
-                           # line.category_id.prorata or '',  # 25 jrejas
+                           _estado_ope or '',  # 25 jrejas
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
                            amortizacion or '',  # 28
@@ -101,7 +111,7 @@ class chartofaccounts(models.TransientModel):
                            '',  # 33 null
                            '',  # 34 null
                            '',  # 35 null
-                           # ''  # 36 jrejas (no se encontro)
+                           estado_ope or ''  # 36 jrejas (no se encontro)
 
                        )
 
