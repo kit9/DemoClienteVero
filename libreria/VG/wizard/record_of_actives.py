@@ -35,8 +35,8 @@ class RecordActives(models.TransientModel):
         for line in lst_account_move_line:
 
             for imp in line.depreciation_line_ids:
-                if imp.value_residual:
-                    _depre = imp.value_residual
+                if imp.remaining_value:
+                    _depre = imp.remaining_value
 
             # Asiento Conta
             for cat1 in line.depreciation_line_ids:
@@ -74,7 +74,7 @@ class RecordActives(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
@@ -111,8 +111,8 @@ class RecordActives(models.TransientModel):
                            '',  # 33 null
                            '',  # 34 null
                            '',  # 35 null
-                           estado_ope or ''  # 36 jrejas (no se encontro)
-
+                           estado_ope or '',  # 36 jrejas (no se encontro)
+                           line.value_residual or ''
                        )
 
             # Agregamos la linea al TXT
