@@ -25,7 +25,7 @@ class RecordActives(models.TransientModel):
         residual = ""
         res = ""
         rest = ""
-        _depre = ""
+        _depres = ""
         _estado_ope = ""
         value = "linear"
         estado_ope = ""
@@ -34,13 +34,10 @@ class RecordActives(models.TransientModel):
         for line in lst_account_move_line:
 
             #14
-            #for imp in line.depreciation_line_ids:
-             #   if imp.remaining_value:
-              #      _depre = imp.remaining_value
             for imp in line.depreciation_line_ids:
                 if imp.remaining_value:
                     _depres = imp.remaining_value
-                
+
 
             #16
             for cat2 in line.invoice_line_ids:
