@@ -60,7 +60,7 @@ class not_domiciled(models.TransientModel):
                 for t_prov in prove.person_type:
                     #si es distinta a NO DOMICILIADO
                     if t_prov.name != valueProv:
-                        tip_Prov = line.partner_id.person_type
+                        tip_Prov = line.res_partner.person_type
                         serie_Comp = line.invoice_number
                     else:
                         tip_Prov = ""
