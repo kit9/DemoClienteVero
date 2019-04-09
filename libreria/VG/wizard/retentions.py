@@ -82,6 +82,8 @@ class retentions(models.TransientModel):
             content_txt = content_txt + "" + txt_line + "\r\n"
 
            #listando move.line
+    @api.multi
+    def generate_file(self):
         lst_account_move_line1 = self.env['account.move.line'].search()
 
         content_txt1 = ""
