@@ -6,7 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class ChartAccount(models.Model):
+class chartacocounts(models.Model):
     _inherit = 'account.account'
 
     # Para filtrar

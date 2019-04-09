@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
+class ChartAccount(models.TransientModel):
     _name = "libreria.chart_accounts"
     _description = "Plan Contable"
 
