@@ -74,7 +74,7 @@ class chartofaccounts(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
@@ -89,6 +89,7 @@ class chartofaccounts(models.TransientModel):
                            line.brand or '',  # 11
                            line.model or '',  # 12
                            line.serie or '',  # 13
+                           line.category_id.account_asset_id.remaing_value or '',
                            _depre or '',  # 14 (Campo residual)
                            '',  # 15 null
                            res or '',  # 16 ldelacruz (Campo Precio unitario)
