@@ -25,10 +25,10 @@ class RecordActives(models.TransientModel):
         residual = ""
         res = ""
         rest = ""
-        _depres = ""
         _estado_ope = ""
         value = "linear"
         estado_ope = ""
+        _depres = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
