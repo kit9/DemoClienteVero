@@ -34,7 +34,7 @@ class RecordActives(models.TransientModel):
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
-            for imp in line.depreciation_line_ids.remaining_value:
+            for imp in line.depreciation_line_ids:
                 if imp.sequence:
                     _depre = imp.sequence
 
@@ -78,7 +78,7 @@ class RecordActives(models.TransientModel):
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           line.invoice_id.move_id.name or '',  # 3 
+                           line.invoice_id.move_id.name or '',  # 3
                            '',  # 4 cbarraza (crear campo)
                            line.name or '',  # 5
                            '',  # 6 cbarraza (crear campo)
