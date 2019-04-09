@@ -89,7 +89,7 @@ class chartofaccounts(models.TransientModel):
                            line.brand or '',  # 11
                            line.model or '',  # 12
                            line.serie or '',  # 13
-                           line.category_id.account_asset_id.remaing_value or '',
+                           line.category_id.account_asset_id.remaining_value or '',
                            _depre or '',  # 14 (Campo residual)
                            '',  # 15 null
                            res or '',  # 16 ldelacruz (Campo Precio unitario)
