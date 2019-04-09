@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class chartofaccounts(models.TransientModel):
+class retentions(models.TransientModel):
     _name = "libreria.retentions"
     _description = "Retenciones"
 
@@ -29,17 +29,17 @@ class chartofaccounts(models.TransientModel):
         imp_numero = ""
         _total = ""
         _estado_ope = ""
-        _factura = ""
+        #_factura = ""
 
         _logger.info(len(lst_account_move_line))
 
         # Iterador
         for line in lst_account_move_line:
             # factura
-            for imp in line.line_ids:
-                if imp.invoice_id:
-                    if imp.invoice_id.document_type_id:
-                        _factura = imp.invoice_id.document_type_id.number
+            # for imp in line.line_ids:
+            #     if imp.invoice_id:
+            #         if imp.invoice_id.document_type_id:
+            #             _factura = imp.invoice_id.document_type_id.number
 
             # numero
             for imp2 in line.line_ids:
@@ -69,7 +69,7 @@ class chartofaccounts(models.TransientModel):
                 line.name or '',  # 2
                 line.id or '',  # 3
                 line.date or '',  # 4
-                _factura or '',  # 5
+                line.open_reconcile_view.txt_line1 or '',  # 5
                 imp_numero or '',  # 6
                 line.partner_id.name or '',  # 7
                 _total or '',  # 8
@@ -80,6 +80,19 @@ class chartofaccounts(models.TransientModel):
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
+
+        lst_account_move_line1 = self.env['account.move.line'].search()
+
+        content_txt1 = ""
+
+        for line1 in lst_account_move_line1:
+
+            txt_line1 = "%s" %(
+                line1.id or ''
+            )
+
+            content_txt1 = content_txt1 + "" + txt_line1 + "\r\n"
+
 
         self.write({
             'state': 'get',
