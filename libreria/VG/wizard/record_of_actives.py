@@ -34,9 +34,14 @@ class RecordActives(models.TransientModel):
         for line in lst_account_move_line:
 
             #14
+            #for imp in line.depreciation_line_ids:
+             #   if imp.remaining_value:
+              #      _depre = imp.remaining_value
             for imp in line.depreciation_line_ids:
                 if imp.remaining_value:
-                    _depre = imp.remaining_value
+                    _depres = imp.remaining_value
+                if line.category_id.account_asset_id.asset_id.id:
+                    rest = line.category_id.account_asset_id.asset_id.id
 
             #16
             for cat2 in line.invoice_line_ids:
@@ -85,7 +90,7 @@ class RecordActives(models.TransientModel):
                            line.brand or '',  # 11
                            line.model or '',  # 12
                            line.serie or '',  # 13
-                           _depre or '',  # 14 (Campo residual)
+                           _depres or '',  # 14 (Campo residual)
                            '',  # 15 null
                            res or '',  # 16 ldelacruz (Campo Precio unitario)
                            line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
