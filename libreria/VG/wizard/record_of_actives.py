@@ -29,6 +29,7 @@ class RecordActives(models.TransientModel):
         value = "linear"
         estado_ope = ""
         _depres = ""
+        pxu = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -41,10 +42,11 @@ class RecordActives(models.TransientModel):
 
             #16
             for cat2 in line.invoice_line_ids:
-                if cat2.price_unit:
-                    res = res + cat2.price_unit
-                if line.category_id.account_asset_id.company_id.id:
-                    rest = line.category_id.account_asset_id.company_id.id
+                pxu = sum(line.price_unit for line in line.invoice_line_ids)
+                # if cat2.price_unit:
+                #     cat2.price_unit
+                # if line.category_id.account_asset_id.company_id.id:
+                #     rest = line.category_id.account_asset_id.company_id.id
             #28
             for cat3 in line.depreciation_line_ids:
                 if cat3.depreciated_value:
@@ -88,7 +90,7 @@ class RecordActives(models.TransientModel):
                            line.serie or '',  # 13
                            _depres or '',  # 14 (Campo residual)
                            '',  # 15 null
-                           res or '',  # 16 ldelacruz (Campo Precio unitario)
+                           pxu or '',  # 16 ldelacruz (Campo Precio unitario)
                            line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
                            '',  # 18 null
                            '',  # 19 null
