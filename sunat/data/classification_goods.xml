@@ -1,0 +1,24 @@
+<odoo>
+
+    <record model="sunat.classification_goods" id="1">
+        <field name="number">1</field>
+        <field name="description">MERCADERIA, MATERIA PRIMA, SUMINISTRO, ENVASES Y EMBALAJES</field>
+    </record>
+    <record model="sunat.classification_goods" id="2">
+        <field name="number">2</field>
+        <field name="description">ACTIVO FIJO</field>
+    </record>
+    <record model="sunat.classification_goods" id="3">
+        <field name="number">3</field>
+        <field name="description">OTROS ACTIVOS NO CONSIDERADOS EN LOS NUMERALES 1 Y 2</field>
+    </record>
+    <record model="sunat.classification_goods" id="4">
+        <field name="number">4</field>
+        <field name="description">GASTOS DE EDUCACIÓN, RECREACIÓN, SALUD, CULTURALES. REPRESENTACIÓN, CAPACITACIÓN, DE VIAJE, MANTENIMIENTO DE VEHICULO Y  DE PREMIOS</field>
+    </record>
+    <record model="sunat.classification_goods" id="5">
+        <field name="number">5</field>
+        <field name="description">OTROS GASTOS NO INCLUIDOS EN EL NUMERAL 4</field>
+    </record>
+
+</odoo>

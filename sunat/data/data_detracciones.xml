@@ -1,0 +1,179 @@
+<odoo>
+
+    <record model="sunat.detracciones" id="0">
+        <field name="number">0000</field>
+        <field name="description">No Aplica</field>
+        <field name="detrac">0</field>
+    </record>
+    <record model="sunat.detracciones" id="1">
+        <field name="number">1</field>
+        <field name="description">Leche</field>
+        <field name="detrac">4</field>
+    </record>
+    <record model="sunat.detracciones" id="2">
+        <field name="number">2</field>
+        <field name="description">Servicio de transporte de bienes por vía terrestre</field>
+        <field name="detrac">4</field>
+    </record>
+    <record model="sunat.detracciones" id="3">
+        <field name="number">3</field>
+        <field name="description">Bien inmueble gravado con el IGV</field>
+        <field name="detrac">4</field>
+    </record>
+    <record model="sunat.detracciones" id="4">
+        <field name="number">4</field>
+        <field name="description">Construcción</field>
+        <field name="detrac">4</field>
+    </record>
+    <record model="sunat.detracciones" id="5">
+        <field name="number">5</field>
+        <field name="description">Oro y demás minerales metálicos exonerados de IGV</field>
+        <field name="detrac">4</field>
+    </record>
+    <record model="sunat.detracciones" id="6">
+        <field name="number">6</field>
+        <field name="description">Espectáculos Públicos</field>
+        <field name="detrac">4</field>
+    </record>
+    <record model="sunat.detracciones" id="7">
+        <field name="number">7</field>
+        <field name="description">Aceite de pescado</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="8">
+        <field name="number">8</field>
+        <field name="description">Harina, Polvo y “Pellets” de pescado, crustáceos, moluscos y demás invertebr</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="9">
+        <field name="number">9</field>
+        <field name="description">Embarcaciones pesqueras</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="10">
+        <field name="number">10</field>
+        <field name="description">Recursos hidrobiológicos</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="11">
+        <field name="number">11</field>
+        <field name="description">Maíz amarillo duro</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="12">
+        <field name="number">12</field>
+        <field name="description">Bienes del inciso a) del apéndice I de la Ley del IGV</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="13">
+        <field name="number">13</field>
+        <field name="description">Madera</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="14">
+        <field name="number">14</field>
+        <field name="description">Caña de azúcar</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="15">
+        <field name="number">15</field>
+        <field name="description">Algodón en fibra</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="16">
+        <field name="number">16</field>
+        <field name="description">Paprika y otros productos del género Capsicum</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="17">
+        <field name="number">17</field>
+        <field name="description">Espárragos</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="18">
+        <field name="number">18</field>
+        <field name="description">Algodón en rama sin desmotar</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="19">
+        <field name="number">19</field>
+        <field name="description">Azúcar</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="20">
+        <field name="number">20</field>
+        <field name="description">Alcohol etílico</field>
+        <field name="detrac">9</field>
+    </record>
+    <record model="sunat.detracciones" id="21">
+        <field name="number">21</field>
+        <field name="description">Demás servicios gravados con el IGV</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="22">
+        <field name="number">22</field>
+        <field name="description">Intermediación laboral y Tercerización</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="23">
+        <field name="number">23</field>
+        <field name="description">Arrendamiento de bienes muebles</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="24">
+        <field name="number">24</field>
+        <field name="description">Movimiento de carga</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="25">
+        <field name="number">25</field>
+        <field name="description">Otros servicios empresariales</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="26">
+        <field name="number">26</field>
+        <field name="description">Servicio de transporte de personas</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="27">
+        <field name="number">27</field>
+        <field name="description">Comisión mercantil</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="28">
+        <field name="number">28</field>
+        <field name="description">Fabricación de bienes por encargo</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="29">
+        <field name="number">29</field>
+        <field name="description">Mantenimiento y reparación de bienes muebles</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="30">
+        <field name="number">30</field>
+        <field name="description">Arena y piedra</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="31">
+        <field name="number">31</field>
+        <field name="description">Oro gravado con IGV</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="32">
+        <field name="number">32</field>
+        <field name="description">Minerales Metálicos no Auríferos</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="33">
+        <field name="number">33</field>
+        <field name="description">Minería no Metálica</field>
+        <field name="detrac">12</field>
+    </record>
+    <record model="sunat.detracciones" id="34">
+        <field name="number">34</field>
+        <field name="description">Residuos, desechos</field>
+        <field name="detrac">15</field>
+    </record>
+
+</odoo>
