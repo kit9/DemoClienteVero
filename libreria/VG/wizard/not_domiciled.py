@@ -80,7 +80,7 @@ class not_domiciled(models.TransientModel):
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Proveedor / Facturas
                            # HOJA 1 AL 10 --- Completado
                            line.date_invoice.strftime("%Y%m00") or '',  # C1 H1(Fecha Contable)
@@ -102,11 +102,10 @@ class not_domiciled(models.TransientModel):
                            # line.state or '',  #H15 (Estado)
                            line.currency_id.name or '',  # C16 (Codigo de la moneda / TABLA 4)
                            line.exchange_rate or '',  # C17 (Tipo de Cambio)
-                           '',  # H17 null
                            # 18 al 25 se llena si el proveedor es No Domiciliado
                            line.partner_id.country_id.name or '',  # C18 H18(Pais)
                            line.partner_id.commercial_company_name or '',  # C19 H19(Proveedor)
-                           line.partner_id.street or '',  # C20 H20 (Address, Direccion)
+                           line.partner_id.street or '',  # C20 H20 (Address)
                            # HOJA 21 AL 30
                            line.partner_id.vat or '',  # C21 H21(RUC, NIF - Numero de Identificacion del Fiscal)
                            # Beneficiario de los Pagos
@@ -115,7 +114,6 @@ class not_domiciled(models.TransientModel):
                            line.partner_id.title.id or '',  # H24 (El contacto es : "socio")
                            line.partner_id.country_id.name or '',  # C24 (Pais)
                            '',  # C25  (Vinculo Contribuyente y residente en el extranjero)
-
                            '',  # C26 H26 null (Renta Bruta)
                            '',  # C27 H27 null (Deduccion/Costo de Enajenacion de bienes de Capital)
                            '',  # C28 H28 null (Renta Neta)
