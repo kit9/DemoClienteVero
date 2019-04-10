@@ -69,14 +69,14 @@ class RecordActives(models.TransientModel):
                         estado_ope = "01"
 
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           line.invoice_id.move_id.name or '',  # 3
-                           '',  # 4 cbarraza (crear campo)
+                           #line.invoice_id.move_id.name or '',  # 3
+                           line.seat_Code or '',  # 4 cbarraza (crear campo)
                            line.name or '',  # 5
                            '',  # 6 cbarraza (crear campo)
                            line.name or '',  # 7
