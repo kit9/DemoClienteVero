@@ -36,7 +36,7 @@ class RecordActives(models.TransientModel):
 
             #14
             for imp in line.depreciation_line_ids:
-                if imp.remaining_value:
+                if sequence == 1:
                     _depres = imp.remaining_value
 
 
@@ -75,12 +75,12 @@ class RecordActives(models.TransientModel):
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
-                           line.date.strftime("%Y%m00") or '',  # 1
-                           line.invoice_id.move_id.name or '',  # 2
-                           #line.invoice_id.move_id.name or '',  # 3
-                           line.seat_code or '',  # 4 cbarraza (crear campo)
-                           line.product_code or '',  # 5
-                           line.x_studio_cdigo_de_existencia or '',  # 6 cbarraza (crear campo)
+                           line.date.strftime("%Y%m00") or '',  # 1 (campo fecha convertida a Año,Mes,00)
+                           line.invoice_id.move_id.name or '',  # 2 (CUO, codigo unico de operación)
+                           #line.invoice_id.move_id.name or '',  # 3 (N° correlativo)
+                           line.seat_code or '',  # 4 (Codigo de catalogo)
+                           line.product_code or '',  # 5 (Codigo de Activo Fijo)
+                           line.x_studio_cdigo_de_existencia or '',  # 6 ()
                            line.tipo_de_act or '',  # 7
                            line.category_id.account_asset_id.code or '',  # 8
                            line.active_status or '',  # 9
@@ -90,8 +90,8 @@ class RecordActives(models.TransientModel):
                            line.serie or '',  # 13
                            _depres or '',  # 14 (Campo residual)
                            '',  # 15 null
-                           pxu or '',  # 16 ldelacruz (Campo Precio unitario)
-                           line.reason_for_low or '',  # 17 ldelacruz (campo motivo de baja)
+                           pxu or '',  # 16  (Campo Precio unitario)
+                           line.reason_for_low or '',  # 17  (campo motivo de baja)
                            '',  # 18 null
                            '',  # 19 null
                            '',  # 20 null
@@ -99,7 +99,7 @@ class RecordActives(models.TransientModel):
                            '',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
-                           _estado_ope or '',  # 25 jrejas
+                           _estado_ope or '',  # 25
                            '',  # 26 null
                            line.category_id.method_number or '',  # 27
                            amortizacion or '',  # 28
