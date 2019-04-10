@@ -55,16 +55,13 @@ class not_domiciled(models.TransientModel):
                     check = "1"
                 else:
                     check = ""
-
-             # for prove in line.res_partner:
-             #  #   for t_prov in prove.person_type:
-             #        #si es distinta a NO DOMICILIADO
-             #         if prove.person_type != valueProv:
-             #            tip_Prov = line.partner_id.person_type
-             #            serie_Comp = line.invoice_number
-             #         else:
-             #             tip_Prov = ""
-             #             serie_Comp = ""
+            # si el proveedor es distinto a NO DOMICILIADO, mostrar el tipo de proveedor que es y su serie de comp. pago
+            if line.partner_id.person_type != valueProv:
+                tip_Prov = line.partner_id.person_type
+                serie_Comp = line.invoice_number
+            else:
+                tip_Prov = ""
+                serie_Comp = ""
 
 
                 # Asiento Contable
@@ -94,8 +91,8 @@ class not_domiciled(models.TransientModel):
                            tip_imp or '',  # C9 H9(Otros Conceptos Adicionales)
                            line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Imp. total de las adq. regstr)
                            # HOJA 11 AL 20 -- 11 y 12 se llena cuando es distinta a NO DOMICILIADO
-                           line.partner_id.person_type or '',  #C11 H11  (Tipo de persona: natural-juridica)
-                           line.invoice_number or '',  # C12 H12(Numero)
+                           tip_Prov or '',  #C11 H11  (Tipo de persona: natural-juridica)
+                           serie_Comp or '',  # C12 H12(Numero)
                            line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
                            line.invoice_number or '',  # C14 H14(Numero)
                            cantidad or '',  # C15 H15(Cantidad a Pagar --- Monto de retencion del IGV)
