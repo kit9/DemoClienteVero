@@ -30,14 +30,13 @@ class RecordActives(models.TransientModel):
         estado_ope = ""
         _depres = ""
         pxu = ""
-        sequence = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
             #14
             for imp in line.depreciation_line_ids:
-                if sequence == 1:
+                if line.depreciation_line_ids.sequence == 1:
                     _depres = imp.remaining_value
 
 
