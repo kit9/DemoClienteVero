@@ -36,7 +36,7 @@ class RecordActives(models.TransientModel):
 
             #14
             for imp in line.depreciation_line_ids:
-                if line.depreciation_line_ids.sequence == 1:
+                if imp.sequence == '1':
                     _depres = imp.remaining_value
 
 
