@@ -77,8 +77,8 @@ class RecordActives(models.TransientModel):
                            line.invoice_id.move_id.name or '',  # 2
                            #line.invoice_id.move_id.name or '',  # 3
                            line.seat_code or '',  # 4 cbarraza (crear campo)
-                           line.name or '',  # 5
-                           '',  # 6 cbarraza (crear campo)
+                           line.product_code or '',  # 5
+                           line.invoice_id.x_studio_cdigo_de_existencia or '',  # 6 cbarraza (crear campo)
                            line.name or '',  # 7
                            line.category_id.account_asset_id.code or '',  # 8
                            line.entry_count or '',  # 9
