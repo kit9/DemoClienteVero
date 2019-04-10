@@ -54,21 +54,21 @@ class RecordActives(models.TransientModel):
 
             #25
             if line.category_id.method == value:
-                _estado_ope = "01"
+                _estado_ope = "1"
             else:
-                _estado_ope = "09"
+                _estado_ope = "9"
 
             #36
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                estado_ope = "01"
+                estado_ope = "1"
             else:
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "08"
+                    estado_ope = "8"
                 else:
                     if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-                        estado_ope = "09"
+                        estado_ope = "9"
                     else:
-                        estado_ope = "01"
+                        estado_ope = "1"
 
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
