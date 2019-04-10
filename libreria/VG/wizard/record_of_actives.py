@@ -30,6 +30,7 @@ class RecordActives(models.TransientModel):
         estado_ope = ""
         _depres = ""
         pxu = ""
+        sequence = ""
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
