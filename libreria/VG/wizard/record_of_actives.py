@@ -76,7 +76,7 @@ class RecordActives(models.TransientModel):
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
                            #line.invoice_id.move_id.name or '',  # 3
-                           line.seat_Code or '',  # 4 cbarraza (crear campo)
+                           line.seat_code or '',  # 4 cbarraza (crear campo)
                            line.name or '',  # 5
                            '',  # 6 cbarraza (crear campo)
                            line.name or '',  # 7
