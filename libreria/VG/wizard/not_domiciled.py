@@ -28,8 +28,8 @@ class not_domiciled(models.TransientModel):
         content_txt = ""
         estado_ope = ""
         tip_imp = ""
-
-
+        tip_Prov = ""
+        serie_Comp = ""
         cantidad = ""
         check = ""
         value = "Otros Conceptos"
