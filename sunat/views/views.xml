@@ -125,13 +125,14 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='barcode']" position="after">
                 <field name="existence_code"/>
                 <field name="type_existence_id"/>
                 <field name="catalog_id"/>
             </xpath>
-
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="tipo_de_act"/>
+            </xpath>
         </field>
     </record>
 
@@ -275,6 +276,18 @@
         </field>
     </record>
 
+    <!--Tabla - Asientos Contables-->
+    <record id="account_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="id" string="ID"/>
+            </xpath>
+        </field>
+    </record>
+
     <!--Tabla - Pago a Proveedores-->
     <record id="account_supplier_payment_tree_inherit" model="ir.ui.view">
         <field name="name">account.supplier.payment.tree.inherit</field>
@@ -316,6 +329,9 @@
                 <field name="serie" required="True"/>
                 <field name="active_status" required="True"/>
             </xpath>
+            <xpath expr="//field[@name='analytic_tag_ids']" position="after">
+                <field name="tipo_de_act" string="Cód. Tipo de Activo."/>
+            </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="Historial de Costos">
                     <field name="invoice_line_ids" readonly="1">
@@ -338,6 +354,24 @@
                 <button name="set_to_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"
                         invisible="1"/>
                 <button name="set_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Tabla - Activos-->
+    <record id="account_asset_asset_purchase_tree_inherit" model="ir.ui.view">
+        <field name="name">account.asset.asset.purchase.tree.inherit</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_purchase_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree[1]/field[@name='name']" position="after">
+                <field name="code"/>
+                <field name="seat_code"/>
+                <field name="catalog_number"/>
+                <field name="type_existence_id"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="product_code"/>
             </xpath>
         </field>
     </record>
