@@ -27,22 +27,14 @@ class not_domiciled(models.TransientModel):
         ])
         content_txt = ""
         estado_ope = ""
-        tip_imp = "" # Tipo de impuesto
-        tip_Prov = "" # Tipo de proveedor
-        serie_Comp = "" # serie de comprobante de pago
-        cantidad = "" # ... a pagar
-        check = "" # ... este es para el apl. parrafo art.76
-        value = "Otros Conceptos" # Si el impuesto dice Otros Conceptos
-        valueProv = "03-Sujeto no Domiciliado" # Si el proveedor es no domiciliado
-        # No Domiciliado  -- 18 al 25
-        pais_ND = ""
-        Proveedor_ND = ""
-        domicilio_ND = ""
-        NIF_ND = ""
-        NIF_Benf = ""
-        Proveedor_Benf = ""
-        pais_Benf = ""
-        Vinculo = ""
+        tip_imp = ""
+        tip_Prov = ""
+        serie_Comp = ""
+        cantidad = ""
+        check = ""
+        value = "Otros Conceptos"
+        valueProv = "03-Sujeto no Domiciliado"
+
 
         # Iterador - Jcondori
         for line in lst_account_move_line:
@@ -68,17 +60,8 @@ class not_domiciled(models.TransientModel):
                 tip_Prov = line.partner_id.person_type
                 serie_Comp = line.invoice_number
             else:
-                if line.partner_id.person_type == valueProv:
                 tip_Prov = ""
                 serie_Comp = ""
-                pais_ND = line.partner_id.country_id.name
-                Proveedor_ND = line.partner_id.commercial_company_name
-                domicilio_ND = line.partner_id.street
-                NIF_ND = line.partner_id.vat
-                NIF_Benf = line.partner_id.mobile
-                Proveedor_Benf = line.partner_id.name
-                pais_Benf = line.partner_id.country_id.name
-                Vinculo = line.partner_id.title.id
 
 
                 # Asiento Contable
@@ -90,12 +73,13 @@ class not_domiciled(models.TransientModel):
                 else:
                     estado_ope = "0"
 
-            # Hay 10,10,10,7
+            # Hay 10,10,10,10
             txt_line = "%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s" % (
                            # Proveedor / Facturas
+                           # HOJA 1 AL 10 --- Completado
                            line.date_invoice.strftime("%Y%m00") or '',  # C1 H1(Fecha Contable)
                            line.move_id.x_studio_field_fwlP9 or '',  # C2 H2(Asiento Contable/ID)
                            line.move_id.ref or '',  # C3 H3(Asiento Contable)
@@ -106,30 +90,33 @@ class not_domiciled(models.TransientModel):
                            line.amount_untaxed * line.exchange_rate or '',  # C8 H8(BImp *TCambio ----- valor de las adquisiciones)
                            tip_imp or '',  # C9 H9(Otros Conceptos Adicionales)
                            line.amount_total * line.exchange_rate or '',  # C10 H10(Total * Tipo de Cambio --- Imp. total de las adq. regstr)
-                           # 11 y 12 se llena cuando es distinta a NO DOMICILIADO
+                           # HOJA 11 AL 20 -- 11 y 12 se llena cuando es distinta a NO DOMICILIADO
                            tip_Prov or '',  #C11 H11  (Tipo de persona: natural-juridica)
                            serie_Comp or '',  # C12 H12(Numero)
-                           line.year_emission_dua or '',  #C13 H13(Año de la Emision de la DUA)
+                           line.year_emission_dua or '',  # C13 H13(Año de la Emision de la DUA)
                            line.invoice_number or '',  # C14 H14(Numero)
                            cantidad or '',  # C15 H15(Cantidad a Pagar --- Monto de retencion del IGV)
                            # line.state or '',  #H15 (Estado)
                            line.currency_id.name or '',  # C16 (Codigo de la moneda / TABLA 4)
                            line.exchange_rate or '',  # C17 (Tipo de Cambio)
                            # 18 al 25 se llena si el proveedor es No Domiciliado
-                           pais_ND or '',  # C18 H18(Pais)
-                           Proveedor_ND or '',  # C19 H19(Proveedor)
-                           domicilio_ND or'',  # C20 H20 (Address)
-                           NIF_ND or '',  # C21 H21(RUC, NIF - NIF No Domiciliado)
+                           line.partner_id.country_id.name or '',  # C18 H18(Pais)
+                           line.partner_id.commercial_company_name or '',  # C19 H19(Proveedor)
+                           line.partner_id.street or '',  # C20 H20 (Address)
+                           # HOJA 21 AL 30
+                           line.partner_id.vat or '',  # C21 H21(RUC, NIF - Numero de Identificacion del Fiscal)
                            # Beneficiario de los Pagos
-                           NIF_Benf or '',  # C22 H22 NIF - NIF Beneficiario)
-                           Proveedor_Benf or '',  # C23 H23(Nombre de Contacto)
-                           pais_Benf or '',  # C24 (Pais)
-                           Vinculo or '',  # C25  (Vinculo Contribuyente y residente en el extranjero -- si es socio ..)
+                           '',  # C22 H22 NIF - Numero de Identificacion del Fiscal)
+                           line.partner_id.name or '',  # C23 H23(Nombre de Contacto)
+                           line.partner_id.title.id or '',  # H24 (El contacto es : "socio")
+                           line.partner_id.country_id.name or '',  # C24 (Pais)
+                           '',  # C25  (Vinculo Contribuyente y residente en el extranjero)
                            '',  # C26 H26 null (Renta Bruta)
                            '',  # C27 H27 null (Deduccion/Costo de Enajenacion de bienes de Capital)
                            '',  # C28 H28 null (Renta Neta)
                            '',  # C29 H29 null (Tasa de Retencion)
                            '',  # C30 H30 null (Impuesto Retenido)
+                           # HOJA 31 AL campo 37
                            line.partner_id.x_studio_convenios or '',  # C31 H31 (Convenios --- evitar la doble imposicion)
                            line.x_studio_exoneraciones or '',  # C32 Hoja 32 (Exoneraciones)
                            line.type_income_id.number or '',  # C33 Hoja 33 (tipo de renta)
