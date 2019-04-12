@@ -68,6 +68,7 @@ class not_domiciled(models.TransientModel):
                 tip_Prov = line.partner_id.person_type
                 serie_Comp = line.invoice_number
             else:
+                if line.partner_id.person_type == valueProv:
                 tip_Prov = ""
                 serie_Comp = ""
                 pais_ND = line.partner_id.country_id.name
