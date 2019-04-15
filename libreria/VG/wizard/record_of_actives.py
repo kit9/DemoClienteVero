@@ -49,7 +49,7 @@ class RecordActives(models.TransientModel):
                 #     rest = line.category_id.account_asset_id.company_id.id
             #28
             for cat3 in line.depreciation_line_ids:
-                if cat3.depreciated_value:
+                if cat3.sequence == 2:
                     amortizacion = cat3.depreciated_value
 
             #25
