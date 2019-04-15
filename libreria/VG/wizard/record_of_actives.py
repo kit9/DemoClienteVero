@@ -39,7 +39,7 @@ class RecordActives(models.TransientModel):
             #14
             for imp in line.depreciation_line_ids:
                 if imp.sequence == 1:
-                    _depres = imp.remaining_value
+                    _depres = "%.2f" % imp.remaining_value
 
 
             #16
@@ -53,12 +53,12 @@ class RecordActives(models.TransientModel):
             #17
             for alv in line.depreciation_line_ids:
                 if alv.sequence == 2:
-                    motivobaja = alv.depreciated_value
+                    motivobaja = "%.2f" % alv.depreciated_value
 
             #28
             for cat3 in line.depreciation_line_ids:
                 if cat3.sequence == 2:
-                    amortizacion = cat3.depreciated_value
+                    amortizacion = "%.2f" % cat3.depreciated_value
 
             #25
             if line.category_id.method == value:
