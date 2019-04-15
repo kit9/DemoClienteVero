@@ -44,7 +44,7 @@ class RecordActives(models.TransientModel):
 
             #16
             for cat2 in line.invoice_line_ids:
-                pxu = "%.2f" % sum(line.price_unit for line in line.invoice_line_ids)
+                pxu = "%.2f" % sum(line.price_unit for line in line.invoice_line_ids)       #DATO --- "%.2f" % <-- SE UTILIZA PARA REDONDEAR NUMEROS
                 # if cat2.price_unit:
                 #     cat2.price_unit
                 # if line.category_id.account_asset_id.company_id.id:
