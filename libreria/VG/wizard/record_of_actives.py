@@ -36,7 +36,7 @@ class RecordActives(models.TransientModel):
 
             #14
             for imp in line.depreciation_line_ids:
-                if imp.remaining_value:
+                if imp.sequence == 1:
                     _depres = imp.remaining_value
 
 
@@ -73,11 +73,11 @@ class RecordActives(models.TransientModel):
             # por cada campo encontrado daran una linea como mostrare
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
-                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                       "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           #line.invoice_id.move_id.name or '',  # 3
+                           line.invoice_id.move_id.name or '',  # 3
                            line.seat_code or '',  # 4 cbarraza (crear campo)
                            line.product_code or '',  # 5
                            line.x_studio_cdigo_de_existencia or '',  # 6 cbarraza (crear campo)
