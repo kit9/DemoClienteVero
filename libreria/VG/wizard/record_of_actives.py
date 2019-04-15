@@ -71,7 +71,7 @@ class RecordActives(models.TransientModel):
                         estado_ope = "1"
 
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
+            txt_line = "%s|%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" \
                        "|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
 
