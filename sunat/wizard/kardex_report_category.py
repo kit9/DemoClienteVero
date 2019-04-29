@@ -13,7 +13,7 @@ class KardexReportCategory(models.TransientModel):
     _name = "sunat.kardex_report_category"
     _description = "Report Kardex Category"
 
-    #date_month = fields.Char(string="Mes", size=2)
+    # date_month = fields.Char(string="Mes", size=2)
     date_month = fields.Selection(string="Mes", selection=[('01', 'Enero'),
                                                            ('02', 'Febrero'),
                                                            ('03', 'Marzo'),
@@ -29,6 +29,7 @@ class KardexReportCategory(models.TransientModel):
     date_year = fields.Char(string="Año", size=4)
 
     category_id = fields.Many2one('product.category', 'Categoría')
+    warehouse_id = fields.Many2one('stock.warehouse', 'Almacen')
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
@@ -36,12 +37,18 @@ class KardexReportCategory(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-        _logger.info("Datos")
-        _logger.info(self.category_id.id)
-        _logger.info(self.date_month + "" + self.date_year)
-        dominio = [('state', 'like', 'done'),
-                   ('product_id.categ_id.id', '=', self.category_id.id),
-                   ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
+        # dominio = [('state', 'like', 'done'),
+        #            ('product_id.categ_id.id', '=', self.category_id.id),
+        #            ('|', ('location_id.id', '=', self.warehouse_id.id),
+        #             ('location_dest_id.id', '=', self.warehouse_id.id)),
+        #            ('month_year_inv', 'like', self.date_month + "" + self.date_year)]
+        dominio = ["&", "&", "&", "|", ['location_id.id', '=', self.warehouse_id.lot_stock_id.id],
+                   ['location_dest_id.id', '=', self.warehouse_id.lot_stock_id.id],
+                   ['state', 'like', 'done'], ['product_id.categ_id.id', '=', self.category_id.id],
+                   ['month_year_inv', 'like', self.date_month + "" + self.date_year]]
+
+        # dominio2 = [(('product_id', '=', product_id), '&amp;', ('product_id.tracking', '!=', 'serial')), ’ | ’, (
+        # 'use_next_on_work_order_id', '=', id)]
 
         output = BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -49,7 +56,7 @@ class KardexReportCategory(models.TransientModel):
 
         # Data
         lst_move_line = self.env['stock.move.line'].search(dominio, order="product_id,id")
-        _logger.info(len(lst_move_line))
+
         # Start from the first cell. Rows and columns are zero indexed.
         row = 0
         col = 0
@@ -95,25 +102,45 @@ class KardexReportCategory(models.TransientModel):
 
         # Iterador
         for line in lst_move_line:
+
+            # _logger.info("---------------------------------------------")
+            # _logger.info(line.location_id.complete_name)
+            # _logger.info(line.location_id.id)
+            # _logger.info(line.location_dest_id.complete_name)
+            # _logger.info(line.location_dest_id.id)
+            # _logger.info(self.warehouse_id.lot_stock_id.id)
+
             # Cantidad
             in_quantity = 0
             out_quantity = 0
-            if "OUT" in line.reference:
-                out_quantity = line.qty_done
-            else:
-                in_quantity = line.qty_done
 
             # Precio Unitario
             in_price_unit = 0
             out_price_unit = 0
-            if line.move_id.sale_line_id or "OUT" in line.reference:
-                out_price_unit = line.historical_cost
-            else:
-                if line.move_id.purchase_line_id:
-                    in_price_unit = line.move_id.purchase_line_id.price_unit
+
+            # if "OUT" in line.reference:
+            if line.location_dest_id.id == self.warehouse_id.lot_stock_id.id:
+                in_quantity = line.qty_done
+                if line.historical_cost:
+                    in_price_unit = line.historical_cost
                 else:
-                    # Si es que no tiene compra ni venta
                     in_price_unit = line.product_id.standard_price
+            else:
+                out_quantity = line.qty_done
+                if line.historical_cost:
+                    out_price_unit = line.historical_cost
+                else:
+                    out_price_unit = line.product_id.standard_price
+
+            # #if line.move_id.sale_line_id or "OUT" in line.reference:
+            # if line.move_id.sale_line_id and line.location_dest_id.id == self.warehouse_id.lot_stock_id.id:
+            #     out_price_unit = line.historical_cost
+            # else:
+            #     if line.move_id.purchase_line_id and line.location_id.id == self.warehouse_id.lot_stock_id.id:
+            #         in_price_unit = line.move_id.purchase_line_id.price_unit
+            #     else:
+            #         # Si es que no tiene compra ni venta
+            #         in_price_unit = line.product_id.standard_price
 
             # Totales
             in_total = in_quantity * in_price_unit

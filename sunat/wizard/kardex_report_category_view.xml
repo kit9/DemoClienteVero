@@ -9,6 +9,7 @@
                     <field name="state" invisible="1"/>
                     <field name="txt_filename" invisible="1"/>
                     <group states="choose" string="Generar PLE">
+                        <field name="warehouse_id" required="True" widget='selection'/>
                         <!--<field name="category_id" required="True" options='{"no_open": True,"no_create": True, "no_create_edit": True}'/>&lt;!&ndash;widget='selection'&ndash;&gt;-->
                         <field name="category_id" required="True" widget='selection'/>
                         <field name="date_month" required="True"/>
