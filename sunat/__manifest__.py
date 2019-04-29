@@ -68,6 +68,7 @@
         'wizard/sales_view.xml',
         'wizard/payment_methods_view.xml',
         'wizard/payment_provider_view.xml',
+        'wizard/kardex_report_category_view.xml',
         'views/menu.xml',
         'views/actions.xml',
         'data/data_detracciones.xml',
