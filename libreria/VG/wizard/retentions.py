@@ -102,10 +102,11 @@ class retentions(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
+            'txt_binary': base64.b64encode(content_txt1.encode('ISO-8859-1')),
             'txt_filename': "Retenciones.txt"
         })
 
-        
+
 
         return {
             'type': 'ir.actions.act_window',
