@@ -87,9 +87,6 @@
                    position="after">
                 <field name="type_purchase" string="Tipo de Compra"/>
             </xpath>
-            <xpath expr="//field[@name='move_id']" position="after">
-                <field name="move_punishment_id" readonly="True"/>
-            </xpath>
         </field>
     </record>
 
@@ -193,6 +190,9 @@
             </xpath>
             <xpath expr="//field[@name='amount_tax']" position="after">
                 <field name="perception_value" attrs="{'invisible':[('perception_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='move_id']" position="after">
+                <field name="move_punishment_id" readonly="True"/>
             </xpath>
         </field>
     </record>
