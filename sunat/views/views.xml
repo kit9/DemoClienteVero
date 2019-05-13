@@ -276,7 +276,7 @@
         </field>
     </record>
 
-    <!--Tabla - Asientos Contables-->
+    <!--Fomulario - Asientos Contables-->
     <record id="account_move_form_inherit" model="ir.ui.view">
         <field name="name">account.move.form.inherit</field>
         <field name="model">account.move</field>
@@ -284,6 +284,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='ref']" position="after">
                 <field name="id" string="ID"/>
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="invoice_id"/>
             </xpath>
         </field>
     </record>

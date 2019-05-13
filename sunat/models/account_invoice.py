@@ -685,6 +685,7 @@ class account_invoice(models.Model):
                 'date': str(datetime.now().date()) or False,
                 'journal_id': move_line.journal_id and move_line.journal_id.id or False,
                 'ref': 'Por el castigo de la factura ' + str(rec.number),
+                'invoice_id': rec and rec.id or False,
                 'line_ids': lines
             }
 

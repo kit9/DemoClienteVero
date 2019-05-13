@@ -57,6 +57,8 @@ class account_move(models.Model):
 
     person_type = fields.Char(string="Inafecto", compute="_person_type")
 
+    invoice_id = fields.Many2one('account.invoice', 'Factura Cliente')
+
     @api.multi
     @api.depends('partner_id')
     def _person_type(self):
