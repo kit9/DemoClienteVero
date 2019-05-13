@@ -672,7 +672,7 @@ class account_invoice(models.Model):
 
             # Linea 1
             account_1 = self.env['account.account'].search(['code', '=', '191100'])
-            if account_2:
+            if account_1:
                 lines.append((0, 0, {
                     'account_id': account_1 and account_1.id or False,
                     'credit': move_line.debit
@@ -691,5 +691,5 @@ class account_invoice(models.Model):
             move_punishment = self.env['account.move'].create(account_move_dic)
             move_punishment.post()
 
-            rec.move_punishment_id = move_punishment
+            rec.move_punishment_id = move_punishment.id
         return True
