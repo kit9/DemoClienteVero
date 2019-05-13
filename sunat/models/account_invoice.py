@@ -688,8 +688,12 @@ class account_invoice(models.Model):
                 'line_ids': lines
             }
 
+            _logger.info("Plantilla Completa")
             move_punishment = self.env['account.move'].create(account_move_dic)
+            _logger.info("Asiento Creado")
             move_punishment.post()
+
+            _logger.info("Asiento Publicado")
 
             rec.move_punishment_id = move_punishment.id
         return True
