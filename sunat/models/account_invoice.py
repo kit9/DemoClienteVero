@@ -647,10 +647,12 @@ class account_invoice(models.Model):
             if rec.move_punishment_id:
                 raise ValidationError('La factura ' + str(self.number) + ' ya tiene un catigo')
 
+            _logger.info("Antes del for")
             move_line = False
             for line in rec.move_id.line_ids:
-                if line.account_id.code == '121100' and not move_line:
+                if str(line.account_id.code) == '121100' and not move_line:
                     move_line = line
+            _logger.info("Despues del for")
 
             if not move_line:
                 raise ValidationError('No se encontro la cuenta 121100 en el asiento de factura')
