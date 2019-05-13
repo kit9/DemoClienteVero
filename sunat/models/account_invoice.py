@@ -642,10 +642,10 @@ class account_invoice(models.Model):
     def _punishment(self):
         for rec in self:
             if rec.state != 'open':
-                raise ValidationError('La factura ' + str(self.number) + ' no esta abierta')
+                raise ValidationError('La factura ' + str(rec.number) + ' no esta abierta')
 
             if rec.move_punishment_id:
-                raise ValidationError('La factura ' + str(self.number) + ' ya tiene un catigo')
+                raise ValidationError('La factura ' + str(rec.number) + ' ya tiene un catigo')
 
             _logger.info("Antes del for")
             move_line = False
@@ -684,7 +684,7 @@ class account_invoice(models.Model):
             account_move_dic = {
                 'date': str(datetime.now().date()) or False,
                 'journal_id': move_line.journal_id and move_line.journal_id.id or False,
-                'ref': 'Por el castigo de la factura ' + str(self.number),
+                'ref': 'Por el castigo de la factura ' + str(rec.number),
                 'line_ids': lines
             }
 
@@ -695,5 +695,5 @@ class account_invoice(models.Model):
 
             _logger.info("Asiento Publicado")
 
-            rec.move_punishment_id = move_punishment.id
+            rec.move_punishment_id = move_punishment
         return True
