@@ -649,7 +649,7 @@ class account_invoice(models.Model):
 
             move_line = False
             for line in rec.move_id.line_ids:
-                if line.account_id.code == '121100':
+                if line.account_id.code == '121100' and not move_line:
                     move_line = line
 
             if not move_line:
