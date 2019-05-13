@@ -114,7 +114,7 @@ class account_invoice(models.Model):
     ], string='Tipo de Operación')
 
     # Asiento Castigo
-    move_punishment_id = fields.Many2one('stock.move', "Asiento Castigo")
+    move_punishment_id = fields.Many2one('account.move', "Asiento Castigo")
 
     # Factura Cliente
     inv_isc = fields.Monetary(string="ISC", compute="_inv_isc")
@@ -690,3 +690,4 @@ class account_invoice(models.Model):
             move_punishment.post()
 
             rec.move_punishment_id = move_punishment
+        return True
