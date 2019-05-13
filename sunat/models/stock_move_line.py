@@ -34,7 +34,7 @@ class stock_move_line(models.Model):
             if rec.move_id.purchase_line_id:
                 rec.unit_price = rec.move_id.purchase_line_id.price_unit
             else:
-                if rec.move_id.sale_line_id:
+                if rec.move_id.sale_line_id and rec.historical_cost:
                     rec.unit_price = rec.historical_cost
                 else:
                     rec.unit_price = rec.product_id.standard_price
@@ -56,7 +56,7 @@ class stock_move_line(models.Model):
             if rec.move_id.purchase_line_id:
                 rec.total_price = rec.move_id.purchase_line_id.price_unit * rec.qty_done
             else:
-                if rec.move_id.sale_line_id:
+                if rec.move_id.sale_line_id and rec.historical_cost:
                     rec.total_price = rec.historical_cost * rec.qty_done
                 else:
                     rec.total_price = rec.product_id.standard_price * rec.qty_done
