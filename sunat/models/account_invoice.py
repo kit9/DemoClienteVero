@@ -164,7 +164,7 @@ class account_invoice(models.Model):
     @api.depends('inv_type_operation')
     def _inv_inafecto(self):
         for rec in self:
-            if rec.inv_type_operation.upper() == "inafecto".upper():
+            if rec.inv_type_operation.upper() == "inafecto":
                 rec.inv_inafecto = rec.amount_untaxed_invoice_signed
 
     @api.multi
