@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+from datetime import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -111,18 +113,23 @@ class account_invoice(models.Model):
         ('3', 'Mixto')
     ], string='Tipo de Operación')
 
+    # Asiento Castigo
+    move_punishment_id = fields.Many2one('stock.move', "Asiento Castigo")
+
+    # Factura Cliente
     inv_isc = fields.Monetary(string="ISC", compute="_inv_isc")
     inv_inafecto = fields.Monetary(string="Inafecto", compute="_inv_inafecto")
     inv_exonerada = fields.Monetary(string="Exonerada", compute="_inv_exonerada")
     inv_fac_exp = fields.Monetary(string="Valor fac de la exp", compute="_inv_fac_exp")
     inv_amount_untax = fields.Monetary(string="Impuesto no incluido", compute="_inv_amount_untax")
-
+    inv_no_gravado = fields.Monetary(string="No Gravado", compute="_inv_no_gravado")
     inv_otros = fields.Char(string='Otros')
+
+    # Factura Proveedor
+    bill_isc = fields.Monetary(string="ISC", compute="_bill_isc")
 
     num_comp_serie = fields.Char(string='Numero de Comp. N1 de Serie')
     num_perception = fields.Char(string='Numero de Percepción')
-
-    inv_no_gravado = fields.Monetary(string="No Gravado", compute="_inv_no_gravado")
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
@@ -138,7 +145,7 @@ class account_invoice(models.Model):
         for rec in self:
             for line in rec.invoice_line_ids:
                 for imp in line.invoice_line_tax_ids:
-                    if imp.name == "No Gravado":
+                    if imp.name.upper() == "No Gravado".upper():
                         rec.inv_no_gravado = rec.amount_total
 
     @api.multi
@@ -146,36 +153,44 @@ class account_invoice(models.Model):
         for rec in self:
             for line in rec.invoice_line_ids:
                 for imp in line.invoice_line_tax_ids:
-                    if imp.name == "ISC":
+                    if imp.name.upper() == "ISC":
+                        rec.inv_isc = rec.amount_tax_signed
+
+    @api.multi
+    def _bill_isc(self):
+        for rec in self:
+            for line in rec.invoice_line_ids:
+                for imp in line.invoice_line_tax_ids:
+                    if imp.name.upper() == "ISC":
                         rec.inv_isc = rec.amount_tax
 
     @api.multi
     @api.depends('inv_type_operation')
     def _inv_inafecto(self):
         for rec in self:
-            if rec.inv_type_operation == "inafecto":
-                rec.inv_inafecto = rec.amount_untaxed
+            if rec.inv_type_operation.upper() == "inafecto".upper():
+                rec.inv_inafecto = rec.amount_untaxed_invoice_signed
 
     @api.multi
     @api.depends('inv_type_operation')
     def _inv_exonerada(self):
         for rec in self:
             if rec.inv_type_operation == "exonerado":
-                rec.inv_exonerada = rec.amount_untaxed
+                rec.inv_exonerada = rec.amount_untaxed_invoice_signed
 
     @api.multi
     @api.depends('export_invoice')
     def _inv_fac_exp(self):
         for rec in self:
             if rec.export_invoice:
-                rec.inv_fac_exp = rec.amount_untaxed
+                rec.inv_fac_exp = rec.amount_untaxed_invoice_signed
 
     @api.multi
     def _inv_amount_untax(self):
         for rec in self:
             if not (
                     rec.inv_isc or rec.inv_type_operation == "inafecto" or rec.inv_type_operation == "exonerado" or rec.export_invoice):
-                rec.inv_amount_untax = rec.amount_untaxed
+                rec.inv_amount_untax = rec.amount_untaxed_invoice_signed  # amount_untaxed -> Para factura de Cliente
 
     @api.multi
     @api.depends('amount_untaxed', 'type_operation')
@@ -622,3 +637,56 @@ class account_invoice(models.Model):
         self.amount_total_company_signed = amount_total_company_signed * sign
         self.amount_total_signed = self.amount_total * sign
         self.amount_untaxed_signed = amount_untaxed_signed * sign
+
+    @api.multi
+    def _punishment(self):
+        for rec in self:
+            if rec.state != 'open':
+                raise ValidationError('La factura ' + str(self.number) + ' no esta abierta')
+
+            if rec.move_punishment_id:
+                raise ValidationError('La factura ' + str(self.number) + ' ya tiene un catigo')
+
+            move_line = False
+            for line in rec.move_id.line_ids:
+                if line.account_id.code == '121100':
+                    move_line = line
+
+            if not move_line:
+                raise ValidationError('No se encontro la cuenta 121100 en el asiento de factura')
+
+            # Lista de Lineas
+            lines = []
+
+            # Linea 2
+            account_2 = self.env['account.account'].search(['code', '=', '684110'])
+            if account_2:
+                lines.append((0, 0, {
+                    'account_id': account_2 and account_2.id or False,
+                    'debit': move_line.debit
+                }))
+            else:
+                raise ValidationError('No se encontro la cuenta 684110')
+
+            # Linea 1
+            account_1 = self.env['account.account'].search(['code', '=', '191100'])
+            if account_2:
+                lines.append((0, 0, {
+                    'account_id': account_1 and account_1.id or False,
+                    'credit': move_line.debit
+                }))
+            else:
+                raise ValidationError('No se encontro la cuenta 191100')
+
+            # Asiento
+            account_move_dic = {
+                'date': str(datetime.now().date()) or False,
+                'journal_id': move_line.journal_id and move_line.journal_id.id or False,
+                'ref': 'Por el castigo de la factura ' + str(self.number),
+                'line_ids': lines
+            }
+
+            move_punishment = self.env['account.move'].create(account_move_dic)
+            move_punishment.post()
+
+            rec.move_punishment_id = move_punishment

@@ -47,5 +47,6 @@
 
     <menuitem id="reg_retenciones_menu" name="Registro de Retenciones" sequence="1" parent="reporte_excel_menu_root" action="excel_report_retentions"/>
     <menuitem id="kardex_report_menu" name="Reporte Kardex" sequence="2" parent="reporte_excel_menu_root" action="kardex_report_sunat"/>
+    <menuitem id="kardex_report_category_menu" name="Reporte Kardex Categoría" sequence="3" parent="reporte_excel_menu_root" action="kardex_report_category_sunat"/>
 
 </odoo>

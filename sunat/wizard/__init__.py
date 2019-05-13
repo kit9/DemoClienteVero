@@ -10,3 +10,4 @@ from . import purchases
 from . import payment_methods
 from . import sales
 from . import payment_provider
+from . import kardex_report_category
