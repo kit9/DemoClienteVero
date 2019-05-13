@@ -661,7 +661,7 @@ class account_invoice(models.Model):
             lines = []
 
             # Linea 2
-            account_2 = self.env['account.account'].search(['code', '=', '684110'])
+            account_2 = self.env['account.account'].search([('code', '=', '684110')])
             if account_2:
                 lines.append((0, 0, {
                     'account_id': account_2 and account_2.id or False,
@@ -671,7 +671,7 @@ class account_invoice(models.Model):
                 raise ValidationError('No se encontro la cuenta 684110')
 
             # Linea 1
-            account_1 = self.env['account.account'].search(['code', '=', '191100'])
+            account_1 = self.env['account.account'].search([('code', '=', '191100')])
             if account_1:
                 lines.append((0, 0, {
                     'account_id': account_1 and account_1.id or False,
