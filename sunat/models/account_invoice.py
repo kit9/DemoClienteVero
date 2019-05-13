@@ -647,7 +647,7 @@ class account_invoice(models.Model):
             if rec.move_punishment_id:
                 raise ValidationError('La factura ' + str(self.number) + ' ya tiene un catigo')
 
-            move_line = false
+            move_line = False
             for line in rec.move_id.line_ids:
                 if line.account_id.code == '121100':
                     move_line = line
