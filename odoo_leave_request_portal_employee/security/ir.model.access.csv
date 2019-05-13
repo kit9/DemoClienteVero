@@ -1,0 +1,12 @@
+"id","name","model_id/id","group_id/id","perm_read","perm_write","perm_create","perm_unlink"
+"access_ir_menu_portal","access_ir_menu_portal","base.model_ir_ui_menu","base.group_portal",1,0,0,0
+"access_ir_model_portal","access_ir_model_portal","base.model_ir_model","base.group_portal",1,0,0,0
+"access_leave_request_portal","leave_request_employee","hr.model_hr_employee","base.group_portal",1,0,0,0
+"access_hr_type_leaves_portal","access_hr_type_leaves_portal","hr_holidays.model_hr_leave_type","base.group_portal",1,0,0,0
+"access_hr_employee_portal","hr_employee_portal_leave","hr_holidays.model_hr_leave","base.group_portal",1,1,1,0
+"access_hr_leave_allocation_leaves_portal","access_hr_leave_allocation_leaves_portal","hr_holidays.model_hr_leave_allocation","base.group_portal",1,0,0,0
+"access_resource_calendar_portal_portal","access_resource_calendar_portal_portal","resource.model_resource_calendar","base.group_portal",1,0,0,0
+"access_resource_calendar_attendance_portal","access_resource_calendar_attendance_portal","resource.model_resource_calendar_attendance","base.group_portal",1,0,0,0
+"access_calendar_leaves_portal","access_calendar_leaves_portal","hr_holidays.model_resource_calendar_leaves","base.group_portal",1,0,0,0
+"access_resource_portal","resource_portal","resource.model_resource_resource","base.group_portal",1,0,0,0
+"access_hr_leave_mail_activity_leaves_portal","access_hr_leave_mail_activity_leaves_portal","mail.model_mail_activity","base.group_portal",1,1,1,0
