@@ -4,7 +4,7 @@
 
 {
     'name': 'Employee Leaves from Web-My Account using Portal User as Employee',
-    'version': '1.3',
+    'version': '1.4',
     'price': 49.0,
     'currency': 'EUR',
     'category': 'Human Resources',
