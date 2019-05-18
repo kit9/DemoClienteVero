@@ -431,6 +431,18 @@
         </field>
     </record>
 
+    <!--Tabla - Apuntes analíticos-->
+    <record id="account_analytic_line_tree_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_id']" position="after">
+                <field name="related_invoice_id"/>
+            </xpath>
+        </field>
+    </record>
+
     <!--Formulario - Compañia-->
     <record id="res_company_form_inherit" model="ir.ui.view">
         <field name="name">res.company.form.inherit</field>
