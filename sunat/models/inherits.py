@@ -359,4 +359,4 @@ class ProductCategory(models.Model):
 class ProductCategory(models.Model):
     _inherit = "account.analytic.line"
 
-    related_invoice_id = fields.Char(string="Factura", related="move_id.invoice_id.name")
+    related_invoice_id = fields.Char(string="Factura", related="move_id.invoice_id.number")
