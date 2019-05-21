@@ -470,9 +470,6 @@ class account_invoice(models.Model):
             if rec.date_document != False:
                 campo_27 = rec.date_document.strftime("%d/%m/%Y")
 
-            # 33 -> Cancelado o no
-            campo_33 = ""
-
             # 34 -> Fechas
             codigo_34 = ''
             if rec.date_invoice != False and rec.date_document != False:
