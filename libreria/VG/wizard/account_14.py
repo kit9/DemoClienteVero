@@ -21,17 +21,17 @@ class retentions(models.TransientModel):
     def generate_file(self):
         # Data - Anthony
         #('month_year_move', 'like', self.date_month + "" + self.date_year)
-        lst_account_move_line = self.env['account.move'].search()
+        lst_account_move = self.env['account.move'].search()
 
         content_txt = ""
         imp_numero = ""
         _estado_ope = ""
         #_factura = ""
 
-        _logger.info(len(lst_account_move_line))
+        _logger.info(len(lst_account_move))
 
         # Iterador
-        for line in lst_account_move_line:
+        for line in lst_account_move:
             # factura
             # for imp in line.line_ids:
             #     if imp.invoice_id:
@@ -51,7 +51,7 @@ class retentions(models.TransientModel):
                         _estado_ope = "09"
 
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s" % (
+            txt_line = "%s|" % (
                 line.date.strftime("%Y%m00") or '',  # 1
             )
 
@@ -68,7 +68,7 @@ class retentions(models.TransientModel):
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Acount_14',
+            'name': 'Account_14',
             'res_model': 'libreria.account_14',
             'view_mode': 'form',
             'view_type': 'form',
