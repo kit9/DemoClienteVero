@@ -35,6 +35,7 @@
         'wizard/record_of_actives_view.xml',
         'wizard/four_retentions_view.xml',
         'wizard/not_domiciled_view.xml',
+        'wizard/account_14_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
