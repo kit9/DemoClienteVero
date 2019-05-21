@@ -27,6 +27,8 @@ class Account_14(models.TransientModel):
         content_txt = ""
         estado_ope = ""
         _debito=""
+        _catalogo = ""
+        _vat = ""
 
         # Iterador
         for line in lst_account_move_line:
@@ -35,6 +37,20 @@ class Account_14(models.TransientModel):
                 if imp.debit:
                     _debito = imp.debit
 
+            # _catalogo
+            for imp1 in line.line_ids:
+                if imp1.partner_id.catalog_06_id:
+                 _catalogo = imp1.partner_id.catalog_06_id
+
+            # _vat
+            for imp2 in line.line_ids:
+                if imp2.partner_id.vat:
+                   _vat = imp2.partner_id.vat
+
+            # _nombre
+            for imp3 in line.line_ids:
+                if imp3.partner_id.name:
+                   _nombre = imp3.partner_id.name
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -54,9 +70,9 @@ class Account_14(models.TransientModel):
                 line.date.strftime("%Y%m00") or '',  # 1
                 line.name or '',
                 line.x_studio_field_fwlP9 or '',
-                line.res.partner.catalog_06_id or '',
-                line.res.partner.vat or '',
-                line.res.partner.name or '',
+                _catalogo or '',
+                _vat or '',
+                _name or '',
                 line.date or '',
                 _debito or ''
             )
