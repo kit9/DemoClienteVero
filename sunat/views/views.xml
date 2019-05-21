@@ -93,12 +93,27 @@
         <field name="name">purchase.order.custom</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_tree"/>
-        <field name="mode">extension</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_order']" position="after">
-                <field name="waiting_orders" string="Pedidos de Espera"/>
-                <field name="billing" string="Facturación"/>
-                <field name="seat_generated" string="Asiento"/>
+                <!--<field name="waiting_orders" string="Pedidos de Espera"/>-->
+                <!--<field name="billing" string="Facturación"/>-->
+                <!--<field name="seat_generated" string="Asiento"/>-->
+                <field name="cuenta_analtica"/>
+                <field name="line_name"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Formulario - Ordenes de Compra-->
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="cuenta_analtica"/>
+                <field name="total_invoiced"/>
+                <field name="line_name"/>
             </xpath>
         </field>
     </record>
@@ -431,18 +446,6 @@
         </field>
     </record>
 
-    <!--Tabla - Apuntes analíticos-->
-    <record id="account_analytic_line_tree_inherit" model="ir.ui.view">
-        <field name="name">account.analytic.line.tree.inherit</field>
-        <field name="model">account.analytic.line</field>
-        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='account_id']" position="after">
-                <field name="related_invoice_id"/>
-            </xpath>
-        </field>
-    </record>
-
     <!--Formulario - Compañia-->
     <record id="res_company_form_inherit" model="ir.ui.view">
         <field name="name">res.company.form.inherit</field>
@@ -451,6 +454,36 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='vat']" position="attributes">
                 <attribute name="string">RUC</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Valoracion de Inventario-->
+    <record id="product_stock_tree_2_inherit" model="ir.ui.view">
+        <field name="name">product.stock.tree.2.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock_account.view_stock_product_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="account_account"/>
+            </xpath>
+            <xpath expr="//field[@name='qty_at_date']" position="after">
+                <field name="standard_price" string="Costo "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Valoracion de Inventario-->
+    <record id="product_stock_tree_2_inherit" model="ir.ui.view">
+        <field name="name">product.stock.tree.2.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock_account.view_stock_product_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="account_account"/>
+            </xpath>
+            <xpath expr="//field[@name='qty_at_date']" position="after">
+                <field name="standard_price" string="Costo "/>
             </xpath>
         </field>
     </record>

@@ -356,7 +356,7 @@ class ProductCategory(models.Model):
     analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
 
 
-class ProductCategory(models.Model):
-    _inherit = "account.analytic.line"
+class ProductProduct(models.Model):
+    _inherit = "product.product"
 
-    related_invoice_id = fields.Char(string="Factura", related="move_id.invoice_id.number")
+    account_account = fields.Char(string='Cuenta Contable', related="categ_id.property_stock_valuation_account_id.code")
