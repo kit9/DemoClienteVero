@@ -28,8 +28,6 @@ class retentions(models.TransientModel):
         _estado_ope = ""
         #_factura = ""
 
-        _logger.info(len(lst_account_move))
-
         # Iterador
         for line in lst_account_move:
             # factura
