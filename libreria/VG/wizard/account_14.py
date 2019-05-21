@@ -21,15 +21,17 @@ class retentions(models.TransientModel):
     def generate_file(self):
         # Data - Anthony
         #('month_year_move', 'like', self.date_month + "" + self.date_year)
-        lst_account_move = self.env['account.move'].search
+        lst_account_move_line = self.env['account.move'].search([])
 
         content_txt = ""
         imp_numero = ""
         _estado_ope = ""
         #_factura = ""
 
+        _logger.info(len(lst_account_move_line))
+
         # Iterador
-        for line in lst_account_move:
+        for line in lst_account_move_line:
             # factura
             # for imp in line.line_ids:
             #     if imp.invoice_id:
