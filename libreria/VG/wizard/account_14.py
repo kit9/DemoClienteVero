@@ -26,7 +26,7 @@ class retentions(models.TransientModel):
         content_txt = ""
         imp_numero = ""
         _estado_ope = ""
-        #_factura = ""
+        _debito = ""
 
         _logger.info(len(lst_account_move_line))
 
@@ -37,6 +37,11 @@ class retentions(models.TransientModel):
             #     if imp.invoice_id:
             #         if imp.invoice_id.document_type_id:
             #             _factura = imp.invoice_id.document_type_id.number
+
+             _debito
+             for imp in line.line_ids:
+                 if imp.debit:
+                        _debito = debit
 
             # 10 valilador de estado de fecha
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -51,8 +56,15 @@ class retentions(models.TransientModel):
                         _estado_ope = "09"
 
             # por cada campo encontrado daran una linea como mostrare
-            txt_line = "%s|" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
+                line.name or '',
+                line.x_studio_field_fwlP9 or '',
+                line.res.partner.catalog_06_id or '',
+                line.res.partner.vat or '',
+                line.res.partner.name or '',
+                line.date or '',
+                _debito or ''
             )
 
             # Agregamos la linea al TXT
