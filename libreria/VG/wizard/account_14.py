@@ -33,7 +33,7 @@ class Account_14(models.TransientModel):
             # _debito
             for imp in line.line_ids:
                 if imp.debit:
-                    _debito = debit
+                    _debito = imp.debit
 
 
             # validador de estado de operación
