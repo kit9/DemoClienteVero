@@ -485,7 +485,7 @@ class account_invoice(models.Model):
                             codigo_34 = '9'
 
             content = "%s|%s|M%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s" \
-                      "||||%s|" % (
+                      "|||%s|%s|" % (
                           rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
                           rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
                           str(correlativo).zfill(4) or '',  # Correlativo de todos los asientos no solo facturas -> 3
@@ -518,7 +518,8 @@ class account_invoice(models.Model):
                           rec.refund_invoice_id.document_type_id.number or '',  # Tipo del Documento Asociado -> 28
                           rec.refund_invoice_id.invoice_serie or '',  # Serie del Documento Asociado -> 29
                           rec.refund_invoice_id.invoice_number or '',  # Numero del Documento Asociado -> 30
-                          # 3 campos en blanco -> 31, 32, 33
+                          # 2 campos en blanco -> 31, 32
+                          "1" if rec.state == 'paid' else "",
                           codigo_34 or '',  # -> 34
                           # 1 campo en blanco -> 35
                       )
