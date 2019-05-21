@@ -72,7 +72,7 @@ class Account_14(models.TransientModel):
                 line.x_studio_field_fwlP9 or '',
                 _catalogo or '',
                 _vat or '',
-                _name or '',
+                _nombre or '',
                 line.date or '',
                 _debito or ''
             )
