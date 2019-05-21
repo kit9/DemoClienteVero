@@ -6,9 +6,9 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class retentions(models.TransientModel):
+class Account_14(models.TransientModel):
     _name = "libreria.account_14"
-    _description = "Account_14"
+    _description = "Cuenta_14"
 
     #date_month = fields.Char(string="Mes", size=2)
     #date_year = fields.Char(string="Año", size=4)
@@ -19,43 +19,37 @@ class retentions(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-        # Data - Anthony
-        #('month_year_move', 'like', self.date_month + "" + self.date_year)
-        lst_account_move_line = self.env['account.move'].search([])
 
+        # modelo a buscar
+        lst_account_move_line = self.env['account.move'].search()
+
+        # variables creadas
         content_txt = ""
-        imp_numero = ""
-        _estado_ope = ""
-        _debito = ""
-
-        _logger.info(len(lst_account_move_line))
+        estado_ope = ""
+        _debito=""
 
         # Iterador
         for line in lst_account_move_line:
-            # factura
-            # for imp in line.line_ids:
-            #     if imp.invoice_id:
-            #         if imp.invoice_id.document_type_id:
-            #             _factura = imp.invoice_id.document_type_id.number
+            # _debito
+            for imp in line.line_ids:
+                if imp.debit:
+                    _debito = debit
 
-             _debito
-             for imp in line.line_ids:
-                 if imp.debit:
-                        _debito = debit
 
-            # 10 valilador de estado de fecha
+            # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                _estado_ope = "01"
+                estado_ope = "01"
             else:
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    _estado_ope = "09"
+                    estado_ope = "09"
                 else:
-                    if int(time.strftime("%m")) == int(line.date.strftime("%m")) - 1:
-                        _estado_ope = "00"
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        estado_ope = "00"
                     else:
-                        _estado_ope = "09"
+                        estado_ope = "01"
 
-            # por cada campo encontrado daran una linea como mostrare
+            # datos a exportar a txt
+
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
                 line.name or '',
@@ -73,14 +67,11 @@ class retentions(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Account_14.txt"
+            'txt_filename': "Cuenta_14.txt"
         })
-
-
-
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Account_14',
+            'name': 'Cuenta_14',
             'res_model': 'libreria.account_14',
             'view_mode': 'form',
             'view_type': 'form',
