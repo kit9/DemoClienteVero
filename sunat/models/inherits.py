@@ -360,3 +360,11 @@ class ProductProduct(models.Model):
     _inherit = "product.product"
 
     account_account = fields.Char(string='Cuenta Contable', related="categ_id.property_stock_valuation_account_id.code")
+
+
+class AccountTax(models.Model):
+    _inherit = 'account.tax'
+
+    tax_rate = fields.Selection(string="Tipo de Impuesto", selection=[('igv', 'IGV'),
+                                                                      ('isc', 'ISC'),
+                                                                      ('otros', 'OTROS')])

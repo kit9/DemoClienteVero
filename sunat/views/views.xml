@@ -488,6 +488,30 @@
         </field>
     </record>
 
+    <!-- Formulario - Impuestos -->
+    <record id="account_tax_form_inherit" model="ir.ui.view">
+        <field name="name">account.tax.form.inherit</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="tax_rate" required="True"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Impuestos -->
+    <record id="account_tax_tree_inherit" model="ir.ui.view">
+        <field name="name">account.tax.tree.inherit</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']" position="after">
+                <field name="tax_rate"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="account_move_line_inherit_tree" model="ir.ui.view">
         <field name="name">account.move.line.inherit.tree</field>
         <field name="model">account.move.line</field>
