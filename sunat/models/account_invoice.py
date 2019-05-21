@@ -114,7 +114,7 @@ class account_invoice(models.Model):
     ], string='Tipo de Operación')
 
     # Asiento Castigo
-    move_punishment_id = fields.Many2one('stock.move', "Asiento Castigo")
+    move_punishment_id = fields.Many2one('account.move', "Asiento Castigo")
 
     # Factura Cliente
     inv_isc = fields.Monetary(string="ISC", compute="_inv_isc")
@@ -168,7 +168,7 @@ class account_invoice(models.Model):
     @api.depends('inv_type_operation')
     def _inv_inafecto(self):
         for rec in self:
-            if rec.inv_type_operation.upper() == "inafecto".upper():
+            if str(rec.inv_type_operation).upper() == "inafecto".upper():
                 rec.inv_inafecto = rec.amount_untaxed_invoice_signed
 
     @api.multi
@@ -642,15 +642,17 @@ class account_invoice(models.Model):
     def _punishment(self):
         for rec in self:
             if rec.state != 'open':
-                raise ValidationError('La factura ' + str(self.number) + ' no esta abierta')
+                raise ValidationError('La factura ' + str(rec.number) + ' no esta abierta')
 
             if rec.move_punishment_id:
-                raise ValidationError('La factura ' + str(self.number) + ' ya tiene un catigo')
+                raise ValidationError('La factura ' + str(rec.number) + ' ya tiene un catigo')
 
-            move_line = false
+            _logger.info("Antes del for")
+            move_line = False
             for line in rec.move_id.line_ids:
-                if line.account_id.code == '121100':
+                if str(line.account_id.code) == '121100' and not move_line:
                     move_line = line
+            _logger.info("Despues del for")
 
             if not move_line:
                 raise ValidationError('No se encontro la cuenta 121100 en el asiento de factura')
@@ -659,7 +661,7 @@ class account_invoice(models.Model):
             lines = []
 
             # Linea 2
-            account_2 = self.env['account.account'].search(['code', '=', '684110'])
+            account_2 = self.env['account.account'].search([('code', '=', '684110')])
             if account_2:
                 lines.append((0, 0, {
                     'account_id': account_2 and account_2.id or False,
@@ -669,8 +671,8 @@ class account_invoice(models.Model):
                 raise ValidationError('No se encontro la cuenta 684110')
 
             # Linea 1
-            account_1 = self.env['account.account'].search(['code', '=', '191100'])
-            if account_2:
+            account_1 = self.env['account.account'].search([('code', '=', '191100')])
+            if account_1:
                 lines.append((0, 0, {
                     'account_id': account_1 and account_1.id or False,
                     'credit': move_line.debit
@@ -682,11 +684,17 @@ class account_invoice(models.Model):
             account_move_dic = {
                 'date': str(datetime.now().date()) or False,
                 'journal_id': move_line.journal_id and move_line.journal_id.id or False,
-                'ref': 'Por el castigo de la factura ' + str(self.number),
+                'ref': 'Por el castigo de la factura ' + str(rec.number),
+                'invoice_id': rec and rec.id or False,
                 'line_ids': lines
             }
 
+            _logger.info("Plantilla Completa")
             move_punishment = self.env['account.move'].create(account_move_dic)
+            _logger.info("Asiento Creado")
             move_punishment.post()
 
+            _logger.info("Asiento Publicado")
+
             rec.move_punishment_id = move_punishment
+        return True

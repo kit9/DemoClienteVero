@@ -57,6 +57,8 @@ class account_move(models.Model):
 
     person_type = fields.Char(string="Inafecto", compute="_person_type")
 
+    invoice_id = fields.Many2one('account.invoice', 'Factura Cliente')
+
     @api.multi
     @api.depends('partner_id')
     def _person_type(self):
@@ -352,3 +354,9 @@ class ProductCategory(models.Model):
     _inherit = "product.category"
 
     analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
+
+
+class ProductCategory(models.Model):
+    _inherit = "account.analytic.line"
+
+    related_invoice_id = fields.Char(string="Factura", related="move_id.invoice_id.number")

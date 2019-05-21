@@ -87,9 +87,6 @@
                    position="after">
                 <field name="type_purchase" string="Tipo de Compra"/>
             </xpath>
-            <xpath expr="//field[@name='move_id']" position="after">
-                <field name="move_punishment_id" readonly="True"/>
-            </xpath>
         </field>
     </record>
 
@@ -194,8 +191,33 @@
             <xpath expr="//field[@name='amount_tax']" position="after">
                 <field name="perception_value" attrs="{'invisible':[('perception_id', '=', False)]}"/>
             </xpath>
+            <xpath expr="//field[@name='move_id']" position="after">
+                <field name="move_punishment_id" readonly="True"/>
+            </xpath>
         </field>
     </record>
+
+    <!-- Tabla - Factura Cliente -->
+    <!--<record id="sunat_account_invoice_tree" model="ir.ui.view">-->
+    <!--<field name="name">sunat.account.invoice.tree</field>-->
+    <!--<field name="model">account.invoice</field>-->
+    <!--<field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
+    <!--<field name="arch" type="xml">-->
+    <!--<field name="amount_untaxed_invoice_signed" position="after">-->
+    <!--<field name="inv_fac_exp" sum="Total"/>-->
+    <!--<field name="inv_exonerada" sum="Total"/>-->
+    <!--<field name="inv_inafecto" sum="Total"/>-->
+    <!--<field name="inv_isc" sum="Total"/>-->
+    <!--</field>-->
+    <!--<field name="amount_tax_signed" position="after">-->
+    <!--<field name="inv_otros" sum="Total"/>-->
+    <!--</field>-->
+    <!--<field name="amount_untaxed_invoice_signed" position="replace">-->
+    <!--<field name="amount_untaxed_invoice_signed" invisible="1"/>-->
+    <!--<field name="inv_amount_untax" sum="Total"/>-->
+    <!--</field>-->
+    <!--</field>-->
+    <!--</record>-->
 
     <!-- Tabla - Factura Cliente -->
     <record id="sunat_account_invoice_tree" model="ir.ui.view">
@@ -226,8 +248,8 @@
         <field name="binding_model_id" ref="account.model_account_invoice"/>
         <field name="state">code</field>
         <field name="code">
-for rec in records:
-    rec._punishment()
+            for rec in records:
+            rec._punishment()
         </field>
     </record>
 
