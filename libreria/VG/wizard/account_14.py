@@ -21,7 +21,7 @@ class retentions(models.TransientModel):
     def generate_file(self):
         # Data - Anthony
         #('month_year_move', 'like', self.date_month + "" + self.date_year)
-        lst_account_move = self.env['account.move'].search()
+        lst_account_move = self.env['account.move'].search
 
         content_txt = ""
         imp_numero = ""
