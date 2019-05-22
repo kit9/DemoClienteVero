@@ -121,6 +121,7 @@ class GeneralActions(models.Model):
         if not encontrado:
             elemento = tr_elements[tr_num].find_all("td")
             numero = len(elemento) - 3
+            _logger.info("Dia numero -> " + str(elemento[numero + 0].get_text().strip()))
             compra = float(elemento[numero + 1].get_text().strip())
             venta = float(elemento[numero + 2].get_text().strip())
         #     _logger.info("No encontrado muestra por Defecto")
