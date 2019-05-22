@@ -270,10 +270,10 @@ class account_invoice(models.Model):
                     correlativo = "%s" % (contador)
 
             # Obtener el impuesto otros
-            impuesto_otros = 0
+            impuesto_otros = ""
             for imp in rec.tax_line_ids:
                 if str(imp.tax_id.tax_rate) == "otros":
-                    impuesto_otros = impuesto_otros + imp.amount_total
+                    impuesto_otros = imp.amount_total
 
             # 26 -> Fecha
             campo_26 = ""
@@ -286,11 +286,11 @@ class account_invoice(models.Model):
                 campo_14 = rec.amount_untaxed
 
             # 15 Impuesto
-            campo_15 = 0
+            campo_15 = ""
             if rec.type_operation == "1":
                 for imp in rec.tax_line_ids:
                     if str(imp.tax_id.tax_rate) == "igv":
-                        campo_15 = campo_15 + imp.amount_total
+                        campo_15 = imp.amount_total
 
             # 16 Base imponible
             campo_16 = ""
@@ -320,10 +320,10 @@ class account_invoice(models.Model):
                         campo_20 = rec.amount_total
 
             # 21 -> Importe exonerado
-            campo_21 = 0
+            campo_21 = ""
             for imp in rec.tax_line_ids:
                 if str(imp.tax_id.tax_rate) == "isc":
-                    campo_21 = campo_21 + imp.amount_total
+                    campo_21 = imp.amount_total
 
             # 33 -> Tipo de Pago
             campo_33 = ""
@@ -349,14 +349,14 @@ class account_invoice(models.Model):
                           rec.partner_id.vat or '',  # N° de Documento de Identidad -> 12
                           rec.partner_id.name or '',  # Nombre del Proveedor -> 13
                           campo_14 or '',  # Base imponible -> 14
-                          campo_15 if campo_15 > 0 else "",  # Total -> 15
+                          campo_15 or "",  # Total -> 15
                           campo_16 or '',  # Base imponible -> 16
                           campo_17 or '',  # Impuesto -> 17
                           campo_18 or '',  # Base imponible -> 18
                           campo_19 or '',  # Impuesto -> 19
                           campo_20 or '',  # Total Adeudado -> 20
-                          campo_21 if campo_21 > 0 else "",  # Impuesto -> 21
-                          impuesto_otros if impuesto_otros > 0 else "",  # Otros de las Lineas -> 22
+                          campo_21 or "",  # Impuesto -> 21
+                          impuesto_otros or "",  # Otros de las Lineas -> 22
                           rec.amount_total or '',  # Total -> 23
                           rec.currency_id.name or '',  # Tipo de moneda -> 24
                           rec.exchange_rate or 0.00,  # Tipo de Cambio-> 25

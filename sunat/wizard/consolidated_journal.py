@@ -10,7 +10,18 @@ class ConsolidatedJournal(models.TransientModel):
     _name = "sunat.consolidated_journal"
     _description = "Diario Consolidado"
 
-    date_month = fields.Char(string="Mes", size=2)
+    date_month = fields.Selection(string="Mes", selection=[('01', 'Enero'),
+                                                           ('02', 'Febrero'),
+                                                           ('03', 'Marzo'),
+                                                           ('04', 'Abril'),
+                                                           ('05', 'Mayo'),
+                                                           ('06', 'Junio'),
+                                                           ('07', 'Julio'),
+                                                           ('08', 'Agosto'),
+                                                           ('09', 'Septiembre'),
+                                                           ('10', 'Octubre'),
+                                                           ('11', 'Noviembre'),
+                                                           ('12', 'Diciembre')])
     date_year = fields.Char(string="Año", size=4)
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
@@ -91,34 +102,35 @@ class ConsolidatedJournal(models.TransientModel):
                         else:
                             campo_operacion = '9'
 
-            txt_line = "%s00|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date.strftime("%Y%m") or '',  # -> 01
-                name or '',  # -> 02
-                line.journal_id.id or '',  # -> 03
-                line.account_id.code or '',  # -> 04
-                line.company_id.id or '',  # -> 05
-                line.analytic_account_id.name or '',  # -> 06
-                line.invoice_id.currency_id.name or '',  # -> 07
-                line.partner_id.catalog_06_id.code or '',  # -> 08|
-                line.partner_id.vat or '',  # -> 09
-                line.invoice_id.document_type_id.number or '',  # -> 10
-                line.invoice_id.invoice_serie or '',  # -> 11
-                line.invoice_id.invoice_number or '',  # -> 12
-                date_invoice or '',  # -> 13
-                date_due or '',  # -> 14
-                date_document or '',  # -> 15
-                concatenado or '',  # -> 16
-                line.ref or '',  # -> 17
-                line.debit or 0.0,  # -> 18
-                line.credit or 0.0,  # -> 19
-                # line.move_id.name.replace("/", "") or '',  # -> 20
-                campo_20 or '',  # -> 20
-                campo_operacion or '',  # -> 21
-                '' or ''  # -> 22
-            )
+            if line.invoice_id:
+                txt_line = "%s00|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                    line.date.strftime("%Y%m") or '',  # -> 01
+                    name or '',  # -> 02
+                    line.journal_id.id or '',  # -> 03
+                    line.account_id.code or '',  # -> 04
+                    line.company_id.id or '',  # -> 05
+                    line.analytic_account_id.name or '',  # -> 06
+                    line.invoice_id.currency_id.name or '',  # -> 07
+                    line.partner_id.catalog_06_id.code or '',  # -> 08|
+                    line.partner_id.vat or '',  # -> 09
+                    line.invoice_id.document_type_id.number or '',  # -> 10
+                    line.invoice_id.invoice_serie or '',  # -> 11
+                    line.invoice_id.invoice_number or '',  # -> 12
+                    date_invoice or '',  # -> 13
+                    date_due or '',  # -> 14
+                    date_document or '',  # -> 15
+                    concatenado or '',  # -> 16
+                    line.ref or '',  # -> 17
+                    line.debit or 0.0,  # -> 18
+                    line.credit or 0.0,  # -> 19
+                    # line.move_id.name.replace("/", "") or '',  # -> 20
+                    campo_20 or '',  # -> 20
+                    campo_operacion or '',  # -> 21
+                    '' or ''  # -> 22
+                )
 
-            # Agregamos la linea al TXT
-            content_txt = content_txt + "" + txt_line + "\r\n"
+                # Agregamos la linea al TXT
+                content_txt = content_txt + "" + txt_line + "\r\n"
 
         self.write({
             'state': 'get',
