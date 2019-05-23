@@ -69,7 +69,7 @@ class retentions(models.TransientModel):
                 line.name or '',  # 2
                 line.id or '',  # 3
                 line.date or '',  # 4
-                line.open_reconcile_view.content_txt1 or '',  # 5
+                line.open_reconcile_view or '',  # 5
                 imp_numero or '',  # 6
                 line.partner_id.name or '',  # 7
                 _total or '',  # 8
@@ -102,8 +102,12 @@ class retentions(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
+            'txt_binary': base64.b64encode(content_txt1.encode('ISO-8859-1')),
             'txt_filename': "Retenciones.txt"
         })
+
+
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Retenciones',
