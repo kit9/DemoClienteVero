@@ -95,28 +95,28 @@ class GeneralActions(models.Model):
             td_num = len(td_elements)
             if td_num > 9:
                 dia = int(td_elements[9].get_text().strip())
-                if (dia_actual == dia):
+                if dia_actual == dia:
                     encontrado = True
                     _logger.info("Dia numero -> " + str(td_elements[9 + 0].get_text().strip()))
                     compra = float(td_elements[9 + 1].get_text().strip())
                     venta = float(td_elements[9 + 2].get_text().strip())
             elif td_num > 6:
                 dia = int(td_elements[6].get_text().strip())
-                if (dia_actual == dia):
+                if dia_actual == dia:
                     encontrado = True
                     _logger.info("Dia numero -> " + str(td_elements[6 + 0].get_text().strip()))
                     compra = float(td_elements[6 + 1].get_text().strip())
                     venta = float(td_elements[6 + 2].get_text().strip())
             elif td_num > 3:
                 dia = int(td_elements[3].get_text().strip())
-                if (dia_actual == dia):
+                if dia_actual == dia:
                     encontrado = True
                     _logger.info("Dia numero -> " + str(td_elements[3 + 0].get_text().strip()))
                     compra = float(td_elements[3 + 1].get_text().strip())
                     venta = float(td_elements[3 + 2].get_text().strip())
             elif td_num > 0:
                 dia = int(td_elements[0].get_text().strip())
-                if (dia_actual == dia):
+                if dia_actual == dia:
                     encontrado = True
                     _logger.info("Dia numero -> " + str(td_elements[0 + 0].get_text().strip()))
                     compra = float(td_elements[0 + 1].get_text().strip())
