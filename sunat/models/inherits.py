@@ -368,3 +368,16 @@ class AccountTax(models.Model):
     tax_rate = fields.Selection(string="Tipo de Impuesto", selection=[('igv', 'IGV'),
                                                                       ('isc', 'ISC'),
                                                                       ('otros', 'OTROS')])
+
+
+class AccountAnalyticLine(models.Model):
+    _inherit = "account.analytic.line"
+
+    related_invoice_id = fields.Char(string="Factura", related="move_id.invoice_id.number")
+
+
+class AccountJournal(models.Model):
+    _inherit = "account.journal"
+
+    type = fields.Selection(
+        selection_add=[('retention', 'Retención IGV')])
