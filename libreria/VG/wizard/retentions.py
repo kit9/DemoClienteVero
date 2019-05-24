@@ -66,7 +66,7 @@ class retentions(models.TransientModel):
                         line.payment_date.strftime("%Y%m00") if line.payment_date else "",  # 1
                         move_line.move_id.name or "",  # 2
                         move_line.id or "",
-                        move_line.payment_date.strftime("%d/%m/%Y") if move_line.payment_date else "",
+                        move_line.date.strftime("%d/%m/%Y") if move_line.date else "",
                         invoive.type_ident if invoive else "",
                         invoive.num_ident if invoive else "",
                         invoive.partner_id.name if invoive else "",
