@@ -39,8 +39,8 @@ class Account_14(models.TransientModel):
 
             # _catalogo
             for imp1 in line.line_ids:
-                if imp1.partner_id.catalog_06_id:
-                 _catalogo = imp1.partner_id.catalog_06_id
+                if imp1.partner_id.id:
+                 _catalogo = imp1.partner_id.id
 
             # _vat
             for imp2 in line.line_ids:
