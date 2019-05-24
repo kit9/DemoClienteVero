@@ -45,10 +45,34 @@ class retentions(models.TransientModel):
 
             for move_line in line.move_line_ids:
                 if str(move_line.account_id.code)[:1] == "4":
+
+                    invoive = False
+                    if len(line.invoice_ids) > 0:
+                        invoive = line.invoice_ids[0]
+
+                        # 34 -> Fechas
+                        codigo_10 = ""
+                        if line.date and move_line.move_id.date:
+                            if line.date.strftime("%m%Y") == move_line.move_id.date.strftime("%m%Y"):
+                                codigo_10 = "1"
+                            else:
+                                if line.date.strftime("%Y") != move_line.move_id.date.strftime("%Y"):
+                                    codigo_10 = "9"
+                                else:
+                                    codigo_10 = "0"
+
                     # por cada campo encontrado daran una linea como mostrare
-                    txt_line = "%s|%s" % (
+                    txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                         line.payment_date.strftime("%Y%m00") if line.payment_date else "",  # 1
-                        move_line.move_id.name
+                        move_line.move_id.name or "",  # 2
+                        move_line.id or "",
+                        move_line.date.strftime("%d/%m/%Y") if move_line.date else "",
+                        invoive.type_ident if invoive else "",
+                        invoive.num_ident if invoive else "",
+                        invoive.partner_id.name if invoive else "",
+                        invoive.amount_total if invoive else "",
+                        line.amount or "",
+                        codigo_10 or "",
                     )
 
                     # Agregamos la linea al TXT
