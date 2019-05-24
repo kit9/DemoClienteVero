@@ -46,11 +46,12 @@ class Account_12_13(models.TransientModel):
                 line.ref or '', # Asiento contable
                 line.x_studio_field_fwlP9 or '', # ID
                 line.partner_id.vat or '', # Tipo de Doc. Identidad - RUC, enteros
-                line.partner.registration_name or '', # NADRS
+                #line.partner.registration_name or '', # NADRS
                 '',
                 '',
                 '',
-                '' 
+                '',
+                ''
             )
 
             # Agregamos la linea al TXT
