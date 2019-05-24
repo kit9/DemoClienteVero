@@ -50,7 +50,7 @@ class Account_12_13(models.TransientModel):
                 '',
                 '',
                 '',
-                ''
+                '' 
             )
 
             # Agregamos la linea al TXT
