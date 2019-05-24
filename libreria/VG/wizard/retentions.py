@@ -44,14 +44,15 @@ class retentions(models.TransientModel):
         for line in lst_account_move_line:
 
             for move_line in line.move_line_ids:
-                # por cada campo encontrado daran una linea como mostrare
-                txt_line = "%s|%s" % (
-                    line.payment_date.strftime("%Y%m00") if line.payment_date else "",  # 1
-                    move_line.move_id.name
-                )
+                if str(move_line.account_id.code)[:1] == "4":
+                    # por cada campo encontrado daran una linea como mostrare
+                    txt_line = "%s|%s" % (
+                        line.payment_date.strftime("%Y%m00") if line.payment_date else "",  # 1
+                        move_line.move_id.name
+                    )
 
-                # Agregamos la linea al TXT
-                content_txt = content_txt + "" + txt_line + "\r\n"
+                    # Agregamos la linea al TXT
+                    content_txt = content_txt + "" + txt_line + "\r\n"
 
         self.write({
             'state': 'get',
