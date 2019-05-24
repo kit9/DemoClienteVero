@@ -52,11 +52,11 @@ class retentions(models.TransientModel):
 
                         # 34 -> Fechas
                         codigo_10 = ""
-                        if line.date and move_line.move_id.date:
-                            if line.date.strftime("%m%Y") == move_line.move_id.date.strftime("%m%Y"):
+                        if line.payment_date and move_line.move_id.date:
+                            if line.payment_date.strftime("%m%Y") == move_line.move_id.date.strftime("%m%Y"):
                                 codigo_10 = "1"
                             else:
-                                if line.date.strftime("%Y") != move_line.move_id.date.strftime("%Y"):
+                                if line.payment_date.strftime("%Y") != move_line.move_id.date.strftime("%Y"):
                                     codigo_10 = "9"
                                 else:
                                     codigo_10 = "0"
@@ -66,7 +66,7 @@ class retentions(models.TransientModel):
                         line.payment_date.strftime("%Y%m00") if line.payment_date else "",  # 1
                         move_line.move_id.name or "",  # 2
                         move_line.id or "",
-                        move_line.date.strftime("%d/%m/%Y") if move_line.date else "",
+                        move_line.payment_date.strftime("%d/%m/%Y") if move_line.payment_date else "",
                         invoive.type_ident if invoive else "",
                         invoive.num_ident if invoive else "",
                         invoive.partner_id.name if invoive else "",
