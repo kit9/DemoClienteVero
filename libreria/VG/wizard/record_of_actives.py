@@ -109,7 +109,8 @@ class RecordActives(models.TransientModel):
                            line.date.strftime("%d/%m/%Y") or '',  # 24
                            _estado_ope or '',  # 25 jrejas
                            '',  # 26 null
-                           str(line.category_id.method_number if line.category_id.method_number else 0).zfill(6),  # 27
+                           str("%.2f" % line.category_id.method_number \
+                                   if line.category_id.method_number else 0).zfill(6),  # 27
                            amortizacion or '',  # 28
                            '0.00',  # 29 null
                            '0.00',  # 30 null
