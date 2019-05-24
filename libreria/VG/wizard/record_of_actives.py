@@ -36,37 +36,37 @@ class RecordActives(models.TransientModel):
         # Iterador - Jcondori
         for line in lst_account_move_line:
 
-            #14
+            # 14
             for imp in line.depreciation_line_ids:
                 if imp.sequence == 1:
                     _depres = "%.2f" % imp.remaining_value
 
-
-            #16
+            # 16
             for cat2 in line.invoice_line_ids:
-                pxu = "%.2f" % sum(line.price_unit for line in line.invoice_line_ids)       #DATO --- "%.2f" % <-- SE UTILIZA PARA REDONDEAR NUMEROS
+                pxu = "%.2f" % sum(line.price_unit for line in
+                                   line.invoice_line_ids)  # DATO --- "%.2f" % <-- SE UTILIZA PARA REDONDEAR NUMEROS
                 # if cat2.price_unit:
                 #     cat2.price_unit
                 # if line.category_id.account_asset_id.company_id.id:
                 #     rest = line.category_id.account_asset_id.company_id.id
 
-            #17
+            # 17
             for alv in line.depreciation_line_ids:
                 if alv.sequence == 2:
                     motivobaja = "%.2f" % alv.depreciated_value
 
-            #28
+            # 28
             for cat3 in line.depreciation_line_ids:
                 if cat3.sequence == 2:
                     amortizacion = "%.2f" % cat3.depreciated_value
 
-            #25
+            # 25
             if line.category_id.method == value:
                 _estado_ope = "1"
             else:
                 _estado_ope = "9"
 
-            #36
+            # 36
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
             else:
@@ -85,7 +85,7 @@ class RecordActives(models.TransientModel):
 
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
-                           line.invoice_id.move_id.name or '',  # 3
+                           line.seat_code or '',  # 3
                            line.seat_code or '',  # 4 cbarraza (crear campo)
                            line.product_code or '',  # 5
                            line.x_studio_cdigo_de_existencia or '',  # 6 cbarraza (crear campo)
@@ -93,31 +93,32 @@ class RecordActives(models.TransientModel):
                            line.category_id.account_asset_id.code or '',  # 8
                            line.active_status or '',  # 9
                            line.category_id.name or '',  # 10
-                           line.brand or '',  # 11
-                           line.model or '',  # 12
-                           line.serie or '',  # 13
+                           line.brand or '-',  # 11
+                           line.model or '-',  # 12
+                           line.serie or '-',  # 13
                            _depres or '',  # 14 (Campo residual)
-                           '',  # 15 null
+                           '-',  # 15 null
                            pxu or '',  # 16 ldelacruz (Campo Precio unitario)
                            motivobaja or '',  # 17 ldelacruz (campo motivo de baja)
-                           '',  # 18 null
-                           '',  # 19 null
-                           '',  # 20 null
-                           '',  # 21 null
-                           '',  # 22 null
+                           '0.00',  # 18 null
+                           '0.00',  # 19 null
+                           '0.00',  # 20 null
+                           '0.00',  # 21 null
+                           '0.00',  # 22 null
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
                            _estado_ope or '',  # 25 jrejas
                            '',  # 26 null
-                           line.category_id.method_number or '',  # 27
+                           str("%.2f" % line.category_id.method_number \
+                                   if line.category_id.method_number else 0).zfill(6),  # 27
                            amortizacion or '',  # 28
-                           '',  # 29 null
-                           '',  # 30 null
-                           '',  # 31 null
-                           '',  # 32 null
-                           '',  # 33 null
-                           '',  # 34 null
-                           '',  # 35 null
+                           '0.00',  # 29 null
+                           '0.00',  # 30 null
+                           '0.00',  # 31 null
+                           '0.00',  # 32 null
+                           '0.00',  # 33 null
+                           '0.00',  # 34 null
+                           '0.00',  # 35 null
                            estado_ope or ''  # 36 jrejas (no se encontro)
                        )
 
