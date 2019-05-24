@@ -366,4 +366,4 @@ class AccountJournal(models.Model):
     _inherit = "account.journal"
 
     type = fields.Selection(
-        selection_add=[('retention', 'Retención')])
+        selection_add=[('retention', 'Retención IGV')])
