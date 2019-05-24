@@ -39,7 +39,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                 content = content + "" + inv._generate_txt_bill() + "\r\n"
             self.write({
                 'state': 'get',
-                'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),
+                'txt_binary': base64.b64encode(content.encode('ISO-8859-1')),
                 'txt_filename': "compras.txt"
             })
         if self.type == "out_invoice":
@@ -47,7 +47,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                 content = content + "" + inv._generate_txt_invoice() + "\r\n"
             self.write({
                 'state': 'get',
-                'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),
+                'txt_binary': base64.b64encode(content.encode('ISO-8859-1')),
                 'txt_filename': "ventas.txt"
             })
         return {
