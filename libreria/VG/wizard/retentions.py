@@ -21,9 +21,9 @@ class retentions(models.TransientModel):
     def generate_file(self):
         # Data - Jcondori
 
-        lst_account_move_line = self.env['account.move'].search(
-            [('month_year_move', 'like', self.date_month + "" + self.date_year),
-             ('journal_id.name', 'ilike', 'Retenciones')])
+        lst_account_move_line = self.env['account.payment'].search(
+            [('month_year_inv', '=', self.date_month + "" + self.date_year),
+             ('journal_id.type', '=', 'retention')])
 
         content_txt = ""
 
