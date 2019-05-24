@@ -10,7 +10,18 @@ class retentions(models.TransientModel):
     _name = "libreria.retentions"
     _description = "Retenciones"
 
-    date_month = fields.Char(string="Mes", size=2)
+    date_month = fields.Selection(string="Mes", selection=[('01', 'Enero'),
+                                                           ('02', 'Febrero'),
+                                                           ('03', 'Marzo'),
+                                                           ('04', 'Abril'),
+                                                           ('05', 'Mayo'),
+                                                           ('06', 'Junio'),
+                                                           ('07', 'Julio'),
+                                                           ('08', 'Agosto'),
+                                                           ('09', 'Septiembre'),
+                                                           ('10', 'Octubre'),
+                                                           ('11', 'Noviembre'),
+                                                           ('12', 'Diciembre')])
     date_year = fields.Char(string="Año", size=4)
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
