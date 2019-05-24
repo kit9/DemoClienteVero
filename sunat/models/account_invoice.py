@@ -271,10 +271,9 @@ class account_invoice(models.Model):
 
             # Obtener el impuesto otros
             impuesto_otros = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "otros":
-                        impuesto_otros = rec.amount_tax
+            for imp in rec.tax_line_ids:
+                if str(imp.tax_id.tax_rate) == "otros":
+                    impuesto_otros = imp.amount_total
 
             # 26 -> Fecha
             campo_26 = ""
@@ -289,7 +288,9 @@ class account_invoice(models.Model):
             # 15 Impuesto
             campo_15 = ""
             if rec.type_operation == "1":
-                campo_15 = rec.amount_tax
+                for imp in rec.tax_line_ids:
+                    if str(imp.tax_id.tax_rate) == "igv":
+                        campo_15 = imp.amount_total
 
             # 16 Base imponible
             campo_16 = ""
@@ -320,10 +321,9 @@ class account_invoice(models.Model):
 
             # 21 -> Importe exonerado
             campo_21 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "isc":
-                        campo_21 = rec.amount_untaxed
+            for imp in rec.tax_line_ids:
+                if str(imp.tax_id.tax_rate) == "isc":
+                    campo_21 = imp.amount_total
 
             # 33 -> Tipo de Pago
             campo_33 = ""
@@ -349,14 +349,14 @@ class account_invoice(models.Model):
                           rec.partner_id.vat or '',  # N° de Documento de Identidad -> 12
                           rec.partner_id.name or '',  # Nombre del Proveedor -> 13
                           campo_14 or '',  # Base imponible -> 14
-                          campo_15 or '',  # Total -> 15
+                          campo_15 or "",  # Total -> 15
                           campo_16 or '',  # Base imponible -> 16
                           campo_17 or '',  # Impuesto -> 17
                           campo_18 or '',  # Base imponible -> 18
                           campo_19 or '',  # Impuesto -> 19
                           campo_20 or '',  # Total Adeudado -> 20
-                          campo_21 or '',  # Impuesto -> 21
-                          impuesto_otros or '',  # Otros de las Lineas -> 22
+                          campo_21 or "",  # Impuesto -> 21
+                          impuesto_otros or "",  # Otros de las Lineas -> 22
                           rec.amount_total or '',  # Total -> 23
                           rec.currency_id.name or '',  # Tipo de moneda -> 24
                           rec.exchange_rate or 0.00,  # Tipo de Cambio-> 25
@@ -376,7 +376,7 @@ class account_invoice(models.Model):
                           '',  # -> 37
                           '',  # -> 38
                           '',  # -> 39
-                          '',  # -> 40
+                          "1" if rec.state == 'paid' else "",  # -> 40
                       )
             return content
 

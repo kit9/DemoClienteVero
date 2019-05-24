@@ -14,6 +14,11 @@ class purchase_order(models.Model):
     billing = fields.Char(string="Facturación", compute="_compute_billing")
     seat_generated = fields.Boolean(string="Recepciones no Facturadas", copy=False)
 
+    cuenta_analtica = fields.Char(string='Partida', related="order_line.account_analytic_id.name")
+    line_name = fields.Text(string='Sub Partida', related="order_line.name")
+
+    total_invoiced = fields.Monetary(string="Facturado", related="invoice_ids.invoice_line_ids.price_total")
+
     @api.multi
     def _compute_waiting_orders(self):
         for rec in self:
@@ -62,7 +67,6 @@ class purchase_order(models.Model):
                 rec.billing = "--"
                 # rec.billing = "No"
 
-    # Trial Action
     @api.multi
     def receptions_not_invoiced(self):
         for rec in self:

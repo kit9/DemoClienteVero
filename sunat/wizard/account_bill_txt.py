@@ -15,31 +15,50 @@ class AccountInvoiceConfirm(models.TransientModel):
     txt_binary = fields.Binary('file', readonly=True)
 
     # Parametros
-    date_month = fields.Char(string="Mes", size=2)
+    date_month = fields.Selection(string="Mes", selection=[('01', 'Enero'),
+                                                           ('02', 'Febrero'),
+                                                           ('03', 'Marzo'),
+                                                           ('04', 'Abril'),
+                                                           ('05', 'Mayo'),
+                                                           ('06', 'Junio'),
+                                                           ('07', 'Julio'),
+                                                           ('08', 'Agosto'),
+                                                           ('09', 'Septiembre'),
+                                                           ('10', 'Octubre'),
+                                                           ('11', 'Noviembre'),
+                                                           ('12', 'Diciembre')])
     date_year = fields.Char(string="Año", size=4)
     type = fields.Selection(string="Factura de", selection=[('out_invoice', 'Clientes'), ('in_invoice', 'Proveedores')])
     company_id = fields.Many2one('res.company', string='Compañia')
 
     @api.multi
     def generate_file(self):
-        dominio = [('type', 'like', self.type),
+
+        type_doc = ""
+        if self.type == "out_invoice":
+            type_doc = ['out_invoice', 'out_refund']
+        elif self.type == "in_invoice":
+            type_doc = ['in_invoice']
+        else:
+            raise ValidationError("No se encontraton facturas")
+
+        dominio = [('type', 'in', type_doc),
                    ('state', 'not like', 'draft'),
                    ('month_year_inv', 'like', self.date_month + "" + self.date_year),
                    ('company_id', '=', self.company_id.id)]
-        # inv_ids = self._context.get('active_ids')
-        # invoice_ids = self.env['account.invoice'].browse(inv_ids)
+
         invoice_ids = self.env['account.invoice'].search(dominio, order="id asc")
+
         if len(invoice_ids) == 0:
             raise ValidationError("No se encontraton facturas")
+
         content = ""
-        if self.type != "out_invoice" and self.type != "in_invoice":
-            raise ValidationError("No se aceptan estos documentos")
         if self.type == "in_invoice":
             for inv in invoice_ids:
                 content = content + "" + inv._generate_txt_bill() + "\r\n"
             self.write({
                 'state': 'get',
-                'txt_binary': base64.b64encode(content.encode('ISO-8859-1')),
+                'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),
                 'txt_filename': "compras.txt"
             })
         if self.type == "out_invoice":
@@ -47,7 +66,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                 content = content + "" + inv._generate_txt_invoice() + "\r\n"
             self.write({
                 'state': 'get',
-                'txt_binary': base64.b64encode(content.encode('ISO-8859-1')),
+                'txt_binary': base64.encodestring(content.encode('ISO-8859-1')),
                 'txt_filename': "ventas.txt"
             })
         return {

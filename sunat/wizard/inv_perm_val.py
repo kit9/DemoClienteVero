@@ -32,7 +32,7 @@ class InventoryValorized(models.TransientModel):
 
             # for move in line.move_id.account_move_ids:
             # Cantidad
-            in_quantity = 0
+            in_quantity = 0.00
             out_quantity = 0.00
             if "OUT" in line.reference:
                 out_quantity = line.qty_done
@@ -58,11 +58,11 @@ class InventoryValorized(models.TransientModel):
 
             # Validaciones
             if out_price_unit == 0 and out_quantity == 0:
-                out_price_unit = ""
-                out_total = ""
+                out_price_unit = 0.00
+                out_total = 0.00
             if in_price_unit == 0 and in_quantity == 0:
-                in_price_unit = ""
-                in_total = ""
+                in_price_unit = 0.00
+                in_total = 0.00
 
             # Asiento Contable
             cuo = ""
