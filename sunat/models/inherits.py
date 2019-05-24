@@ -13,9 +13,9 @@ class ProductTemplate(models.Model):
     type_existence_id = fields.Many2one('sunat.type_existence', 'Tipo de Existencia')
     existence_code = fields.Char(string="Código de Existencia")
 
-    tipo_de_act = fields.Selection(string="Cód. Tipo de Act", selection=[
-        ('1 NO REVALUADO', '1 NO REVALUADO'),
-        ('2 REVALUADO CON EFECTO TRIBUTARIO', '2 REVALUADO CON EFECTO TRIBUTARIO')
+    tipo_de_act = fields.Selection(string="Cód. Tipo de Act", required=True, selection=[
+        ('1', '1 NO REVALUADO'),
+        ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
     ])
 
 
@@ -234,8 +234,8 @@ class AccountAssetAsset(models.Model):
 
     tipo_de_act = fields.Selection(string="Cód. Tipo de Activo.",
                                    related="invoice_id.invoice_line_ids.product_id.tipo_de_act", selection=[
-            ('1 NO REVALUADO', '1 NO REVALUADO'),
-            ('2 REVALUADO CON EFECTO TRIBUTARIO', '2 REVALUADO CON EFECTO TRIBUTARIO')
+            ('1', '1 NO REVALUADO'),
+            ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
         ])
 
     filter_year = fields.Char(compute="_get_year", store=True, copy=False)
