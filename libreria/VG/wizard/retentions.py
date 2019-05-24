@@ -47,7 +47,7 @@ class retentions(models.TransientModel):
                 # por cada campo encontrado daran una linea como mostrare
                 txt_line = "%s|%s" % (
                     line.payment_date.strftime("%Y%m00") if line.payment_date else "",  # 1
-                    move_line.name
+                    move_line.move_id.name
                 )
 
                 # Agregamos la linea al TXT
