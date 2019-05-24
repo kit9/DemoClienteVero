@@ -29,7 +29,7 @@ class retentions(models.TransientModel):
         imp_numero = ""
         _total = ""
         _estado_ope = ""
-        #_factura = ""
+        # _factura = ""
 
         _logger.info(len(lst_account_move_line))
 
@@ -81,9 +81,9 @@ class retentions(models.TransientModel):
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
 
-           #listando move.line
-    # @api.multi
-    # def generate_file(self):
+        # listando move.line
+        # @api.multi
+        # def generate_file(self):
         lst_account_move_line1 = self.env['account.move.line'].search([('journal_id.name', 'ilike', 'Retenciones')])
 
         content_txt1 = ""
@@ -91,22 +91,18 @@ class retentions(models.TransientModel):
         _logger.info(len(lst_account_move_line1))
 
         for line1 in lst_account_move_line1:
-
-            txt_line1 = "%s" %(
-                line1.id or ''
+            txt_line1 = "%s" % (
+                    line1.id or ''
             )
 
             content_txt1 = content_txt1 + "" + txt_line1 + "\r\n"
 
-
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_binary': base64.b64encode(content_txt1.encode('ISO-8859-1')),
+            # 'txt_binary': base64.b64encode(content_txt1.encode('ISO-8859-1')),
             'txt_filename': "Retenciones.txt"
         })
-
-
 
         return {
             'type': 'ir.actions.act_window',
