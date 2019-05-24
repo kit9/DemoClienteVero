@@ -68,7 +68,7 @@ class Account_14(models.TransientModel):
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
-                line.name.toString or '',
+                line.name.toString(name) or '',
                 line.x_studio_field_fwlP9 or '',
                 _catalogo or '',
                 _vat or '',
