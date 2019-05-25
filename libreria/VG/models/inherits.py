@@ -18,3 +18,9 @@ class AccountAccount(models.Model):
         for rec in self:
             if rec.create_date:
                 rec.month_year_inv = rec.create_date.strftime("%m%Y")
+
+
+class Invoice(models.Model):
+    _inherit = 'account.invoice'
+
+    date_vg = fields.Date(string="Fecha de Valle Grande")
