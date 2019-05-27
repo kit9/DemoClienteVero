@@ -21,7 +21,7 @@ class Account_12_13(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([])
+        lst_account_move_line = self.env['account.invoice'].search([])
 
         # variables creadas
         content_txt = ""
@@ -48,7 +48,7 @@ class Account_12_13(models.TransientModel):
                 line.partner_id.vat or '', # Tipo de Doc. Identidad - RUC, enteros
                 #line.partner.registration_name or '', # NADRS
                 line.partner_id.registration_name or '',
-                line.account_invoice.date_document or '',
+                line.date_document or '',
                 '',
                 '',
                 ''
