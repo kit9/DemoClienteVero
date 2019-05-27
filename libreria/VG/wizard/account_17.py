@@ -10,9 +10,6 @@ class Account_17(models.TransientModel):
     _name = "libreria.account_17"
     _description = "Cuenta_17"
 
-    #date_month = fields.Char(string="Mes", size=2)
-    #date_year = fields.Char(string="Año", size=4)
-
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -21,7 +18,7 @@ class Account_17(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
+        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '17')])
 
         # variables creadas
         content_txt = ""
