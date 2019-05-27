@@ -21,7 +21,7 @@ class Account_12_13(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([])
+        lst_account_move_line = self.env['account.invoice'].search([])
 
         # variables creadas
         content_txt = ""
@@ -31,24 +31,24 @@ class Account_12_13(models.TransientModel):
 
 
         # Iterador
-        for line in lst_account_move_line:
+        #for line in lst_account_move_line:
             # Catalogo
-            for imp1 in line.line_ids:
-                if imp1.partner_id.catalog_06_id:
+         #   for imp1 in line.line_ids:
+          #      if imp1.partner_id.catalog_06_id:
                  catalogo = imp1.partner_id.catalog_06_id
 
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s" % (
                 '',
                 '',
-                line.ref or '', # Asiento contable
-                line.x_studio_field_fwlP9 or '', # ID
-                line.partner_id.vat or '', # Tipo de Doc. Identidad - RUC, enteros
+                #line.ref or '', # Asiento contable
+                #line.x_studio_field_fwlP9 or '', # ID
+                #line.partner_id.vat or '', # Tipo de Doc. Identidad - RUC, enteros
                 #line.partner.registration_name or '', # NADRS
-                line.partner_id.registration_name or '',
-                #line.date_document or '',
+                #line.partner_id.registration_name or '',
+                line.date_document or '',
                 '',
                 '',
                 ''
