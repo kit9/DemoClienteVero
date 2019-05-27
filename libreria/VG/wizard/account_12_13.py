@@ -21,7 +21,7 @@ class Account_12_13(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.invoice'].search([])
+        lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
         content_txt = ""
