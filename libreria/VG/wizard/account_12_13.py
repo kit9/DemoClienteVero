@@ -40,7 +40,7 @@ class Account_12_13(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 '',
                 '',
                 line.ref or '', # Asiento contable
@@ -48,7 +48,7 @@ class Account_12_13(models.TransientModel):
                 line.partner_id.vat or '', # Tipo de Doc. Identidad - RUC, enteros
                 #line.partner.registration_name or '', # NADRS
                 line.partner_id.registration_name or '',
-                line.date_document or '',
+                #line.date_document or '',
                 '',
                 '',
                 ''
