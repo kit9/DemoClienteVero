@@ -24,14 +24,19 @@ class ChartAccount(models.TransientModel):
         dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.account']#.search(dominio)
+        lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
         content_txt = ""
+        debe =""
         estado_ope = ""
 
         # Iterador
         for line in lst_account_move_line:
+
+            for line1 in line.line_ids:
+                debe = line1.debit
+
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "01"
@@ -48,15 +53,15 @@ class ChartAccount(models.TransientModel):
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.create_date.strftime("%Y%m00") or '',  # Periodo
-                '',  #
-                '',  #
-                '',  #
-                '',  #
-                '',  #
-                '',  #
-                '',  #
-                '',  #
-                '',  #
+                line.name or '',  #
+                line.x_studio_field_fwlP9 or '',  #
+                line.invoice_id.partner_id.catalog_06_id.code or'',  #
+                line.invoice_id.partner_id.vat or '',  #
+                line.invoice_id.partner_id.registration_name or'',  #
+                line.invoice_id.document_type_id.number or'',  #
+                line.invoice_id.invoice_serie or'',  #
+                line.invoice_id.invoice_number or '',  #
+                line.invoice_id.date_document.strftime("%d/%m/%Y") or '',  #
                 '',  #
                 ''   # estado de operacion
 
