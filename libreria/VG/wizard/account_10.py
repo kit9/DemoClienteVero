@@ -6,7 +6,7 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class Account_12_13(models.TransientModel):
+class Account_10(models.TransientModel):
     _name = "libreria.account_10"
     _description = "Cuenta_10"
 

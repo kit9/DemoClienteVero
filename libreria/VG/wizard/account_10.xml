@@ -1,8 +1,8 @@
 <odoo>
 
 <record id="account_12_13_view" model="ir.ui.view">
-        <field name="name">libreria.account_12_13.form</field>
-        <field name="model">libreria.account_12_13</field>
+        <field name="name">libreria.account_10.form</field>
+        <field name="model">libreria.account_10</field>
         <field name="arch" type="xml">
             <form string="Generar Archivo">
                 <field name="state" invisible="1"/>
@@ -30,9 +30,9 @@
     </record>
 
     <record id="account_12_13_VG" model="ir.actions.act_window">
-        <field name="name">account_12_13</field>
+        <field name="name">account_10</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">libreria.account_12_13</field>
+        <field name="res_model">libreria.account_10</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
