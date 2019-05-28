@@ -238,6 +238,8 @@ class AccountAssetAsset(models.Model):
             ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
         ])
 
+    existence_code = fields.Char(string="Código De Existencia")
+
     num_doc = fields.Char(string="Número de documento de autorización para cambiar el método de la depreciación",
                           size=20)
 
