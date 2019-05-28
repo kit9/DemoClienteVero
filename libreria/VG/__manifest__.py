@@ -38,6 +38,7 @@
         'wizard/account_14_view.xml',
         'wizard/account_12_13_view.xml',
         'wizard/account_detail_view.xml',
+        'wizard/account_10_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

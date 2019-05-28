@@ -6,9 +6,9 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class Account_10(models.TransientModel):
+class account_10(models.TransientModel):
     _name = "libreria.account_10"
-    _description = "Cuenta_10"
+    _description = "account_10"
 
     #date_month = fields.Char(string="Mes", size=2)
     #date_year = fields.Char(string="Año", size=4)
@@ -21,31 +21,29 @@ class Account_10(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.invoce'].search([])
+        lst_account_move_line = self.env['account.payment'].search([])
 
         # variables creadas
-        content_txt = ""
-        estado_ope = ""
-        catalogo = ""
-
-
+        diario = ""
+        cuenta_bancaria = ""
 
         # Iterador
         for line in lst_account_move_line:
             # Catalogo
             for imp1 in line.line_ids:
                 if imp1.partner_id.catalog_06_id:
-                 catalogo = imp1.partner_id.catalog_06_id
-
+                    catalogo = imp1.partner_id.catalog_06_id
+            if line.journal_id.code:
+                diario = line.journal_id.code
+            if line.bank_account_id.bank_id:
+                cuenta_bancaria = line.bank_account_id.bank_id
 
             # datos a exportar a txt
-
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-
-                line.journal_id or'',
+                line.payment_date or '',
                 '',
-                '',
-                '',
+                diario.journal_id.code or '',
+                cuenta_bancaria.bank_account_id.bank_id or '',
                 '',
                 '',
                 '',
@@ -60,11 +58,11 @@ class Account_10(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Cuenta_10.txt"
+            'txt_filename': "account_10.txt"
         })
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Cuenta_10',
+            'name': 'account_10',
             'res_model': 'libreria.account_10',
             'view_mode': 'form',
             'view_type': 'form',
