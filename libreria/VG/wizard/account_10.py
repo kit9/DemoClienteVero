@@ -19,25 +19,20 @@ class account_10(models.TransientModel):
 
         # modelo a buscar
         lst_account_move_line = self.env['account.payment'].search([])
-        
+
         # variables creadas
         content_txt = ""
-        diario = ""
-        cuenta_bancaria = ""
 
         # Iterador
         for line in lst_account_move_line:
-            if line.account.journal.id:
-                diario = line.journal.id
-            if line.bank_account_id.bank_id:
-                cuenta_bancaria = line.bank_account_id.bank_id
+
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.payment_date or '',
                 '',
-                diario or '',
-                cuenta_bancaria or '',
+                '',
+                '',
                 '',
                 '',
                 ''
