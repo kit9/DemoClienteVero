@@ -21,10 +21,10 @@ class ChartAccount(models.TransientModel):
     def generate_file(self):
 
         # filtro de fecha
-        dominio = [('month_year_inv', 'like', '19')]
+        dominio = [('display_name', 'like', '19')]
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search(dominio)
+        lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
         content_txt = ""
@@ -63,7 +63,7 @@ class ChartAccount(models.TransientModel):
                 line.invoice_id.invoice_number or '',  #
                 line.invoice_id.date_document.strftime("%d/%m/%Y") or '',  #
                 debe or '',  #
-                ''   # estado de operacion
+                line.display_name or ''   # estado de operacion
 
             )
 
