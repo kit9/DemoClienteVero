@@ -238,6 +238,9 @@ class AccountAssetAsset(models.Model):
             ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
         ])
 
+    num_doc = fields.Char(string="Número de documento de autorización para cambiar el método de la depreciación",
+                          size=20)
+
     filter_year = fields.Char(compute="_get_year", store=True, copy=False)
 
     @api.multi

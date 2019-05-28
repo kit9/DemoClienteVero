@@ -373,6 +373,9 @@
                         invisible="1"/>
                 <button name="set_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"/>
             </xpath>
+            <xpath expr="//field[@name='method_period']" position="after">
+                <field name="num_doc"/>
+            </xpath>
         </field>
     </record>
 
