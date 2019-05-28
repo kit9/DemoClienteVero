@@ -35,8 +35,6 @@ class account_10(models.TransientModel):
                     catalogo = imp1.partner_id.catalog_06_id
             if line.journal_id.code:
                 diario = line.journal_id.code
-            if line.bank_account_id.bank_id:
-                cuenta_bancaria = line.bank_account_id.bank_id
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
