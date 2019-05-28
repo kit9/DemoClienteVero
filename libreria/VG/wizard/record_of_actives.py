@@ -6,6 +6,14 @@ import time
 _logger = logging.getLogger(__name__)
 
 
+###########################################################################################
+# -- OPTIMIZA
+# -- DESCRIPCION: CLASE HEREDADA DEL STANDAR PARA MODIFICARLO
+# -- AUTOR: JOSE LUIS CONDORI JARA
+# -- CAMBIOS: ID    FECHA (DD/MM/YYYY)  PERSONA               CAMBIOS EFECTUADOS
+# --         #001        --                 --                CREACION DE LA CLASE.
+# --         #002       28/05/2019    JOSE CONDORI            CREACION DE LA CLASE.
+# -----------------------------------------------------------------------------------------
 class RecordActives(models.TransientModel):
     _name = "libreria.record_of_actives"
     _description = "Registro de Activos"
@@ -108,7 +116,10 @@ class RecordActives(models.TransientModel):
                            line.date.strftime("%d/%m/%Y") or '',  # 23
                            line.date.strftime("%d/%m/%Y") or '',  # 24
                            _estado_ope or '',  # 25 jrejas
-                           '',  # 26 null
+                           # Inicio #002 Código Original “Comentado”
+                           # '',  # 26 null
+                           # Fin #001
+                           line.num_doc or '',  # 26 - JCondori
                            str("%.2f" % line.category_id.method_number \
                                    if line.category_id.method_number else 0).zfill(6),  # 27
                            amortizacion or '',  # 28
