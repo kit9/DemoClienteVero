@@ -6,9 +6,9 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class account_10(models.TransientModel):
-    _name = "libreria.account_10"
-    _description = "account_10"
+class Account10(models.TransientModel):
+    _name = "libreria.Account10"
+    _description = "Account10"
 
     #date_month = fields.Char(string="Mes", size=2)
     #date_year = fields.Char(string="Año", size=4)
@@ -58,12 +58,12 @@ class account_10(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "account_10.txt"
+            'txt_filename': "Account10.txt"
         })
         return {
             'type': 'ir.actions.act_window',
             'name': 'account_10',
-            'res_model': 'libreria.account_10',
+            'res_model': 'libreria.Account10',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
