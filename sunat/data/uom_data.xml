@@ -44,8 +44,8 @@
             <field name="sunat_code">07</field>
         </record>
         <!--<record id="uom.product_uom_litre" model="uom.uom">-->
-            <!--<field name="name">LITROS</field>-->
-            <!--<field name="sunat_code">08</field>-->
+        <!--<field name="name">LITROS</field>-->
+        <!--<field name="sunat_code">08</field>-->
         <!--</record>-->
         <record id="uom.product_uom_gal" model="uom.uom">
             <field name="name">GALONES</field>
