@@ -21,23 +21,11 @@ class account_10(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.journal'].search([])
-
-        # variables creadas
-        diario = ""
-        cuenta_bancaria = ""
+        lst_account_move_line = self.env['account.payment'].search([])
 
         # Iterador
         for line in lst_account_move_line:
-            # Catalogo
-            for imp1 in line.line_ids:
-                if imp1.partner_id.catalog_06_id:
-                    catalogo = imp1.partner_id.catalog_06_id
-            if line.account.journal.id:
-                diario = line.journal.id
-            if line.bank_account_id.bank_id:
-                cuenta_bancaria = line.bank_account_id.bank_id
-
+          
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.payment_date or '',
