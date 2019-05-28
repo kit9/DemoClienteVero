@@ -18,5 +18,7 @@
                   action="account_14_VG" sequence="8"/>
         <menuitem id="account_12_13_menu" name="Ple. Cuenta 12 y 13" parent="sunat.reporte_ple_menu_root"
                   action="account_12_13_VG" sequence="8"/>
+        <menuitem id="account_detail_menu" name="Ple. Detalle de Cuenta" parent="sunat.reporte_ple_menu_root"
+                  action="account_detail_VG" sequence="5"/>
     </data>
 </odoo>
