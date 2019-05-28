@@ -38,9 +38,10 @@ class Account_12_13(models.TransientModel):
             #Fecha
             if line.invoice_id.date_invoice:
                 fec_per = line.invoice_id.date_invoice
+
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 '', #Hoja 2
-                fec_per.strftime("%Y%m00") or '', #1 Periodo- Fecha contable
+                fec_per.strftime("%Y/%m/%d") or '', #1 Periodo- Fecha contable
                 line.ref or '', #2 ASIENTO CONTABLE
                 line.id or '', #3 Asiento contable _ ID
                 catalogo or '', #4 ID - RUC
