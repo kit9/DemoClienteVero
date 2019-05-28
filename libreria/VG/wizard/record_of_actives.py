@@ -94,7 +94,10 @@ class RecordActives(models.TransientModel):
                            line.date.strftime("%Y%m00") or '',  # 1
                            line.invoice_id.move_id.name or '',  # 2
                            line.seat_code or '',  # 3
-                           line.seat_code or '',  # 4 cbarraza (crear campo)
+                           # Inicio #002 Código Original “Comentado”
+                           # line.seat_code or '',  # 4 cbarraza (crear campo)
+                           # Fin #001
+                           line.catalog_number or '',  # 4 JCondori
                            line.product_code or '',  # 5
                            # Inicio #002 Código Original “Comentado”
                            # line.x_studio_cdigo_de_existencia or '',  # 6 cbarraza (crear campo)
