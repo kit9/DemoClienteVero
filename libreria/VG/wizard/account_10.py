@@ -33,8 +33,8 @@ class account_10(models.TransientModel):
             for imp1 in line.line_ids:
                 if imp1.partner_id.catalog_06_id:
                     catalogo = imp1.partner_id.catalog_06_id
-            if line.journal_id.code:
-                diario = line.journal_id.code
+            if line.account.journal.id:
+                diario = line.journal.id
             if line.bank_account_id.bank_id:
                 cuenta_bancaria = line.bank_account_id.bank_id
 
