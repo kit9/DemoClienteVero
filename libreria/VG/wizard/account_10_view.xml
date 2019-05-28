@@ -1,6 +1,6 @@
 <odoo>
 
-<record id="account_10" model="ir.ui.view">
+<record id="account_10_view" model="ir.ui.view">
         <field name="name">libreria.account_10.form</field>
         <field name="model">libreria.account_10</field>
         <field name="arch" type="xml">
