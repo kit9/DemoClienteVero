@@ -40,19 +40,19 @@ class Account_12_13(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                '',
-                '',
-                line.ref or '', # Asiento contable
-                line.x_studio_field_fwlP9 or '', # ID
-                line.partner_id.vat or '', # Tipo de Doc. Identidad - RUC, enteros
-                #line.partner.registration_name or '', # NADRS
-                line.partner_id.registration_name or '',
-                #line.date_document or '',
-                '',
-                '',
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                '', #Hoja 2
+                line.date_invoice.strftime("%Y%m00") or '', #1 Periodo- Fecha contable
+                line.ref or '', #2 ASIENTO CONTABLE
+                line.id or '', #3 Asiento contable _ ID
+                catalogo or '', #4 ID - RUC
+                line.partner_id.vat or '', #5 Tipo de Doc. Identidad - RUC, enteros
+                line.partner_id.registration_name or '', #6 Nombre de la empresa
+                line.date_document or '', #7
+                line.residual or '', #8 importe adeudado
                 ''
-            )
+
+             )
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
