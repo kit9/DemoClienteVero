@@ -21,7 +21,7 @@ class account_10(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.payment'].search([])
+        lst_account_move_line = self.env['account.bank_account_id'].search([])
 
         # variables creadas
         diario = ""
