@@ -19,9 +19,9 @@ class account_10(models.TransientModel):
 
         # modelo a buscar
         lst_account_move_line = self.env['account.payment'].search([])
-        content_txt = ""
-
+        
         # variables creadas
+        content_txt = ""
         diario = ""
         cuenta_bancaria = ""
 
@@ -49,7 +49,7 @@ class account_10(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Account10.txt"
+            'txt_filename': "account_10.txt"
         })
         return {
             'type': 'ir.actions.act_window',
