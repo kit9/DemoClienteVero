@@ -1,6 +1,6 @@
 <odoo>
 
-    <record id="account_10_view" model="ir.ui.view">
+<record id="account_12_13_view" model="ir.ui.view">
         <field name="name">libreria.account_10.form</field>
         <field name="model">libreria.account_10</field>
         <field name="arch" type="xml">
@@ -8,6 +8,8 @@
                 <field name="state" invisible="1"/>
                 <field name="txt_filename" invisible="1"/>
                 <group states="choose" string="Generar Archivo">
+                    <!--<field name="date_month" required="True"/>-->
+                    <!--<field name="date_year" required="True"/>-->
                     <footer states="choose">
                         <button name="generate_file" string="Generar" type="object" class="oe_highlight"/>
                         Or
@@ -27,7 +29,7 @@
         </field>
     </record>
 
-    <record id="account_10_VG" model="ir.actions.act_window">
+    <record id="account_12_13_VG" model="ir.actions.act_window">
         <field name="name">account_10</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">libreria.account_10</field>
