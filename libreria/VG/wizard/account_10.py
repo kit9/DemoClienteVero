@@ -10,6 +10,9 @@ class account_10(models.TransientModel):
     _name = "libreria.account_10"
     _description = "account_10"
 
+    #date_month = fields.Char(string="Mes", size=2)
+    #date_year = fields.Char(string="Año", size=4)
+
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -22,6 +25,10 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
+            # Catalogo
+            for imp1 in line.line_ids:
+                if imp1.partner_id.catalog_06_id:
+                    catalogo = imp1.partner_id.catalog_06_id
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s" % (
@@ -40,7 +47,7 @@ class account_10(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "account_10.txt"
+            'txt_filename': "Account10.txt"
         })
         return {
             'type': 'ir.actions.act_window',
