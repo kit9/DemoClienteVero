@@ -66,7 +66,7 @@ class ChartAccount(models.TransientModel):
                 line.invoice_id.invoice_number or '',  #
                 line.invoice_id.date_document or '',  #
                 debe or '',  #
-                cuenta or ''   # estado de operacion
+                line.dummy_account_id.code or ''   # estado de operacion
 
             )
 
