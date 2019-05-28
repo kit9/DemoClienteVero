@@ -25,7 +25,7 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
-          
+
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.payment_date or '',
