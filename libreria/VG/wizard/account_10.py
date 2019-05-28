@@ -32,8 +32,8 @@ class account_10(models.TransientModel):
                 line.payment_date or '',
                 '',
                 line.journal_id.code or'',
-                '',
-                '',
+                line.bank_account_id or'',
+                line.name or'',
                 '',
                 ''
             )
