@@ -36,25 +36,12 @@ class Account_12_13(models.TransientModel):
             #line.invoice_id.partner_id.catalog_06_id.code
             # datos a exportar al txt
             #Fecha
-            if line.invoice_id.date_invoice:
-                fec_per = line.invoice_id.date_invoice
-
-            # validador de estado de operación
-            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                estado_ope = "01"
-            else:
-                if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "08"
-                else:
-                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-                        estado_ope = "00"
-                    else:
-                        estado_ope = "01"
-
+            # if line.date_invoice:
+            #     fec_per = line.invoice_id.date_invoice
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 '', #Hoja 2
-                fec_per.strftime("%Y/%m/%d") or '', #1 Periodo- Fecha contable
+                '', #1 Periodo- Fecha contable
                 line.ref or '', #2 ASIENTO CONTABLE
                 line.id or '', #3 Asiento contable _ ID
                 catalogo or '', #4 ID - RUC
