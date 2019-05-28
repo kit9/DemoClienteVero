@@ -33,7 +33,7 @@ class account_10(models.TransientModel):
                 '',
                 line.journal_id.code or'',
                 line.bank_account_id or'',
-                line.name or'',
+                '',
                 '',
                 ''
             )
