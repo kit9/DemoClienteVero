@@ -34,7 +34,7 @@ class Account_12_13(models.TransientModel):
                 if imp1.partner_id.catalog_06_id.code:
                     catalogo = imp1.partner_id.catalog_06_id.code
 
-            # datos a exportar a txt
+            # datos a exportar al txt
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 '', #Hoja 2
