@@ -21,7 +21,7 @@ class Account_12_13(models.TransientModel):
         lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
-        content_txt = "" 
+        content_txt = ""
         estado_ope = ""
         catalogo = ""
         fec_per = ""
@@ -38,6 +38,19 @@ class Account_12_13(models.TransientModel):
             #Fecha
             if line.invoice_id.date_invoice:
                 fec_per = line.invoice_id.date_invoice
+
+            # validador de estado de operación
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "01"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "08"
+                else:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        estado_ope = "00"
+                    else:
+                        estado_ope = "01"
+
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 '', #Hoja 2
