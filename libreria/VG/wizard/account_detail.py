@@ -30,6 +30,7 @@ class ChartAccount(models.TransientModel):
         content_txt = ""
         debe =""
         cuenta=""
+        fecha=""
         estado_ope = ""
 
         # Iterador
@@ -37,8 +38,8 @@ class ChartAccount(models.TransientModel):
 
             for line1 in line.line_ids:
                 debe = line1.debit
-            #for line1 in line.dummy_account_id:
-                #cuenta = line1.account_id.code
+            for line1 in line.invoice_id:
+                fecha = line1.date_document
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -64,7 +65,7 @@ class ChartAccount(models.TransientModel):
                 line.invoice_id.document_type_id.number or'',  #
                 line.invoice_id.invoice_serie or'',  #
                 line.invoice_id.invoice_number or '',  #
-                line.invoice_id.date_document.strftime("%d/%m/%Y") or '',  #
+                fecha.strftime("%d/%m/%Y") or '',  #
                 debe or '',  #
                 line.dummy_account_id.code or ''   # estado de operacion
 
