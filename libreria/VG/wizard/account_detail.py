@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 
 class ChartAccount(models.TransientModel):
-    _name = "VG.account_detail"
+    _name = "libreria.account_detail"
     _description = "Detalle Cuenta"
 
     # date_month = fields.Char(string="Mes", size=2)
@@ -78,7 +78,7 @@ class ChartAccount(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Detalle Cuenta',
-            'res_model': 'VG.account_detail',
+            'res_model': 'libreria.account_detail',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
