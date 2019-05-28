@@ -38,8 +38,8 @@ class ChartAccount(models.TransientModel):
 
             for line1 in line.line_ids:
                 debe = line1.debit
-            for line1 in line.invoice_id:
-                fecha = line1.date_document
+            if line.invoice_id.date_document:
+                fecha = line.invoice_id.date_document
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
