@@ -37,8 +37,8 @@ class ChartAccount(models.TransientModel):
 
             for line1 in line.line_ids:
                 debe = line1.debit
-            for line1 in line.dummy_account_id:
-                cuenta = line1.account_id.code
+            #for line1 in line.dummy_account_id:
+                #cuenta = line1.account_id.code
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
