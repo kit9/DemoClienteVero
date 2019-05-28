@@ -1,6 +1,6 @@
 <odoo>
 
-    <record id="account_12_13_VG" model="ir.ui.view">
+    <record id="account_12_13_view" model="ir.ui.view">
         <field name="name">libreria.account_12_13.form</field>
         <field name="model">libreria.account_12_13</field>
         <field name="arch" type="xml">
@@ -16,7 +16,7 @@
                 </group>
                 <div states="get">
                     <h2>Archivo Generado</h2>
-                    <p>Este es tu excel:
+                    <p>Este es tu archivo:
                         <field name="txt_binary" readonly="1" filename="txt_filename"/>
                     </p>
                 </div>
@@ -35,4 +35,6 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
+
+
 </odoo>
