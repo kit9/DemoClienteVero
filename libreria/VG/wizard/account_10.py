@@ -42,8 +42,8 @@ class account_10(models.TransientModel):
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.payment_date or '',
                 '',
-                diario or '',
-                cuenta_bancaria or '',
+                '',
+                '',
                 '',
                 '',
                 '',
