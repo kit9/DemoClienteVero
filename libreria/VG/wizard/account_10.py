@@ -21,7 +21,7 @@ class account_10(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.bank_account_id'].search([])
+        lst_account_move_line = self.env['account.payment'].search([])
 
         # variables creadas
         diario = ""
@@ -42,8 +42,8 @@ class account_10(models.TransientModel):
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.payment_date or '',
                 '',
-                diario.journal_id.code or '',
-                cuenta_bancaria.bank_account_id.bank_id or '',
+                diario or '',
+                cuenta_bancaria or '',
                 '',
                 '',
                 '',
