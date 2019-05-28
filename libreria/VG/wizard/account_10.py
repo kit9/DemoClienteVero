@@ -10,9 +10,6 @@ class account_10(models.TransientModel):
     _name = "libreria.account_10"
     _description = "account_10"
 
-    #date_month = fields.Char(string="Mes", size=2)
-    #date_year = fields.Char(string="Año", size=4)
-
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -27,11 +24,8 @@ class account_10(models.TransientModel):
         for line in lst_account_move_line:
 
             # datos a exportar a txt
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s" % (
                 line.payment_date or '',
-                '',
-                '',
-                '',
                 '',
                 '',
                 '',
