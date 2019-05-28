@@ -61,7 +61,7 @@ class ChartAccount(models.TransientModel):
                 line.invoice_id.document_type_id.number or'',  #
                 line.invoice_id.invoice_serie or'',  #
                 line.invoice_id.invoice_number or '',  #
-                line.invoice_id.date_document.strftime("%d/%m/%Y") or '',  #
+                line.invoice_id.date_document or '',  #
                 debe or '',  #
                 line.display_name or ''   # estado de operacion
 
