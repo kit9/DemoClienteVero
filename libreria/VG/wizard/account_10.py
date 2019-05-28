@@ -10,9 +10,6 @@ class account_10(models.TransientModel):
     _name = "libreria.account_10"
     _description = "account_10"
 
-    #date_month = fields.Char(string="Mes", size=2)
-    #date_year = fields.Char(string="Año", size=4)
-
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -24,15 +21,23 @@ class account_10(models.TransientModel):
         lst_account_move_line = self.env['account.payment'].search([])
         content_txt = ""
 
+        # variables creadas
+        diario = ""
+        cuenta_bancaria = ""
+
         # Iterador
         for line in lst_account_move_line:
+            if line.account.journal.id:
+                diario = line.journal.id
+            if line.bank_account_id.bank_id:
+                cuenta_bancaria = line.bank_account_id.bank_id
 
             # datos a exportar a txt
-            txt_line = "%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.payment_date or '',
                 '',
-                '',
-                '',
+                diario or '',
+                cuenta_bancaria or '',
                 '',
                 '',
                 ''
@@ -44,7 +49,7 @@ class account_10(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "account_10.txt"
+            'txt_filename': "Account10.txt"
         })
         return {
             'type': 'ir.actions.act_window',
