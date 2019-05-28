@@ -6,9 +6,9 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class Account10(models.TransientModel):
-    _name = "VG.Account10"
-    _description = "Account10"
+class account_10(models.TransientModel):
+    _name = "libreria.account_10"
+    _description = "account_10"
 
     #date_month = fields.Char(string="Mes", size=2)
     #date_year = fields.Char(string="Año", size=4)
@@ -62,8 +62,8 @@ class Account10(models.TransientModel):
         })
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Account10',
-            'res_model': 'VG.Account10',
+            'name': 'account_10',
+            'res_model': 'libreria.account_10',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
