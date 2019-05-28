@@ -96,7 +96,10 @@ class RecordActives(models.TransientModel):
                            line.seat_code or '',  # 3
                            line.seat_code or '',  # 4 cbarraza (crear campo)
                            line.product_code or '',  # 5
-                           line.x_studio_cdigo_de_existencia or '',  # 6 cbarraza (crear campo)
+                           # Inicio #002 Código Original “Comentado”
+                           # line.x_studio_cdigo_de_existencia or '',  # 6 cbarraza (crear campo)
+                           # Fin #001
+                           line.existence_code or '',  # 6 - JCondori
                            line.tipo_de_act or '',  # 7
                            line.category_id.account_asset_id.code or '',  # 8
                            line.active_status or '',  # 9
