@@ -412,21 +412,21 @@ class account_invoice(models.Model):
             # 15 -> Impuesto
             impuesto_15 = ""
             for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify == True:
+                if rec.document_type_id.number == '07' and rec.document_modify:
                     if int(rec.date_invoice.strftime("%m")) > int(rec.date_document_modifies.strftime("%m")):
                         impuesto_15 = rec.amount_tax
 
             # 16 -> Impuesto
             impuesto_16 = ""
             for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify == True:
+                if rec.document_type_id.number == '07' and rec.document_modify:
                     if int(rec.date_invoice.strftime("%m")) == int(rec.date_document_modifies.strftime("%m")):
                         impuesto_16 = rec.amount_tax
 
             # 17 -> Impuesto
             impuesto_17 = ""
             for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify == True:
+                if rec.document_type_id.number == '07' and rec.document_modify:
                     if rec.date_invoice > rec.date_document_modifies:
                         impuesto_17 = rec.amount_tax
 
