@@ -21,7 +21,7 @@ class Account_12_13(models.TransientModel):
         lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
-        content_txt = ""
+        content_txt = "" 
         estado_ope = ""
         catalogo = ""
         fec_per = ""
