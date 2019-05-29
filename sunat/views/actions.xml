@@ -22,7 +22,7 @@
         <field name="interval_number">1</field>        <!-- To decide clearly -->
         <field name="interval_type">days</field>
         <!-- <field name="nextcall">2019-02-15 07:00:00</field> -->
-        <field name="nextcall" eval="(datetime.now() + timedelta(1)).strftime('%Y-%m-%d 11:00:00')"/>
+        <field name="nextcall" eval="(datetime.now() + timedelta(1)).strftime('%Y-%m-%d 15:00:00')"/>
         <field name="numbercall">-1</field>
         <field name="state">code</field>
         <field name="code">model.sunat_type_currency()</field>
