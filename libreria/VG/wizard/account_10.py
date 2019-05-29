@@ -26,7 +26,7 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
-            for  impl in line.account.journal:
+            for  impl in line.res.partner.bank:
               if impl.bank_account_id.acc_number:
                  cuent_banc = impl.bank_account_id.acc_number
             # datos a exportar a txt
