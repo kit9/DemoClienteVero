@@ -26,6 +26,7 @@ class Account_17(models.TransientModel):
         _catalogo = ""
         _vat = ""
         cantidad = ""
+        estado = ""
 
         # Iterador
         for line in lst_account_move_line:
@@ -54,6 +55,17 @@ class Account_17(models.TransientModel):
             for p2 in line.line_ids:
                 cantidad = sum(line.debit for line in line.line_ids)  # #8 Sumar la cantidad de monto a cobrar que haya
 
+            #9
+            if line.line_ids.date_maturity.strftime("%m%Y") == date.strftime("%m%Y"):
+                estado = "1"
+            else:
+                if line.line_ids.date_maturity.strftime("%m%Y") != date.strftime("%Y"):
+                    estado = "8"
+                else:
+                    if int(date.strftime("%m")) == int(date.strftime("%m")) - 1:
+                        estado = "9"
+                    else:
+                        estado = "1"
 
             # datos a exportar a txt
 
@@ -66,7 +78,7 @@ class Account_17(models.TransientModel):
                 line.partner_id.name or '', #6 nombre de la empresa
                 line.date.strftime("%d/%m/%Y") or '', #7 fecha de elaboración
                 cantidad or '', #8 total de monto a cobrar
-                '',
+                estado or '',
                 '',
             )
 
