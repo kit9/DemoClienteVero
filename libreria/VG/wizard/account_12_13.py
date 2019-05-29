@@ -17,7 +17,7 @@ class Account_12_13(models.TransientModel):
     @api.multi
     def generate_file(self):
         # modelo a buscar
-        lst_account_move_line = self.env['account.invoice'].search([])
+        lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
         content_txt = ""
@@ -28,6 +28,9 @@ class Account_12_13(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
             # Catalogo
+            # fecha
+            if line.invoice_id.date_document:
+                _fec_per = line.invoice_id.date_document
 
             #Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -40,7 +43,7 @@ class Account_12_13(models.TransientModel):
 
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date.strftime("%Y%m00") or '',  # 1'', #1 Periodo- Fecha contable
+                _fec_per or '', #1 Periodo- Fecha contable
                 line.ref or '',  # 2 ASIENTO CONTABLE
                 line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
                 # _catalogo or '', #4 ID - RUC
@@ -50,7 +53,6 @@ class Account_12_13(models.TransientModel):
                 line.residual or '',  # 8 importe adeudado
                 '',
                 ''
-
             )
 
             # Agregamos la linea al TXT
