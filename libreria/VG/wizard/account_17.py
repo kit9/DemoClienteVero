@@ -22,7 +22,6 @@ class Account_17(models.TransientModel):
 
         # variables creadas
         content_txt = ""
-        estado_ope = ""
         _debito=""
         _catalogo = ""
         _vat = ""
@@ -50,18 +49,6 @@ class Account_17(models.TransientModel):
                 if imp3.partner_id.name:
                    _nombre = imp3.partner_id.name
 
-            # validador de estado de operación
-            for p3 in line.line_ids:
-            if line.line_ids.date_maturity.strftime("%m%Y") == time.strftime("%m%Y"):
-                estado_ope = "01"
-            else:
-                if line.line_ids.date_maturity.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "09"
-                else:
-                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-                        estado_ope = "00"
-                    else:
-                        estado_ope = "01"
 
             #8 total de monto a cobrar
             for p2 in line.line_ids:
@@ -78,7 +65,7 @@ class Account_17(models.TransientModel):
                 line.partner_id.name or '', #6 nombre de la empresa
                 line.date.strftime("%d/%m/%Y") or '', #7 fecha de elaboración
                 cantidad or '', #8 total de monto a cobrar
-                estado_ope or '',
+                '',
                 '',
             )
 
