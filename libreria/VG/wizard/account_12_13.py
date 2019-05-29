@@ -38,8 +38,8 @@ class Account_12_13(models.TransientModel):
 
             #residual - importe adeudado
 
-            if imp.invoice_id.residual:
-                _residual = imp.invoice_id.residual
+            if line.invoice_id.residual:
+                _residual = line.invoice_id.residual
 
             #Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
