@@ -56,10 +56,10 @@ class Account_17(models.TransientModel):
                 cantidad = sum(line.debit for line in line.line_ids)  # #8 Sumar la cantidad de monto a cobrar que haya
 
             #9
-            if line.line_ids.date_maturity.strftime("%m%Y") == date.strftime("%m%Y"):
+            if line.date.strftime("%m%Y") == date.strftime("%m%Y"):
                 estado = "1"
             else:
-                if line.line_ids.date_maturity.strftime("%m%Y") != date.strftime("%Y"):
+                if line.date.strftime("%m%Y") != date.strftime("%Y"):
                     estado = "8"
                 else:
                     if int(date.strftime("%m")) == int(date.strftime("%m")) - 1:
