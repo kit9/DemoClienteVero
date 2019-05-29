@@ -28,10 +28,10 @@ class Account_12_13(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
             # Catalogo
-            # fecha
+            # fecha del documento
             if line.invoice_id.date_document:
                 _fec_per = line.invoice_id.date_document
-
+            #residual - importe adeudado
             #Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
@@ -50,7 +50,7 @@ class Account_12_13(models.TransientModel):
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
                 _fec_per or '',  # 7
-                line.residual or '',  # 8 importe adeudado
+                '',  # 8 importe adeudado
                 '',
                 ''
             )
