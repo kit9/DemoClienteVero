@@ -67,8 +67,8 @@ class Account_17(models.TransientModel):
                 line.date.strftime("%Y%m00") or '',  # 1
                 line.name or '',
                 line.x_studio_field_fwlP9 or '',
-                line.partner_id or '',
-                '',
+                line.partner_id.name or '',
+                line.partner_id.vat or'',
                 '',
                 '',
                 '',
