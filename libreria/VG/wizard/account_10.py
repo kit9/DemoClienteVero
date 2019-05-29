@@ -22,17 +22,21 @@ class account_10(models.TransientModel):
 
         # variables creadas
         content_txt = ""
+        cuent_banc = ""
 
         # Iterador
         for line in lst_account_move_line:
+            for imp in line.payment_ids:
+                if imp.bank_account_id.acc_number:
+                    cuent_banc = imp.bank_account_id.acc_number
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.payment_date.strftime("%Y%m00") or '',
                 '',
                 line.journal_id.code or'',
+                cuent_banc or'',
                 '',
-                line.bank_account_id.currency_id or'',
                 '',
                 ''
             )
