@@ -54,6 +54,8 @@ class Account_17(models.TransientModel):
             for p2 in line.line_ids:
                 cantidad = sum(line.debit for line in line.line_ids)  # #8 Sumar la cantidad de monto a cobrar que haya
 
+            if line.line_ids.date
+
             # datos a exportar a txt
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
