@@ -32,7 +32,7 @@ class account_10(models.TransientModel):
                 line.payment_date.strftime("%Y%m00") or '',
                 '',
                 line.journal_id.code or'',
-                '',
+                line.bank_account_id.bank_id or '',
                 '',
                 '',
                 ''
@@ -44,7 +44,7 @@ class account_10(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "_10.txt"
+            'txt_filename': "Cuenta_10.txt"
         })
         return {
             'type': 'ir.actions.act_window',
