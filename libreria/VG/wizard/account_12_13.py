@@ -24,6 +24,7 @@ class Account_12_13(models.TransientModel):
         estado_ope = ""
         _catalogo = ""
         _fec_per = ""
+        _residual = ""
 
         # Iterador
         for line in lst_account_move_line:
@@ -36,7 +37,7 @@ class Account_12_13(models.TransientModel):
                 _fec_per = line.invoice_id.date_document
 
             #residual - importe adeudado
-            for imp in line.invoice_ids:
+            for imp in line.invoice:
                 if imp.residual:
                     _residual = imp.residual
 
