@@ -16,7 +16,6 @@ class Account_12_13(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-
         # modelo a buscar
         lst_account_move_line = self.env['account.invoice'].search([])
 
@@ -26,34 +25,34 @@ class Account_12_13(models.TransientModel):
         _catalogo = ""
         _fec_per = ""
 
-
         # Iterador
         for line in lst_account_move_line:
-
             # Catalogo
             # for imp1 in line.line_ids:
             #     if imp1.partner_id.catalog_06_id.code:
             #         _catalogo = imp1.partner_id.catalog_06_id.code
 
-            #line.invoice_id.partner_id.catalog_06_id.code
+            for imp1 in line.einvoice_catalog_06:
+                if imp1.code:
+                    _catalogo = imp1.code
+            # line.invoice_id.partner_id.catalog_06_id.code
             # datos a exportar al txt
-            #Fecha
+            # Fecha
             # if line.date_invoice:
             #     fec_per = line.invoice_id.date_invoice
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1'', #1 Periodo- Fecha contable
-                line.ref or '', #2 ASIENTO CONTABLE
-                line.id or '', #3 Asiento contable _ ID
-                # _catalogo or '', #4 ID - RUC
-                line.partner_id.vat or '', #5 Tipo de Doc. Identidad - RUC, enteros
-                line.partner_id.registration_name or '', #6 Nombre de la empresa
-                line.date_document or '', #7
-                line.residual or '', #8 importe adeudado
-                '',
+                line.ref or '',  # 2 ASIENTO CONTABLE
+                line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
+                _catalogo or '', #4 ID - RUC
+                line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
+                line.partner_id.registration_name or '',  # 6 Nombre de la empresa
+                line.date_document or '',  # 7
+                line.residual or '',  # 8 importe adeudado
                 ''
 
-             )
+            )
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
@@ -72,4 +71,3 @@ class Account_12_13(models.TransientModel):
             'res_id': self.id,
             'target': 'new'
         }
-
