@@ -51,10 +51,10 @@ class Account_17(models.TransientModel):
                    _nombre = imp3.partner_id.name
 
             # validador de estado de operación
-            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+            if line.create_date_maturity.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "01"
             else:
-                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                if line.create_date_maturity.strftime("%Y") != time.strftime("%Y"):
                     estado_ope = "09"
                 else:
                     if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
@@ -77,7 +77,7 @@ class Account_17(models.TransientModel):
                 line.partner_id.name or '', #6 nombre de la empresa
                 line.date.strftime("%d/%m/%Y") or '', #7 fecha de elaboración
                 cantidad or '', #8 total de monto a cobrar
-                '',
+                estado_ope or '',
                 '',
             )
 
