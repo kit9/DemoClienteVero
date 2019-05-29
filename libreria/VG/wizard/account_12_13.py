@@ -43,13 +43,13 @@ class Account_12_13(models.TransientModel):
 
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                _fec_per or '', #1 Periodo- Fecha contable
+                line.date or '', #1 Periodo- Fecha contable
                 line.ref or '',  # 2 ASIENTO CONTABLE
                 line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
                 # _catalogo or '', #4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
-                line.date_document or '',  # 7
+                _fec_per or '',  # 7
                 line.residual or '',  # 8 importe adeudado
                 '',
                 ''
