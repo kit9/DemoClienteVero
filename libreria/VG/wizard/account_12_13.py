@@ -28,16 +28,16 @@ class Account_12_13(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
             # Catalogo
-            # for imp1 in line.line_ids:
-            #     if imp1.partner_id.catalog_06_id.code:
-            #         _catalogo = imp1.partner_id.catalog_06_id.code
 
+            #Asiento Contable
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "1"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "0"
+                else:
+                    estado_ope = "0"
 
-            # line.invoice_id.partner_id.catalog_06_id.code
-            # datos a exportar al txt
-            # Fecha
-            # if line.date_invoice:
-            #     fec_per = line.invoice_id.date_invoice
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1'', #1 Periodo- Fecha contable
