@@ -25,6 +25,8 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
+            for impl in line.payment_ids:
+              if line.bank_account_id.acc_number:
 
 
             # datos a exportar a txt
@@ -32,8 +34,8 @@ class account_10(models.TransientModel):
                 line.payment_date.strftime("%Y%m00") or '',
                 '',
                 line.journal_id.code or'',
-                line.acc_number or '',
                 '',
+                line.bank_account_id.currency_id or'',
                 '',
                 ''
             )
