@@ -70,8 +70,8 @@ class Account_17(models.TransientModel):
                 line.partner_id.name or '',
                 line.partner_id.vat or '',
                 line.partner_id.name or '',
-                line.date.strftime("%D/%m/%Y") or '',
-                '',
+                line.date.strftime("%d/%m/%Y") or '',
+                line.partner_id.debit or '',
                 '',
                 '',
             )
