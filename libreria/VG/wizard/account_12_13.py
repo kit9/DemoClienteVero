@@ -32,8 +32,9 @@ class Account_12_13(models.TransientModel):
             #     if imp1.partner_id.catalog_06_id.code:
             #         _catalogo = imp1.partner_id.catalog_06_id.code
 
-            for imp1 in line.einvoice_catalog_06:
-                if imp1.code:
+            for imp in line.einvoice_ids:
+                for imp1 in imp.catalog.06:
+                    if imp1.code:
                     _catalogo = imp1.code
             # line.invoice_id.partner_id.catalog_06_id.code
             # datos a exportar al txt
