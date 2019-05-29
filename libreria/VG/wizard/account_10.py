@@ -26,7 +26,6 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
-            for imp in line.payment_ids:
                 if imp.bank_account_id.acc_number:
                     cuent_banc = imp.bank_account_id.acc_number
 
