@@ -32,7 +32,7 @@ class account_10(models.TransientModel):
                 line.payment_date.strftime("%Y%m00") or '',
                 '',
                 line.journal_id.code or'',
-                line.bank_account_id.bank_id or '',
+                line.res.bank.bank_id or '',
                 '',
                 '',
                 ''
