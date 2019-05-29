@@ -17,8 +17,6 @@ class account_10(models.TransientModel):
     @api.multi
     def generate_file(self):
 
-    cantidad = ""
-
         # modelo a buscar
         lst_account_move_line = self.env['account.payment'].search([])
 
@@ -28,17 +26,14 @@ class account_10(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-        for p2 in line.line_ids:
-            cantidad = sum(line.debit for line in line.line_ids)  # #8 Sumar la cantidad de monto a cobrar que haya
-
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.payment_date.strftime("%Y%m00") or '',
                 '',
-                line.journal_id.code or '',
+                line.journal_id.code or'',
                 '',
-                line.currency_id.name or '',
-                cantidad or '',
+                '',
+                line.currency_id or'',
                 ''
             )
 
