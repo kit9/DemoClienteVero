@@ -26,7 +26,7 @@ class Account_17(models.TransientModel):
         _debito=""
         _catalogo = ""
         _vat = ""
-        #_cantidad
+        cantidad
 
         # Iterador
         for line in lst_account_move_line:
@@ -63,8 +63,8 @@ class Account_17(models.TransientModel):
                         estado_ope = "01"
 
             #8 total de monto a cobrar
-            #for p2 in account.move.line:
-                #_cantidad = sum(line.balance for line in account.move.line)  # #8 Sumar la cantidad de monto a cobrar que haya
+            for p2 in line_ids:
+                cantidad = sum(line.balance for line in line_ids)  # #8 Sumar la cantidad de monto a cobrar que haya
 
             # datos a exportar a txt
 
@@ -76,7 +76,7 @@ class Account_17(models.TransientModel):
                 line.partner_id.vat or '', #5 ruc de la empresa
                 line.partner_id.name or '', #6 nombre de la empresa
                 line.date.strftime("%d/%m/%Y") or '', #7 fecha de elaboración
-                line.move_id.balance or '', #8 total de monto a cobrar
+                cantidad or '', #8 total de monto a cobrar
                 '',
                 '',
             )
