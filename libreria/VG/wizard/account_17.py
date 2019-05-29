@@ -63,8 +63,8 @@ class Account_17(models.TransientModel):
                         estado_ope = "01"
 
             #8 total de monto a cobrar
-            for p2 in line_ids:
-                cantidad = sum(line.balance for line in line_ids)  # #8 Sumar la cantidad de monto a cobrar que haya
+            for p2 in line.line_ids:
+                cantidad = sum(line.debit for line in line.line_ids)  # #8 Sumar la cantidad de monto a cobrar que haya
 
             # datos a exportar a txt
 
