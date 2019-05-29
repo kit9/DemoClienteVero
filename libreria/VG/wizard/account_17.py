@@ -26,7 +26,7 @@ class Account_17(models.TransientModel):
         _debito=""
         _catalogo = ""
         _vat = ""
-        cantidad
+        cantidad = ""
 
         # Iterador
         for line in lst_account_move_line:
