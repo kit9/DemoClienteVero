@@ -44,8 +44,8 @@ class Account_12_13(models.TransientModel):
 
             #residual - importe adeudado
 
-            if line.invoice_id.residual:
-                _residual = line.invoice_id.residual
+            #if line.invoice_id.residual:
+                #_residual = line.invoice_id.residual
 
             #Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -65,7 +65,8 @@ class Account_12_13(models.TransientModel):
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
                 _fec_per or '',  # 7
-                _residual or '',  # 8 importe adeudado
+                #_residual or '',  # 8 importe adeudado
+                '',
                 ''
             )
 
