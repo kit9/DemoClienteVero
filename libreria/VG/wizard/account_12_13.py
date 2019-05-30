@@ -33,7 +33,7 @@ class Account_12_13(models.TransientModel):
             # referencia - asiento contable s
             for imp in line.line_ids:
                 if imp.invoice_id:
-                    _ref
+                    _ref = imp.invoice_id
 
             # Catalogo
             if line.partner_id.catalog_06_id.code:
