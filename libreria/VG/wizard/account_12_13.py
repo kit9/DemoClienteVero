@@ -17,7 +17,7 @@ class Account_12_13(models.TransientModel):
     @api.multi
     def generate_file(self):
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '12')])
+        lst_account_move_line = self.env['account.move'].search([('12','line_ids.account_id.code', 'ilike')])
 
         # variables creadas
         content_txt = ""
@@ -30,8 +30,8 @@ class Account_12_13(models.TransientModel):
         for line in lst_account_move_line:
 
             # referencia
-            for imp in line.line_ids:
-                for imp1 in imp.invoice_id:
+            #for imp in line.line_ids:
+               ## for imp1 in imp.invoice_id:
 
 
             # Catalogo
