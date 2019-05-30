@@ -1,5 +1,5 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo import api, fields, models, tools, _
+from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
 import logging
 
@@ -13,7 +13,7 @@ class ProductTemplate(models.Model):
     type_existence_id = fields.Many2one('sunat.type_existence', 'Tipo de Existencia')
     existence_code = fields.Char(string="Código de Existencia")
 
-    tipo_de_act = fields.Selection(string="Cód. Tipo de Act", required=True, selection=[
+    tipo_de_act = fields.Selection(string="Cód. Tipo de Act", selection=[
         ('1', '1 NO REVALUADO'),
         ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
     ])

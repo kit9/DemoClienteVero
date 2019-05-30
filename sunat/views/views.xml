@@ -146,7 +146,7 @@
                 <field name="catalog_id"/>
             </xpath>
             <xpath expr="//field[@name='uom_id']" position="after">
-                <field name="tipo_de_act"/>
+                <field name="tipo_de_act" attrs="{'required': [('asset_category_id','!=', False)]}"/>
             </xpath>
         </field>
     </record>
