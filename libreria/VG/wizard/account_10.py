@@ -31,7 +31,7 @@ class account_10(models.TransientModel):
                 line.payment_date.strftime("%Y%m00") or '',
                 '',
                 line.journal_id.code or'',
-                line.res.partner.bank.journal_id.code or   '',
+                line.res_partner_bank.journal_id.code or   '',
                 line.currency_id.name or'',
                 '',
                 ''
