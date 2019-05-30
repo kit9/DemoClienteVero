@@ -19,7 +19,7 @@ class account_10(models.TransientModel):
 
         # modelo a buscar
         lst_account_move_line = self.env['account.payment'].search([])
-
+        lst_account_move_line = self.env['account.move'].search([])
         # variables creadas
         content_txt = ""
         debe = ""
