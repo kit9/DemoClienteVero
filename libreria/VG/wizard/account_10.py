@@ -19,14 +19,12 @@ class account_10(models.TransientModel):
 
         # modelo a buscar
         lst_account_move_line = self.env['account.payment'].search([])
-        lst_account_move_line = self.env['account.move'].search([])
         # variables creadas
         content_txt = ""
-        debe = ""
+        
         # Iterador
         for line in lst_account_move_line:
-            for line1 in line.line_ids:
-                debe = line1.debit
+
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
@@ -35,7 +33,7 @@ class account_10(models.TransientModel):
                 line.journal_id.code or'',
                 '',
                 line.currency_id or'',
-                debe or'',
+                line.destination_account_id.opening_debit or'',
                 ''
             )
 
