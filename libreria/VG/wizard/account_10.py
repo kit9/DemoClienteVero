@@ -19,16 +19,20 @@ class account_10(models.TransientModel):
 
         # modelo a buscar
         lst_account_move_line = self.env['account.payment'].search([])
+
         # variables creadas
         content_txt = ""
+        codigo=""
 
         # Iterador
         for line in lst_account_move_line:
+            if line.destination_account_id.code:
+                codigo = line.destination_account_id.code
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.payment_date.strftime("%Y%m00") or '',
-                '',
+                codigo	or '',
                 line.journal_id.code or'',
                 '',
                 line.currency_id.name or'',
