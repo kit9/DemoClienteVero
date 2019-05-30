@@ -27,7 +27,7 @@ class account_10(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
             if line.destination_account_id.code:
-                codigo = line.destination_account_id.code
+                codigo = advance_residual.code
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
