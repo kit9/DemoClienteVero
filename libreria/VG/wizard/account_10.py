@@ -21,7 +21,7 @@ class account_10(models.TransientModel):
         lst_account_move_line = self.env['account.payment'].search([])
         # variables creadas
         content_txt = ""
-        debe = ""
+
         # Iterador
         for line in lst_account_move_line:
 
@@ -31,7 +31,7 @@ class account_10(models.TransientModel):
                 '',
                 line.journal_id.code or'',
                 '',
-                line.currency_id or'',
+                line.currency_id.name or'',
                 line.move_line_ids or'',
                 ''
             )
