@@ -24,8 +24,6 @@ class account_10(models.TransientModel):
         debe = ""
         # Iterador
         for line in lst_account_move_line:
-            for line in line.line_ids:
-                debe = line.debit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
@@ -34,7 +32,7 @@ class account_10(models.TransientModel):
                 line.journal_id.code or'',
                 '',
                 line.currency_id or'',
-                debe or'',
+                line.destination_account_id.target_debit1_id or'',
                 ''
             )
 
