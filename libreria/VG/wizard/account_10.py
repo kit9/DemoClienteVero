@@ -32,7 +32,7 @@ class account_10(models.TransientModel):
                 line.journal_id.code or'',
                 '',
                 line.currency_id or'',
-                line.destination_account_id.target_debit1_id or'',
+                line.move_line_ids.	opening_debit or'',
                 ''
             )
 
