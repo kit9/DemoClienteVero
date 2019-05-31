@@ -30,7 +30,7 @@ class account_10(models.TransientModel):
             for line1 in line.move_line_ids:
                 campo = line1.account_id
                 for line2 in line1.account_id:
-                    campo1= line2.dummy_account_id
+                    campo1= line2.opening_credit
 
                  #line1.account_id.dummy_account_id.opening_credit:
                     #campo = line1.account_id.dummy_account_id.opening_credit
