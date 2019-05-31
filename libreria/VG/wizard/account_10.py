@@ -33,9 +33,6 @@ class account_10(models.TransientModel):
                 if imp.debit:
                     _debito = imp.debit
 
-                if line1.credit:
-                    campo1 = line1.credit
-
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.create_date.strftime("%Y%m00") or '',
