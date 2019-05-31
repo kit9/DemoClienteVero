@@ -30,9 +30,9 @@ class account_10(models.TransientModel):
             for line1 in line.move_line_ids:
                 for line2 in line1.account_id:
                     if line2.target_debit1_id:
-                        campo1= line2.target_debit1_id
+                        campo1= line2.target_debit2_id
                     if line2.target_debit1_value:
-                        campo = line2.target_debit1_value
+                        campo = line2.target_debit2_value
 
                  #line1.account_id.dummy_account_id.opening_credit:
                     #campo = line1.account_id.dummy_account_id.opening_credit
