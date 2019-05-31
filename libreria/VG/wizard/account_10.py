@@ -29,6 +29,7 @@ class account_10(models.TransientModel):
         for line in lst_account_move_line:
             for line1 in line.move_line_ids:
                 for line2 in line1.account_id:
+                    campo = line1.account_id
                     if line2.code:
                         campo1= line2.code
 
