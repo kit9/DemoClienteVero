@@ -18,7 +18,7 @@ class account_10(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.payment'].search([])
+        lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
         content_txt = ""
@@ -27,24 +27,20 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
-            for line1 in line.move_line_ids:
-                for line2 in line1.move_id:
-                    for line3 in line2.dummy_account_id:
-                        if line3.code:
-                            campo1= line3.code
+
 
                  #line1.account_id.dummy_account_id.opening_credit:
                     #campo = line1.account_id.dummy_account_id.opening_credit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
-                line.payment_date.strftime("%Y%m00") or '',
-                campo1 or '',
+                line.create_date.strftime("%Y%m00") or '',
+                line.dummy_account_id.code or '',
                 line.journal_id.code or'',
                 line.journal_id.bank_account_id.acc_number or'',
                 line.currency_id.name or'',
-                campo1 or '',
-                campo or ''
+                line.dummy_account_id.opening_debit or '',
+                line.dummy_account_id.target_debit3_value or ''
             )
 
             # Agregamos la linea al TXT
