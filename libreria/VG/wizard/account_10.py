@@ -24,17 +24,17 @@ class account_10(models.TransientModel):
 
         # variables creadas
         content_txt = ""
-        campo = ""
-        campo1 = ""
+        debito = ""
+        cretido = ""
 
         # Iterador
         for line in lst_account_move_line:
             for line1 in line.line_ids:
-                if line1.debit_cash_basis:
-                    campo = line1.debit_cash_basis
+                if line1.debit:
+                    debito = line1.debit
             for line2 in line.line_ids:
                 if line2.credit:
-                    campo1 = line2.credit
+                    cretido = line2.credit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
@@ -43,8 +43,8 @@ class account_10(models.TransientModel):
                 line.journal_id.code or '',
                 line.journal_id.bank_account_id.acc_number or '',
                 line.currency_id.name or '',
-                campo or '',
-                campo1 or ''
+                debito or '',
+                cretido or ''
             )
 
             # Agregamos la linea al TXT
