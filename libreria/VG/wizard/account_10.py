@@ -10,7 +10,6 @@ class account_10(models.TransientModel):
     _name = "libreria.account_10"
     _description = "cuenta 10"
 
-
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -18,7 +17,7 @@ class account_10(models.TransientModel):
     @api.multi
     def generate_file(self):
         # modelo a buscar
-        dominio = ['&', ('month_year_move', 'like','052019'), '|',
+        dominio = ['&', ('month_year_move', 'like', '052019'), '|',
                    ('dummy_account_id.code', '=', 101001), ('dummy_account_id.code', '=', 104001)]
 
         lst_account_move_line = self.env['account.move'].search(dominio)
@@ -30,6 +29,10 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
+            for line1 in line.line_ids:
+                if line1.debit:
+                    campo = line1.debit
+                    
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.create_date.strftime("%Y%m00") or '',
@@ -37,8 +40,8 @@ class account_10(models.TransientModel):
                 line.journal_id.code or '',
                 line.journal_id.bank_account_id.acc_number or '',
                 line.currency_id.name or '',
-                line.dummy_account_id.opening_debit or '',
-                line.dummy_account_id.target_debit3_value or ''
+                campo or '',
+                ''
             )
 
             # Agregamos la linea al TXT
