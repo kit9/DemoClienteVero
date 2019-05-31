@@ -32,8 +32,9 @@ class account_10(models.TransientModel):
             for line1 in line.line_ids:
                 if line1.debit_cash_basis:
                     campo = line1.debit_cash_basis
-                if line1.credit:
-                    campo1 = line1.credit
+            for line2 in line.linde_ids:
+                if line2.credit:
+                    campo1 = line2.credit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
