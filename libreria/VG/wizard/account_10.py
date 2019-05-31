@@ -30,7 +30,7 @@ class account_10(models.TransientModel):
             for line1 in line.move_line_ids:
                 for line2 in line1.account_id:
                     if line2.target_debit1_id:
-                        campo1= line2.target_debit3_id
+                        campo1= line2.code
                     if line2.target_debit1_value:
                         campo = line2.target_debit3_value
 
@@ -40,7 +40,7 @@ class account_10(models.TransientModel):
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.payment_date.strftime("%Y%m00") or '',
-                '',
+                campo1 or '',
                 line.journal_id.code or'',
                 line.journal_id.bank_account_id.acc_number or'',
                 line.currency_id.name or'',
