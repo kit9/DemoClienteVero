@@ -32,7 +32,7 @@ class account_10(models.TransientModel):
             for line1 in line.line_ids:
                 if line1.debit_cash_basis:
                     campo = line1.debit_cash_basis
-            for line2 in line.linde_ids:
+            for line2 in line.line_ids:
                 if line2.credit:
                     campo1 = line2.credit
 
