@@ -29,9 +29,9 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
-            for imp in line.matched_debit_ids:
-                if imp.matched_debit_ids:
-                    credit = imp.matched_debit_ids
+            for imp in line.account.move.line_ids.debit:
+                if imp.line.account.move.line_ids.debit:
+                    credit = imp.line.account.move.line_ids.debit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
