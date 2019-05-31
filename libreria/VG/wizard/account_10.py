@@ -32,6 +32,7 @@ class account_10(models.TransientModel):
             for line1 in line.line_ids:
                 if line1.credit:
                     campo = line1.credit
+                if line1.debit:
                     campo1 = line1.debit
 
             # datos a exportar a txt
