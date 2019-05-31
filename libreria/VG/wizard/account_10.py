@@ -30,28 +30,26 @@ class account_10(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-
         # modelo a buscar
-        dominio = ['&',('month_year_move','like',self.date_month + "" + self.date_year),'|',('dummy_account_id.code', '=', 101001),('dummy_account_id.code', '=', 104001)]
+        dominio = ['&', ('month_year_move', 'like', self.date_month + "" + self.date_year), '|',
+                   ('dummy_account_id.code', '=', 101001), ('dummy_account_id.code', '=', 104001)]
 
         lst_account_move_line = self.env['account.move'].search(dominio)
 
         # variables creadas
         content_txt = ""
-        campo=""
+        campo = ""
         campo1 = ""
 
         # Iterador
         for line in lst_account_move_line:
-
-
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
                 line.create_date.strftime("%Y%m00") or '',
                 line.dummy_account_id.code or '',
-                line.journal_id.code or'',
-                line.journal_id.bank_account_id.acc_number or'',
-                line.currency_id.name or'',
+                line.journal_id.code or '',
+                line.journal_id.bank_account_id.acc_number or '',
+                line.currency_id.name or '',
                 line.dummy_account_id.opening_debit or '',
                 line.dummy_account_id.target_debit3_value or ''
             )
