@@ -30,10 +30,10 @@ class account_10(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
             for line1 in line.line_ids:
+                if line1.debit_cash_basis:
+                    campo = line1.debit_cash_basis
                 if line1.credit:
-                    campo = line1.credit
-                if line1.debit:
-                    campo1 = line1.debit
+                    campo1 = line1.credit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
