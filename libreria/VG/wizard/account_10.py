@@ -28,10 +28,11 @@ class account_10(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
             for line1 in line.move_line_ids:
-                campo = line1.account_id
                 for line2 in line1.account_id:
-                    if line2.opening_debit:
-                        campo1= line2.opening_debit
+                    if line2.target_debit1_id:
+                        campo1= line2.target_debit1_id
+                    if line2.target_debit1_value:
+                        campo = line2.target_debit1_value
 
                  #line1.account_id.dummy_account_id.opening_credit:
                     #campo = line1.account_id.dummy_account_id.opening_credit
@@ -44,7 +45,7 @@ class account_10(models.TransientModel):
                 line.journal_id.bank_account_id.acc_number or'',
                 line.currency_id.name or'',
                 campo1 or '',
-                ''
+                campo or ''
             )
 
             # Agregamos la linea al TXT
