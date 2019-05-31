@@ -31,7 +31,7 @@ class account_10(models.TransientModel):
         for line in lst_account_move_line:
             for line1 in line.line_ids:
                 if line1.credit:
-                    campo = line1.credit
+                    campo = line1.opening_credit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
