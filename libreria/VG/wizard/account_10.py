@@ -29,9 +29,9 @@ class account_10(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
-            for imp in line.account.move.line_ids.debit:
-                if imp.line.account.move.line_ids.debit:
-                    credit = imp.line.account.move.line_ids.debit
+            for imp in line.line_ids:
+                if imp.debit:
+                    credit = imp.debit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
@@ -41,7 +41,7 @@ class account_10(models.TransientModel):
                 line.journal_id.bank_account_id.acc_number or '',
                 line.currency_id.name or '',
                 '',
-                credit or''
+                credit or ''
             )
 
             # Agregamos la linea al TXT
