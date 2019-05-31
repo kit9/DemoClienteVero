@@ -10,19 +10,6 @@ class account_10(models.TransientModel):
     _name = "libreria.account_10"
     _description = "cuenta 10"
 
-    date_month = fields.Selection(string="Mes", selection=[('01', 'Enero'),
-                                                           ('02', 'Febrero'),
-                                                           ('03', 'Marzo'),
-                                                           ('04', 'Abril'),
-                                                           ('05', 'Mayo'),
-                                                           ('06', 'Junio'),
-                                                           ('07', 'Julio'),
-                                                           ('08', 'Agosto'),
-                                                           ('09', 'Septiembre'),
-                                                           ('10', 'Octubre'),
-                                                           ('11', 'Noviembre'),
-                                                           ('12', 'Diciembre')])
-    date_year = fields.Char(string="Año", size=4)
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
@@ -31,7 +18,7 @@ class account_10(models.TransientModel):
     @api.multi
     def generate_file(self):
         # modelo a buscar
-        dominio = ['&', ('month_year_move', 'like', self.date_month + "" + self.date_year), '|',
+        dominio = ['&', ('month_year_move', 'like','052019'), '|',
                    ('dummy_account_id.code', '=', 101001), ('dummy_account_id.code', '=', 104001)]
 
         lst_account_move_line = self.env['account.move'].search(dominio)
