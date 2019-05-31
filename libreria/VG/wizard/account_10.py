@@ -28,7 +28,7 @@ class account_10(models.TransientModel):
         campo1 = ""
 
         # Iterador
-        for line in lst_account_move:
+        for line in lst_account_move_line:
             for imp in line.line_ids:
                 if imp.debit:
                     credit = imp.debit
