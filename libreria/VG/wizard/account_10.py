@@ -30,7 +30,7 @@ class account_10(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
             for imp in line.line_ids:
-                if imp.debit:
+                if imp.credit:
                     credit = imp.credit
 
             # datos a exportar a txt
