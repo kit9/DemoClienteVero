@@ -33,6 +33,7 @@ class account_10(models.TransientModel):
 
         # modelo a buscar
         dominio = ['&',('month_year_move','like',self.date_month + "" + self.date_year),'|',('dummy_account_id.code', '=', 101001),('dummy_account_id.code', '=', 104001)]
+
         lst_account_move_line = self.env['account.move'].search(dominio)
 
         # variables creadas
