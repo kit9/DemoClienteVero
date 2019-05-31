@@ -32,6 +32,7 @@ class account_10(models.TransientModel):
             for line1 in line.line_ids:
                 if line1.credit:
                     campo = line1.credit
+                    campo1 = line1.debit
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
@@ -41,7 +42,7 @@ class account_10(models.TransientModel):
                 line.journal_id.bank_account_id.acc_number or '',
                 line.currency_id.name or '',
                 campo or '',
-                ''
+                campo1 or ''
             )
 
             # Agregamos la linea al TXT
