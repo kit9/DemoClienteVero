@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="action_generate_globle_report" model="ir.actions.act_window">
+        <field name="name">Generic Excel Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">generic.excel.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+     <record id="view_globle_report_tree" model="ir.ui.view">
+        <field name="name">view.globle.report.tree</field>
+        <field name="model">generic.excel.report</field>
+        <field name="arch" type="xml">
+        <tree string="GLoble Report">
+                <field name="name"/>
+                <field name="model_name"/>
+            </tree>
+            </field>
+    </record>
+    
+     <record id="view_globle_report_wizard_form" model="ir.ui.view">
+        <field name="name">view.globle.report.wizrd.form</field>
+        <field name="model">generic.excel.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report">
+            <field name="state" invisible="1"/>
+            <field name="name" invisible="1"/>
+            <group states="choose" string="Generic Excel Report">
+            <div>
+                <h2 style="color:blue;"> Are you sure to print report? </h2>
+            </div>
+            <footer states="choose">
+            <button name="print_report" string="Print" type="object" class="oe_highlight"/> Or
+            <button string="Cancel" special="cancel" class="oe_link"/>
+            </footer>
+            </group>
+            <div states="get">
+                     <h2>Report Generated</h2>
+                     <p>Here is the Excel Report: <field name="data" readonly="1" filename="name"/></p>
+                 </div>
+                 <footer states="get">
+            <button string="Close" special="cancel" class="oe_link"/>
+            </footer>
+            
+                        </form>
+                        </field>
+                        </record>
+    
+    
+    <record id="view_globle_report_form" model="ir.ui.view">
+        <field name="name">view.globle.report.form</field>
+        <field name="model">generic.excel.report</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report">
+                <sheet>
+                                    <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" 
+                            name="create_print_action"
+                            type="object"
+                            attrs="{'invisible':[('ref_ir_act_window','!=',False)]}"
+                            icon="fa-plus">
+                            <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_text">Add</span>
+                                    <span class="o_stat_text">Context Action</span>
+                                </div>
+                    </button>
+                    <button name="remove_action" type="object" 
+                                    class="oe_stat_button" icon="fa-minus"
+                                    attrs="{'invisible':[('ref_ir_act_window','=',False)]}"
+                                    help="Remove the contextual action to use this report on related documents" widget="statinfo">
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_text">Remove</span>
+                                    <span class="o_stat_text">Context Action</span>
+                                </div>
+                            </button>
+</div>
+                
+                    <group>
+                        <div>
+                        <div class="oe_edit_only">
+                            <label for="name"/> 
+                        </div>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Name"/>
+                        </h1>
+                    </div>
+                       </group>
+                    <group >
+                    <div align="right">
+                    
+                    <field name="ref_ir_act_window" invisible="1"/>
+</div>
+                       </group>
+                       <group col="4">
+                       
+                        <field name="model_name"/>
+                        <field name="sub_model_name"/>
+                        <field name="field_id" domain="[('model_id','=', model_name),('ttype', 'not in', ('many2many','one2many'))]" attrs="{'invisible':[('sub_model_name','!=',False)]}"/>
+                        <field name="sheet_per_page" attrs="{'invisible':[('field_id','!=',False)]}"/>
+                       </group>
+                       <group>
+                       
+                       </group>
+                          <notebook>
+                        <page string="Fields To Print">
+                            <field name="field_ids" >
+                            	<tree editable="bottom" >
+                            		<field name="field_id" options="{'no_quick_create':True,'no_create_edit':True}" domain="[('model_id','=', parent.model_name),('ttype', 'not in', ('many2many','one2many'))]"/>
+                            		<field name="label"/>
+                            	</tree>
+                            </field>
+                            </page>
+                            <page string="Sub model Fields To Print" attrs="{'invisible':[('sub_model_name','=',False)]}">
+                            <field name="sub_model_field_ids" >
+                            <tree editable="bottom">
+                            		<field name="field_id" options="{'create': false, 'create_edit': false}" domain="[('model_id','=', parent.sub_model_name),('ttype', 'not in', ('many2many','one2many'))]"/>
+                            		<field name="label"/>
+                            	</tree>
+                            </field>
+                            </page>
+                            <page string="Template For Report">
+                            <group>
+                            <field name="template_id"/>
+                            </group>
+                            </page>
+                            </notebook>
+                       
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    
+    <menuitem id="generic_report_excel" name="Generic Excel Report Configure" parent="base.menu_custom" sequence="14"/>
+    <menuitem action="action_generate_globle_report" id="menu_generate_globle_report" parent="generic_report_excel"/>
+    
+    
+  </data>
+</openerp>
+        

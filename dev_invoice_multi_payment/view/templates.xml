@@ -1,0 +1,89 @@
+<odoo>
+    <data>
+
+        <template id="report_comp_reten">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+
+                            <h2>Comprobante de Retenciones</h2>
+                            <p>Señor
+                                <span t-field="o.partner_id.name"/>
+                            </p>
+                            <p>RUC
+                                <span t-field="o.partner_id.vat"/>
+                            </p>
+                            <p>Fecha
+                                <span t-field="o.payment_date"/>
+                            </p>
+
+                            <table class="table table-sm o_main_table" name="invoice_line_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">
+                                            <span>Tipo</span>
+                                        </th>
+                                        <th class="text-left">
+                                            <span>Serie</span>
+                                        </th>
+                                        <th class="text-left">
+                                            <span>Correlatio</span>
+                                        </th>
+                                        <th class="text-left">
+                                            <span>Fecha</span>
+                                        </th>
+                                        <th class="text-left">
+                                            <span>Monto del Pago</span>
+                                        </th>
+                                        <th class="text-left">
+                                            <span>Importe Retenido</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="invoice_tbody">
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <tr>
+                                            <t name="account_invoice_line_accountable">
+                                                <td>
+                                                    <t t-esc="line.invoice_id.number.split('/')[0] if line.invoice_id.number else ''"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.invoice_id.number.split('/')[1] if line.invoice_id.number else ''"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.invoice_id.number.split('/')[2] if line.invoice_id.number else ''"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="line.invoice_id.date_document"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.invoice_id.amount_total * line.invoice_id.exchange_rate"/>
+                                                </td>
+                                                <td>
+                                                    <!--<span t-field="line.allocation"/>-->
+                                                    <t t-esc="line.allocation"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report id="account_payment_comp_reten"
+                model="account.payment"
+                string="Comprobante Retenciones"
+                report_type="qweb-pdf"
+                name="dev_invoice_multi_payment.report_comp_reten"
+                file="dev_invoice_multi_payment.report_comp_reten"
+                attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+                print_report_name="'Comprobante - %s' % (object.name)"/>
+
+    </data>
+</odoo>
