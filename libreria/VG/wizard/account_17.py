@@ -18,7 +18,7 @@ class Account_17(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '17')])
+        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '175300')])
 
         # variables creadas
         content_txt = ""
@@ -72,7 +72,7 @@ class Account_17(models.TransientModel):
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1 fecha en formato codigo
-                line.name or '', #2 nombre de la factura
+                line.name.replace("/", "") or '', #2 nombre de la factura
                 line.x_studio_field_fwlP9 or '', #3 codigo de almacenamiento
                 line.partner_id.name or '', #4 nombre de la compañia a quien se brindo el servicio
                 line.partner_id.vat or '', #5 ruc de la empresa
