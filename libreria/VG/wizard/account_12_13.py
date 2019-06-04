@@ -35,10 +35,8 @@ class Account_12_13(models.TransientModel):
 
             # referencia - asiento contable s
             for imp in line.line_ids:
-                for imp1 in imp.date_maturity:
-                    _ref = imp.date_maturity
-                #if imp.invoice_id:
-                    _#ref = imp.invoice_id
+                if imp.invoice_id:
+                    _ref = imp.invoice_id
 
             # Catalogo
             if line.partner_id.catalog_06_id.code:
