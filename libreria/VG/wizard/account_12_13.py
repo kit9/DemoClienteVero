@@ -33,7 +33,7 @@ class Account_12_13(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            # referencia - asiento contable s
+            # referencia - asiento contables
             #for imp in line.line_ids:
                # if imp.invoice_id:
                    # _ref = imp
