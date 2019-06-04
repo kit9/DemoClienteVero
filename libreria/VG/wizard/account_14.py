@@ -21,7 +21,7 @@ class Account_14(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '142200      ')])
+        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '142200')])
 
         # variables creadas
         content_txt = ""
@@ -66,7 +66,7 @@ class Account_14(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
                 line.name.replace("/", "") or '',
                 line.x_studio_field_fwlP9 or '',
