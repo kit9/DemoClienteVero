@@ -34,8 +34,8 @@ class Account_14(models.TransientModel):
         for line in lst_account_move_line:
             # _debito
             for imp in line.line_ids:
-                if imp.debit:
-                    _debito = imp.debit
+                if imp.amount_currency:
+                    _debito = imp.amount_currency
 
             # _catalogo
             for imp1 in line.line_ids:
@@ -54,15 +54,15 @@ class Account_14(models.TransientModel):
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                _estado_ope = "01"
+                _estado_ope = "1"
             else:
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    _estado_ope = "08"
+                    _estado_ope = "8"
                 else:
                     if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-                        _estado_ope = "09"
+                        _estado_ope = "9"
                     else:
-                        _estado_ope = "01"
+                        _estado_ope = "1"
 
             # datos a exportar a txt
 
