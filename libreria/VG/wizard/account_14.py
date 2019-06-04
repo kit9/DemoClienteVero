@@ -25,7 +25,7 @@ class Account_14(models.TransientModel):
 
         # variables creadas
         content_txt = ""
-        estado_ope = ""
+        _estado_ope = ""
         _debito=""
         _catalogo = ""
         _vat = ""
@@ -54,19 +54,19 @@ class Account_14(models.TransientModel):
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                estado_ope = "01"
+                _estado_ope = "01"
             else:
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "09"
+                    _estado_ope = "08"
                 else:
                     if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-                        estado_ope = "00"
+                        _estado_ope = "09"
                     else:
-                        estado_ope = "01"
+                        _estado_ope = "01"
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
                 line.name.replace("/", "") or '',
                 line.x_studio_field_fwlP9 or '',
@@ -74,7 +74,8 @@ class Account_14(models.TransientModel):
                 _vat or '',
                 _nombre or '',
                 line.date or '',
-                _debito or ''
+                _debito or '',
+                _estado_ope or ''
             )
 
             # Agregamos la linea al TXT
