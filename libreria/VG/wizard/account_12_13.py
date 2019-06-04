@@ -33,10 +33,7 @@ class Account_12_13(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            # referencia - asiento contables
-            #for imp in line.line_ids:
-               # if imp.invoice_id:
-                   # _ref = imp
+
 
             # Catalogo
             if line.partner_id.catalog_06_id.code:
@@ -52,15 +49,17 @@ class Account_12_13(models.TransientModel):
                     if res1.residual:
                         _resid = res1.residual
 
-            #Asiento Contable
-            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+            #Estado de operacion
+            if line.date.strftime("%Y%m00") == _fec_per: #fecha contable = fecha documento
                 estado_ope = "1"
             else:
-                if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "0"
+                if line.date.strftime("%Y%m00") != _fec_per: #fecha contable es anterior a fecha documento
+                    estado_ope = "8"
                 else:
-                    estado_ope = "0"
-
+                    if int(line.date.strftime("%Y")) == int(line.date.strftime("%Y")) - 2: #fecha contable es de 2 años anteriores
+                        estado_ope = "9"
+                    else:
+                        estado_ope = "1"
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '', #1 Periodo- Fecha contable
@@ -70,9 +69,8 @@ class Account_12_13(models.TransientModel):
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
                 _fec_per or '',  # 7
-                #_resid or '',  # 8 importe adeudado
-                _resid or '',
-                ''
+                _resid or '', # 8 importe adeudado
+                estado_ope or '',
             )
 
             # Agregamos la linea al TXT
