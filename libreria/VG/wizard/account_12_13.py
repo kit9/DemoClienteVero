@@ -34,9 +34,9 @@ class Account_12_13(models.TransientModel):
         for line in lst_account_move_line:
 
             # referencia - asiento contable s
-            for imp in line.line_ids:
-                if imp.invoice_id:
-                    _ref = imp.invoice_id
+            #for imp in line.line_ids:
+               # if imp.invoice_id:
+                   # _ref = imp
 
             # Catalogo
             if line.partner_id.catalog_06_id.code:
@@ -63,7 +63,7 @@ class Account_12_13(models.TransientModel):
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '', #1 Periodo- Fecha contable
-                _ref or '',  # 2 ASIENTO CONTABLE
+                line.ref or '',  # 2 ASIENTO CONTABLE
                 line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
                 _catalogo or '', #4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
