@@ -66,7 +66,7 @@ class Account_12_13(models.TransientModel):
                 _catalogo or '', #4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
-                _fec_per.strftime("%Y%m00") or '',  # 7
+                _fec_per or '',  # 7
                 _resid or '', # 8 importe adeudado
                 estado_ope or '',
             )
