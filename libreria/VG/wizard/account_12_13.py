@@ -50,7 +50,7 @@ class Account_12_13(models.TransientModel):
             for res in line.line_ids:
                 for res1 in res.invoice_id:
                     if res1.residual:
-                        _resid = line.invoice_id.residual
+                        _resid = res1.residual
 
             #Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
