@@ -66,7 +66,7 @@ class Account_14(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s0|%s" % (
                 line.date.strftime("%Y%m00") or '',  # 1
                 line.name.replace("/", "") or '',
                 line.x_studio_field_fwlP9 or '',
