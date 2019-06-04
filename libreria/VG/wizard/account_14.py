@@ -73,7 +73,7 @@ class Account_14(models.TransientModel):
                 _catalogo or '',
                 _vat or '',
                 _nombre or '',
-                line.date or '',
+                line.date.strftime("%d/%m/%Y") or '',
                 _debito or '',
                 _estado_ope or ''
             )
