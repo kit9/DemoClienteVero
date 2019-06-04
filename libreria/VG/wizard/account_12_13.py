@@ -33,8 +33,6 @@ class Account_12_13(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-
-
             # Catalogo
             if line.partner_id.catalog_06_id.code:
                 _catalogo = line.partner_id.catalog_06_id.code
@@ -50,13 +48,13 @@ class Account_12_13(models.TransientModel):
                         _resid = res1.residual
 
             #Estado de operacion
-            if line.date.strftime("%Y%m00") == _fec_per: #fecha contable = fecha documento
+            if line.date.strftime("%Y%m00") == _fec_per.strftime("%Y%m00"): #fecha contable = fecha documento
                 estado_ope = "1"
             else:
-                if line.date.strftime("%Y%m00") != _fec_per: #fecha contable es anterior a fecha documento
+                if line.date.strftime("%Y%m00") != _fec_per.strftime("%Y%m00"): #fecha contable es anterior a fecha documento
                     estado_ope = "8"
                 else:
-                    if int(line.date.strftime("%Y")) == int(line.date.strftime("%Y")) - 2: #fecha contable es de 2 años anteriores
+                    if int(line.date.strftime("%Y")) == int(line.date.strftime("%Y")) - 2: #fecha contable es de 2 year anteriores
                         estado_ope = "9"
                     else:
                         estado_ope = "1"
@@ -68,7 +66,7 @@ class Account_12_13(models.TransientModel):
                 _catalogo or '', #4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
-                _fec_per or '',  # 7
+                _fec_per.strftime("%Y%m00") or '',  # 7
                 _resid or '', # 8 importe adeudado
                 estado_ope or '',
             )
