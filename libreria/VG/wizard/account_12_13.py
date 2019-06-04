@@ -19,7 +19,7 @@ class Account_12_13(models.TransientModel):
         # modelo a buscar
         # ('dummy_account_id.code', 'like', 121100
         #dominio = ([('line_ids.account_id.code', 'ilike', '121100')])
-
+        #Filtro
         lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '121100')])
 
         # variables creadas
@@ -27,7 +27,7 @@ class Account_12_13(models.TransientModel):
         estado_ope = ""
         _catalogo = ""
         _fec_per = ""
-        _residual = ""
+        _resid = ""
         _ref = ""
 
         # Iterador
@@ -47,9 +47,10 @@ class Account_12_13(models.TransientModel):
                 _fec_per = line.invoice_id.date_document
 
             #residual - importe adeudado
-
-            #if line.invoice_id.residual:
-                #_residual = line.invoice_id.residual
+            for res in line.line_ids:
+                for res1 in res.invoice_id:
+                    if res1.residual:
+                        _resid = line.invoice_id.residual
 
             #Asiento Contable
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -69,8 +70,8 @@ class Account_12_13(models.TransientModel):
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
                 _fec_per or '',  # 7
-                #_residual or '',  # 8 importe adeudado
-                '',
+                #_resid or '',  # 8 importe adeudado
+                _resid or '',
                 ''
             )
 
