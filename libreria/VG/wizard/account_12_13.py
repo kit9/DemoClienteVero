@@ -17,8 +17,8 @@ class Account_12_13(models.TransientModel):
     @api.multi
     def generate_file(self):
         # modelo a buscar
-        dominio = ['&', ('month_year_move', 'like', '052019'), '|',
-                   ('dummy_account_id.code', '=', 121100)]
+        # ('dummy_account_id.code', 'like', 121100
+        dominio = ([('line_ids.account_id.code', 'ilike', '121100')])
 
         lst_account_move_line = self.env['account.move'].search([dominio])
 
@@ -33,7 +33,7 @@ class Account_12_13(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            # referencia - asiento contable s
+            # referencia - asiento contables
             #for imp in line.line_ids:
                # if imp.invoice_id:
                    # _ref = imp
