@@ -26,7 +26,7 @@ class Account_17(models.TransientModel):
         _catalogo = ""
         _vat = ""
         cantidad = ""
-
+        estado_ope =""
 
         # Iterador
         for line in lst_account_move_line:
@@ -57,6 +57,16 @@ class Account_17(models.TransientModel):
 
             #9
 
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "01"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "09"
+                else:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        estado_ope = "00"
+                    else:
+                        estado_ope = "01"
 
             # datos a exportar a txt
 
@@ -69,7 +79,7 @@ class Account_17(models.TransientModel):
                 line.partner_id.name or '', #6 nombre de la empresa
                 line.date.strftime("%d/%m/%Y") or '', #7 fecha de elaboración
                 cantidad or '', #8 total de monto a cobrar
-                '',
+                estado_ope or '',
                 '',
             )
 
