@@ -48,10 +48,10 @@ class Account_12_13(models.TransientModel):
                         _resid = res1.residual
 
             #Estado de operacion
-            if line.date.strftime("%Y%m00") == _fec_per.strftime("%Y%m00"): #fecha contable = fecha documento
+            if line.date.strftime("%Y%m00") == _fec_per: #fecha contable = fecha documento
                 estado_ope = "1"
             else:
-                if line.date.strftime("%Y%m00") != _fec_per.strftime("%Y%m00"): #fecha contable es anterior a fecha documento
+                if line.date.strftime("%Y%m00") != _fec_per: #fecha contable es anterior a fecha documento
                     estado_ope = "8"
                 else:
                     if int(line.date.strftime("%Y")) == int(line.date.strftime("%Y")) - 2: #fecha contable es de 2 year anteriores
