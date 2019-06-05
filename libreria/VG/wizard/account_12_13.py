@@ -43,21 +43,25 @@ class Account_12_13(models.TransientModel):
 
             #residual - importe adeudado
             for res in line.line_ids:
-                for res1 in res.invoice_id:
-                    if res1.residual:
-                        _resid = res1.residual
+
+                if res.invoice_id.residual:
+                    _resid = res.invoice_id.residual
+                # for res1 in res.invoice_id:
+                #     if res1.residual:
+                #         _resid = res1.residual
 
             #Estado de operacion
-            if line.date.strftime("%Y%m00") == _fec_per: #fecha contable = fecha documento
-                estado_ope = "1"
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                estado_ope = "01"
             else:
-                if line.date.strftime("%Y%m00") != _fec_per: #fecha contable es anterior a fecha documento
-                    estado_ope = "8"
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    estado_ope = "08"
                 else:
-                    if int(line.date.strftime("%Y")) == int(line.date.strftime("%Y")) - 2: #fecha contable es de 2 year anteriores
-                        estado_ope = "9"
+                    if int(time.strftime("%Y")) == int(time.strftime("%Y")) - 2:
+                        estado_ope = "09"
                     else:
-                        estado_ope = "1"
+                        estado_ope = "01"
+
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '', #1 Periodo- Fecha contable
