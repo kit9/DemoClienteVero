@@ -31,6 +31,7 @@ class ChartAccount(models.TransientModel):
         debe =""
         cuenta=""
         fecha=""
+        estado_ope=""
 
         # Iterador
         for line in lst_account_move_line:
@@ -39,6 +40,18 @@ class ChartAccount(models.TransientModel):
                 debe = line1.debit
             if line.invoice_id.date_document:
                 fecha = line.invoice_id.date_document
+
+                # validador de estado de operación
+                if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                    estado_ope = "01"
+                else:
+                    if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                        estado_ope = "08"
+                    else:
+                        if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                            estado_ope = "09"
+                        else:
+                            estado_ope = "01"
 
             # datos a exportar a txt
 
@@ -54,7 +67,7 @@ class ChartAccount(models.TransientModel):
                 line.invoice_id.invoice_number or '',  #
                 fecha.strftime("%d/%m/%Y") or '',  #
                 debe or '',  #
-                 ''   # estado de operacion
+                estado_ope or ''   # estado de operacion
 
             )
 
