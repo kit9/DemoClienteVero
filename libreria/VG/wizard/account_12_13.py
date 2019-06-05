@@ -64,7 +64,7 @@ class Account_12_13(models.TransientModel):
 
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date.strftime("%Y%m00") or '', #1 Periodo- Fecha contable
+                line.create_date.strftime("%Y/%m/%d") or '', #1 Periodo- Fecha contable
                 line.ref or '',  # 2 ASIENTO CONTABLE
                 line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
                 _catalogo or '', #4 ID - RUC
