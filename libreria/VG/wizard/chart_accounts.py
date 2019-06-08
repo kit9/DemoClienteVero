@@ -5,11 +5,24 @@ import time
 
 _logger = logging.getLogger(__name__)
 
+###########################################################################################
+# -- OPTIMIZA
+# -- DESCRIPCION: CLASE HEREDADA DEL STANDAR PARA MODIFICARLO
+# -- AUTOR: JORDY VALENZUELA VALCARCEL
+# -- CAMBIOS: ID     FECHA (DD/MM/YYYY)  PERSONA               CAMBIOS EFECTUADOS
+# --          #001   13/03/2019          JORDY VALENZUELA          CREACION DE LA CLASE.
+# --          #002   13/03/2019          JORDY VALENZUELA          AGREGADO DE CAMPOS
+# --          #003   13/03/2019          JORDY VALENZUELA          VALIDACION DE CAMPOS
+# --          #004   13/03/2019          JORDY VALENZUELA          AGREGADO DE FILTROS.
+# -----------------------------------------------------------------------------------------
 
+#   Inicio #001 "CREACION DE LA CLASE"
 class ChartAccount(models.TransientModel):
     _name = "libreria.chart_accounts"
     _description = "Plan Contable"
 
+
+#   Inicio #004 "AGREGADO DE FILTROS"
     date_month = fields.Selection(string="Mes", selection=[('01', 'Enero'),
                                                            ('02', 'Febrero'),
                                                            ('03', 'Marzo'),
@@ -23,6 +36,7 @@ class ChartAccount(models.TransientModel):
                                                            ('11', 'Noviembre'),
                                                            ('12', 'Diciembre')])
     date_year = fields.Char(string="Año", size=4)
+#   Fin #004
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
@@ -42,7 +56,7 @@ class ChartAccount(models.TransientModel):
         estado_ope = ""
         campo = ""
         campo1 = ""
-
+        # Inicio #003 "VALIDACION DE CAMPOS"
         # Iterador
         for line in lst_account_move_line:
             # validador de estado de operación
@@ -61,9 +75,9 @@ class ChartAccount(models.TransientModel):
                 campo = line.account_plan_code
             if line.account_plan_code:
                 campo1 = line.account_plan_code
-
+        # Fin #003
             # datos a exportar a txt
-
+            # Inicio #002 "AGREGADO DE CAMPOS"
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.create_date.strftime("%Y%m00") or '',  # Periodo
                 line.code or '',  # codigo cuenta contable
@@ -75,6 +89,7 @@ class ChartAccount(models.TransientModel):
                 estado_ope or ''  # estado de operacion
 
             )
+            # Fin #002
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
@@ -93,3 +108,4 @@ class ChartAccount(models.TransientModel):
             'res_id': self.id,
             'target': 'new'
         }
+#   Fin #001

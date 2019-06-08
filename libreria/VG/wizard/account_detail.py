@@ -56,7 +56,7 @@ class ChartAccount(models.TransientModel):
             # datos a exportar a txt
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.create_date.strftime("%Y%m00") or '',  # Periodo
+                line.create_date.strftime("%Y%m00") or '',
                 line.name or '',  #
                 line.x_studio_field_fwlP9 or '',  #
                 line.invoice_id.partner_id.catalog_06_id.code or'',  #
