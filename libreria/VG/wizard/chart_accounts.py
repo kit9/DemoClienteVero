@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 ###########################################################################################
 # -- OPTIMIZA
-# -- DESCRIPCION: CLASE HEREDADA DEL STANDAR PARA MODIFICARLO
+# -- DESCRIPCION: CLASE CHART_ACCOUNT CREACION PARA PROYECTO ODOO
 # -- AUTOR: JORDY VALENZUELA VALCARCEL
 # -- CAMBIOS: ID     FECHA (DD/MM/YYYY)  PERSONA               CAMBIOS EFECTUADOS
 # --          #001   13/03/2019          JORDY VALENZUELA          CREACION DE LA CLASE.
