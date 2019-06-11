@@ -21,10 +21,10 @@ _logger = logging.getLogger(__name__)
 class ChartAccount(models.TransientModel):
     _name = "libreria.account_detail"
     _description = "Detalle Cuenta"
-    #   Inicio #004 "AGREGADO DE FILTROS"
-    # --   date_month = fields.Char(string="Mes", size=2)
-    # ..   date_year = fields.Char(string="Año", size=4)
-    #   Fin #004
+#   Inicio #004 "AGREGADO DE FILTROS"
+# --   date_month = fields.Char(string="Mes", size=2)
+# ..   date_year = fields.Char(string="Año", size=4)
+#   Fin #004
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -32,28 +32,27 @@ class ChartAccount(models.TransientModel):
     @api.multi
     def generate_file(self):
 
-        # filtro de fecha
+# filtro de fecha
         dominio = [('dummy_account_id.code', 'like', '19')]
 
-        # modelo a buscar
+# modelo a buscar
         lst_account_move_line = self.env['account.move'].search(dominio)
 
-        # variables creadas
+# variables creadas
         content_txt = ""
         debe = ""
         cuenta = ""
         fecha = ""
         estado_ope = ""
-        # Inicio #003 "VALIDACION DE CAMPOS"
-        # Iterador
+# Inicio #003 "VALIDACION DE CAMPOS"
+# Iterador
         for line in lst_account_move_line:
 
             for line1 in line.line_ids:
                 debe = line1.debit
             if line.invoice_id.date_document:
                 fecha = line.invoice_id.date_document
-
-                # validador de estado de operación
+# validador de estado de operación
                 if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                     estado_ope = "01"
                 else:
@@ -64,9 +63,9 @@ class ChartAccount(models.TransientModel):
                             estado_ope = "09"
                         else:
                             estado_ope = "01"
-            # Fin #003
-            # datos a exportar a txt
-            # Inicio #002 "AGREGADO DE CAMPOS"
+# Fin #003
+# datos a exportar a txt
+# Inicio #002 "AGREGADO DE CAMPOS"
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.create_date.strftime("%Y%m00") or '',
                 line.name or '',  #
@@ -82,9 +81,9 @@ class ChartAccount(models.TransientModel):
                 estado_ope or ''  # estado de operacion
 
             )
-            # Fin #002
+# Fin #002
 
-            # Agregamos la linea al TXT
+# Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
 
         self.write({
