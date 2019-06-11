@@ -52,6 +52,7 @@ class ChartAccount(models.TransientModel):
                 debe = line1.debit
             if line.invoice_id.date_document:
                 fecha = line.invoice_id.date_document
+
 # validador de estado de operación
                 if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                     estado_ope = "01"
@@ -76,7 +77,7 @@ class ChartAccount(models.TransientModel):
                 line.invoice_id.document_type_id.number or '',  #
                 line.invoice_id.invoice_serie or '',  #
                 line.invoice_id.invoice_number or '',  #
-                fecha.strftime("%d/%m/%Y") or '',  #
+                fecha or '',  #
                 debe or '',  #
                 estado_ope or ''  # estado de operacion
 
