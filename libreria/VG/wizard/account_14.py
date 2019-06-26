@@ -1,4 +1,17 @@
-# Desarrollado el 05/06/2019 de inicio a fin
+
+########################################################################################################################
+# -- OPTIMIZA                                                                                                          #
+# -- DESCRIPCION: CUENTA 14 CREACION PARA PROYECTO ODOO                                                                #
+# -- AUTOR: ANTHONY ROBINSON LOAYZA PEREZ                                                                              #
+# -- CAMBIOS: ID     FECHA (DD/MM/YYYY)  PERSONA               CAMBIOS EFECTUADOS                                      #
+# --          #001   05/06/2019          ANTHONY LOAYZA        CREACION DE LA CLASE.                                   #
+# --          #002   05/06/2019          ANTHONY LOAYZA        AGREGADO DE CAMPOS CON CONDICIONALES.                   #
+# --          #003   05/06/2019          ANTHONY LOAYZA        AGREGANDO CAMPOS.                                       #
+# --          #004   05/06/2019          ANTHONY LOAYZA        CONVIRTIENDO TXT A BINARIO.                             #
+# --          #005   26/06/2019          ANTHONY LOAYZA        MODIFICADO EL MODELO A BUSCAR CON FILTRO.               #
+# --          #006   26/06/2019          ANTHONY LOAYZA        AGREGADO DE VALIDADOR DE ERROR.                         #
+# --          #007   26/06/2019          ANTHONY LOAYZA        MODIFICADO LA CONDICIONAL DEBIT.                        #
+# ######################################################################################################################
 
 from odoo import models, fields, api
 import base64
@@ -7,7 +20,7 @@ import time
 
 _logger = logging.getLogger(__name__)
 
-
+    # INICIO 001 "CREACION DE LA CLASE"
 class Account_14(models.TransientModel):
     _name = "libreria.account_14"
     _description = "Cuenta_14"
@@ -16,25 +29,30 @@ class Account_14(models.TransientModel):
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
+    # FIN 001
+
     @api.multi
     def generate_file(self):
 
-        # Modificado el 26/06/2019 de
-        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '141200')])
-        # A
-        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
+    # INICIO 005 "MODIFICADO EL MODELO A BUSCAR CON FILTRO"
 
+        # --- Modificado el 26/06/2019 de ---
+        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '141200')])
+        # -- A
+        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
 
         # modelo a buscar
         lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
 
-        # Agregado el 26/06/2019
-        # if len(lst_account_move_line) == 0:
-        #    raise ValidationError("No se encuentra la cuenta 14")
+    # FIN 005
 
-        # validador de error 
+    # INICIO 006 "AGREGADO DE VALIDADOR DE ERROR"
+
+        # validador de error
         if len(lst_account_move_line) == 0:
             raise ValidationError("No se encuentra la cuenta 14")
+
+    # FIN 006
 
         # variables creadas
         content_txt = ""
@@ -43,8 +61,12 @@ class Account_14(models.TransientModel):
         _catalogo = ""
         _vat = ""
 
+    # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
+
         # Iterador
         for line in lst_account_move_line:
+
+    # INICIO 007 "MODIFICADO LA CONDICIONAL DEBIT"
 
             # Modificado el 26/06/2019 de
             # for imp in line.line_ids:
@@ -61,6 +83,7 @@ class Account_14(models.TransientModel):
             for imp in line.line_ids:
                 if imp.debit:
                     _debito = imp.debit
+    #FIN 007
 
             # _catalogo
             for imp1 in line.line_ids:
@@ -89,6 +112,10 @@ class Account_14(models.TransientModel):
                     else:
                         _estado_ope = "1"
 
+    # FIN 002
+
+    # INICIO 003 "AGREGANDO CAMPOS"
+
             # datos a exportar a txt
 
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s0|%s" % (
@@ -103,14 +130,20 @@ class Account_14(models.TransientModel):
                 _estado_ope or ''
             )
 
+    # FIN 003
+
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
+
+    # INICIO 004 "CONVIRTIENDO TXT A BINARIO"
 
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
             'txt_filename': "Cuenta_14.txt"
         })
+    # FIN 004
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Cuenta_14',
