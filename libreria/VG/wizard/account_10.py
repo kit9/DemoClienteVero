@@ -38,7 +38,7 @@ class account_10(models.TransientModel):
 
             # datos a exportar a txt
             txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
-                line.create_date.strftime("%Y%m00") or '',
+                line.create_date.strftime("%Y%m%d") or '',
                 line.dummy_account_id.code or '',
                 line.journal_id.code or '',
                 line.journal_id.bank_account_id.acc_number or '',
