@@ -21,7 +21,7 @@ class Account_14(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '142200')])
+        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
 
         # variables creadas
         content_txt = ""
