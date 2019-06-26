@@ -1,3 +1,5 @@
+# Desarrollado el 05/06/2019 de inicio a fin
+
 from odoo import models, fields, api
 import base64
 import logging
@@ -10,15 +12,18 @@ class Account_14(models.TransientModel):
     _name = "libreria.account_14"
     _description = "Cuenta_14"
 
-    #date_month = fields.Char(string="Mes", size=2)
-    #date_year = fields.Char(string="Año", size=4)
-
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
     @api.multi
     def generate_file(self):
+
+        # Modificado el 26/06/2019 de
+        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '141200')])
+        # A
+        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
+
 
         # modelo a buscar
         lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
@@ -34,8 +39,8 @@ class Account_14(models.TransientModel):
         for line in lst_account_move_line:
             # _debito
             for imp in line.line_ids:
-                if imp.amount_currency:
-                    _debito = imp.amount_currency
+                if imp.debit:
+                    _debito = imp.debit
 
             # _catalogo
             for imp1 in line.line_ids:
@@ -95,3 +100,4 @@ class Account_14(models.TransientModel):
             'res_id': self.id,
             'target': 'new'
         }
+# Fin
