@@ -27,6 +27,8 @@ class account_10(models.TransientModel):
         credit = ""
         debit = ""
         _estado_ope=""
+        _nom = ""
+
         # Iterador
         for line in lst_account_move_line:
             for imp in line.line_ids:
@@ -35,6 +37,10 @@ class account_10(models.TransientModel):
             for imp1 in line.line_ids:
                 if imp1.debit:
                     debit = imp1.debit
+
+            for imp2 in line.line_ids:
+                if imp2.statement_id.name:
+                        _nom = imp2.statement_id.name
 
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 _estado_ope = "1"
@@ -52,7 +58,7 @@ class account_10(models.TransientModel):
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|" % (
                 line.create_date.strftime("%Y%m%d") or '',
                 line.dummy_account_id.code or '',
-                line or '',
+                _nom or '',
                 line.journal_id.bank_account_id.acc_number or '-',
                 line.currency_id.name or '',
                 debit or'',
