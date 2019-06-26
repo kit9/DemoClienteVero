@@ -53,7 +53,7 @@ class account_10(models.TransientModel):
                 line.create_date.strftime("%Y%m%d") or '',
                 line.dummy_account_id.code or '',
                 line or '',
-                line.journal_id.bank_account_id.acc_number or '',
+                line.journal_id.bank_account_id.acc_number or '-',
                 line.currency_id.name or '',
                 debit or'',
                 credit or '',
