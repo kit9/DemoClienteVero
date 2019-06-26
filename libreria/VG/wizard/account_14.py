@@ -28,6 +28,14 @@ class Account_14(models.TransientModel):
         # modelo a buscar
         lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
 
+        # Agregado el 26/06/2019
+        # if len(lst_account_move_line) == 0:
+        #    raise ValidationError("No se encuentra la cuenta 14")
+
+        # validador de error 
+        if len(lst_account_move_line) == 0:
+            raise ValidationError("No se encuentra la cuenta 14")
+
         # variables creadas
         content_txt = ""
         _estado_ope = ""
@@ -37,6 +45,18 @@ class Account_14(models.TransientModel):
 
         # Iterador
         for line in lst_account_move_line:
+
+            # Modificado el 26/06/2019 de
+            # for imp in line.line_ids:
+            #    if imp.amount_currency:
+            #        _debito = imp.amount_currency
+
+            # A
+
+            # for imp in line.line_ids:
+            #    if imp.debit:
+            #        _debito = imp.debit
+
             # _debito
             for imp in line.line_ids:
                 if imp.debit:
