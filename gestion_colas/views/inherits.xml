@@ -1,0 +1,16 @@
+<odoo>
+
+    <!-- Formulario - Ticket -->
+    <record id="helpdesk_ticket_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <!--<attribute name="attrs">{}</attribute>-->
+                <attribute name="required">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

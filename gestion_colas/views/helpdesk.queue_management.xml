@@ -1,0 +1,70 @@
+<odoo>
+
+    <!-- Formulario - Gestion de Colas -->
+    <record id="helpdesk_queue_management_form" model="ir.ui.view">
+        <field name="name">helpdesk.queue_management.form</field>
+        <field name="model">helpdesk.queue_management</field>
+        <field name="arch" type="xml">
+            <form string="Formulario Gestion de Colas">
+                <sheet>
+                    <group>
+                        <field name="id" readonly="1"/>
+                        <field name="is_analysis" readonly="1"/>
+                        <field name="name"/>
+                        <field name="start_datetime"/>
+                        <field name="duration"/>
+                        <field name="end_datetime" readonly="1"/>
+                        <field name="helpdesk_ticket_id" readonly="1"/>
+                        <field name="user_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Calendario - Gestion de Colas -->
+    <record id="helpdesk_queue_management_calendar" model="ir.ui.view">
+        <field name="name">helpdesk.queue_management.calendar</field>
+        <field name="model">helpdesk.queue_management</field>
+        <field name="arch" type="xml">
+            <!--date_delay="duration"-->
+            <calendar string="Tickets" date_start="start_datetime" date_stop="end_datetime" mode="week" color="user_id" quick_add="False">
+                <field name="name"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Tabla - Gestion de Colas -->
+    <record id="helpdesk_queue_management_tree" model="ir.ui.view">
+        <field name="name">helpdesk.queue_management.tree</field>
+        <field name="model">helpdesk.queue_management</field>
+        <field name="arch" type="xml">
+            <tree string="Tabla Gestion de Colas">
+                <field name="is_analysis"/>
+                <field name="name"/>
+                <field name="start_datetime"/>
+                <field name="duration"/>
+                <field name="end_datetime"/>
+                <field name="helpdesk_ticket_id"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción - Gestion de Colas -->
+    <record id="helpdesk_queue_management_action_main" model="ir.actions.act_window">
+        <field name="name">Todos los Tiquetes</field>
+        <field name="type">ir.actions.act_window</field>
+        <!--<field name="domain">[('user_id', '!=', False)]</field>-->
+        <field name="res_model">helpdesk.queue_management</field>
+        <field name="view_mode">tree,calendar,form</field>
+    </record>
+
+    <!-- Menu - Gestion de Colas -->
+    <menuitem id="opt_helpdesk_tickets_calendar"
+              name="Calendario de Tickets"
+              parent="helpdesk.helpdesk_ticket_report_menu_main"
+              action="helpdesk_queue_management_action_main"
+              sequence="1"/>
+
+</odoo>

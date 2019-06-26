@@ -1,0 +1,74 @@
+<odoo>
+
+    <!--    Formulario - Tickets-->
+    <record id="helpdesk_ticket_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sla_id']" position="after">
+                <field name="id"/>
+                <field name="analysis_duration" required="1"/>
+                <field name="attention_duration" required="1"/>
+                <!--                <field name="queue_management_ana_id" readonly="1"/>-->
+                <!--                <field name="queue_management_ate_id" readonly="1"/>-->
+            </xpath>
+            <xpath expr="//field[@name='description']" position="after">
+                <field name="queue_management_ids">
+                    <tree string="Tiempos">
+                        <field name="name"/>
+                        <field name="start_datetime"/>
+                        <field name="end_datetime"/>
+                        <field name="duration"/>
+                        <field name="is_analysis"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_tree_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="attention_datetime"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--<record id="helpdesk_ticket_calendar" model="ir.ui.view">-->
+    <!--<field name="name">helpdesk.ticket.calendar</field>-->
+    <!--<field name="model">helpdesk.ticket</field>-->
+    <!--<field name="arch" type="xml">-->
+    <!--<calendar string="Tickets" date_start="start_datetime"-->
+    <!--date_delay="duration" mode="week" color="user_id">-->
+    <!--<field name="display_name"/>-->
+    <!--</calendar>-->
+    <!--</field>-->
+    <!--</record>-->
+
+    <!-- Action Document Type -->
+    <!--<record id="opt_helpdesk_ticket_action_main" model="ir.actions.act_window">-->
+    <!--<field name="name">Todos los Tiquetes</field>-->
+    <!--<field name="type">ir.actions.act_window</field>-->
+    <!--<field name="domain">[('stage_id.is_close', '!=', 'True')]</field>-->
+    <!--<field name="res_model">helpdesk.ticket</field>-->
+    <!--<field name="view_mode">tree,calendar,form</field>-->
+    <!--</record>-->
+
+    <!--<menuitem id="opt_helpdesk_tickets_calendar"-->
+    <!--name="Calendario de Tickets"-->
+    <!--parent="helpdesk.helpdesk_ticket_report_menu_main"-->
+    <!--action="opt_helpdesk_ticket_action_main"-->
+    <!--sequence="1"/>-->
+
+
+</odoo>

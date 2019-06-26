@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_helpdesk_queue_management_all,access_helpdesk_queue_management_all,model_helpdesk_queue_management,,1,1,1,1

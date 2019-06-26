@@ -1,0 +1,143 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <!--
+        <record model="ir.ui.view" id="gestion_colas.list">
+          <field name="name">gestion_colas list</field>
+          <field name="model">gestion_colas.gestion_colas</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="value"/>
+              <field name="value2"/>
+            </tree>
+          </field>
+        </record>
+        -->
+
+        <!-- actions opening views on models -->
+        <!--
+        <record model="ir.actions.act_window" id="gestion_colas.action_window">
+          <field name="name">gestion_colas window</field>
+          <field name="res_model">gestion_colas.gestion_colas</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        -->
+
+        <!-- server action to the one above -->
+        <!--
+        <record model="ir.actions.server" id="gestion_colas.action_server">
+          <field name="name">gestion_colas server</field>
+          <field name="model_id" ref="model_gestion_colas_gestion_colas"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": self._name,
+            }
+          </field>
+        </record>
+        -->
+
+        <!-- Top menu item -->
+        <!--
+        <menuitem name="gestion_colas" id="gestion_colas.menu_root"/>
+        -->
+        <!-- menu categories -->
+        <!--
+        <menuitem name="Menu 1" id="gestion_colas.menu_1" parent="gestion_colas.menu_root"/>
+        <menuitem name="Menu 2" id="gestion_colas.menu_2" parent="gestion_colas.menu_root"/>
+        -->
+        <!-- actions -->
+        <!--
+        <menuitem name="List" id="gestion_colas.menu_1_list" parent="gestion_colas.menu_1"
+                  action="gestion_colas.action_window"/>
+        <menuitem name="Server to list" id="gestion_colas" parent="gestion_colas.menu_2"
+                  action="gestion_colas.action_server"/>
+        -->
+
+        <!-- Thee -->
+        <record id="opt_gestion_colas_tree_view" model="ir.ui.view">
+            <field name="name">opt.gestion_colas.tree.view</field>
+            <field name="model">opt.gestion_colas</field>
+            <field name="arch" type="xml">
+                <tree string="Tree Tipo de Documentos">
+                    <!--<field name="name"/>-->
+                    <field name="name"/>
+                    <field name="start_datetime"/>
+                    <field name="stop_datetime"/>
+                    <field name="duration"/>
+                    <field name="day_all"/>
+                    <field name="employee_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form Tipo de Documentos -->
+        <record id="opt_gestion_colas_form_view" model="ir.ui.view">
+            <field name="name">opt.gestion_colas.form.view</field>
+            <field name="model">opt.gestion_colas</field>
+            <field name="arch" type="xml">
+                <form string="Form Tipo de Documento">
+                    <sheet>
+                        <group>
+                            <!--<field name="name"/>-->
+                            <field name="name"/>
+                            <field name="start_datetime"/>
+                            <field name="stop_datetime"/>
+                            <field name="duration"/>
+                            <field name="day_all"/>
+                            <field name="employee_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="opt_gestion_colas_form_calendar_view" model="ir.ui.view">
+            <field name="name">opt.gestion_colas.form.calendar.view</field>
+            <field name="model">opt.gestion_colas</field>
+            <field name="arch" type="xml">
+                <calendar string="Tareas" date_start="start_datetime"
+                          date_delay="duration" all_day="day_all" mode="week">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="opt_gestion_colas_form_gantt_view" model="ir.ui.view">
+            <field name="name">opt.gestion_colas.form.gantt.view</field>
+            <field name="model">opt.gestion_colas</field>
+            <field name="arch" type="xml">
+                <gantt string="Tareas" date_start="start_datetime" date_delay="duration" default_group_by="employee_id"
+                       type="gantt">
+                </gantt>
+            </field>
+        </record>
+
+        <!-- Action Document Type -->
+        <record id="action_opt_gestion_colas" model="ir.actions.act_window">
+            <field name="name">Tipo de Documento Sunat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">opt.gestion_colas</field>
+            <field name="view_mode">tree,calendar,gantt,form</field>
+        </record>
+
+        <menuitem id="gestion_colas_menu_root"
+                  name="Gestion de Colas"
+                  web_icon="gestion_colas,static/description/icon.png"/>
+
+        <menuitem id="gestion_colas_menu_root_cat"
+                  name="Gestion de Colas"
+                  parent="gestion_colas_menu_root"
+                  sequence="1"/>
+
+        <menuitem id="gestion_colas_item"
+                  name="Colas"
+                  parent="gestion_colas_menu_root_cat"
+                  action="action_opt_gestion_colas"
+                  sequence="1"/>
+
+    </data>
+</odoo>
