@@ -26,7 +26,7 @@ class account_10(models.TransientModel):
         content_txt = ""
         credit = ""
         debit = ""
-
+        _estado_ope=""
         # Iterador
         for line in lst_account_move_line:
             for imp in line.line_ids:
@@ -36,15 +36,28 @@ class account_10(models.TransientModel):
                 if imp1.debit:
                     debit = imp1.debit
 
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                _estado_ope = "1"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    _estado_ope = "8"
+                else:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        _estado_ope = "9"
+                    else:
+                        _estado_ope = "1"
+
+
             # datos a exportar a txt
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|" % (
                 line.create_date.strftime("%Y%m%d") or '',
                 line.dummy_account_id.code or '',
                 line.journal_id.code or '',
                 line.journal_id.bank_account_id.acc_number or '',
                 line.currency_id.name or '',
                 debit or'',
-                credit or ''
+                credit or '',
+                _estado_ope or ''
             )
 
             # Agregamos la linea al TXT
