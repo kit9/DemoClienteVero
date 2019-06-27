@@ -57,7 +57,7 @@ class Account_12_13(models.TransientModel):
                 else:
                     if statement_id.date:
                         _sinFact = statement_id.date
-                    else
+                    else:
                         _sinFact = "No se encontraron facturas"
 
             #Estado de operacion
