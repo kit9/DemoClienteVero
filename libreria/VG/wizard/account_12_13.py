@@ -29,6 +29,8 @@ class Account_12_13(models.TransientModel):
         _fec_per = ""
         _resid = ""
         _ref = ""
+        _fact = "INV"
+        _sinFact = ""
 
         # Iterador
         for line in lst_account_move_line:
@@ -49,6 +51,14 @@ class Account_12_13(models.TransientModel):
                 # for res1 in res.invoice_id:
                 #     if res1.residual:
                 #         _resid = res1.residual
+
+            #si no hay factura
+            if line.ref == _fact:
+                _sinFact = line.ref
+            else:
+                _sinFact = statement_id.date
+
+
 
             #Estado de operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
