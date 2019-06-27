@@ -45,20 +45,17 @@ class Account_12_13(models.TransientModel):
 
             #residual - importe adeudado
             for res in line.line_ids:
-
                 if res.invoice_id.residual:
                     _resid = res.invoice_id.residual
                 # for res1 in res.invoice_id:
                 #     if res1.residual:
                 #         _resid = res1.residual
 
-            #si no hay factura
-            if line.ref == _fact:
-                _sinFact = line.ref
-            else:
-                _sinFact = statement_id.date
-
-
+                #si no hay factura
+                if line.ref == _fact:
+                    _sinFact = line.ref
+                else:
+                    _sinFact = statement_id.date
 
             #Estado de operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
