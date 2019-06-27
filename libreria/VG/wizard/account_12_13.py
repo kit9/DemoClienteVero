@@ -55,7 +55,10 @@ class Account_12_13(models.TransientModel):
                 if line.ref == _fact:
                     _sinFact = line.ref
                 else:
-                    _sinFact = statement_id.date
+                    if statement_id.date:
+                        _sinFact = statement_id.date
+                    else
+                        _sinFact = "No se encontraron facturas"
 
             #Estado de operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
