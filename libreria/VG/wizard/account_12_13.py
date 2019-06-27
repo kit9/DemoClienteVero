@@ -53,10 +53,10 @@ class Account_12_13(models.TransientModel):
 
                 #si no hay factura
             for fac in line.line_ids:
-                if fac.line.ref == _fact:
-                    _sinFact = fac.line.ref
+                if line.ref == _fact:
+                    _sinFact = line.ref
                 else:
-                    if fac.line.ref != _fact:
+                    if line.ref != _fact:
                         _sinFact = statement_id.date
                     else:
                         _sinFact = "No se encontraron facturas"
