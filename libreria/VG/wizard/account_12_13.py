@@ -56,7 +56,7 @@ class Account_12_13(models.TransientModel):
                 if line.ref == _fact:
                     _sinFact = line.ref
                 elif line.ref != _fact:
-                    _sinFact = statement_id.date
+                    _sinFact = line.statement_id.date
 
 
             #Estado de operacion
