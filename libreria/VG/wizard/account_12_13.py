@@ -40,8 +40,8 @@ class Account_12_13(models.TransientModel):
                 _catalogo = line.partner_id.catalog_06_id.code
 
             # fecha del documento
-            if line.invoice_id.date_document:
-                _fec_per = line.invoice_id.date_document
+            # if line.invoice_id.date_document:
+            #     _fec_per = line.invoice_id.date_document
 
             #residual - importe adeudado
             for res in line.line_ids:
@@ -78,7 +78,7 @@ class Account_12_13(models.TransientModel):
                 _catalogo or '', #4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
-                _fec_per or '',  # 7
+                _sinFact or '',  # 7
                 _resid or '', # 8 importe adeudado
                 estado_ope or '',
             )
