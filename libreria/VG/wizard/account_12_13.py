@@ -52,10 +52,10 @@ class Account_12_13(models.TransientModel):
                 #         _resid = res1.residual
 
                 #si no hay factura
-                if line.ref != _fact:
-                    _sinFact = "1"
-                elif line.ref == _fact:
+                if line.ref == _fact:
                     _sinFact = line.ref
+                elif line.ref != _fact:
+                    _sinFact = statement_id.date
 
 
             #Estado de operacion
