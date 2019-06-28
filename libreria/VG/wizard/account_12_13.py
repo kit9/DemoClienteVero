@@ -55,8 +55,10 @@ class Account_12_13(models.TransientModel):
             for refer in line.line_ids:
                 if refer.ref == _fact:
                     _sinFact = refer.ref
-                elif refer.ref != _fact:
+                else:
                     _sinFact = refer.statement_id.date
+                                            
+
 
 
             #Estado de operacion
