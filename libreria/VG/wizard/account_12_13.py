@@ -53,7 +53,7 @@ class Account_12_13(models.TransientModel):
 
                 #si no hay factura
                 if line.ref != _fact:
-                    _sinFact = line.statement_id.date
+                    _sinFact = "1"
                 elif line.ref == _fact:
                     _sinFact = line.ref
 
