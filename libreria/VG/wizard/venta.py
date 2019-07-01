@@ -109,13 +109,13 @@ class Venta(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Venta.txt"
+            'txt_filename': "venta.txt"
         })
     # FIN 004
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Venta',
+            'name': 'venta',
             'res_model': 'libreria.venta',
             'view_mode': 'form',
             'view_type': 'form',
