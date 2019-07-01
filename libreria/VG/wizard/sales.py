@@ -21,9 +21,9 @@ import time
 _logger = logging.getLogger(__name__)
 
     # INICIO 001 "CREACION DE LA CLASE"
-class Venta(models.TransientModel):
-    _name = "libreria.venta"
-    _description = "Venta"
+class Sales(models.TransientModel):
+    _name = "libreria.sales"
+    _description = "Sales"
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
@@ -115,8 +115,8 @@ class Venta(models.TransientModel):
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'venta',
-            'res_model': 'libreria.venta',
+            'name': 'sales',
+            'res_model': 'libreria.sales',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,

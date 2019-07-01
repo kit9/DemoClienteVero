@@ -1,7 +1,7 @@
 <odoo>
-        <record id="venta_view" model="ir.ui.view">
-            <field name="name">libreria.venta.form</field>
-            <field name="model">libreria.venta</field>
+        <record id="venta_sales" model="ir.ui.view">
+            <field name="name">libreria.sales.form</field>
+            <field name="model">libreria.sales</field>
             <field name="arch" type="xml">
                 <form string="Generar Archivo">
                     <field name="state" invisible="1"/>
@@ -28,10 +28,10 @@
             </field>
         </record>
 
-        <record id="venta_VG" model="ir.actions.act_window">
-            <field name="name">venta</field>
+        <record id="sales_VG" model="ir.actions.act_window">
+            <field name="name">sales</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">libreria.venta</field>
+            <field name="res_model">libreria.sales</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>

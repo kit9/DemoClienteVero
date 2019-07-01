@@ -40,7 +40,7 @@
         'wizard/account_detail_view.xml',
         'wizard/account_10_view.xml',
         'wizard/account_17_view.xml',
-        'wizard/venta_view.xml',
+        'wizard/sales_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
