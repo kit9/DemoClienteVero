@@ -35,7 +35,7 @@ class Sales(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
+        lst_account_move_line = self.env['account.invoice'].search([('state', 'ilike', 'abierto')])
 
     # INICIO 006 "AGREGADO DE VALIDADOR DE ERROR"
 
@@ -94,8 +94,19 @@ class Sales(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s" % (
-                line.date.strftime("%Y%m%d") or '',  # 1
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                line.document_type_id or '',  # 1
+                line.invoice_serie or '', # 2
+                line.invoice_number or '', # 3
+                line.type_ident or '', # 4
+                line.num_ident or '', # 5
+                line.inv_exonerada or '', # 6
+                line.inv_amount_untax or '', # 7
+                line.amount_untax or '', # 8
+                line.inv_inafecto or '', # 9
+                line.inv_isc or '', # 10
+                line.inv_otros or '', # 11
+                
                 #line.name.replace("/", "") or '',
             )
 
