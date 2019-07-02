@@ -80,14 +80,14 @@
             <field name="factor_inv">1000</field>
             <field name="rounding">0.001</field>
         </record>
-        <record model="uom.uom" id="14">
-            <field name="name">METROS CÚBICOS</field>
-            <field name="sunat_code">14</field>
-            <field name="category_id" ref="uom.product_uom_categ_vol"/>
-            <field name="uom_type">bigger</field>
-            <field name="factor_inv" eval="1000"/>
-            <field name="rounding" eval="0.001"/>
-        </record>
+        <!--        <record model="uom.uom" id="14">-->
+        <!--            <field name="name">METROS CÚBICOS</field>-->
+        <!--            <field name="sunat_code">14</field>-->
+        <!--            <field name="category_id" ref="uom.product_uom_categ_vol"/>-->
+        <!--            <field name="uom_type">bigger</field>-->
+        <!--            <field name="factor_inv" eval="1000"/>-->
+        <!--            <field name="rounding" eval="0.001"/>-->
+        <!--        </record>-->
         <record id="uom.product_uom_meter" model="uom.uom">
             <field name="name">METROS</field>
             <field name="sunat_code">15</field>
