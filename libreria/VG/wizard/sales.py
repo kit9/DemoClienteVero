@@ -40,8 +40,8 @@ class Sales(models.TransientModel):
     # INICIO 006 "AGREGADO DE VALIDADOR DE ERROR"
 
         # validador de error
-        if len(lst_account_move_line) == 0:
-            raise ValidationError("No se encuentra la venta")
+        #if len(lst_account_move_line) == 0:
+        #    raise ValidationError("No se encuentra la venta")
 
     # FIN 006
 
@@ -106,7 +106,7 @@ class Sales(models.TransientModel):
                 line.inv_inafecto or '', # 9
                 line.inv_isc or '', # 10
                 line.inv_otros or '', # 11
-                
+
                 #line.name.replace("/", "") or '',
             )
 
