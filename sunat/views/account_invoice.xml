@@ -198,49 +198,49 @@
     </record>
 
     <!-- Tabla - Factura Cliente -->
-    <!--<record id="sunat_account_invoice_tree" model="ir.ui.view">-->
-    <!--<field name="name">sunat.account.invoice.tree</field>-->
-    <!--<field name="model">account.invoice</field>-->
-    <!--<field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
-    <!--<field name="arch" type="xml">-->
-    <!--<field name="amount_untaxed_invoice_signed" position="after">-->
-    <!--<field name="inv_fac_exp" sum="Total"/>-->
-    <!--<field name="inv_exonerada" sum="Total"/>-->
-    <!--<field name="inv_inafecto" sum="Total"/>-->
-    <!--<field name="inv_isc" sum="Total"/>-->
-    <!--</field>-->
-    <!--<field name="amount_tax_signed" position="after">-->
-    <!--<field name="inv_otros" sum="Total"/>-->
-    <!--</field>-->
-    <!--<field name="amount_untaxed_invoice_signed" position="replace">-->
-    <!--<field name="amount_untaxed_invoice_signed" invisible="1"/>-->
-    <!--<field name="inv_amount_untax" sum="Total"/>-->
-    <!--</field>-->
-    <!--</field>-->
-    <!--</record>-->
-
-    <!-- Tabla - Factura Cliente -->
     <record id="sunat_account_invoice_tree" model="ir.ui.view">
         <field name="name">sunat.account.invoice.tree</field>
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
         <field name="arch" type="xml">
-            <field name="amount_untaxed" position="after">
+            <field name="amount_untaxed_invoice_signed" position="after">
                 <field name="inv_fac_exp" sum="Total"/>
                 <field name="inv_exonerada" sum="Total"/>
                 <field name="inv_inafecto" sum="Total"/>
                 <field name="inv_isc" sum="Total"/>
             </field>
-            <field name="amount_tax" position="after">
+            <field name="amount_tax_signed" position="after">
                 <field name="inv_otros" sum="Total"/>
             </field>
-            <field name="amount_untaxed" position="replace">
-                <field name="amount_untaxed" invisible="1"/>
+            <field name="amount_untaxed_invoice_signed" position="replace">
+                <field name="amount_untaxed_invoice_signed" invisible="1"/>
                 <field name="inv_amount_untax" sum="Total"/>
             </field>
-
         </field>
     </record>
+
+    <!-- Tabla - Factura Cliente -->
+<!--    <record id="sunat_account_invoice_tree" model="ir.ui.view">-->
+<!--        <field name="name">sunat.account.invoice.tree</field>-->
+<!--        <field name="model">account.invoice</field>-->
+<!--        <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="amount_untaxed" position="after">-->
+<!--                <field name="inv_fac_exp" sum="Total"/>-->
+<!--                <field name="inv_exonerada" sum="Total"/>-->
+<!--                <field name="inv_inafecto" sum="Total"/>-->
+<!--                <field name="inv_isc" sum="Total"/>-->
+<!--            </field>-->
+<!--            <field name="amount_tax" position="after">-->
+<!--                <field name="inv_otros" sum="Total"/>-->
+<!--            </field>-->
+<!--            <field name="amount_untaxed" position="replace">-->
+<!--                <field name="amount_untaxed" invisible="1"/>-->
+<!--                <field name="inv_amount_untax" sum="Total"/>-->
+<!--            </field>-->
+
+<!--        </field>-->
+<!--    </record>-->
 
     <record id="invoice_punishment" model="ir.actions.server">
         <field name="name">Castigo</field>
