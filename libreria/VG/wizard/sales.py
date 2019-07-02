@@ -46,7 +46,7 @@ class Sales(models.TransientModel):
     # FIN 006
 
         # variables creadas
-        #content_txt = ""
+        content_txt = ""
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
 
