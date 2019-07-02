@@ -4,7 +4,7 @@ from odoo import http
 # from werkzeug.wrappers import Response
 import xlsxwriter
 import logging
-from openerp.http import request
+from odoo.http import request
 
 # from io import BytesIO
 
