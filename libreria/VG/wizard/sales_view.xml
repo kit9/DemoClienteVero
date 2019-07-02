@@ -1,5 +1,5 @@
 <odoo>
-        <record id="venta_sales" model="ir.ui.view">
+        <record id="sales_view" model="ir.ui.view">
             <field name="name">libreria.sales.form</field>
             <field name="model">libreria.sales</field>
             <field name="arch" type="xml">
