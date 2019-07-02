@@ -1,4 +1,5 @@
 <odoo>
+
         <record id="sales_view" model="ir.ui.view">
             <field name="name">libreria.sales.form</field>
             <field name="model">libreria.sales</field>
@@ -36,4 +37,7 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
+
+    
+
 </odoo>
