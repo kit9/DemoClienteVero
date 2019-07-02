@@ -35,7 +35,7 @@ class Sales(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.invoice'].search([('state', 'ilike', 'abierto')])
+        lst_account_move_line = self.env['account.invoice'].search()
 
     # INICIO 006 "AGREGADO DE VALIDADOR DE ERROR"
 
@@ -46,48 +46,29 @@ class Sales(models.TransientModel):
     # FIN 006
 
         # variables creadas
-        content_txt = ""
-        _estado_ope = ""
-        _debito=""
-        _catalogo = ""
-        _vat = ""
+        #content_txt = ""
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
 
         # Iterador
         for line in lst_account_move_line:
 
-            # _debito
-            for imp in line.line_ids:
-                if imp.debit:
-                    _debito = imp.debit
-
-            # _catalogo
-            for imp1 in line.line_ids:
-                if imp1.partner_id.catalog_06_id.code:
-                 _catalogo = imp1.partner_id.catalog_06_id.code
-
-            # _vat
-            for imp2 in line.line_ids:
-                if imp2.partner_id.vat:
-                   _vat = imp2.partner_id.vat
-
             # _nombre
-            for imp3 in line.line_ids:
-                if imp3.partner_id.name:
-                   _nombre = imp3.partner_id.name
+            #for imp3 in line.line_ids:
+            #    if imp3.partner_id.name:
+            #       _nombre = imp3.partner_id.name
 
             # validador de estado de operación
-            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                _estado_ope = "1"
-            else:
-                if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    _estado_ope = "8"
-                else:
-                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-                        _estado_ope = "9"
-                    else:
-                        _estado_ope = "1"
+            #if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+            #    _estado_ope = "1"
+            #else:
+            #    if line.create_date.strftime("%Y") != time.strftime("%Y"):
+            #        _estado_ope = "8"
+            #    else:
+            #        if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+            #            _estado_ope = "9"
+            #        else:
+            #            _estado_ope = "1"
 
 
     # INICIO 003 "AGREGANDO CAMPOS"
