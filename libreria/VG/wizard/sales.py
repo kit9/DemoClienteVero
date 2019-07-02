@@ -83,7 +83,7 @@ class Sales(models.TransientModel):
                 line.num_ident or '', # 5
                 line.inv_exonerada or '', # 6
                 line.inv_amount_untax or '', # 7
-                line.amount_untax or '', # 8
+                line.amount_tax or '', # 8
                 line.inv_inafecto or '', # 9
                 line.inv_isc or '', # 10
                 line.inv_otros or '', # 11
