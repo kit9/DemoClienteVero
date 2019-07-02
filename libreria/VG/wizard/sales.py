@@ -35,7 +35,7 @@ class Sales(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.invoice'].search()
+        lst_account_move_line = self.env['account.invoice'].search([])
 
     # INICIO 006 "AGREGADO DE VALIDADOR DE ERROR"
 
