@@ -76,7 +76,7 @@ class Sales(models.TransientModel):
             # datos a exportar a txt
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.document_type_id or '',  # 1
+                line.document_type_id.number or '',  # 1
                 line.invoice_serie or '', # 2
                 line.invoice_number or '', # 3
                 line.type_ident or '', # 4
