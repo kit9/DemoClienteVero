@@ -138,6 +138,10 @@ class Partner(models.Model):
                                                                         ('03-Sujeto no Domiciliado',
                                                                          '03-Sujeto no Domiciliado')])
     is_empresa = fields.Boolean(compute="_is_empresa")
+
+    is_employee = fields.Boolean(string='Is a Empleyee', default=False,
+                                 help="Check this box if this contact is an Employee.")
+
     is_withholding_agent = fields.Boolean(string="Agente de Retención")
 
     # Datos Persona Natural
