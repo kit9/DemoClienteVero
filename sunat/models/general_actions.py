@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
-from odoo.http import request
+from openerp.http import request
 from urllib.request import urlopen
 import zipfile
 from io import BytesIO

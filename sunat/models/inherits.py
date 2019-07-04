@@ -6,12 +6,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class ProductCategory(models.Model):
-    _inherit = "product.category"
-
-    analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
-
-
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -23,43 +17,6 @@ class ProductTemplate(models.Model):
         ('1', '1 NO REVALUADO'),
         ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
     ])
-
-
-class ProductProduct(models.Model):
-    _inherit = "product.product"
-
-    account_account = fields.Char(string='Cuenta Contable', related="categ_id.property_stock_valuation_account_id.code")
-
-
-class LandedCost(models.Model):
-    _inherit = "stock.landed.cost"
-
-    @api.multi
-    def _calculated_cost(self):
-        _logger.info("Metodo cabezera")
-        for rec in self:
-            if rec.state == 'done':
-                rec.valuation_adjustment_lines._calculated_cost()
-
-
-class AdjustmentLines(models.Model):
-    _inherit = "stock.valuation.adjustment.lines"
-
-    calculated_cost = fields.Boolean(string='Costo Calculado', default=False)
-
-    @api.multi
-    def _calculated_cost(self):
-        for rec in self:
-            if not rec.calculated_cost:
-                account_id = rec.product_id.property_account_expense_id or \
-                             rec.product_id.categ_id.property_account_expense_categ_id
-                if not account_id:
-                    account_id = self.env['account.account'].search([], limit=1)
-                total = rec.product_id.qty_available * rec.product_id.standard_price
-                total = total + rec.additional_landed_cost
-                total = total / rec.product_id.qty_available
-                rec.product_id.do_change_standard_price(total, account_id.id)
-                rec.calculated_cost = True
 
 
 class StockPicking(models.Model):
@@ -181,10 +138,6 @@ class Partner(models.Model):
                                                                         ('03-Sujeto no Domiciliado',
                                                                          '03-Sujeto no Domiciliado')])
     is_empresa = fields.Boolean(compute="_is_empresa")
-
-    is_employee = fields.Boolean(string='Is a Empleyee', default=False,
-                                 help="Check this box if this contact is an Employee.")
-
     is_withholding_agent = fields.Boolean(string="Agente de Retención")
 
     # Datos Persona Natural
@@ -285,11 +238,6 @@ class AccountAssetAsset(models.Model):
             ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
         ])
 
-    existence_code = fields.Char(string="Código De Existencia")
-
-    num_doc = fields.Char(string="Número de documento de autorización para cambiar el método de la depreciación",
-                          size=20)
-
     filter_year = fields.Char(compute="_get_year", store=True, copy=False)
 
     @api.multi
@@ -379,8 +327,6 @@ class AccountPayment(models.Model):
     payment_methods_id = fields.Many2one('sunat.payment_methods', string='Forma de Pago')
     operation_number = fields.Char(string='Número de Operación')
 
-    partner_type = fields.Selection(selection_add=[('is_employee', 'Employee')])
-
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
@@ -404,6 +350,18 @@ class Employee(models.Model):
     analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
 
 
+class ProductCategory(models.Model):
+    _inherit = "product.category"
+
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+    account_account = fields.Char(string='Cuenta Contable', related="categ_id.property_stock_valuation_account_id.code")
+
+
 class AccountTax(models.Model):
     _inherit = 'account.tax'
 
@@ -421,37 +379,5 @@ class AccountAnalyticLine(models.Model):
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
-    type = fields.Selection(selection_add=[('retention', 'Retención IGV')])
-
-
-class LandedCost(models.Model):
-    _inherit = 'stock.landed.cost'
-
-    def get_valuation_lines(self):
-        lines = []
-        _logger.info("Cantidad -> " + str(len(self.mapped('picking_ids').mapped('move_lines'))))
-        for move in self.mapped('picking_ids').mapped('move_lines'):
-            # it doesn't make sense to make a landed cost for a product that isn't set as being valuated in real time at real cost
-            _logger.info("valuation -> " + str(move.product_id.valuation))
-            _logger.info("cost_method -> " + str(move.product_id.cost_method))
-            _logger.info("if -> " + \
-                         str(move.product_id.valuation) + " != real_time or " + str(
-                move.product_id.cost_method) + " not in fifo,average")
-            if move.product_id.valuation != 'real_time' or move.product_id.cost_method not in 'fifo,average':
-                _logger.info("-> continue")
-                continue
-            vals = {
-                'product_id': move.product_id.id,
-                'move_id': move.id,
-                'quantity': move.product_qty,
-                'former_cost': move.value,
-                'weight': move.product_id.weight * move.product_qty,
-                'volume': move.product_id.volume * move.product_qty
-            }
-            lines.append(vals)
-
-        _logger.info("lines -> " + str(lines))
-        if not lines and self.mapped('picking_ids'):
-            raise UserError(_(
-                "You cannot apply landed costs on the chosen transfer(s). Landed costs can only be applied for products with automated inventory valuation and FIFO costing method."))
-        return lines
+    type = fields.Selection(
+        selection_add=[('retention', 'Retención IGV')])

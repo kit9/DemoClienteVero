@@ -85,9 +85,6 @@
                     </page>
                 </notebook>
             </xpath>
-            <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
-                <field name="is_employee"/>
-            </xpath>
         </field>
     </record>
 
@@ -351,8 +348,7 @@
                 <field name="active_status" required="True"/>
             </xpath>
             <xpath expr="//field[@name='analytic_tag_ids']" position="after">
-                <field name="tipo_de_act"/>
-                <field name="existence_code"/>
+                <field name="tipo_de_act" string="Cód. Tipo de Activo."/>
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="Historial de Costos">
@@ -376,9 +372,6 @@
                 <button name="set_to_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"
                         invisible="1"/>
                 <button name="set_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"/>
-            </xpath>
-            <xpath expr="//field[@name='method_period']" position="after">
-                <field name="num_doc"/>
             </xpath>
         </field>
     </record>
