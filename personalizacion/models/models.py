@@ -50,3 +50,10 @@ class fabricacion(models.Model):
             if len(rec.workorder_ids) > 0:
                 worck = rec.workorder_ids[0]
                 rec.real_duration = str(worck.duration)
+
+
+class Partner(models.Model):
+    _inherit = 'res.partner'
+
+    is_employee = fields.Boolean(string='Is a Empleyee', default=False,
+                                 help="Check this box if this contact is an Employee.")
