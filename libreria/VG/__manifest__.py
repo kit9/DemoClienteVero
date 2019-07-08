@@ -42,7 +42,6 @@
         'wizard/account_17_view.xml',
         'wizard/sales_view.xml',
         'wizard/account_30_view.xml',
-        'wizard/Book_and_Cash_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
