@@ -16,9 +16,9 @@ class Account_17(models.TransientModel):
 
     @api.multi
     def generate_file(self):
-
+        dominio = (['dummy_account_id.code', 'like', '17'])
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([])
+        lst_account_move_line = self.env['account.move'].search(dominio)
 
         # variables creadas
         content_txt = ""
