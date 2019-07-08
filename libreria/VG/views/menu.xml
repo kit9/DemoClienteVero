@@ -28,7 +28,7 @@
                   action="sales_VG" sequence="4"/>
         <menuitem id="account_30_menu" name="Ple. Venta" parent="sunat.reporte_ple_menu_root"
                   action="account_30_VG" sequence="15"/>
-        <menuitem id="Book_Cash_and_Banks_menu" name="Ple. Venta" parent="sunat.reporte_ple_menu_root"
-                  action="Book_Cash_and_Banks_VG" sequence="15"/>
+        <menuitem id="Book_and_Cash_menu" name="Ple. Venta" parent="sunat.reporte_ple_menu_root"
+                  action="Book_and_Cash_VG" sequence="15"/>
     </data>
 </odoo>

@@ -17,8 +17,8 @@ _logger = logging.getLogger(__name__)
 # -----------------------------------------------------------------------------------------
 
 #   Inicio #001 "CREACION DE LA CLASE"
-class ChartAccount(models.TransientModel):
-    _name = "libreria.Book_Cash_and_Banks"
+class Book_and_Cash(models.TransientModel):
+    _name = "libreria.Book_and_Cash"
     _description = "Libro Caja y Bancos"
 
 
@@ -114,7 +114,7 @@ class ChartAccount(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Libro Caja y Bancos',
-            'res_model': 'libreria.Book_Cash_and_Banks',
+            'res_model': 'libreria.Book_and_Cash',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,

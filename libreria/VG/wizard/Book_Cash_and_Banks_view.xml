@@ -1,8 +1,8 @@
 <odoo>
 
-    <record id="Book_Cash_and_Banks_view" model="ir.ui.view">
-        <field name="name">libreria.Book_Cash_and_Banks.form</field>
-        <field name="model">libreria.Book_Cash_and_Banks</field>
+    <record id="Book_and_Cash_view" model="ir.ui.view">
+        <field name="name">libreria.Book_and_Cash.form</field>
+        <field name="model">libreria.Book_and_Cash</field>
         <field name="arch" type="xml">
             <form string="Generar Archivo">
                 <field name="state" invisible="1"/>
@@ -27,10 +27,10 @@
         </field>
     </record>
 
-    <record id="Book_Cash_and_Banks_VG" model="ir.actions.act_window">
-        <field name="name">Book_Cash_and_Banks</field>
+    <record id="Book_and_Cash_VG" model="ir.actions.act_window">
+        <field name="name">Book_and_Cash</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">libreria.Book_Cash_and_Banks</field>
+        <field name="res_model">libreria.Book_and_Cash</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
