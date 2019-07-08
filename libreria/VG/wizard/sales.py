@@ -75,20 +75,14 @@ class Sales(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s" % (
                 line.date_document or '',  # 1
                 line.number or '',  # 2
                 line.date_invoice or '',  # 3
                 line.date_due or '',  # 4
                 line.invoice_serie or '',  # 5
                 line.document_type_id or '',  # 6
-                line.invioce_number or '',  # 7
-
-                line.amount_tax or '',  # 8
-                line.inv_inafecto or '',  # 9
-                line.inv_isc or '',  # 10
-                line.inv_otros or '',  # 11
-
+                line.invoice_number or '',  # 7
                 #line.name.replace("/", "") or '',
             )
 
