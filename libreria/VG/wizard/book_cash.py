@@ -42,10 +42,13 @@ class ChartAccount(models.TransientModel):
         # Inicio #003 "VALIDACION DE CAMPOS"
         for line in lst_account_move_line:
             # validador de campo vacio
-            if line1.line_ids:
-                cuenta = line.account_id.code
-            if line2.line_ids:
-                moneda = line.currency_id.name
+
+            for line1 in line.line_ids:
+                if line1.account_id:
+                    cuenta = line1.account_id.code
+            for line2 in line.line_ids:
+                if line2.currency_id:
+                    moneda = line2.currency_id.name
 
         # Fin #003
             # datos a exportar a txt
