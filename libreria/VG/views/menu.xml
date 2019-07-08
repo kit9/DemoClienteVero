@@ -26,6 +26,8 @@
                   action="account_17_VG" sequence="12"/>
         <menuitem id="sales_menu" name="Ple. Venta" parent="sunat.reporte_ple_menu_root"
                   action="sales_VG" sequence="4"/>
+        <menuitem id="account_30_menu" name="Ple. Cuenta 30" parent="sunat.reporte_ple_menu_root"
+                  action="account_30_VG" sequence="15"/>
         <menuitem id="book_cash_menu" name="Libro Caja y Bancos Mov. en Efectivo" parent="sunat.reporte_ple_menu_root"
                   action="book_cash_VG" sequence="16"/>
 
