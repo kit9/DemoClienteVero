@@ -1,5 +1,5 @@
 <odoo>
-    <record id="account_17_VG" model="ir.ui.view">
+    <record id="account_17_view" model="ir.ui.view">
         <field name="name">libreria.account_17.form</field>
         <field name="model">libreria.account_17</field>
         <field name="arch" type="xml">
