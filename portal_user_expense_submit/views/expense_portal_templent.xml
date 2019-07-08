@@ -1,0 +1,548 @@
+<odoo>
+
+    <template id="inherit_expense_frontend" name="web_expense assets" inherit_id="website.assets_frontend">
+        <xpath expr="script[last()]" position="after">
+            <script type="text/javascript" src="/portal_user_expense_submit/static/src/js/product_automation.js"/>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_menu_expense" name="Portal layout : expense menu entries"
+              inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'expense' or expense_form" t-attf-class="breadcrumb-item">
+                <a t-if="expense_form" t-attf-href="/list/expenses/?{{ keep_query() }}">Expenses</a>
+                <t t-else="">Expenses</t>
+            </li>
+            <li t-if="expense_form" class="breadcrumb-item active">
+                <t t-esc="expense_form.name"/>
+            </li>
+
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_expense" name="Portal My Home : expense entries" inherit_id="portal.portal_my_home"
+              priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="request.env.user.portal_employee_expense" t-call="portal.portal_docs_entry">
+                <t t-set="title">Expenses</t>
+                <t t-set="url" t-value="'/list/expenses'"/>
+                <t t-set="count" t-value="expense_count"/>
+                <span t-value='expense_count'/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="list_expenses" name="My Expense Request">
+        <t t-if="request.env.user.portal_employee_expense" t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Expense</t>
+            </t>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <a role="button" id="expense_list" class="btn btn-success pull-right" href="/create/expense"
+                           data-oe-id="918" data-oe-model="ir.ui.view" data-oe-field="arch"
+                           style='background-color:#00A09D;'>Create Expense
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <t t-call="portal.portal_table">
+                        <thead>
+                            <tr class="active">
+                                <th>Date</th>
+                                <th>Expense</th>
+                                <th>Unit Price</th>
+                                <th>Quantity</th>
+                                <th>Descripción</th>
+                                <th>Status</th>
+                                <th>Aprobar</th>
+                                <!--<th>Select</th>-->
+                            </tr>
+                        </thead>
+                        <t t-foreach="expense_record" t-as="e">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/expense/#{e.id}?#{keep_query()}">
+                                        <span t-field="e.date"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a t-attf-href="/my/expense/#{e.id}?#{keep_query()}">
+                                        <span t-field="e.product_id"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        <span t-field="e.unit_amount" t-options='{"widget": "monetary"}'/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        <span t-field="e.quantity"/>
+                                        <span t-field="e.product_uom_id"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span t-field="e.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="e.state" class=" badge badge-pill badge-info"/>
+                                </td>
+                                <td>
+                                    <!--<input type="submit" value="Boton" onclick="alert('<t t-esc="e.id"/>');"/>-->
+                                    <a t-attf-href="/approve/expense/#{e.id}" t-attf-style="#{e.sheet_id and 'display:none' or ''}">
+                                        Aprobar
+                                    </a>
+                                </td>
+                                <td>
+                                    <a t-attf-href="/update/expense/#{e.id}" t-attf-style="#{e.sheet_id and 'display:none' or ''}">
+                                        Comentar
+                                    </a>
+                                </td>
+                                <!--<td>-->
+                                <!--<input type="checkbox" t-attf-value="#{e.id}"/>-->
+                                <!--</td>-->
+                            </tr>
+
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="submit_expense_details" name="submit expense details">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <h3 class="text-success">
+                        <center>
+                            <strong>Submit Expense Form</strong>
+                        </center>
+                    </h3>
+                    <form action="/submit/expense" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="row o_portal_details">
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-6">
+                                        <label class="col-form-label" for="employee_id">Employee</label>
+                                        <select name="employee_id" class="form-control" id='employee_name1'>
+                                            <t t-foreach="employee_name" t-as="employee">
+
+
+                                                <option t-att-value="employee.id"
+                                                        t-att-selected="employee.user_id.id == request.uid">
+                                                    <t t-esc="employee.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-6">
+                                        <label class="col-form-label" for="date">Expense Date</label>
+                                        <input type="date" name="date"
+                                               t-attf-class="form-control #{error.get('date') and 'is-invalid' or ''}"
+                                               t-att-value="date" required="True"/>
+                                    </div>
+
+                                    <div t-attf-class="form-group col-xl-6">
+                                        <label class="col-form-label" for="product_id">Expense</label>
+                                        <select name="product_id" class="form-control" id='product_name'>
+                                            <option>Select Expense</option>
+                                            <t t-foreach="product_name" t-as="product">
+
+                                                <option t-att-value="product.id"
+                                                        t-att-data-unit-price="product.standard_price"
+                                                        t-att-data-unit-measure="product.uom_id.id">
+                                                    <t t-esc="product.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"/>
+                                    <div t-attf-class="form-group col-xl-6">
+                                        <label class="col-form-label" for="unit_amount">Unit Price</label>
+                                        <span t-esc='currency'/>
+                                        <input type="text" id='unit_amount' name="unit_amount"
+                                               t-attf-class="form-control #{error.get('unit_amount') and 'is-invalid' or ''}"
+                                               t-att-value="unit_amount" required="True"/>
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-6">
+                                        <label class="col-form-label" for="quantity">Quantity</label>
+                                        <input type="text" name="quantity"
+                                               id="quantity"
+                                               t-attf-class="form-control #{error.get('quantity') and 'is-invalid' or ''}"
+                                               t-att-value="quantity" required="True"/>
+
+                                    </div>
+                                    <div t-attf-class="form-group col-xl-6">
+
+                                        <label class="col-form-label" for="product_uom_id">Unit of Measure</label>
+                                        <select name="product_uom_id" class="form-control" id='product_uom_id'>
+                                            <t t-foreach="product_uom_id" t-as="product">
+                                                <option t-att-value="product.id">
+                                                    <t t-esc="product.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-6">
+                                        <label class="col-form-label" for="name">Description</label>
+                                        <input type="text" name="name"
+                                               t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}"
+                                               t-att-value="name" required="True"/>
+                                    </div>
+
+                                    <div t-attf-class="form-group col-xl-6">
+                                        <label class="col-form-label" for="payment_mode">Paid By</label>
+                                        <select name="payment_mode" class="form-control" id='payment_mode'>
+
+                                            <option value="own_account">
+                                                Employee (to reimburse)
+                                            </option>
+                                            <option value="company_account">
+                                                Company
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div t-attf-class="form-group #{error.get('reference') and 'o_has_error' or ''} col-xl-6">
+                                        <label class="col-form-label" for="reference">Bill Reference</label>
+                                        <input type="text" name="reference"
+                                               t-attf-class="form-control #{error.get('reference') and 'is-invalid' or ''}"
+                                               t-att-value="reference"/>
+                                    </div>
+
+                                    <div t-attf-class="form-group col-xl-6">
+                                        <label class="col-form-label" for="analytic_account_id">Analytic Account</label>
+                                        <select name="analytic_account_id" class="form-control"
+                                                id='analytic_account_id'>
+                                            <t t-foreach="analytic_account_id" t-as="analytic">
+                                                <option t-att-value="analytic.id">
+                                                    <t t-esc="analytic.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+
+                                    <!-- Optimiza -->
+                                    <!--<div t-attf-class="form-group col-xl-6">-->
+                                    <!--<label class="col-form-label" for="fec_hor_viaje">Fecha/Hora de Inicio de Viaje</label>-->
+                                    <!--<input type="date" name="fec_hor_viaje"-->
+                                    <!--t-attf-class="form-control #{error.get('fec_hor_viaje') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="fec_hor_viaje" required="True"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash; Optimiza &ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group col-xl-6">-->
+                                    <!--<label class="col-form-label" for="fec_viaje">Fecha de Viaje</label>-->
+                                    <!--<input type="date" name="fec_viaje"-->
+                                    <!--t-attf-class="form-control #{error.get('fec_viaje') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="fec_viaje" required="True"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('hor_ini_viaje') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="hor_ini_viaje">Hora Inicio de Viaje</label>-->
+                                    <!--<input type="text" name="hor_ini_viaje"-->
+                                    <!--t-attf-class="form-control #{error.get('hor_ini_viaje') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="hor_ini_viaje"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('centro_costo') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="centro_costo">Centro de Costo</label>-->
+                                    <!--<input type="text" name="centro_costo"-->
+                                    <!--t-attf-class="form-control #{error.get('centro_costo') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="centro_costo"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('cc_variable') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="cc_variable">CC Variable</label>-->
+                                    <!--<input type="text" name="cc_variable"-->
+                                    <!--t-attf-class="form-control #{error.get('cc_variable') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="cc_variable"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('solid_por') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="solid_por">Solicitado por</label>-->
+                                    <!--<input type="text" name="solid_por"-->
+                                    <!--t-attf-class="form-control #{error.get('solid_por') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="solid_por"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('id_emp_sol') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="id_emp_sol">Cod. Empleado Solicitante</label>-->
+                                    <!--<input type="text" name="id_emp_sol"-->
+                                    <!--t-attf-class="form-control #{error.get('id_emp_sol') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="id_emp_sol"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('divisa') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="divisa">Divisa</label>-->
+                                    <!--<input type="text" name="divisa"-->
+                                    <!--t-attf-class="form-control #{error.get('divisa') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="divisa"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('precio_total') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="precio_total">Precio Total tras descuento</label>-->
+                                    <!--<input type="text" name="precio_total"-->
+                                    <!--t-attf-class="form-control #{error.get('precio_total') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="precio_total"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('nom_pasajero') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="nom_pasajero">Pasajero (Nombre del Pasajero)</label>-->
+                                    <!--<input type="text" name="nom_pasajero"-->
+                                    <!--t-attf-class="form-control #{error.get('nom_pasajero') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="nom_pasajero"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('id_pasajero') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="id_pasajero">Cod. Empleado Pasajero</label>-->
+                                    <!--<input type="text" name="id_pasajero"-->
+                                    <!--t-attf-class="form-control #{error.get('id_pasajero') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="id_pasajero"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('email_pasajero') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="email_pasajero">Email del pasajero</label>-->
+                                    <!--<input type="text" name="email_pasajero"-->
+                                    <!--t-attf-class="form-control #{error.get('email_pasajero') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="email_pasajero"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('model_vehiculo') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="model_vehiculo">Modelo de Vehículo</label>-->
+                                    <!--<input type="text" name="model_vehiculo"-->
+                                    <!--t-attf-class="form-control #{error.get('model_vehiculo') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="model_vehiculo"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('punto_salida') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="punto_salida">Punto de Salida</label>-->
+                                    <!--<input type="text" name="punto_salida"-->
+                                    <!--t-attf-class="form-control #{error.get('punto_salida') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="punto_salida"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('punto_destino') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="punto_destino">Punto de Destino</label>-->
+                                    <!--<input type="text" name="punto_destino"-->
+                                    <!--t-attf-class="form-control #{error.get('punto_destino') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="punto_destino"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('tipo_peticion') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="tipo_peticion">Tipo de Petición</label>-->
+                                    <!--<input type="text" name="tipo_peticion"-->
+                                    <!--t-attf-class="form-control #{error.get('tipo_peticion') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="tipo_peticion"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('est_final') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="est_final">Estado Final</label>-->
+                                    <!--<input type="text" name="est_final"-->
+                                    <!--t-attf-class="form-control #{error.get('est_final') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="est_final"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('msg_conductor') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="msg_conductor">Mensaje para el Conductor</label>-->
+                                    <!--<input type="text" name="msg_conductor"-->
+                                    <!--t-attf-class="form-control #{error.get('msg_conductor') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="msg_conductor"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('distr_origen') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="distr_origen">Distrito Origen (Distrito 1)</label>-->
+                                    <!--<input type="text" name="distr_origen"-->
+                                    <!--t-attf-class="form-control #{error.get('distr_origen') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="distr_origen"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('direc_origen') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="direc_origen">Dirección Origen (Dirección 1)</label>-->
+                                    <!--<input type="text" name="direc_origen"-->
+                                    <!--t-attf-class="form-control #{error.get('direc_origen') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="direc_origen"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('distr_destino') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="distr_destino">Distrito Origen (Distrito 1)</label>-->
+                                    <!--<input type="text" name="distr_destino"-->
+                                    <!--t-attf-class="form-control #{error.get('distr_destino') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="distr_destino"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('direc_destino') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="direc_destino">Dirección Origen (Dirección 1)</label>-->
+                                    <!--<input type="text" name="direc_destino"-->
+                                    <!--t-attf-class="form-control #{error.get('direc_destino') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="direc_destino"/>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;Optimiza&ndash;&gt;-->
+                                    <!--<div t-attf-class="form-group #{error.get('num_vale') and 'o_has_error' or ''} col-xl-6">-->
+                                    <!--<label class="col-form-label" for="num_vale">Numero de Vale</label>-->
+                                    <!--<input type="text" name="num_vale"-->
+                                    <!--t-attf-class="form-control #{error.get('num_vale') and 'is-invalid' or ''}"-->
+                                    <!--t-att-value="num_vale"/>-->
+                                    <!--</div>-->
+
+                                    <div t-attf-class="col-xl-6 o_website_form_custom_attchments">
+                                        <label class="col-form-label" for="Attachments">Attach Files</label>
+                                        <input type="file" class="form-control o_website_form_input"
+                                               name="attachment_number"
+                                               multiple='multiple'/>
+                                        <div>
+                                            <label style="color:grey; font-size:12px;">Multiple files can be attach
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <center>
+                                        <button type="submit" class="btn btn-primary float-center mb32 ">
+                                            Submit Expense
+                                        </button>
+
+                                        <input type="reset" class="btn btn-danger float-center mb32 " value="Discard">
+                                        </input>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="update_details" name="My appointment">
+        <t t-call="website.layout">
+
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-8" style="margin-top: 50px;">
+                            <div class="alert alert-success">
+                                <h5>Dear
+                                    <span t-esc="user.name"/>
+                                    <br/>
+                                    <br/>
+                                    Your expense has been submitted.
+
+                                    <br/>
+                                    <br/>
+                                    Thanks
+                                    <br/>
+                                    <span t-esc="user.company_id.name"/>
+                                </h5>
+                            </div>
+                            <a role="button" id="expense_create" class="btn btn-success pull-left" href="/list/expenses"
+                               data-oe-id="918" data-oe-model="ir.ui.view" data-oe-field="arch"
+                               style='background-color:#00A09D;'
+                            >View Expense
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="my_view_web" name="Expense">
+        <t t-call="portal.portal_layout">
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <t t-call="portal.portal_record_layout">
+                        <t t-set="card_header">
+                            <div class="row no-gutters">
+                                <div class="col-md">
+                                    <h5 class="mb-1 mb-md-0">
+                                        <span t-field="expense_form.name"/>
+                                        <small class="text-muted">(#<span t-field="expense_form.id"/>)
+                                        </small>
+                                    </h5>
+                                </div>
+                                <div class="col-md text-md-right">
+                                    <small class="text-right">Status:</small>
+                                    <span t-field="expense_form.state" class=" badge badge-pill badge-info"/>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-set="card_body">
+                            <div class="container">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class='row'>
+                                            <div class="col-md-5">
+                                                <div class="mb8">
+                                                    <strong>Expense :</strong>
+                                                    <span t-field="expense_form.product_id"/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Unit Price:</strong>
+                                                    <span t-field="expense_form.unit_amount"
+                                                          t-options='{"widget": "monetary"}'/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Quantity:</strong>
+                                                    <span t-field="expense_form.quantity"/>
+                                                    <span t-field="expense_form.product_uom_id"/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Total:</strong>
+                                                    <span t-field="expense_form.total_amount"
+                                                          t-options='{"widget": "monetary"}'/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Paid By:</strong>
+                                                    <span t-field="expense_form.payment_mode"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="mb8">
+                                                    <strong>Bill Reference :</strong>
+                                                    <span t-field="expense_form.reference"/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Date :</strong>
+                                                    <span t-field="expense_form.date"/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Employee :</strong>
+                                                    <span t-field="expense_form.employee_id"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="pull-right btn btn-xs btn-primary" target="_blank"
+                                                   t-attf-href="/my/expense_report/#{expense_form.id}">Print
+                                                    <i class="fa fa-print"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
+
+                                  
+
+
+
+

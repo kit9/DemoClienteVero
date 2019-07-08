@@ -1,0 +1,89 @@
+<odoo>
+
+    <template id="approve_expense" name="My appointment">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-8" style="margin-top: 50px;">
+                            <div class="alert alert-success">
+                                <h5>Prueba
+                                    <span t-esc="user.name"/>
+                                    <br/>
+                                    <br/>
+                                    Este es un retorno de prueba.
+                                    <br/>
+                                    <br/>
+                                    Gracias.
+                                    <br/>
+                                    <span t-esc="user.company_id.name"/>
+                                    <br/>
+                                    <span t-esc="msg"/>
+                                </h5>
+                            </div>
+                            <a role="button" id="expense_create" class="btn btn-success pull-left" href="/list/expenses"
+                               data-oe-id="918" data-oe-model="ir.ui.view" data-oe-field="arch"
+                               style='background-color:#00A09D;'
+                            >View Expense
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="update_expense" name="submit expense details">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <h3 class="text-success">
+                        <center>
+                            <strong>Update Expense Form</strong>
+                        </center>
+                    </h3>
+                    <form action="/update/expense/submit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="row o_portal_details">
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                    </div>
+
+                                    <input type="hidden" name="id"
+                                           t-attf-class="form-control #{error.get('id') and 'is-invalid' or ''}"
+                                           t-att-value="id"/>
+
+                                    <div t-attf-class="form-group #{error.get('commentary') and 'o_has_error' or ''} col-xl-6">
+                                        <label class="col-form-label" for="commentary">Comentario</label>
+                                        <input type="text" name="commentary"
+                                               t-attf-class="form-control #{error.get('commentary') and 'is-invalid' or ''}"
+                                               t-att-value="commentary"/>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <center>
+                                        <button type="submit" class="btn btn-primary float-center mb32 ">
+                                            Update Expense
+                                        </button>
+
+                                        <!--<input type="reset" class="btn btn-danger float-center mb32 " value="Discard">-->
+                                        <!--</input>-->
+                                        <a t-attf-href="/list/expenses" class="btn btn-danger float-center mb32 ">
+                                            Discard
+                                        </a>
+
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

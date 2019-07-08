@@ -1,0 +1,256 @@
+<odoo>
+
+    <!-- Formulario - Factura Proveedor -->
+    <record id="detraccion_form_view_factura" model="ir.ui.view">
+        <field name="name">detraccion.form.factura</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                <field name="document_type_id" required="True"/>
+                <field name="invoice_serie" required="True"/>
+                <field name="invoice_number" required="True"/>
+                <field name="code_dua"/>
+                <field name="year_emission_dua"/>
+            </field>
+            <xpath expr="//field[@name='reference']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="reference" position="after">
+                <field name="type_ident" readonly="1"/>
+                <field name="num_ident" readonly="1"/>
+            </field>
+            <xpath expr="//field[@name='vendor_bill_purchase_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="date_invoice" position="before">
+                <field name="date_document" required="1"/>
+            </field>
+            <field name="date_invoice" position="replace">
+                <field string="Fecha Contable" name="date_invoice" options="{'datepicker': {'warn_future': true}}"/>
+            </field>
+            <field name="move_name" position="after">
+                <field name="exchange_rate"/>
+            </field>
+            <field name="payments_widget" position="before">
+                <field name="hide_detraction" invisible="1"/>
+                <field name="detraccion" attrs="{'invisible':[('hide_detraction', '=', True)]}"/>
+            </field>
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='currency_id']" position="after">
+                <field name="type_income_id"/>
+            </xpath>
+            <field name="partner_bank_id" position="after">
+                <field name="type_operation" required="True"/>
+                <field string="Detraccion" name="detrac_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
+            </field>
+            <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+                <field name="payment_ids">
+                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
+                          edit="false">
+                        <field name="payment_date"/>
+                        <field name="vv_bank"/>
+                        <field name="operation_number"/>
+                        <field name="journal_id"/>
+                        <field name="payment_methods_id"/>
+                        <field name="partner_id" string="Cliente"/>
+                        <field name="amount" sum="Importe"/>
+                        <field name="state"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="partner_type" invisible="1"/>
+                    </tree>
+                </field>
+            </xpath>
+            <xpath expr="//notebook/page[last()]" position="after">
+                <page string="Documento que Modifica">
+                    <group>
+                        <field name="refund_invoice_id"/>
+                    </group>
+                </page>
+                <page string="Detracciones">
+                    <group>
+                        <field name="date_detraction"/>
+                        <field name="num_detraction"/>
+                        <field name="proof_mark"/>
+                        <field name="classifier_good"/>
+                        <field name="type_operation_id"/>
+                        <field name="code_goods_id"/>
+                    </group>
+                </page>
+                <page string="Honorarios">
+                    <group>
+                        <field name="fourth_suspension"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other_info']/group[1]/group[1]/field[@name='name']"
+                   position="after">
+                <field name="type_purchase" string="Tipo de Compra"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Factura Proveedor -->
+    <record id="detraccion_tree_view_factura" model="ir.ui.view">
+        <field name="name">detraccion.tree.factura</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_total_signed" position="after">
+                <field name="detraccion" sum="Total"/>
+                <field name="detraccion_paid" invisible="1"/>
+                <field name="detraction_residual" sum="Total"/>
+                <field name="total_pagar" sum="Total" invisible="1"/>
+            </field>
+            <field name="date_invoice" position="replace">
+                <field string="Fecha Contable" name="date_invoice"/>
+                <field string="Fecha del Documento" name="date_document"/>
+            </field>
+            <field name="number" position="replace">
+                <field name="invoice_number"/>
+            </field>
+            <field name="amount_untaxed" position="replace">
+                <field name="amount_untaxed" invisible="1"/>
+                <field name="bill_isc" sum="Total"/>
+                <field name="inv_no_gravado"/>
+                <field name="base_imp"/>
+                <field name="base_igv"/>
+            </field>
+            <field name="amount_tax" position="replace">
+                <field name="amount_tax" invisible="1"/>
+                <field name="base_imp_ope_ex"/>
+                <field name="base_igv_ope_ex"/>
+                <field name="base_imp_no_gra"/>
+                <field name="base_igv_no_gra"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Formulario - Factura Cliente -->
+    <record id="_form_view_factura" model="ir.ui.view">
+        <field name="name">sunat.form.invoice</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="refund_invoice_id"/>
+            </field>
+            <field name="date_invoice" position="before">
+                <field name="document_modify"/>
+                <field name="date_document"/>
+            </field>
+            <field name="date_invoice" position="replace">
+                <field string="Fecha Contable" name="date_invoice" options="{'datepicker': {'warn_future': true}}"/>
+            </field>
+            <field name="payment_term_id" position="after">
+                <field name="type_ident" readonly="1"/>
+                <field name="num_ident" readonly="1"/>
+                <field name="inv_type_operation"/>
+                <field name="type_sales"/>
+            </field>
+            <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+                <field name="payment_ids">
+                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
+                          edit="false">
+                        <field name="payment_date"/>
+                        <field name="vv_bank"/>
+                        <field name="name"/>
+                        <field name="journal_id"/>
+                        <field name="payment_method_id"/>
+                        <field name="partner_id" string="Cliente"/>
+                        <field name="amount" sum="Importe"/>
+                        <field name="state"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="partner_type" invisible="1"/>
+                    </tree>
+                </field>
+            </xpath>
+            <xpath expr="//group/group/div" position="after">
+                <field name="exchange_rate"/>
+                <field name="perception_id"/>
+            </xpath>
+            <xpath expr="//notebook/page[last()]" position="after">
+                <page string="SUNAT">
+                    <group>
+                        <group>
+                            <h2>Documento</h2>
+                            <field name="document_type_id" required="True"/>
+                            <field name="invoice_serie" required="True"/>
+                            <field name="invoice_number" required="True"/>
+                        </group>
+                        <group>
+                            <h2>Exportación</h2>
+                            <field name="export_invoice"/>
+                            <field name="num_comp_serie"/>
+                            <field name="num_perception"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="perception_value" attrs="{'invisible':[('perception_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='move_id']" position="after">
+                <field name="move_punishment_id" readonly="True"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Factura Cliente -->
+    <!--<record id="sunat_account_invoice_tree" model="ir.ui.view">-->
+    <!--<field name="name">sunat.account.invoice.tree</field>-->
+    <!--<field name="model">account.invoice</field>-->
+    <!--<field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
+    <!--<field name="arch" type="xml">-->
+    <!--<field name="amount_untaxed_invoice_signed" position="after">-->
+    <!--<field name="inv_fac_exp" sum="Total"/>-->
+    <!--<field name="inv_exonerada" sum="Total"/>-->
+    <!--<field name="inv_inafecto" sum="Total"/>-->
+    <!--<field name="inv_isc" sum="Total"/>-->
+    <!--</field>-->
+    <!--<field name="amount_tax_signed" position="after">-->
+    <!--<field name="inv_otros" sum="Total"/>-->
+    <!--</field>-->
+    <!--<field name="amount_untaxed_invoice_signed" position="replace">-->
+    <!--<field name="amount_untaxed_invoice_signed" invisible="1"/>-->
+    <!--<field name="inv_amount_untax" sum="Total"/>-->
+    <!--</field>-->
+    <!--</field>-->
+    <!--</record>-->
+
+    <!-- Tabla - Factura Cliente -->
+    <record id="sunat_account_invoice_tree" model="ir.ui.view">
+        <field name="name">sunat.account.invoice.tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <field name="amount_untaxed" position="after">
+                <field name="inv_fac_exp" sum="Total"/>
+                <field name="inv_exonerada" sum="Total"/>
+                <field name="inv_inafecto" sum="Total"/>
+                <field name="inv_isc" sum="Total"/>
+            </field>
+            <field name="amount_tax" position="after">
+                <field name="inv_otros" sum="Total"/>
+            </field>
+            <field name="amount_untaxed" position="replace">
+                <field name="amount_untaxed" invisible="1"/>
+                <field name="inv_amount_untax" sum="Total"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="invoice_punishment" model="ir.actions.server">
+        <field name="name">Castigo</field>
+        <field name="model_id" ref="model_account_invoice"/>
+        <field name="binding_model_id" ref="account.model_account_invoice"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+            rec._punishment()
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,40 @@
+<odoo>
+
+    <!-- Form Tipo de Existencia -->
+    <record id="type_existence_form_view" model="ir.ui.view">
+        <field name="name">sunat.type_existence.form.view</field>
+        <field name="model">sunat.type_existence</field>
+        <field name="arch" type="xml">
+            <form string="Form Tipo de Existencia">
+                <sheet>
+                    <group>
+                        <field name="number"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Thee -->
+    <record id="type_existence_tree_view" model="ir.ui.view">
+        <field name="name">sunat.type_existence.tree.view</field>
+        <field name="model">sunat.type_existence</field>
+        <field name="arch" type="xml">
+            <tree string="Tree Tipo de Existencia">
+                <field name="id"/>
+                <field name="number"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action Document Type -->
+    <record id="action_sunat_type_existence" model="ir.actions.act_window">
+        <field name="name">Tipo de Existencia</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sunat.type_existence</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>
