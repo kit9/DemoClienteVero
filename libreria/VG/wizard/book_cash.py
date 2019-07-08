@@ -29,11 +29,10 @@ class ChartAccount(models.TransientModel):
     @api.multi
     def generate_file(self):
 
-# filtro de fecha
-        dominio = [('dummy_account_id.code', 'like', '19')]
+
 
 # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search(dominio)
+        lst_account_move_line = self.env['account.move'].search([])
 
 # variables creadas
         content_txt = ""
