@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class Account_17(models.TransientModel):
     _name = "libreria.account_30"
-    _description = "Ple. Cuenta 30"
+    _description = "Cuenta_30"
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
