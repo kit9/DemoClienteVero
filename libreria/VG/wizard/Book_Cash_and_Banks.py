@@ -46,30 +46,17 @@ class Book_and_Cash(models.TransientModel):
     def generate_file(self):
 
         # filtro de fecha
-        dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
+        #dominio = [('month_year_inv', 'like', self.date_month + "" + self.date_year)]
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search(dominio)
+        lst_account_move_line = self.env['account.move'].search([])
 
         # variables creadas
         content_txt = ""
-        estado_ope = ""
         cuenta = ""
         moneda = ""
         # Inicio #003 "VALIDACION DE CAMPOS"
-        # Iterador
         for line in lst_account_move_line:
-            # validador de estado de operación
-            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                estado_ope = "01"
-            else:
-                if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "09"
-                else:
-                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-                        estado_ope = "00"
-                    else:
-                        estado_ope = "01"
             # validador de campo vacio
             if line.line.ids:
                 cuenta = line.account_id.code
@@ -109,7 +96,7 @@ class Book_and_Cash(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "plan_contable.txt"
+            'txt_filename': "Libro Caja y Bancos.txt"
         })
         return {
             'type': 'ir.actions.act_window',
