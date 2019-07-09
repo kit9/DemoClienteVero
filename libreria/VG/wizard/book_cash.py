@@ -33,7 +33,7 @@ class ChartAccount(models.TransientModel):
         dominio = [('name', 'like', 'CSH1')]
 
 # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search(dominio)
+        lst_account_move_line = self.env['account.move'].search({})
 
 # variables creadas
         content_txt = ""
@@ -65,7 +65,7 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                factura or'',  #
+                factura or '',  #
                 '',
                 '',
                 '',
