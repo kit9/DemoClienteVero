@@ -58,7 +58,7 @@ class ChartAccount(models.TransientModel):
                     factura = line3.payment_id
                     for imp in factura.invoice_ids:
                         if imp.number:
-                            factura1 = imp.number
+                            factura1 = imp.document_type_id.display_name
             for line4 in line.line_ids:
                 if line4.account_id.code == '101001':
                     debe= line4.debit
