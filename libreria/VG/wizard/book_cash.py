@@ -74,9 +74,9 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                '',  #
-                '',
-                '',
+                '',  # tipo de documento de factura proverdor
+                '',  # serie de factura proveedor
+                '',  # numero de factura proveedor
                 line.date.strftime("%d/%m/%Y") or '',
                 line.date.strftime("%d/%m/%Y") or '',
                 line.date.strftime("%d/%m/%Y") or '',
