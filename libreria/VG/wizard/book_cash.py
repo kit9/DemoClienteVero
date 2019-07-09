@@ -77,13 +77,13 @@ class ChartAccount(models.TransientModel):
                 factura[0:2] or '',  #
                 '',
                 '',
-                line.date.strftime("%d%m%Y") or '',
-                line.date.strftime("%d%m%Y") or '',
-                line.date.strftime("%d%m%Y") or '',
+                line.date.strftime("%d/%m/%Y") or '',
+                line.date.strftime("%d/%m/%Y") or '',
+                line.date.strftime("%d/%m/%Y") or '',
                 line.x_studio_glosa or '',
                 '',
-                debe or '',
-                haber or '',
+                debe or '0.00',
+                haber or '0.00',
                 '',
                 '',
                 ''
