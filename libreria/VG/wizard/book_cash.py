@@ -50,9 +50,9 @@ class ChartAccount(models.TransientModel):
             for line2 in line.line_ids:
                 if line2.currency_id:
                     moneda = line2.currency_id.name
-            for line3 in line.line_ids:
-                if line3.invoice_id:
-                    factura = line3.invoice_id.document_type_id.display_name[0:2]
+            # for line3 in line.line_ids:
+            #     if line3.invoice_id:
+            #         factura = line3.invoice_id.document_type_id.display_name[0:2]
 
         # Fin #003
             # datos a exportar a txt
@@ -65,7 +65,7 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                factura or '',  #
+                line.invoice_id.document_type_id.display_name[0:2] or '',  #
                 '',
                 '',
                 '',
