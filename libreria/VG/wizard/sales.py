@@ -73,17 +73,42 @@ class Sales(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date_document or '',  # 1
                 line.number or '',  # 2
+                '', # 3
                 line.date_invoice or '',  # 4
                 line.date_due or '',  # 5
+                line.document_type_id.id or '',  # 6
                 line.invoice_serie or '',  # 7
                 line.invoice_number or '',  # 8
                 '', # 9
-                line.partner_id.catalog_06_id.name or '',  # 10
+                line.partner_id.catalog_06_id.code or '',  # 10
                 line.partner_id.vat or '', # 11
                 line.partner_id.name or '', # 12
+                '', #13
+                line.amount_untaxed or '', #14
+                '', # 15
+                line.amount_tax or '', #16
+                '',  # 17
+                '',  # 18
+                '',  # 19
+                '',  # 20
+                '',  # 21
+                '',  # 22
+                '',  # 23
+                line.amount_total or '', # 24
+                line.currency_id.name or '', # 25
+                line.exchange_rate or '', # 26
+                line.date_invoice or '',  # 27
+                line.document_type_id.id or '', # 28
+                line.invoice_serie or '',  # 29
+                line.invoice_number or '',  # 30
+                '',  # 31
+                '',  # 32
+                '',  # 33
+                '',  # 34
+                '',  # 35
                 #line.name.replace("/", "") or '',
             )
 
