@@ -1,8 +1,8 @@
 <odoo>
 
-    <record id="account_10_view" model="ir.ui.view">
-        <field name="name">libreria.account_10.form</field>
-        <field name="model">libreria.account_10</field>
+    <record id="account_34_view" model="ir.ui.view">
+        <field name="name">libreria.account_34.form</field>
+        <field name="model">libreria.account_34</field>
         <field name="arch" type="xml">
             <form string="Generar Archivo">
                 <field name="state" invisible="1"/>
@@ -16,7 +16,7 @@
                 </group>
                 <div states="get">
                     <h2>Archivo Generado</h2>
-                    <p>Este es tu archivo:
+                    <p>Este es tu excel:
                         <field name="txt_binary" readonly="1" filename="txt_filename"/>
                     </p>
                 </div>
@@ -27,13 +27,14 @@
         </field>
     </record>
 
-    <record id="account_10_VG" model="ir.actions.act_window">
-        <field name="name">account_10</field>
+    <record id="account_34_VG" model="ir.actions.act_window">
+        <field name="name">account_30</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">libreria.account_10</field>
+        <field name="res_model">libreria.account_34</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
+
 
 </odoo>
