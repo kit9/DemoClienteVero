@@ -45,7 +45,7 @@ class ChartAccount(models.TransientModel):
             # validador de campo vacio
 
             for line1 in line.line_ids:
-                if line1.account_id:
+                if line1.account_id.code == '101001':
                     cuenta = line1.account_id.code
             for line2 in line.line_ids:
                 if line2.currency_id:
