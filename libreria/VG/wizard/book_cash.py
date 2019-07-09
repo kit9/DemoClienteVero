@@ -40,6 +40,8 @@ class ChartAccount(models.TransientModel):
         cuenta = ""
         moneda = ""
         factura = ""
+        debe = ""
+        haber = ""
         # Inicio #003 "VALIDACION DE CAMPOS"
         for line in lst_account_move_line:
             # validador de campo vacio
@@ -50,9 +52,16 @@ class ChartAccount(models.TransientModel):
             for line2 in line.line_ids:
                 if line2.currency_id:
                     moneda = line2.currency_id.name
-            # for line3 in line.line_ids:
-            if line.invoice_id:
-                 factura = line.invoice_id.document_type_id.display_name
+            for line3 in line.line_ids:
+                if line3.invoice_id:
+                    factura = line.invoice_id.document_type_id.display_name
+            for line4 in line.line_ids:
+                if line4.account_id.code == '101001':
+                    debe= line4.debit
+            for line4 in line.line_ids:
+                if line4.account_id.code == '101001':
+                    haber = line4.credit
+
 
         # Fin #003
             # datos a exportar a txt
@@ -68,13 +77,13 @@ class ChartAccount(models.TransientModel):
                 factura[0:2] or '',  #
                 '',
                 '',
+                line.date.strftime("%d%m%Y") or '',
+                line.date.strftime("%d%m%Y") or '',
+                line.date.strftime("%d%m%Y") or '',
+                line.x_studio_glosa or '',
                 '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
+                debe or '',
+                haber or '',
                 '',
                 '',
                 ''
