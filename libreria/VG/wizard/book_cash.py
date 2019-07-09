@@ -40,7 +40,9 @@ class ChartAccount(models.TransientModel):
         cuenta = ""
         moneda = ""
         factura = ""
-        factura1 = ""
+        doc = ""
+        serie = ""
+        numero = ""
         debe = ""
         haber = ""
         # Inicio #003 "VALIDACION DE CAMPOS"
@@ -58,7 +60,13 @@ class ChartAccount(models.TransientModel):
                     factura = line3.payment_id
                     for imp in factura.invoice_ids:
                         if imp.number:
-                            factura1 = imp.document_type_id.display_name
+                            doc = imp.document_type_id.display_name
+                        if imp.number:
+                            serie = imp.invoice_serie
+                        if imp.number:
+                            numero = imp.invoice_number
+
+
             for line4 in line.line_ids:
                 if line4.account_id.code == '101001':
                     debe= line4.debit
@@ -78,9 +86,9 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                factura1 or '',  # tipo de documento de factura proverdor
-                '',  # serie de factura proveedor
-                '',  # numero de factura proveedor
+                doc or '',  # tipo de documento de factura proverdor
+                serie or '',  # serie de factura proveedor
+                numero or '',  # numero de factura proveedor
                 line.date.strftime("%d/%m/%Y") or '',
                 line.date.strftime("%d/%m/%Y") or '',
                 line.date.strftime("%d/%m/%Y") or '',
