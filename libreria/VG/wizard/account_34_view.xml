@@ -28,7 +28,7 @@
     </record>
 
     <record id="account_34_VG" model="ir.actions.act_window">
-        <field name="name">account_30</field>
+        <field name="name">account_34</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">libreria.account_34</field>
         <field name="view_type">form</field>
