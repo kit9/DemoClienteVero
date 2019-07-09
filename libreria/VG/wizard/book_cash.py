@@ -30,10 +30,10 @@ class ChartAccount(models.TransientModel):
     def generate_file(self):
 
 # modelo a buscar
-        #dominio = [('name', 'like', 'CSH1')]
+        dominio = [('name', 'like', 'CSH1')]
 
 # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([])
+        lst_account_move_line = self.env['account.move'].search(dominio)
 
 # variables creadas
         content_txt = ""
