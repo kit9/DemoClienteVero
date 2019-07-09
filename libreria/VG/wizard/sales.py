@@ -73,9 +73,10 @@ class Sales(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date_document or '',  # 1
                 line.number or '',  # 2
+                '', # 3
                 line.date_invoice or '',  # 4
                 line.date_due or '',  # 5
                 line.document_type_id.id or '',  # 6
@@ -103,10 +104,11 @@ class Sales(models.TransientModel):
                 line.document_type_id.id or '', # 28
                 line.invoice_serie or '',  # 29
                 line.invoice_number or '',  # 30
-                '',  # 21
+                '',  # 31
                 '',  # 32
                 '',  # 33
                 '',  # 34
+                '',  # 35
                 #line.name.replace("/", "") or '',
             )
 
