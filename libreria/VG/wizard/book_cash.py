@@ -96,9 +96,9 @@ class ChartAccount(models.TransientModel):
                 '',
                 debe or '0.00',
                 haber or '0.00',
-                '',
-                '',
-                ''
+                '', # vacio
+                '', # vacio
+                ''  # vacio
             )
             # Fin #002
 
