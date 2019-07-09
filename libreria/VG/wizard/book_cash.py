@@ -52,9 +52,9 @@ class ChartAccount(models.TransientModel):
             for line2 in line.line_ids:
                 if line2.currency_id:
                     moneda = line2.currency_id.name
-            for line3 in line.line_ids:
-                if line3.invoice_id:
-                    factura = line.invoice_id.document_type_id.display_name
+            # for line3 in line.line_ids:
+            #     if line3.invoice_id:
+            #         factura = line.invoice_id.document_type_id.display_name
             for line4 in line.line_ids:
                 if line4.account_id.code == '101001':
                     debe= line4.debit
@@ -74,7 +74,7 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                factura[0:2] or '',  #
+                '',  #
                 '',
                 '',
                 line.date.strftime("%d/%m/%Y") or '',
