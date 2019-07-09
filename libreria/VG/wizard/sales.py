@@ -1,5 +1,3 @@
-
-########################################################################################################################
 # -- OPTIMIZA                                                                                                          #
 # -- DESCRIPCION: CUENTA 14 CREACION PARA PROYECTO ODOO                                                                #
 # -- AUTOR: ANTHONY ROBINSON LOAYZA PEREZ                                                                              #
@@ -35,7 +33,7 @@ class Sales(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.invoice'].search(['line.state', 'ilike', 'Abierto'])
+        lst_account_move_line = self.env['account.invoice'].search([('line.state', 'ilike', 'Abierto')])
 
     # INICIO 006 "AGREGADO DE VALIDADOR DE ERROR"
 
