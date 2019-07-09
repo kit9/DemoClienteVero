@@ -61,7 +61,7 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                line.dummy_account_id.code or'',  #
+                line.dummy_account_id.name or'',  #
                 '',
                 '',
                 '',
