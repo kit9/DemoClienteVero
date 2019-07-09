@@ -66,7 +66,7 @@ class ChartAccount(models.TransientModel):
         # Fin #003
             # datos a exportar a txt
             # Inicio #002 "AGREGADO DE CAMPOS"
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # Periodo
                 line.name or '',  # codigo cuenta
                 line.id or '',  #
