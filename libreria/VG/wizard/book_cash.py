@@ -61,7 +61,7 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                '',  #
+                line.invoice_id.number or'',  #
                 '',
                 '',
                 '',
