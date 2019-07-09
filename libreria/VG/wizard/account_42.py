@@ -18,12 +18,12 @@ _logger = logging.getLogger(__name__)
 # -----------------------------------------------------------------------------------------
 
 #   INICIO #001 "CREACION DE LA CLASE"
-class Account_42(models.TranientModel):
+class Account_42(models.TransientModel):
     _name = "libreria.account_42"
     _description = "Cuenta_42"
 
-    state = fields.Seletion([('choose', 'choose'), ('get', 'get')], default='choose')
-    txt_filenae = fields.Char('filename', readonly=True)
+    state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
+    txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
 
 #   FIN 001
