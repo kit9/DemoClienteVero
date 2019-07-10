@@ -71,7 +71,7 @@ class Account_14(models.TransientModel):
                 line.date.strftime("%Y%m%d") or '',  # 1
                 line.name or '',
                 line.id or '',
-                line.partner_id.code or '',
+                line.partner_id.catalog_06_id.code or '',
                 line.partner_id.vat or '',
                 line.invoice_id.date_document or '',
                 line.partner_id.name or '',
