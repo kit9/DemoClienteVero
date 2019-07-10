@@ -16,10 +16,11 @@ class Account_17(models.TransientModel):
 
     @api.multi
     def generate_file(self):
+        # filtro de fecha
         dominio = [('dummy_account_id.code', 'like', '301130')]
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([dominio])
+        lst_account_move_line = self.env['account.move'].search(dominio)
 
         # variables creadas
         content_txt = ""
