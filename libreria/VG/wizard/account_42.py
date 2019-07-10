@@ -49,10 +49,10 @@ class Account42(models.TransientModel):
 
             for imp in line.line_ids:
                 # Importe
-                if imp.debit > -1:  # Debe > 0
-                    _importe = imp.debit  # ("+" monto)
-                else: # Haber > 0
-                    _importe = line.credit # ("-" monto)
+                if imp.credit > -1:  # Haber > 0
+                    _importe = imp.credit  # ("-" monto)
+                else: #  Debe > 0
+                    _importe = line.debit # ("+" monto)
 
                 #Fecha de Vencimiento
                 if imp.date_maturity:
