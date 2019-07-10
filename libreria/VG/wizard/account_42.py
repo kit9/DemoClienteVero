@@ -37,7 +37,6 @@ class Account42(models.TransientModel):
         estado_ope = ""
         _catalogo = ""
         _importe = ""
-        _value = "0"
 
         #   INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES" -- INICIO 004 "VALIDACION DE CAMPOS"
         # Iterador
@@ -48,10 +47,11 @@ class Account42(models.TransientModel):
                 _catalogo = line.partner_id.catalog_06_id.code
 
             # Importe
-            if line.debit >= _value:  # Debe > 0
-                _importe = line.debit("+")  # ("+" monto)
-            else: # Haber > 0
-                _importe = line.credit("-")  # ("-" monto)
+            for imp in line.line_ids:
+                if imp.debit >= 0:  # Debe > 0
+                    _importe = imp.debit("+")  # ("+" monto)
+                else: # Haber > 0
+                    _importe = line.credit("-")  # ("-" monto)
 
             # for imp in line.line_ids:
             #     if imp.debit >= _value:
