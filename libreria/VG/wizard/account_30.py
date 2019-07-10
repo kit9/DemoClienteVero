@@ -33,7 +33,7 @@ class Account_17(models.TransientModel):
 
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y/%m/%d") or '',  # 1 fecha en formato codigo
-                line.fef or '', #2 nombre de la factura
+                line.ref or '', #2 nombre de la factura
                 '', #3 codigo de almacenamiento
                 '', #4 codigo de la compañia a quien se brindo el servicio
                 '', #5 ruc de la empresa
