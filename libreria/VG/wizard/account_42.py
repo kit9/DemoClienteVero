@@ -49,9 +49,9 @@ class Account42(models.TransientModel):
             # Importe
             for imp in line.line_ids:
                 if imp.debit >= 0:  # Debe > 0
-                    _importe = imp.debit("+")  # ("+" monto)
+                    _importe = imp.debit  # ("+" monto)
                 else: # Haber > 0
-                    _importe = line.credit("-")  # ("-" monto)
+                    _importe = line.credit # ("-" monto)
 
             # for imp in line.line_ids:
             #     if imp.debit >= _value:
