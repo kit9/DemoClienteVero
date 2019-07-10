@@ -37,7 +37,7 @@ class Account42(models.TransientModel):
         estado_ope = ""
         _catalogo = ""
         _importe = ""
-        _value = "0.00"
+        _value = "0"
 
         #   INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES" -- INICIO 004 "VALIDACION DE CAMPOS"
         # Iterador
@@ -52,7 +52,7 @@ class Account42(models.TransientModel):
             for imp in line.line_ids:
                 # Si DEBE >= 0....
                 if imp.debit >= _value:
-                    _importe = imp.debit   
+                    _importe = imp.debit
                 else:
                     # Muestra el HABER
                     _importe = imp.credit
