@@ -30,8 +30,8 @@ class Account_17(models.TransientModel):
         for line in lst_account_move_line:
 
             for imp1 in line.line_ids:
-                if imp1.partner_id.document_type_identity_id:
-                    _catalogo = imp1.partner_id.document_type_identity_id
+                if imp1.partner_id.catalog_06_id.code:
+                    _catalogo = imp1.partner_id.catalog_06_id.code
 
             # datos a exportar a txt
 
@@ -40,8 +40,8 @@ class Account_17(models.TransientModel):
                 line.ref or '', #2 nombre de la factura
                 line.x_studio_field_fwlP9 or '', #3 codigo de almacenamiento
                 _catalogo or '', #4 codigo de la compañia a quien se brindo el servicio
-                '', #5 ruc de la empresa
-                '', #6 nombre de la empresa
+                line.partner_id.vat or '', #5 ruc de la empresa
+                line.partner_id or '', #6 nombre de la empresa
                 '', #7 fecha de elaboración
                 '', #8 total de monto a cobrar
                  '',
