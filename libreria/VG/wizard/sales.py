@@ -55,7 +55,7 @@ class Sales(models.TransientModel):
 
             # _payments
             for imp1 in line.payment_ids:
-                if imp1 == _est:
+                if imp1.state == _est:
                     _pay = "1"
                 else:
                     _pay = ""
