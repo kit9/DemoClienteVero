@@ -36,7 +36,7 @@ class Account_14(models.TransientModel):
     # INICIO 005 "MODIFICADO EL MODELO A BUSCAR CON FILTRO"
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
+        lst_account_move_line = self.env['account.move.line'].search([('account_id.code', 'ilike', '46')])
 
     # FIN 005
 
@@ -67,8 +67,16 @@ class Account_14(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m%d") or '',  # 1
+                line.name or '',
+                line.id or '',
+                line.partner_id.code or '',
+                line.partner_id.vat or '',
+                line.invoice_id.date_document or '',
+                line.partner_id.name or '',
+                line.account_id.code or '',
+                '',
                 _estado_ope or ''
             )
 
