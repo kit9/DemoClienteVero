@@ -46,7 +46,6 @@ class Sales(models.TransientModel):
         # variables creadas
         content_txt = ""
         _est = "Publicado"
-        _esta = ""
         _pay = ""
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
@@ -59,8 +58,7 @@ class Sales(models.TransientModel):
                 if imp1 == _est:
                     _pay = "1"
                 else:
-                    if imp1 == _esta:
-                        _pay = ""
+                    _pay = ""
 
 
 
