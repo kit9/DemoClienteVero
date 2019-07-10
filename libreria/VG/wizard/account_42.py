@@ -52,10 +52,10 @@ class Account42(models.TransientModel):
             for imp in line.line_ids:
                 # Si DEBE >= 0....
                 if imp.debit >= _value:
-                    _importe = imp.debit("+")
+                    _importe = imp.debit
                 else:
                     # Muestra el HABER
-                    _importe = imp.credit("-")
+                    _importe = imp.credit
 
             # Estado de Operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
