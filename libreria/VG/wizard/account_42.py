@@ -37,6 +37,7 @@ class Account42(models.TransientModel):
         estado_ope = ""
         _catalogo = ""
         _importe = ""
+        _fecvenc = ""
 
         #   INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES" -- INICIO 004 "VALIDACION DE CAMPOS"
         # Iterador
@@ -46,12 +47,16 @@ class Account42(models.TransientModel):
             if line.partner_id.catalog_06_id.code:
                 _catalogo = line.partner_id.catalog_06_id.code
 
-            # Importe
             for imp in line.line_ids:
+                # Importe
                 if imp.debit >= 0:  # Debe > 0
                     _importe = imp.debit  # ("+" monto)
                 else: # Haber > 0
                     _importe = line.credit # ("-" monto)
+
+                #Fecha de Vencimiento
+                if imp.date_maturity:
+                    _fecvenc = imp.date_maturity
 
             # for imp in line.line_ids:
             #     if imp.debit >= _value:
@@ -87,7 +92,7 @@ class Account42(models.TransientModel):
                 line.x_studio_field_fwlP9 or '', # 03 ID
                 _catalogo or '', # 04 ID de Ruc
                 line.partner_id.vat or '', # 05 Numero de Ruc
-                line.date_maturity or '', # 06 Fecha de vencimiento
+                _fecvenc or '', # 06 Fecha de vencimiento
                 line.partner_id.name or '', # 07 Nombre de Socio
                 '', # 08 en blanco
                 _importe or '', # 09 Debe o Haber
