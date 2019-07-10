@@ -39,7 +39,7 @@ class Account_17(models.TransientModel):
                 line.date.strftime("%Y/%m/%d") or '',  # 1 fecha en formato codigo
                 line.ref or '', #2 nombre de la factura
                 line.x_studio_field_fwlP9 or '', #3 codigo de almacenamiento
-                _catalogo or '', #4 codigo de la compañia a quien se brindo el servicio
+                '', #4 codigo de la compañia a quien se brindo el servicio
                 line.partner_id.vat or '', #5 ruc de la empresa
                 line.partner_id or '', #6 nombre de la empresa
                 '', #7 fecha de elaboración
