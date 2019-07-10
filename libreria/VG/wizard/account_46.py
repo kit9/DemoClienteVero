@@ -1,3 +1,4 @@
+########################################################################################################################
 # -- OPTIMIZA                                                                                                          #
 # -- DESCRIPCION: CUENTA 14 CREACION PARA PROYECTO ODOO                                                                #
 # -- AUTOR: ANTHONY ROBINSON LOAYZA PEREZ                                                                              #
@@ -19,9 +20,9 @@ import time
 _logger = logging.getLogger(__name__)
 
     # INICIO 001 "CREACION DE LA CLASE"
-class Sales(models.TransientModel):
-    _name = "libreria.sales"
-    _description = "Sales"
+class Account_14(models.TransientModel):
+    _name = "libreria.account_46"
+    _description = "Cuenta_46"
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
@@ -32,76 +33,43 @@ class Sales(models.TransientModel):
     @api.multi
     def generate_file(self):
 
+    # INICIO 005 "MODIFICADO EL MODELO A BUSCAR CON FILTRO"
+
         # modelo a buscar
-        lst_account_move_line = self.env['account.invoice'].search([])
+        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
 
-    # INICIO 006 "AGREGADO DE VALIDADOR DE ERROR"
-
-        # validador de error
-        #if len(lst_account_move_line) == 0:
-        #    raise ValidationError("No se encuentra la venta")
-
-    # FIN 006
+    # FIN 005
 
         # variables creadas
         content_txt = ""
-        _est = "publicado"
-        _pay = ""
+        _estado_ope = ""
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
 
         # Iterador
         for line in lst_account_move_line:
 
-            # _payments
-            for imp1 in line.payment_ids:
-                if imp1.state == _est:
-                    _pay = "1"
+            # validador de estado de operación
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                _estado_ope = "1"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    _estado_ope = "8"
                 else:
-                    _pay = ""
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        _estado_ope = "9"
+                    else:
+                        _estado_ope = "1"
 
-
+    # FIN 002
 
     # INICIO 003 "AGREGANDO CAMPOS"
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date_document or '',  # 1
-                line.number or '',  # 2
-                line.move_id.x_studio_field_fwlP9 or '', # 3
-                line.date_invoice or '',  # 4
-                line.date_due or '',  # 5
-                line.document_type_id.id or '',  # 6
-                line.invoice_serie or '',  # 7
-                line.invoice_number or '',  # 8
-                '', # 9
-                line.partner_id.catalog_06_id.code or '',  # 10
-                line.partner_id.vat or '', # 11
-                line.partner_id.name or '', # 12
-                '', #13
-                line.amount_untaxed or '', #14
-                '', # 15
-                line.amount_tax or '', #16
-                '',  # 17
-                '',  # 18
-                '',  # 19
-                '',  # 20
-                '',  # 21
-                '',  # 22
-                '',  # 23
-                line.amount_total or '', # 24
-                line.currency_id.name or '', # 25
-                line.exchange_rate or '', # 26
-                line.date_invoice or '',  # 27
-                line.document_type_id.id or '', # 28
-                line.invoice_serie or '',  # 29
-                line.invoice_number or '',  # 30
-                '',  # 31
-                '',  # 32
-                _pay or '',  # 33
-                '1',  # 34
-                '',  # 35
+            txt_line = "%s|%s" % (
+                line.date.strftime("%Y%m%d") or '',  # 1
+                _estado_ope or ''
             )
 
     # FIN 003
@@ -114,14 +82,14 @@ class Sales(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "venta.txt"
+            'txt_filename': "Cuenta_46.txt"
         })
     # FIN 004
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'sales',
-            'res_model': 'libreria.sales',
+            'name': 'Cuenta_46',
+            'res_model': 'libreria.account_46',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,

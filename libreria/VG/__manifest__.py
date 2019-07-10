@@ -45,6 +45,7 @@
         'wizard/account_34_view.xml',
         'wizard/account_42_view.xml',
         'wizard/book_cash_view.xml',
+        'wizard/account_46_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
