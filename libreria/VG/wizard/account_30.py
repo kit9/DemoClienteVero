@@ -24,14 +24,12 @@ class Account_17(models.TransientModel):
 
         # variables creadas
         content_txt = ""
-        _catalogo
+
 
         # Iterador
         for line in lst_account_move_line:
 
-            for imp1 in line.line_ids:
-                if imp1.partner_id.catalog_06_id.code:
-                    _catalogo = imp1.partner_id.catalog_06_id.code
+            
 
             # datos a exportar a txt
 
