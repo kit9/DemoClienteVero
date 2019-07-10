@@ -48,14 +48,23 @@ class Account42(models.TransientModel):
                 _catalogo = line.partner_id.catalog_06_id.code
 
             # Importe
+            if line.move_id.debit >= _value:  # Debe > 0
+                _importe = line.move_id.debit("+")  # ("+" monto)
+            else: # Haber > 0
+                _importe = line.move_id.credit("-")  # ("-" monto)
 
-            for imp in line.line_ids:
-                # Si DEBE >= 0....
-                if imp.debit >= _value:
-                    _importe = imp.debit
-                else:
-                    # Muestra el HABER
-                    _importe = imp.credit
+            # for imp in line.line_ids:
+            #     if imp.debit >= _value:
+            #         _importe = imp.debit("+")
+            #     else:
+            #         _importe = imp.credit("-")
+            #         credit = imp.credit
+            # for imp1 in line.line_ids:
+            #     if imp1.debit:
+            #         debit = imp1.debit
+
+
+
 
             # Estado de Operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
