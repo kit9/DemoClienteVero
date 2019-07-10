@@ -45,28 +45,23 @@ class Sales(models.TransientModel):
 
         # variables creadas
         content_txt = ""
+        _est = "Publicado"
+        _esta = ""
+        _pay = ""
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
 
         # Iterador
         for line in lst_account_move_line:
 
-            # _nombre
-            #for imp3 in line.line_ids:
-            #    if imp3.partner_id.name:
-            #       _nombre = imp3.partner_id.name
+            # _payments
+            for imp1 in line.payment_ids:
+                if imp1 == _est:
+                    _pay = "1"
+                else:
+                    if imp1 == _esta:
+                        _pay = ""
 
-            # validador de estado de operación
-            #if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-            #    _estado_ope = "1"
-            #else:
-            #    if line.create_date.strftime("%Y") != time.strftime("%Y"):
-            #        _estado_ope = "8"
-            #    else:
-            #        if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
-            #            _estado_ope = "9"
-            #        else:
-            #            _estado_ope = "1"
 
 
     # INICIO 003 "AGREGANDO CAMPOS"
@@ -74,11 +69,11 @@ class Sales(models.TransientModel):
             # datos a exportar a txt
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date_document or '',  # 1
-                line.number or '',  # 2
-                '', # 3
-                line.date_invoice or '',  # 4
-                line.date_due or '',  # 5
+                line.date_document.strftime("%Y%m") or '',  # 1
+                line.number.replace("/", "") or '',  # 2
+                line.move_id.x_studio_field_fwlP9 or '', # 3
+                line.date_invoice.strftime("%d%m%Y") or '',  # 4
+                line.date_due.strftime("%d%m%Y") or '',  # 5
                 line.document_type_id.id or '',  # 6
                 line.invoice_serie or '',  # 7
                 line.invoice_number or '',  # 8
@@ -100,16 +95,15 @@ class Sales(models.TransientModel):
                 line.amount_total or '', # 24
                 line.currency_id.name or '', # 25
                 line.exchange_rate or '', # 26
-                line.date_invoice or '',  # 27
+                line.date_invoice.strftime("%d%m%Y") or '',  # 27
                 line.document_type_id.id or '', # 28
                 line.invoice_serie or '',  # 29
                 line.invoice_number or '',  # 30
                 '',  # 31
                 '',  # 32
-                '',  # 33
-                '',  # 34
+                _pay or '',  # 33
+                '1',  # 34
                 '',  # 35
-                #line.name.replace("/", "") or '',
             )
 
     # FIN 003

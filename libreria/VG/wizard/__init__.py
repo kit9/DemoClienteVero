@@ -12,5 +12,5 @@ from . import sales
 from . import account_30
 from . import account_34
 from . import book_cash
-from . import account_42
+
 
