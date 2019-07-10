@@ -17,25 +17,29 @@ class Account_17(models.TransientModel):
     @api.multi
     def generate_file(self):
         # filtro de fecha
-        dominio = [('dummy_account_id.code', 'like', '301130')]
+        dominio = [('dummy_account_id.code', 'like', '301130}')]
 
         # modelo a buscar
         lst_account_move_line = self.env['account.move'].search(dominio)
 
         # variables creadas
         content_txt = ""
+        _catalogo
 
         # Iterador
         for line in lst_account_move_line:
 
+            for imp1 in line.line_ids:
+                if imp1.partner_id.document_type_identity_id:
+                    _catalogo = imp1.partner_id.document_type_identity_id
 
             # datos a exportar a txt
 
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y/%m/%d") or '',  # 1 fecha en formato codigo
                 line.ref or '', #2 nombre de la factura
-                '', #3 codigo de almacenamiento
-                '', #4 codigo de la compañia a quien se brindo el servicio
+                line.x_studio_field_fwlP9 or '', #3 codigo de almacenamiento
+                _catalogo or '', #4 codigo de la compañia a quien se brindo el servicio
                 '', #5 ruc de la empresa
                 '', #6 nombre de la empresa
                 '', #7 fecha de elaboración
