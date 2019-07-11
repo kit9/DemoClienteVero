@@ -58,15 +58,14 @@ class account_30(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|0%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y/%m/%d") or '',  # 1
-                line.name or '',
-                line.id or '',
+                line.partner_id.ref or '',
+                line.x_studio_field_fwlP9 or '',
                 line.partner_id.catalog_06_id.code or '',
                 line.partner_id.vat or '',
-                line.invoice_id.date_document or '',
                 line.partner_id.name or '',
-                line.account_id.code or '',
+                '',
                 '',
                 _estado_ope or ''
             )
