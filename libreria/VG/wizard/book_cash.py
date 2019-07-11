@@ -66,10 +66,9 @@ class ChartAccount(models.TransientModel):
                         if imp.number:
                             numero = imp.invoice_number
 
-
             for line4 in line.line_ids:
                 if line4.account_id.code == '101001':
-                    debe= line4.debit
+                    debe = line4.debit
             for line4 in line.line_ids:
                 if line4.account_id.code == '101001':
                     haber = line4.credit
@@ -87,7 +86,7 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 moneda or '',  # moneda
                 doc[0:2] or '00',  # tipo de documento de factura proverdor
-                serie or '0',  # serie de factura proveedor
+                serie or '',  # serie de factura proveedor
                 numero or '',  # numero de factura proveedor
                 line.date.strftime("%d/%m/%Y") or '',
                 line.date.strftime("%d/%m/%Y") or '',
