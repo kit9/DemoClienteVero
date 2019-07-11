@@ -29,7 +29,7 @@ class Account_17(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            
+
 
             # datos a exportar a txt
 
@@ -54,7 +54,7 @@ class Account_17(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Ple. Cuenta 30.txt"
+            'txt_filename': "Ple. Cuenta 30"
         })
         return {
             'type': 'ir.actions.act_window',
