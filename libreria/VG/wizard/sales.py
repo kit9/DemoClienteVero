@@ -53,9 +53,8 @@ class Sales(models.TransientModel):
         for line in lst_account_move_line:
 
             # _payments
-            for imp1 in line.payment_ids:
-                if imp1:
-                   _pay = imp1
+            if len(line.payment_ids) < 0:
+                _pay = line.payment_ids[0]
 
 
 
@@ -96,7 +95,7 @@ class Sales(models.TransientModel):
                 line.invoice_number or '',  # 30
                 '',  # 31
                 '',  # 32
-                _pay or '0',  # 33
+                _pay or '',  # 33
                 '1',  # 34
                 '',  # 35
             )
