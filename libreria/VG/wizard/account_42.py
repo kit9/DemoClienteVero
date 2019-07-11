@@ -17,7 +17,7 @@ import time
 
 _logger = logging.getLogger(__name__)
 
-# INICIO 001 "CREACION DE LA CLASE"
+#   INICIO 001 "CREACION DE LA CLASE"
 class Account42(models.TransientModel):
     _name = "libreria.account_42"
     _description = "Cuenta_42"
@@ -25,7 +25,7 @@ class Account42(models.TransientModel):
     state = fields.Selection([('choose','choose'),('get','get')], default='choose')
     txt_filename = fields.Char('filename', readonly = True)
     txt_binary = fields.Binary('file', readonly=True)
-# FIN 001
+#   FIN 001
     @api.multi
     def generate_file(self):
 
@@ -53,7 +53,7 @@ class Account42(models.TransientModel):
                     _importe = imp.debit  # ("+" monto)
                 else: # Haber > 0
                     #if imp.credit > 0:
-                    _importe = imp.credit # ("-" monto)
+                    _importe = imp.credit("-") # ("-" monto)
 
                 #Fecha de Vencimiento
                 if imp.date_maturity:
