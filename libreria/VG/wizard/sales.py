@@ -45,7 +45,6 @@ class Sales(models.TransientModel):
 
         # variables creadas
         content_txt = ""
-        _est = "publicado"
         _pay = ""
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
@@ -55,10 +54,8 @@ class Sales(models.TransientModel):
 
             # _payments
             for imp1 in line.payment_ids:
-                if imp1.state == _est:
-                    _pay = "1"
-                else:
-                    _pay = ""
+                if imp1.state:
+                    _pay = imp1.state
 
 
 
@@ -99,7 +96,7 @@ class Sales(models.TransientModel):
                 line.invoice_number or '',  # 30
                 '',  # 31
                 '',  # 32
-                _pay or '',  # 33
+                _pay or '0',  # 33
                 '1',  # 34
                 '',  # 35
             )
