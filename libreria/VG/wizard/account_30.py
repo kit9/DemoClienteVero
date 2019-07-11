@@ -81,14 +81,14 @@ class account_30(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Ple cuenta_30.txt"
+            'txt_filename': "Ple cuenta 30.txt"
         })
     # FIN 004
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Ple. cuenta_30',
-            'res_model': 'libreria.account_46',
+            'name': 'Ple. cuenta 30',
+            'res_model': 'libreria.account_30',
             'view_mode': 'form',
             'view_type': 'form',
             'res_id': self.id,
