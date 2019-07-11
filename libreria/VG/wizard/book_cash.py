@@ -94,8 +94,8 @@ class ChartAccount(models.TransientModel):
                 line.date.strftime("%d/%m/%Y") or '',
                 line.x_studio_glosa or '',
                 '',
-                debe or '0.00',
-                haber or '0.00',
+                debe or '0,00',
+                haber or '0,00',
                 '', # vacio
                 '', # vacio
                 ''  # vacio
