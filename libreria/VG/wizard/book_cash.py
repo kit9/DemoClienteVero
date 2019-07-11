@@ -78,7 +78,7 @@ class ChartAccount(models.TransientModel):
         # Fin #003
             # datos a exportar a txt
             # Inicio #002 "AGREGADO DE CAMPOS"
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|0%s|000%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m00") or '',  # Periodo
                 line.name or '',  # codigo cuenta
                 line.id or '',  #
@@ -86,8 +86,8 @@ class ChartAccount(models.TransientModel):
                 '',  # vacio
                 '',  # vacio
                 moneda or '',  # moneda
-                doc[0:2] or '00',  # tipo de documento de factura proverdor
-                serie or '0000',  # serie de factura proveedor
+                doc[0:2] or '0',  # tipo de documento de factura proverdor
+                serie or '0',  # serie de factura proveedor
                 numero or '',  # numero de factura proveedor
                 line.date.strftime("%d/%m/%Y") or '',
                 line.date.strftime("%d/%m/%Y") or '',
