@@ -68,7 +68,7 @@ class Sales(models.TransientModel):
                 line.date_document or '',  # 1
                 line.number or '',  # 2
                 line.move_id.x_studio_field_fwlP9 or '', # 3
-                line.date_invoice.strftime("%d%m%Y") or '',  # 4
+                line.date_invoice.strftime("%d%m%Y") if self.date_invoice else "",  # 4
                 line.date_due or '',  # 5
                 line.document_type_id.id or '',  # 6
                 line.invoice_serie or '',  # 7
