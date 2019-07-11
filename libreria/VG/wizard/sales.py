@@ -53,8 +53,8 @@ class Sales(models.TransientModel):
         for line in lst_account_move_line:
 
             # _payments
-            if len(line.payment_ids) < 0:
-                _pay = line.payment_ids[0]
+            if len(line.payment_ids) > 0:
+                _pay = line.payment_ids[1]
 
 
 
