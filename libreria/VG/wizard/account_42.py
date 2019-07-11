@@ -50,14 +50,15 @@ class Account42(models.TransientModel):
             for imp in line.line_ids:
                 # Importe
                 if imp.debit > 0:  # Debe > 0
-                    _importe = imp.debit  # ("+" monto)
+                    _importe = +imp.debit  # ("+" monto)
                 else: # Haber > 0
                     #if imp.credit > 0:
-                    _importe = -imp.credit # ("-" monto)
+                    if imp.credit > 0:
+                        _importe = -imp.credit # ("-" monto)
 
                 #Fecha de Vencimiento
                 if imp.date_maturity:
-                    _fecvenc = imp.date_maturity
+                    _fecvenc = imp.date_maturity.strftime("%d/%m/%Y")
 
             # Estado de Operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -75,7 +76,7 @@ class Account42(models.TransientModel):
 #   INICIO 003 "AGREGADO DE CAMPOS"
             # Datos a generar a TXT
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date.strftime("%Y/%m/%d") or '', # 01 Fecha
+                line.date.strftime("%Y%m%d") or '', # 01 Fecha
                 line.name or '', # 02 Asiento Contable
                 line.x_studio_field_fwlP9 or '', # 03 ID
                 _catalogo or '', # 04 ID de Ruc
