@@ -50,7 +50,7 @@ class Account_14(models.TransientModel):
         for line in lst_account_move_line:
 
             # debe
-            if len(line.debit) > 0:
+            #if len(line.debit) > 0:
 
 
             # validador de estado de operación
