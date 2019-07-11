@@ -54,7 +54,7 @@ class Sales(models.TransientModel):
 
             # _payments
             if len(line.payment_ids) > 0:
-                _pay = line.payment_ids[1]
+                _pay = "1"
 
 
 
