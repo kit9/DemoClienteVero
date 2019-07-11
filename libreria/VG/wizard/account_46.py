@@ -49,6 +49,10 @@ class Account_14(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
+            # debe
+            if len(line.debit) > 0:
+
+
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 _estado_ope = "1"
