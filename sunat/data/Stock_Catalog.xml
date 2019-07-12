@@ -1,0 +1,18 @@
+<odoo>
+    <record model="sunat.stock_catalog" id="01">
+        <field name="number">1</field>
+        <field name="description">NACIONES UNIDAS</field>
+    </record>
+    <record model="sunat.stock_catalog" id="02">
+        <field name="number">2</field>
+        <field name="description">CUBSO</field>
+    </record>
+    <record model="sunat.stock_catalog" id="03">
+        <field name="number">3</field>
+        <field name="description">GS1 (EAN-UCC)</field>
+    </record>
+    <record model="sunat.stock_catalog" id="09">
+        <field name="number">9</field>
+        <field name="description">OTROS</field>
+    </record>
+</odoo>

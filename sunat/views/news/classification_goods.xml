@@ -1,0 +1,40 @@
+<odoo>
+
+    <!-- Form Tipo de Documentos -->
+    <record id="classification_goods_form_view" model="ir.ui.view">
+        <field name="name">sunat.classification_goods.form.view</field>
+        <field name="model">sunat.classification_goods</field>
+        <field name="arch" type="xml">
+            <form string="Form Tipo de Documento">
+                <sheet>
+                    <group>
+                        <field name="number"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Thee -->
+    <record id="classification_goods_tree_view" model="ir.ui.view">
+        <field name="name">sunat.classification_goods.tree.view</field>
+        <field name="model">sunat.classification_goods</field>
+        <field name="arch" type="xml">
+            <tree string="Tree Tipo de Documentos">
+                <field name="id"/>
+                <field name="number"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action Document Type -->
+    <record id="action_sunat_classification_goods" model="ir.actions.act_window">
+        <field name="name">Tipo de Documento Sunat</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sunat.classification_goods</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

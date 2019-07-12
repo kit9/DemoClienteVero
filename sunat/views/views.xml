@@ -1,0 +1,587 @@
+<odoo>
+
+    <!-- Formulario - Proveedor -->
+    <record id="partner_form_view_factura" model="ir.ui.view">
+        <field name="name">base.form.partner</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field string="Detraccion" name="detrac_id"/>
+            </field>
+            <xpath expr="/form/sheet/group" position="replace">
+                <notebook colspan="4">
+                    <page string="Datos Generales">
+                        <group>
+                            <group>
+                                <field name="type" attrs="{'invisible': [('parent_id','=', False)]}"
+                                       groups="base.group_no_one"/>
+                                <label for="street" string="Address"/>
+                                <div class="o_address_format">
+                                    <div attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}"
+                                         class="oe_edit_only">
+                                        <b>Company Address:</b>
+                                    </div>
+                                    <field name="street" placeholder="Street..." class="o_address_street"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="city" placeholder="City" class="o_address_city"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                           options="{&quot;no_open&quot;: True}"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                                           context="{'country_id': country_id, 'zip': zip}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"
+                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                </div>
+                                <field name="vat" placeholder="e.g. BE0477472701"
+                                       attrs="{'readonly': [('parent_id','!=',False)]}"/>
+                                <!-- Agregado -->
+                                <field string="Detraccion" name="detrac_id"/>
+                                <field name="age_retencion"/>
+                                <field name="buen_contribuyente"/>
+                                <field name="age_percepcion"/>
+                            </group>
+                            <group>
+                                <field name="function" placeholder="e.g. Sales Director"
+                                       attrs="{'invisible': [('is_company','=', True)]}"/>
+                                <field name="phone" widget="phone"/>
+                                <field name="mobile" widget="phone"/>
+                                <field name="user_ids" invisible="1"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}"
+                                       attrs="{'required': [('user_ids','!=', [])]}"/>
+                                <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
+                                <field name="title" options="{&quot;no_open&quot;: True}"
+                                       attrs="{'invisible': [('is_company', '=', True)]}"/>
+                                <field name="lang"/>
+                                <field name="category_id" widget="many2many_tags"
+                                       options="{'color_field': 'color', 'no_create_edit': True}"
+                                       placeholder="Tags..."/>
+                            </group>
+                        </group>
+                    </page>
+                    <!-- Agregado -->
+                    <page string="Datos SUNAT">
+                        <group>
+                            <field name="person_type"/>
+                            <field name="is_empresa" invisible="1"/>
+                            <field name="document_type_identity_id"/>
+                            <field name="document_num_identity"/>
+
+                            <!--Persona Natural-->
+                            <field name="ape_pat" attrs="{'invisible':[('is_empresa', '=', True)]}"/>
+                            <field name="ape_mat" attrs="{'invisible':[('is_empresa', '=', True)]}"/>
+                            <field name="nombres" attrs="{'invisible':[('is_empresa', '=', True)]}"/>
+
+                            <!--Persona Juridica-->
+                            <field name="age_retencion" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
+                            <field name="buen_contribuyente" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
+                            <field name="age_percepcion" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
+                <field name="is_employee"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Ordenes de Compra-->
+    <record id="view_purchase_order_custom" model="ir.ui.view">
+        <field name="name">purchase.order.custom</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <!--<field name="waiting_orders" string="Pedidos de Espera"/>-->
+                <!--<field name="billing" string="Facturación"/>-->
+                <!--<field name="seat_generated" string="Asiento"/>-->
+                <field name="cuenta_analtica"/>
+                <field name="line_name"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Formulario - Ordenes de Compra-->
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="cuenta_analtica"/>
+                <field name="total_invoiced"/>
+                <field name="line_name"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Formulario - Banco Proveedores -->
+    <record id="partner_bank_tree" model="ir.ui.view">
+        <field name="name">partner.bank.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='acc_number']" position="after">
+                <field name="priority"/>
+                <field name="is_retention"/>
+                <field name="is_detraction"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!--Vista de Producto-->
+    <record id="product_template_inherit_form" model="ir.ui.view">
+        <field name="name">product.template.inherit.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="existence_code"/>
+                <field name="type_existence_id"/>
+                <field name="catalog_id"/>
+            </xpath>
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="tipo_de_act" attrs="{'required': [('asset_category_id','!=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Unidades de Medidas -->
+    <record id="uom_uom_inherit_form" model="ir.ui.view">
+        <field name="name">uom.uom.inherit.form</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='rounding']" position="after">
+                <field name="sunat_code"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Formulario -  Movimiento de Producto-->
+    <record id="stock_picking_inherit_form" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="type_operation_id"/>
+                <field name="document_type_id"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Generar asientos de recepciones no facturadas -->
+    <record id="receptions_not_invoiced" model="ir.actions.server">
+        <field name="name">Recepciones</field>
+        <field name="model_id" ref="model_purchase_order"/>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+            rec.receptions_not_invoiced()
+        </field>
+    </record>
+
+    <!-- Tabla - Movimiento de productos-->
+    <record id="stock_move_line_kardex" model="ir.ui.view">
+        <field name="name">stock.move.line.kardex</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='qty_done']" position="replace">
+                <field name="unit_price"/>
+                <field name="quantity"/>
+                <field name="total_price"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Unidades de Medida-->
+    <record id="uom_uom_inherit_tree" model="ir.ui.view">
+        <field name="name">uom.uom.inherit.tree</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_type']" position="after">
+                <field name="sunat_code"/>
+                <field name="id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="ir_model_inherit_sunat" model="ir.ui.view">
+        <field name="name">ir.model.inherit.sunat</field>
+        <field name="model">ir.model</field>
+        <field name="inherit_id" ref="base.view_model_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='field_id']/tree[1]/field[@name='ttype']"
+                   position="after">
+                <field name="relation"/>
+                <field name="modules"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Formulario - Cuenta Contable-->
+    <record id="target_view_account_form" model="ir.ui.view">
+        <field name="name">target.account.account.form</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='group_id']" position="after">
+                <field name="account_plan_code"/>
+            </xpath>
+            <xpath expr="//sheet/group" position="after">
+                <group>
+                    <group>
+                        <field name="target_account"/>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="target_debit1_id"
+                               attrs="{'invisible':[('target_account','=',False)],'required':[('target_account','=',True)]}"
+                               domain="[('company_id','=',company_id)]"/>
+                        <field name="target_debit2_id"
+                               attrs="{'invisible':[('target_account','=',False)]}"
+                               domain="[('company_id','=',company_id)]"/>
+                        <field name="target_debit3_id"
+                               attrs="{'invisible':[('target_account','=',False)]}"
+                               domain="[('company_id','=',company_id)]"/>
+                    </group>
+                    <group>
+                        <field name="target_debit1_value"
+                               attrs="{'invisible':[('target_account','=',False)],'required':[('target_account','=',True)]}"/>
+                        <field name="target_debit2_value"
+                               attrs="{'invisible':[('target_account','=',False)]}"/>
+                        <field name="target_debit3_value"
+                               attrs="{'invisible':[('target_account','=',False)]}"/>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="target_credit_id"
+                               attrs="{'invisible':[('target_account','=',False)],'required':[('target_account','=',True)]}"
+                               domain="[('company_id','=',company_id)]"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Tabla - Cuenta Contable-->
+    <record id="account_account_list_inherit" model="ir.ui.view">
+        <field name="name">account.account.list.inherit</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="account_plan_code"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Fomulario - Asientos Contables-->
+    <record id="account_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="id" string="ID"/>
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="invoice_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Tabla - Pago a Proveedores-->
+    <record id="account_supplier_payment_tree_inherit" model="ir.ui.view">
+        <field name="name">account.supplier.payment.tree.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="seat_code"/>
+                <field name="seat_name"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Pago a Proveedores-->
+    <record id="account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="operation_number"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Activos-->
+    <record id="account_asset_asset_inherit_form" model="ir.ui.view">
+        <field name="name">account.asset.asset.inherit.form</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_id']" position="after">
+                <field name="employee_id"/>
+                <field name="reason_for_low"/>
+            </xpath>
+            <xpath expr="//field[@name='account_analytic_id']" position="after">
+                <field name="brand" required="True"/>
+                <field name="model" required="True"/>
+                <field name="serie" required="True"/>
+                <field name="active_status" required="True"/>
+            </xpath>
+            <xpath expr="//field[@name='analytic_tag_ids']" position="after">
+                <field name="tipo_de_act"/>
+                <field name="existence_code"/>
+            </xpath>
+            <xpath expr="//notebook/page[last()]" position="after">
+                <page string="Historial de Costos">
+                    <field name="invoice_line_ids" readonly="1">
+                        <tree string="Detalle de Factura">
+                            <field name="name"/>
+                            <field name="account_id" groups="account.group_account_user"/>
+                            <field name="quantity"/>
+                            <field name="uom_id" groups="uom.group_uom"/>
+                            <field name="price_unit"/>
+                            <field name="discount" groups="sale.group_discount_per_so_line"/>
+                            <field name="price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                            <field name="move_number"/>
+                            <field name="price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//button[@name='set_to_close']" position="replace">
+                <button name="set_to_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"
+                        invisible="1"/>
+                <button name="set_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//field[@name='method_period']" position="after">
+                <field name="num_doc"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Tabla - Activos-->
+    <record id="account_asset_asset_purchase_tree_inherit" model="ir.ui.view">
+        <field name="name">account.asset.asset.purchase.tree.inherit</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_purchase_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree[1]/field[@name='name']" position="after">
+                <field name="code"/>
+                <field name="seat_code"/>
+                <field name="catalog_number"/>
+                <field name="type_existence_id"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="product_code"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Centro de Produccion-->
+    <record id="mrp_workcenter_form_inherit" model="ir.ui.view">
+        <field name="name">mrp.workcenter.form.inherit</field>
+        <field name="model">mrp.workcenter</field>
+        <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='name']" position="after">
+                <field name="employee_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Empleado-->
+    <record id="hr_employee_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="analytic_account_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Categoria de Producto-->
+    <record id="product_category_form_inherit" model="ir.ui.view">
+        <field name="name">product.category.form.inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='property_account_expense_categ_id']" position="after">
+                <field name="analytic_account_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Rest Partner Bank-->
+    <record id="res_partner_bank_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.bank.form.inherit</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="base.view_partner_bank_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='acc_type']" position="replace">
+                <field name="acc_type" invisible="1"/>
+                <field name="account_type" required="True"/>
+            </xpath>
+            <xpath expr="//field[@name='acc_holder_name']" position="after">
+                <field name="branch_office"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Formulario - Compañia-->
+    <record id="res_company_form_inherit" model="ir.ui.view">
+        <field name="name">res.company.form.inherit</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <!--            Datos de la compañia-->
+            <!--            <xpath expr="//field[@name='vat']" position="before">-->
+            <!--                <field name="catalog_06_id" required="1"/>-->
+            <!--            </xpath>-->
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="string">RUC</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Valoracion de Inventario-->
+    <record id="product_stock_tree_2_inherit" model="ir.ui.view">
+        <field name="name">product.stock.tree.2.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock_account.view_stock_product_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="account_account"/>
+            </xpath>
+            <xpath expr="//field[@name='qty_at_date']" position="after">
+                <field name="standard_price" string="Costo "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Valoracion de Inventario-->
+    <record id="product_stock_tree_2_inherit" model="ir.ui.view">
+        <field name="name">product.stock.tree.2.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock_account.view_stock_product_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="account_account"/>
+            </xpath>
+            <xpath expr="//field[@name='qty_at_date']" position="after">
+                <field name="standard_price" string="Costo "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Formulario - Impuestos -->
+    <record id="account_tax_form_inherit" model="ir.ui.view">
+        <field name="name">account.tax.form.inherit</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="tax_rate" required="True"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Impuestos -->
+    <record id="account_tax_tree_inherit" model="ir.ui.view">
+        <field name="name">account.tax.tree.inherit</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']" position="after">
+                <field name="tax_rate"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_line_inherit_tree" model="ir.ui.view">
+        <field name="name">account.move.line.inherit.tree</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="before">
+                <field name="id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_inherit_tree" model="ir.ui.view">
+        <field name="name">account.move.inherit.tree</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="before">
+                <field name="id"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="person_type"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Accion de Prueba -->
+    <record id="asset_validate" model="ir.actions.server">
+        <field name="name">Validar Activos</field>
+        <field name="model_id" ref="model_account_asset_asset"/>
+        <field name="binding_model_id" ref="account_asset.model_account_asset_asset"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+            rec.validate()
+        </field>
+    </record>
+
+    <!-- Accion de Prueba -->
+    <record id="update_ref_account_move_line" model="ir.actions.server">
+        <field name="name">Actualizar Referencia</field>
+        <field name="model_id" ref="model_account_move_line"/>
+        <field name="binding_model_id" ref="account.model_account_move_line"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+            rec.update_ref_invoice()
+        </field>
+    </record>
+
+    <!-- Accion de Prueba -->
+    <!-- <record id="prueba" model="ir.actions.server">
+      <field name="name">Prueba</field>
+      <field name="model_id" ref="model_account_invoice"/>
+      <field name="binding_model_id" ref="account.model_account_invoice"/>
+      <field name="state">code</field>
+      <field name="code">
+  for rec in records:
+      rec.action_prueba()
+      </field>
+    </record> -->
+
+</odoo>
