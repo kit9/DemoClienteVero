@@ -38,7 +38,6 @@ class Account42(models.TransientModel):
         content_txt = ""
         estado_ope = ""
         _catalogo = ""
-        _fecvenc = ""
 
         #   INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES" -- INICIO 004 "VALIDACION DE CAMPOS"
         # Iterador
@@ -47,10 +46,6 @@ class Account42(models.TransientModel):
             # Catalogo
             if line.partner_id.catalog_06_id.code:
                 _catalogo = line.partner_id.catalog_06_id.code
-
-            #Fecha de Vencimiento
-            if imp.date_maturity:
-                _fecvenc = imp.date_maturity.strftime("%d/%m/%Y")
 
             # Estado de Operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -73,7 +68,7 @@ class Account42(models.TransientModel):
                 line.x_studio_field_fwlP9 or '', # 03 ID
                 _catalogo or '', # 04 ID de Ruc
                 line.partner_id.vat or '', # 05 Numero de Ruc
-                _fecvenc or '', # 06 Fecha de vencimiento
+                date_maturity.strftime("%d/%m/%Y") or '', # 06 Fecha de vencimiento
                 line.partner_id.name or '', # 07 Nombre de Socio
                 '', # 08 en blanco
                 line.debit or - line.credit, # 09 Debe o Haber
