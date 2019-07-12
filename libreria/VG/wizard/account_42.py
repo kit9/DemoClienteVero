@@ -8,6 +8,7 @@
 # --          #003   09/07/2019          LUIS DE LA CRUZ          AGREGADO DE CAMPOS
 # --          #004   09/07/2019          LUIS DE LA CRUZ          VALIDACION DE CAMPOS
 # --          #005   09/07/2019          LUIS DE LA CRUZ          CONVIRTIENDO TXT A BINARIO
+# --          #006   12/07/2019          LUIS DE LA CRUZ          MODIFICACION DEL MODELO A BUSCAR CON FILTRO
 # -----------------------------------------------------------------------------------------
 
 from odoo import models, fields, api
@@ -29,8 +30,9 @@ class Account42(models.TransientModel):
     @api.multi
     def generate_file(self):
 
-        #Filtro de cuenta a buscar
-        lst_account_move_line = self.env['account.move.line'].search([('.account_id.code', 'ilike', '42')])
+    #   INICIO 006 "MODIFICACION DEL MODELO A BUSCAR CON FILTRO"
+        lst_account_move_line = self.env['account.move.line'].search([('account_id.code', 'ilike', '42')])
+    #   FIN 005
 
         # variables creadas
         content_txt = ""
@@ -61,9 +63,9 @@ class Account42(models.TransientModel):
                         estado_ope = "09"
                     else:
                         estado_ope = "01"
-#   FIN 002 --- FIN 004
+        #   FIN 002 --- FIN 004
 
-#   INICIO 003 "AGREGADO DE CAMPOS"
+            #   INICIO 003 "AGREGADO DE CAMPOS"
             # Datos a generar a TXT
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m%d") or '', # 01 Fecha
@@ -77,18 +79,18 @@ class Account42(models.TransientModel):
                 line.debit or - line.credit, # 09 Debe o Haber
                 estado_ope or '' # 10 Estado de Operacion
             )
-#   FIN 003
+            #   FIN 003
 
             # Agregamos la linea al TXT
             content_txt = content_txt + "" + txt_line + "\r\n"
 
-#   INICIO 005 "CONVIRTIENDO TXT A BINARIO"
+        #   INICIO 005 "CONVIRTIENDO TXT A BINARIO"
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
             'txt_filename': "Cuenta_42.txt"
         })
-#   FIN 005
+        #   FIN 005
 
         return {
             'type': 'ir.actions.act_window',
