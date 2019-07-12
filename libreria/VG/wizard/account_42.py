@@ -68,7 +68,7 @@ class Account42(models.TransientModel):
                 line.move_id.x_studio_field_fwlP9 or '', # 03 ID
                 _catalogo or '', # 04 ID de Ruc
                 line.partner_id.vat or '', # 05 Numero de Ruc
-                date_maturity.strftime("%d/%m/%Y") or '', # 06 Fecha de vencimiento
+                line.date_maturity.strftime("%d/%m/%Y") or '', # 06 Fecha de vencimiento
                 line.partner_id.name or '', # 07 Nombre de Socio
                 '', # 08 en blanco
                 line.debit or - line.credit, # 09 Debe o Haber
