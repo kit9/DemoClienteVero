@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_opt_landed_cost_opt_landed_cost,opt_landed_cost.opt_landed_cost,model_opt_landed_cost_opt_landed_cost,,1,0,0,0
