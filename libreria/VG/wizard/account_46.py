@@ -68,7 +68,7 @@ class Account_14(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|-%s|%s" % (
                 line.date.strftime("%Y%m%d") or '',  # 1
                 line.name or '',
                 line.id or '',
@@ -77,7 +77,7 @@ class Account_14(models.TransientModel):
                 line.invoice_id.date_document or '',
                 line.partner_id.name or '',
                 line.account_id.code or '',
-                "-"+line.credit or line.debit,
+                line.credit or line.debit,
                 _estado_ope or ''
             )
 
