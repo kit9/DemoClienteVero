@@ -48,18 +48,6 @@ class Account42(models.TransientModel):
                 _catalogo = line.partner_id.catalog_06_id.code
 
             for imp in line.line_ids:
-                # Importe
-                # if imp.debit > 0:  # Debe > 0
-                #     _importe = +imp.debit  # ("+" monto)
-                # else: # Haber > 0
-                #     #if imp.credit > 0:
-                #     if imp.credit > 0:
-                #         _importe = -imp.credit # ("-" monto)
-
-                if imp.move_id.debit > 0:
-                    _importe = imp.move_id.debit
-                else:
-                    _importe = -imp.move_id.credit
 
                 #Fecha de Vencimiento
                 if imp.date_maturity:
@@ -89,7 +77,7 @@ class Account42(models.TransientModel):
                 _fecvenc or '', # 06 Fecha de vencimiento
                 line.partner_id.name or '', # 07 Nombre de Socio
                 '', # 08 en blanco
-                _importe or '', # 09 Debe o Haber
+                line.debit or - line.credit, # 09 Debe o Haber
                 estado_ope or '' # 10 Estado de Operacion
             )
 #   FIN 003
