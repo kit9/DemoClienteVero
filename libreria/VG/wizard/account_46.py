@@ -51,8 +51,8 @@ class Account_14(models.TransientModel):
         for line in lst_account_move_line:
 
             for imp in line:
-                if imp.credit:
-                    _credi = "-"+imp.credit
+                if imp.credit.strf:
+                    _credi = "-"+imp.credit.strf
 
 
             # validador de estado de operación
