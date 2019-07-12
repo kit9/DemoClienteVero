@@ -65,7 +65,7 @@ class Account42(models.TransientModel):
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m%d") or '', # 01 Fecha
                 line.move_id.name or '', # 02 Asiento Contable
-                line.x_studio_field_fwlP9 or '', # 03 ID
+                line.mode_id.x_studio_field_fwlP9 or '', # 03 ID
                 _catalogo or '', # 04 ID de Ruc
                 line.partner_id.vat or '', # 05 Numero de Ruc
                 date_maturity.strftime("%d/%m/%Y") or '', # 06 Fecha de vencimiento
