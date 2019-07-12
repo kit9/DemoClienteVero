@@ -50,9 +50,9 @@ class Account_14(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            for imp in line:
-                if imp.credit:
-                    _credi = - imp.credit
+            #for imp in line:
+             #   if imp.credit > 0:
+              #      _credi = - imp.credit
 
 
             # validador de estado de operación
@@ -82,7 +82,7 @@ class Account_14(models.TransientModel):
                 line.invoice_id.date_document or '',
                 line.partner_id.name or '',
                 line.account_id.code or '',
-                line.debit or _credi,
+                line.debit or - line.credit,
                 _estado_ope or ''
             )
 
