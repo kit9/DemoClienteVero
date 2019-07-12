@@ -43,11 +43,16 @@ class Account_14(models.TransientModel):
         # variables creadas
         content_txt = ""
         _estado_ope = ""
+        _credi = ""
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
 
         # Iterador
         for line in lst_account_move_line:
+
+            for imp in line:
+                if imp.credit:
+                    _credi = "-"+imp.credit
 
 
             # validador de estado de operación
@@ -77,7 +82,7 @@ class Account_14(models.TransientModel):
                 line.invoice_id.date_document or '',
                 line.partner_id.name or '',
                 line.account_id.code or '',
-                line.debit or '-' + line.credit,
+                line.debit or _credi,
                 _estado_ope or ''
             )
 
