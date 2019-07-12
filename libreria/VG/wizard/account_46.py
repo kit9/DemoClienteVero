@@ -50,10 +50,6 @@ class Account_14(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            #for imp in line:
-             #   if imp.credit > 0:
-              #      _credi = - imp.credit
-
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -75,7 +71,7 @@ class Account_14(models.TransientModel):
 
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m%d") or '',  # 1
-                line.name or '',
+                line.move_id.name or '',
                 line.id or '',
                 line.partner_id.catalog_06_id.code or '',
                 line.partner_id.vat or '',
