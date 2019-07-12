@@ -65,7 +65,7 @@ class Sales(models.TransientModel):
             # datos a exportar a txt
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date_document.strftime("%d-%m-%Y") if self.date_invoice else "",  # 1
+                line.date_document.strftime("%d-%m-%Y") if self.date_document else "",  # 1
                 line.number or '',  # 2
                 line.move_id.x_studio_field_fwlP9 or '', # 3
                 line.date_invoice or '',  # 4
