@@ -30,13 +30,12 @@ class Account42(models.TransientModel):
     def generate_file(self):
 
         #Filtro de cuenta a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '421100')])
+        lst_account_move_line = self.env['account.move.line'].search([('.account_id.code', 'ilike', '42')])
 
         # variables creadas
         content_txt = ""
         estado_ope = ""
         _catalogo = ""
-        _importe = ""
         _fecvenc = ""
 
         #   INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES" -- INICIO 004 "VALIDACION DE CAMPOS"
@@ -47,11 +46,9 @@ class Account42(models.TransientModel):
             if line.partner_id.catalog_06_id.code:
                 _catalogo = line.partner_id.catalog_06_id.code
 
-            for imp in line.line_ids:
-
-                #Fecha de Vencimiento
-                if imp.date_maturity:
-                    _fecvenc = imp.date_maturity.strftime("%d/%m/%Y")
+            #Fecha de Vencimiento
+            if imp.date_maturity:
+                _fecvenc = imp.date_maturity.strftime("%d/%m/%Y")
 
             # Estado de Operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -68,9 +65,9 @@ class Account42(models.TransientModel):
 
 #   INICIO 003 "AGREGADO DE CAMPOS"
             # Datos a generar a TXT
-            txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y%m%d") or '', # 01 Fecha
-                line.name or '', # 02 Asiento Contable
+                line.move_id.name or '', # 02 Asiento Contable
                 line.x_studio_field_fwlP9 or '', # 03 ID
                 _catalogo or '', # 04 ID de Ruc
                 line.partner_id.vat or '', # 05 Numero de Ruc
