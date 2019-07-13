@@ -140,7 +140,7 @@ class Account_14(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Cuenta_14.txt"
+            'txt_filename': "Libro Mayor Cuenta 14.txt"
         })
     # FIN 004
 
