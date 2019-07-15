@@ -55,6 +55,7 @@
         'views/news/Type_Operation_Detraction.xml',
         'views/account_invoice.xml',
         'views/views.xml',
+        'views/report.xml',
         # 'views/templates.xml',
         'wizard/account_bill_txt_view.xml',
         'wizard/withholding_record_view.xml',
