@@ -42,7 +42,7 @@ class Account_14(models.TransientModel):
         # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
+        lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'like', '1411')])
 
     # FIN 005
 
@@ -140,7 +140,7 @@ class Account_14(models.TransientModel):
         self.write({
             'state': 'get',
             'txt_binary': base64.b64encode(content_txt.encode('ISO-8859-1')),
-            'txt_filename': "Cuenta_14.txt"
+            'txt_filename': "Libro Mayor Cuenta 14.txt"
         })
     # FIN 004
 
