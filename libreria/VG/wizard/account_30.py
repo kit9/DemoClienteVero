@@ -55,9 +55,7 @@ class account_30(models.TransientModel):
                         _estado_ope = "1"
 
             #ids campo debe
-            for debe in line.invoice_line_ids:
-                if debe.price_unit:
-                    _pago = debe.price_unit
+
 
     # FIN 002
 
@@ -65,7 +63,7 @@ class account_30(models.TransientModel):
 
             # datos a exportar a txt
 
-            txt_line = "%s|%s|M%s|0%s|%s|%s|%s|%s|%s" % (
+            txt_line = "%s|%s|M%s|0%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y/%m/%d") or '',  # 1
                 line.partner_id.ref or '',
                 line.x_studio_field_fwlP9 or '',
@@ -73,7 +71,10 @@ class account_30(models.TransientModel):
                 line.partner_id.vat or '',
                 line.partner_id.name or '',
                 '',
-                debe or '',
+                '',
+                '',
+                '',
+                '',
                 _estado_ope or ''
             )
 
