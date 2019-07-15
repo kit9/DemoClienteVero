@@ -1,1 +1,1 @@
-wkhtmltopdf==12.1
+wkhtmltopdf
