@@ -23,7 +23,7 @@ class account_30(models.TransientModel):
     # INICIO 005 "MODIFICADO EL MODELO A BUSCAR CON FILTRO"
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move.line'].search([('account_id.code', 'ilike', '30')])
+        lst_account_move_line = self.env['account.move'].search([('account_id.code', 'ilike', '30')])
 
     # FIN 005
 
