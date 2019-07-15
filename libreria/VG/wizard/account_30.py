@@ -31,7 +31,7 @@ class account_30(models.TransientModel):
         content_txt = ""
         _estado_ope = ""
         debe = ""
-        _pago = ""
+
 
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
 
@@ -55,7 +55,10 @@ class account_30(models.TransientModel):
                         _estado_ope = "1"
 
             #ids campo debe
-
+                        # debe
+                        for line1 in invoice_line_ids:
+                            if line1.invoice_id.price_unit:
+                                debe = line1.invoice_id.price_unit
 
     # FIN 002
 
@@ -71,7 +74,7 @@ class account_30(models.TransientModel):
                 line.partner_id.vat or '',
                 line.partner_id.name or '',
                 '',
-                '',
+                debe or '',
                 '',
                 '',
                 '',
