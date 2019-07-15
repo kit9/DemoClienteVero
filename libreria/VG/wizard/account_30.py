@@ -23,7 +23,7 @@ class account_30(models.TransientModel):
     # INICIO 005 "MODIFICADO EL MODELO A BUSCAR CON FILTRO"
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move'].search([('account_id.code', 'ilike', '30')])
+        lst_account_move_line = self.env['account.move.line'].search([('account_id.code', 'ilike', '30')])
 
     # FIN 005
 
@@ -56,9 +56,7 @@ class account_30(models.TransientModel):
 
             #ids campo debe
                         # debe
-                        for line1 in invoice_line_ids:
-                            if line1.invoice_id.price_unit:
-                                debe = line1.invoice_id.price_unit
+
 
     # FIN 002
 
@@ -74,7 +72,7 @@ class account_30(models.TransientModel):
                 line.partner_id.vat or '',
                 line.partner_id.name or '',
                 '',
-                debe or '',
+                '',
                 '',
                 '',
                 '',
