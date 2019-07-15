@@ -94,7 +94,7 @@ class ResPartner(models.Model):
                 if not resp['error']:
                     resp = resp['data']
                     part = resp.split("|")
-                    if len(part) == 3:
+                    if len(part[0]) > 0:
                         self.name = '%s %s %s' % (
                             part[2],
                             part[0],
@@ -141,7 +141,20 @@ class ResPartner(models.Model):
 
                 self.name = d['nombre_comercial'] != '-' and d['nombre_comercial'] or d['nombre']
                 self.registration_name = d['nombre']
-                self.street = d['domicilio_fiscal']
+                domicilio_fiscal = ""
+                if d['domicilio_fiscal']:
+                    domicilio_fiscal = d['domicilio_fiscal']
+                    if domicilio_fiscal:
+                        domicilio_fiscal = domicilio_fiscal + ((" " + d['departamento']) if d[
+                            'departamento'] else "")
+
+                        domicilio_fiscal = domicilio_fiscal + ((" - " + d['provincia']) if d[
+                            'provincia'] else "")
+
+                        domicilio_fiscal = domicilio_fiscal + ((" - " + d['distrito']) if d[
+                            'distrito'] else "")
+                        domicilio_fiscal = domicilio_fiscal.replace("  ", " ")
+                self.street = domicilio_fiscal
                 self.vat_subjected = True
                 self.is_company = True
         else:
