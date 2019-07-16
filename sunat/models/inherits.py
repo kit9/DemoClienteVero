@@ -423,6 +423,10 @@ class AccountJournal(models.Model):
 
     type = fields.Selection(selection_add=[('retention', 'Retención IGV')])
 
+    # 0001 - Incio
+    is_detraction = fields.Boolean(string="Es para Detracción")
+    # 0001 - Fin
+
 
 class LandedCost(models.Model):
     _inherit = 'stock.landed.cost'
