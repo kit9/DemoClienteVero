@@ -14,3 +14,4 @@ access_sunat_type_operation_detraction_all,access_sunat_type_operation_detractio
 access_sunat_code_goods_all,access_sunat_code_goods_all,model_sunat_code_goods,,1,1,1,1
 access_sunat_payment_methods_all,access_sunat_payment_methods_all,model_sunat_payment_methods,,1,1,1,1
 access_sunat_perception_all,access_sunat_perception_all,model_sunat_perception,,1,1,1,1
+access_sunat_series_all,access_sunat_series_all,model_sunat_series,,1,1,1,1

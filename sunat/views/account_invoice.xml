@@ -183,8 +183,10 @@
                         <group>
                             <h2>Documento</h2>
                             <field name="document_type_id" required="True"/>
-                            <field name="invoice_serie" required="True"/>
-                            <field name="invoice_number" required="True"/>
+                            <!--#0003 - Inicio-->
+                            <field name="sunat_serie" required="1"/>
+                            <field name="sunat_number" readonly="1"/>
+                            <!--#0003 - Fin-->
                         </group>
                         <group>
                             <h2>Exportación</h2>

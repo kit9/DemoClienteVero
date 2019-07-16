@@ -21,6 +21,7 @@
     <menuitem id="sunat_type_operation_menu" name="Tipo de Operación" sequence="1" parent="sunat_menu_root" action="action_sunat_type_operation"/>
     <menuitem id="sunat_type_operation_detraction_menu" name="Tipo de Operación de Detracción" sequence="1" parent="sunat_menu_root"
               action="action_sunat_type_operation_detraction"/>
+    <menuitem id="sunat_series_menu" name="Series" sequence="1" parent="sunat_menu_root" action="action_sunat_series"/>
 
 
     <!--<record id="action_make_testing" model="ir.actions.server">-->
@@ -33,14 +34,14 @@
     <!--</record>-->
 
     <!--<menuitem id="reg_retenciones_menu" name="Accion URL" sequence="2" parent="reporte_ple_menu_root" action="action_make_testing"/>-->
-    <menuitem id="ple_report_txt_menu" name="Reg. Ventas" sequence="1" parent="reporte_ple_menu_root" action="ple_report_txt"/>
-    <menuitem id="inv_perm_val_menu" name="Reg. Inv. Valorizado" sequence="7" parent="reporte_ple_menu_root" action="inventory_valorized_sunat"/>
-    <menuitem id="consolidated_journal_menu" name="Libro Diario" sequence="4" parent="reporte_ple_menu_root" action="consolidated_journal_sunat"/>
-    <menuitem id="costs_menu" name="Reg. Costos - Vtas" sequence="8" parent="reporte_ple_menu_root" action="costs_sunat"/>
+    <menuitem id="ple_report_txt_menu" name="Ple Comp. Ventas" sequence="1" parent="reporte_ple_menu_root" action="ple_report_txt"/>
+    <menuitem id="inv_perm_val_menu" name="Ple. Inv. Valorizado" sequence="7" parent="reporte_ple_menu_root" action="inventory_valorized_sunat"/>
+    <menuitem id="consolidated_journal_menu" name="Ple. Diario" sequence="4" parent="reporte_ple_menu_root" action="consolidated_journal_sunat"/>
+    <menuitem id="costs_menu" name="Ple . Reg.Costos" sequence="8" parent="reporte_ple_menu_root" action="costs_sunat"/>
 
-    <menuitem id="purchase_report_sunat_menu" name="PDB - Compras" sequence="1" parent="reporte_pdb_menu_root" action="purchase_report_txt"/>
-    <menuitem id="payment_methods_report_menu" name="PDB - FP" sequence="2" parent="reporte_pdb_menu_root" action="payment_methods_report_txt"/>
-    <menuitem id="sales_report_menu" name="PDB - Vtas" sequence="3" parent="reporte_pdb_menu_root" action="sales_report_txt"/>
+    <menuitem id="purchase_report_sunat_menu" name="Compras pdb" sequence="1" parent="reporte_pdb_menu_root" action="purchase_report_txt"/>
+    <menuitem id="payment_methods_report_menu" name="Formas de Pago pdb" sequence="2" parent="reporte_pdb_menu_root" action="payment_methods_report_txt"/>
+    <menuitem id="sales_report_menu" name="Ventas pdb" sequence="3" parent="reporte_pdb_menu_root" action="sales_report_txt"/>
 
     <menuitem id="payment_internet_sunat_menu" name="Pago Detracciónes" sequence="1" parent="formas_pago_menu_root" action="payment_internet_sunat"/>
     <menuitem id="payment_provider_menu" name="Pago a Proveedores" sequence="2" parent="formas_pago_menu_root" action="payment_provider_sunat"/>
