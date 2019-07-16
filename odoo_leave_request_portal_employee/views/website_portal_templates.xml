@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--
+        <template id="portal_my_home_menu_leave_request_activities" name="Portal layout : Leave Request menu entries"
+            inherit_id="portal.portal_layout" priority="25">
+            <xpath expr="//ul[contains(@class,'o_portal_submenu')]" position="inside">
+                <t t-if="user.has_group('odoo_leave_request_portal_employee.group_employee_leave')">
+                    <li>
+                        <a href="/my/leave_request">Leave Requests</a>
+                    </li>
+                </t>
+            </xpath>
+        </template>
+        -->
+        <template id="portal_my_home_menu_leave_request_activities" name="Portal layout : Leave Request menu entries" inherit_id="portal.portal_breadcrumbs">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'holidays'" t-attf-class="breadcrumb-item">Leave Requests
+               </li>
+            </xpath>
+        </template>
+
+        <template id="portal_my_leave_request" name="Portal My Leave Request: Request entries" inherit_id="portal.portal_my_home" priority="30">
+<!--            <xpath expr="//div[contains(@class,'o_my_home_content')]" position="inside"-->
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+<!--                <t t-if="user.has_group('odoo_leave_request_portal_employee.group_employee_leave')"-->
+
+                 <t t-if="request.env.user.portal_employee_leave" t-call="portal.portal_docs_entry">
+                   <!-- <h3  class="page-header">
+                        <a href="/my/leave_request">Your Leave Requests
+                            <small class="ml8">
+                              <t t-if="holidays_count">
+                                <span class='badge'><t t-esc="holidays_count"/></span>
+                            </t>
+                            <t t-if =" not holidays_count">
+                                There are currently no Leave Request for your account.
+                            </t>
+                            </small>
+                        </a>
+                    </h3>-->
+                    <t t-set="title">Leave Requests</t>
+                    <t t-set="url" t-value="'/my/leave_request'"/>
+                    <t t-set="count" t-value="holidays_count"/>
+                </t>
+            </xpath>
+        </template>
+        
+        <template id="display_leave_request" name="Display Leave Request">
+             <t t-if="request.env.user.portal_employee_leave" t-call="portal.portal_layout">
+                    <style>
+                    #myInput {
+                      background-position: 10px 10px;
+                      background-repeat: no-repeat;
+                      width: 100%;
+                      font-size: 16px;
+                      padding: 12px 20px 12px 40px;
+                      border: 1px solid #ddd;
+                      margin-bottom: 12px;
+                    }
+                    </style>
+                 <!--    <h3 class="page-header">
+                        Your Leave Requests
+                    </h3> -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <a t-attf-href="/web#view_type=form&amp;model=hr.leave&amp;&amp;action=hr_holidays.hr_leave_action_my    " class="btn btn-info">New Leave Request</a>
+                            </div>
+                            <div class="dropdown pull-right mr8 col-sm-6">
+                                <ul class="dropdown-menu" aria-labelledby="sortby">
+                                    <li t-foreach="sortings" t-as="option" t-attf-class="#{sortby == option and 'active'}">
+                                        <a t-att-href="default_url + '?' + keep_query('date_begin', 'date_end', sortby=option)"><span t-esc="sortings.get(option).get('label')"/></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-hover o_my_status_table">
+                    <t t-if="holidays" t-call="portal.portal_table">                    
+                    <thead>
+                      <tr class="active">
+                        <th>Leave Type</th>
+                        <th>Description</th>
+                        <th>Start Date</th>
+                        <th>End date</th>
+                        <th>Number of Days</th>
+                        <th>Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <t t-foreach="holidays" t-as="holiday">
+                        <tr>
+                            <td class="text-left">
+                                <span t-field="holiday.holiday_status_id"/>
+                            </td>
+                            <td>
+                                <span t-field="holiday.name"/>
+                            </td>
+                            <td class="text-left">
+                                <span t-field="holiday.date_from"/>
+                            </td>
+                            <td>
+                                <span t-field="holiday.date_to"/>
+                            </td>
+                            <td>
+                                <span t-field="holiday.number_of_days"/>
+                            </td>
+                            <td>
+                            <span class="badge badge-pill badge-info" title="Current stage of the task" t-esc="holiday.state"/>
+                        </td>
+                            <td>
+                                <a class="btn btn-info" 
+                                   t-att-href="'/web#return_label=Website&amp;model=hr.leave&amp;id=%s&amp;view_type=form' % (holiday.id)" ><i class="fa fa-edit"></i></a>
+                            
+
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                </table>
+	        </t>
+	    </template>
+        
+	    <template id="not_allowed_leave_request" name="Access Denied">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container">
+                        <h1>You are not Allowed Access This Document</h1>
+                        <div>
+                            <a t-attf-href="/my/home" class="btn btn-lg btn-primary">
+                                    Back
+                                </a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </t>
+       </template>
+        
+    </data>
+</odoo>

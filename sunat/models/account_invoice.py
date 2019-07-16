@@ -19,7 +19,7 @@ class account_invoice(models.Model):
     # Apply Retention
     apply_retention = fields.Boolean(string="Apply Retention")
     # Detraction Paid
-    detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True)
+    detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True, copy=False)
     # Saldo de Detraccion
     detraction_residual = fields.Monetary(string="Detraction To Pay", compute="_detraction_residual", store=True)
     # Total a Pagar
@@ -58,7 +58,8 @@ class account_invoice(models.Model):
 
     # Factura de Cliente - Invoice
     export_invoice = fields.Boolean(string="Fac.- Exp.")
-    exchange_rate = fields.Float(string="Tipo de Cambio", compute="_get_exchange_rate", store=True, copy=False)
+    exchange_rate = fields.Float(string="Tipo de Cambio", digits=(12, 3), compute="_get_exchange_rate", store=True,
+                                 copy=False)
     date_document = fields.Date(string="Fecha del Documento")
 
     # Hide or not Apply Retention
@@ -114,7 +115,7 @@ class account_invoice(models.Model):
     ], string='Tipo de Operación')
 
     # Asiento Castigo
-    move_punishment_id = fields.Many2one('stock.move', "Asiento Castigo")
+    move_punishment_id = fields.Many2one('account.move', "Asiento Castigo")
 
     # Factura Cliente
     inv_isc = fields.Monetary(string="ISC", compute="_inv_isc")
@@ -135,10 +136,20 @@ class account_invoice(models.Model):
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
     @api.multi
-    @api.depends('currency_id')
+    @api.depends('currency_id', 'date_document')
     def _get_exchange_rate(self):
         for rec in self:
-            rec.exchange_rate = rec.currency_id.rate_pe
+            currency = False
+            if rec.date_document:
+                domain = [('currency_id.id', '=', rec.currency_id.id),
+                          ('name', '=', fields.Date.to_string(rec.date_document)),
+                          ('currency_id.type', '=', rec.currency_id.type)]
+                currency = self.env['res.currency.rate'].search(domain, limit=1)
+            if currency:
+                rec.exchange_rate = currency.rate_pe
+            else:
+                if rec.currency_id:
+                    rec.exchange_rate = rec.currency_id.rate_pe
 
     @api.multi
     def _inv_no_gravado(self):
@@ -168,7 +179,7 @@ class account_invoice(models.Model):
     @api.depends('inv_type_operation')
     def _inv_inafecto(self):
         for rec in self:
-            if rec.inv_type_operation.upper() == "inafecto".upper():
+            if str(rec.inv_type_operation).upper() == "inafecto".upper():
                 rec.inv_inafecto = rec.amount_untaxed_invoice_signed
 
     @api.multi
@@ -271,10 +282,9 @@ class account_invoice(models.Model):
 
             # Obtener el impuesto otros
             impuesto_otros = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "otros":
-                        impuesto_otros = rec.amount_tax
+            for imp in rec.tax_line_ids:
+                if str(imp.tax_id.tax_rate) == "otros":
+                    impuesto_otros = imp.amount_total
 
             # 26 -> Fecha
             campo_26 = ""
@@ -289,7 +299,9 @@ class account_invoice(models.Model):
             # 15 Impuesto
             campo_15 = ""
             if rec.type_operation == "1":
-                campo_15 = rec.amount_tax
+                for imp in rec.tax_line_ids:
+                    if str(imp.tax_id.tax_rate) == "igv":
+                        campo_15 = imp.amount_total
 
             # 16 Base imponible
             campo_16 = ""
@@ -320,10 +332,9 @@ class account_invoice(models.Model):
 
             # 21 -> Importe exonerado
             campo_21 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "isc":
-                        campo_21 = rec.amount_untaxed
+            for imp in rec.tax_line_ids:
+                if str(imp.tax_id.tax_rate) == "isc":
+                    campo_21 = imp.amount_total
 
             # 33 -> Tipo de Pago
             campo_33 = ""
@@ -349,14 +360,14 @@ class account_invoice(models.Model):
                           rec.partner_id.vat or '',  # N° de Documento de Identidad -> 12
                           rec.partner_id.name or '',  # Nombre del Proveedor -> 13
                           campo_14 or '',  # Base imponible -> 14
-                          campo_15 or '',  # Total -> 15
+                          campo_15 or "",  # Total -> 15
                           campo_16 or '',  # Base imponible -> 16
                           campo_17 or '',  # Impuesto -> 17
                           campo_18 or '',  # Base imponible -> 18
                           campo_19 or '',  # Impuesto -> 19
                           campo_20 or '',  # Total Adeudado -> 20
-                          campo_21 or '',  # Impuesto -> 21
-                          impuesto_otros or '',  # Otros de las Lineas -> 22
+                          campo_21 or "",  # Impuesto -> 21
+                          impuesto_otros or "",  # Otros de las Lineas -> 22
                           rec.amount_total or '',  # Total -> 23
                           rec.currency_id.name or '',  # Tipo de moneda -> 24
                           rec.exchange_rate or 0.00,  # Tipo de Cambio-> 25
@@ -376,7 +387,7 @@ class account_invoice(models.Model):
                           '',  # -> 37
                           '',  # -> 38
                           '',  # -> 39
-                          '',  # -> 40
+                          "1" if rec.state == 'paid' else "",  # -> 40
                       )
             return content
 
@@ -412,21 +423,21 @@ class account_invoice(models.Model):
             # 15 -> Impuesto
             impuesto_15 = ""
             for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify == True:
+                if rec.document_type_id.number == '07' and rec.document_modify:
                     if int(rec.date_invoice.strftime("%m")) > int(rec.date_document_modifies.strftime("%m")):
                         impuesto_15 = rec.amount_tax
 
             # 16 -> Impuesto
             impuesto_16 = ""
             for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify == True:
+                if rec.document_type_id.number == '07' and rec.document_modify:
                     if int(rec.date_invoice.strftime("%m")) == int(rec.date_document_modifies.strftime("%m")):
                         impuesto_16 = rec.amount_tax
 
             # 17 -> Impuesto
             impuesto_17 = ""
             for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify == True:
+                if rec.document_type_id.number == '07' and rec.document_modify:
                     if rec.date_invoice > rec.date_document_modifies:
                         impuesto_17 = rec.amount_tax
 
@@ -485,7 +496,7 @@ class account_invoice(models.Model):
                             codigo_34 = '9'
 
             content = "%s|%s|M%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s" \
-                      "||||%s|" % (
+                      "|||%s|%s|" % (
                           rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
                           rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
                           str(correlativo).zfill(4) or '',  # Correlativo de todos los asientos no solo facturas -> 3
@@ -518,7 +529,8 @@ class account_invoice(models.Model):
                           rec.refund_invoice_id.document_type_id.number or '',  # Tipo del Documento Asociado -> 28
                           rec.refund_invoice_id.invoice_serie or '',  # Serie del Documento Asociado -> 29
                           rec.refund_invoice_id.invoice_number or '',  # Numero del Documento Asociado -> 30
-                          # 3 campos en blanco -> 31, 32, 33
+                          # 2 campos en blanco -> 31, 32
+                          "1" if rec.state == 'paid' else "",
                           codigo_34 or '',  # -> 34
                           # 1 campo en blanco -> 35
                       )
@@ -600,6 +612,11 @@ class account_invoice(models.Model):
     #         rec.reference = 'FacturaDePrueba'
     #     return True
 
+    # Trial Action
+    @api.multi
+    def action_prueba(self):
+        self.x_studio_estado_sunat = "Aceptado"
+
     @api.depends('residual_signed', 'detraccion')
     @api.multi
     def _total_pagar_factura(self):
@@ -642,15 +659,17 @@ class account_invoice(models.Model):
     def _punishment(self):
         for rec in self:
             if rec.state != 'open':
-                raise ValidationError('La factura ' + str(self.number) + ' no esta abierta')
+                raise ValidationError('La factura ' + str(rec.number) + ' no esta abierta')
 
             if rec.move_punishment_id:
-                raise ValidationError('La factura ' + str(self.number) + ' ya tiene un catigo')
+                raise ValidationError('La factura ' + str(rec.number) + ' ya tiene un catigo')
 
+            _logger.info("Antes del for")
             move_line = False
             for line in rec.move_id.line_ids:
-                if line.account_id.code == '121100':
+                if str(line.account_id.code) == '121100' and not move_line:
                     move_line = line
+            _logger.info("Despues del for")
 
             if not move_line:
                 raise ValidationError('No se encontro la cuenta 121100 en el asiento de factura')
@@ -659,7 +678,7 @@ class account_invoice(models.Model):
             lines = []
 
             # Linea 2
-            account_2 = self.env['account.account'].search(['code', '=', '684110'])
+            account_2 = self.env['account.account'].search([('code', '=', '684110')])
             if account_2:
                 lines.append((0, 0, {
                     'account_id': account_2 and account_2.id or False,
@@ -669,8 +688,8 @@ class account_invoice(models.Model):
                 raise ValidationError('No se encontro la cuenta 684110')
 
             # Linea 1
-            account_1 = self.env['account.account'].search(['code', '=', '191100'])
-            if account_2:
+            account_1 = self.env['account.account'].search([('code', '=', '191100')])
+            if account_1:
                 lines.append((0, 0, {
                     'account_id': account_1 and account_1.id or False,
                     'credit': move_line.debit
@@ -682,11 +701,17 @@ class account_invoice(models.Model):
             account_move_dic = {
                 'date': str(datetime.now().date()) or False,
                 'journal_id': move_line.journal_id and move_line.journal_id.id or False,
-                'ref': 'Por el castigo de la factura ' + str(self.number),
+                'ref': 'Por el castigo de la factura ' + str(rec.number),
+                'invoice_id': rec and rec.id or False,
                 'line_ids': lines
             }
 
+            _logger.info("Plantilla Completa")
             move_punishment = self.env['account.move'].create(account_move_dic)
+            _logger.info("Asiento Creado")
             move_punishment.post()
 
+            _logger.info("Asiento Publicado")
+
             rec.move_punishment_id = move_punishment
+        return True

@@ -28,18 +28,28 @@ import requests
 
 def get_data_doc_number(tipo_doc, numero_doc, format='json'):
     user, password = 'demorest', 'demo1234'
-    url = 'http://py-devs.com/api'
-    url = '%s/%s/%s' % (url, tipo_doc, str(numero_doc))
+    if tipo_doc == 'dni':
+        url = 'http://aplicaciones007.jne.gob.pe/srop_publico/Consulta/Afiliado/GetNombresCiudadano?DNI='
+        url = '%s%s' % (url, str(numero_doc))
+    else:
+        url = 'http://py-devs.com/api'
+        url = '%s/%s/%s' % (url, tipo_doc, str(numero_doc))
     res = {'error': True, 'message': None, 'data': {}}
     try:
-        response = requests.get(url, auth=(user, password))
+        if tipo_doc == 'dni':
+            response = requests.get(url)
+        else:
+            response = requests.get(url, auth=(user, password))
     except requests.exceptions.ConnectionError as e:
         res['message'] = 'Error en la conexion'
         return res
 
     if response.status_code == 200:
         res['error'] = False
-        res['data'] = response.json()
+        if tipo_doc == 'dni':
+            res['data'] = response.text
+        else:
+            res['data'] = response.json()
     else:
         try:
             res['message'] = response.json()['detail']
@@ -79,13 +89,22 @@ class ResPartner(models.Model):
             if self.vat and len(self.vat) != 8:
                 raise Warning('El Dni debe tener 8 caracteres')
             else:
-                d = get_data_doc_number(
+                resp = get_data_doc_number(
                     'dni', self.vat, format='json')
-                if not d['error']:
-                    d = d['data']
-                    self.name = '%s %s %s' % (d['nombres'],
-                                              d['ape_paterno'],
-                                              d['ape_materno'])
+                if not resp['error']:
+                    resp = resp['data']
+                    part = resp.split("|")
+                    if len(part[0]) > 0:
+                        self.name = '%s %s %s' % (
+                            part[2],
+                            part[0],
+                            part[1]
+                        )
+                        self.registration_name = self.name
+                        self.person_type = "01-Persona Natural"
+                        self.ape_pat = part[0]
+                        self.ape_mat = part[1]
+                        self.nombres = part[2]
 
         elif self.catalog_06_id and self.catalog_06_id.code == '6':
             # Valida RUC
@@ -122,7 +141,20 @@ class ResPartner(models.Model):
 
                 self.name = d['nombre_comercial'] != '-' and d['nombre_comercial'] or d['nombre']
                 self.registration_name = d['nombre']
-                self.street = d['domicilio_fiscal']
+                domicilio_fiscal = ""
+                if d['domicilio_fiscal']:
+                    domicilio_fiscal = d['domicilio_fiscal']
+                    if domicilio_fiscal:
+                        domicilio_fiscal = domicilio_fiscal + ((" " + d['departamento']) if d[
+                            'departamento'] else "")
+
+                        domicilio_fiscal = domicilio_fiscal + ((" - " + d['provincia']) if d[
+                            'provincia'] else "")
+
+                        domicilio_fiscal = domicilio_fiscal + ((" - " + d['distrito']) if d[
+                            'distrito'] else "")
+                        domicilio_fiscal = domicilio_fiscal.replace("  ", " ")
+                self.street = domicilio_fiscal
                 self.vat_subjected = True
                 self.is_company = True
         else:

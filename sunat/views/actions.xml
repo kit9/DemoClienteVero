@@ -22,7 +22,7 @@
         <field name="interval_number">1</field>        <!-- To decide clearly -->
         <field name="interval_type">days</field>
         <!-- <field name="nextcall">2019-02-15 07:00:00</field> -->
-        <field name="nextcall" eval="(datetime.now() + timedelta(1)).strftime('%Y-%m-%d 07:00:00')"/>
+        <field name="nextcall" eval="(datetime.now() + timedelta(1)).strftime('%Y-%m-%d 15:00:00')"/>
         <field name="numbercall">-1</field>
         <field name="state">code</field>
         <field name="code">model.sunat_type_currency()</field>
@@ -47,6 +47,17 @@
         <field name="state">code</field>
         <field name="code">
             record.update_ref_invoice()
+        </field>
+    </record>
+
+    <record id="landed_cost_ref_on_write" model="base.automation">
+        <field name="name">Costo de Gastos de Envio</field>
+        <field name="model_id" ref="model_stock_landed_cost"/>
+        <field name="trigger">on_write</field>
+        <field name="active" eval="True"/>
+        <field name="state">code</field>
+        <field name="code">
+            record._calculated_cost()
         </field>
     </record>
 

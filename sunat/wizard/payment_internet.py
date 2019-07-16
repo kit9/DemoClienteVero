@@ -11,7 +11,18 @@ class InventoryValorized(models.TransientModel):
     _name = "sunat.payment_internet"
     _description = "Pago de Detracciones por Internet"
 
-    date_month = fields.Char(string="Mes", size=2)
+    date_month = fields.Selection(string="Mes", selection=[('01', 'Enero'),
+                                                           ('02', 'Febrero'),
+                                                           ('03', 'Marzo'),
+                                                           ('04', 'Abril'),
+                                                           ('05', 'Mayo'),
+                                                           ('06', 'Junio'),
+                                                           ('07', 'Julio'),
+                                                           ('08', 'Agosto'),
+                                                           ('09', 'Septiembre'),
+                                                           ('10', 'Octubre'),
+                                                           ('11', 'Noviembre'),
+                                                           ('12', 'Diciembre')])
     date_year = fields.Char(string="Año", size=4)
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
@@ -65,8 +76,8 @@ class InventoryValorized(models.TransientModel):
                     line_pay.invoice_id.type_operation_id.number or '',  # 8 ->
                     line_pay.invoice_id.date_invoice.strftime("%Y%m") if line_pay.invoice_id.date_invoice else "",  # 9
                     line_pay.invoice_id.document_type_id.number or '',  # 10 ->
-                    line_pay.invoice_id.invoice_serie.zfill(4) or '',  # 11 ->
-                    line_pay.invoice_id.invoice_number.zfill(8) or '',  # 12 ->
+                    line_pay.invoice_id.invoice_serie.zfill(4) if line_pay.invoice_id.invoice_serie else '',  # 11 ->
+                    line_pay.invoice_id.invoice_number.zfill(8) if line_pay.invoice_id.invoice_number else ''  # 12 ->
                 )
 
                 total_monto = total_monto + line.amount

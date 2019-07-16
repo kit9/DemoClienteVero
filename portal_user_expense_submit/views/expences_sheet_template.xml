@@ -1,0 +1,189 @@
+<odoo>
+
+    <template id="portal_my_home_menu_expense_sheet" name="Portal layout : expense sheet menu entries"
+              inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'expenses_sheet' or expense_sheet_form" t-attf-class="breadcrumb-item">
+                <a t-if="expense_sheet_form" t-attf-href="/expence_sheet/list/expenses/?{{ keep_query() }}">Expenses
+                    Sheet
+                </a>
+                <t t-else="">Expenses Sheet</t>
+            </li>
+            <li t-if="expense_sheet_form" class="breadcrumb-item active">
+                <t t-esc="expense_sheet_form.name"/>
+            </li>
+
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_expense_sheet" name="Portal My Home : expense entries"
+              inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="request.env.user.portal_employee_expense" t-call="portal.portal_docs_entry">
+                <t t-set="title">Expenses Sheet</t>
+                <t t-set="url" t-value="'/expence_sheet/list/expenses'"/>
+                <t t-set="count" t-value="expense_sheet_count"/>
+                <span t-value='expense_sheet_count'/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="list_expenses_sheet" name="My Expense Request">
+        <t t-if="request.env.user.portal_employee_expense" t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Expense</t>
+            </t>
+            <div class="row">
+            </div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <t t-call="portal.portal_table">
+                        <thead>
+                            <tr class="active">
+                                <th>Expense Report</th>
+                                <th>Employee</th>
+                                <!-- <th>Description</th> -->
+                                <th>Created On</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="expense_sheet_record" t-as="e">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/expense_sheet_form/#{e.id}?#{keep_query()}">
+                                        <span t-field="e.name"/>
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a>
+                                        <span t-field="e.employee_id"/>
+                                    </a>
+
+                                </td>
+                                <td>
+                                    <a>
+                                        <span t-field="e.create_date"/>
+                                    </a>
+
+                                </td>
+                                <td>
+                                    <a>
+                                        <span t-field="e.accounting_date"/>
+                                    </a>
+
+                                </td>
+                                <td>
+                                    <a>
+                                        <span t-field="e.total_amount"/>
+                                    </a>
+
+                                </td>
+                                <td>
+                                    <span t-field="e.state" class=" badge badge-pill badge-info"/>
+                                </td>
+                            </tr>
+
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="expences_sheet_form_view" name="Expense">
+        <t t-call="portal.portal_layout">
+            <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <t t-call="portal.portal_record_layout">
+                        <t t-set="card_header">
+                            <div class="row no-gutters">
+                                <div class="col-md">
+                                    <h5 class="mb-1 mb-md-0">
+                                        <span t-field="expense_sheet_form.name"/>
+                                        <small class="text-muted">(#<span t-field="expense_sheet_form.id"/>)
+                                        </small>
+                                    </h5>
+                                </div>
+                                <div class="col-md text-md-right">
+                                    <small class="text-right">Status:</small>
+                                    <span t-field="expense_sheet_form.state" class=" badge badge-pill badge-info"/>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-set="card_body">
+                            <div class="container">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class='row'>
+
+                                            <div class="col-md-10">
+                                                <div class="mb8">
+                                                    <strong>Employee :</strong>
+                                                    <span t-field="expense_sheet_form.employee_id"/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Paid By :</strong>
+                                                    <span t-field="expense_sheet_form.payment_mode"/>
+                                                </div>
+                                                <div class="mb8">
+                                                    <strong>Manager :</strong>
+                                                    <span t-field="expense_sheet_form.user_id"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="pull-right btn btn-xs btn-primary" target="_blank"
+                                                   t-attf-href="/my/expense_sheet/#{expense_sheet_form.id}">Print
+                                                    <i class="fa fa-print"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <section id="expenses" style="page-break-inside: auto;" class="mt32">
+                                            <h3 id="details">Expense</h3>
+
+                                            <t t-value="for line in expense_sheet_form.expense_line_ids"/>
+
+                                            <table class="table table-sm" id="expense_sheet">
+                                                <thead class="bg-100">
+                                                    <t t-set="colspan" t-value="6"/>
+                                                    <th class="text-left">Date</th>
+                                                    <th>Description</th>
+                                                    <th class="text-right">Total</th>
+                                                </thead>
+                                                <tbody class="sale_tbody">
+                                                    <tr t-foreach="expense_sheet_form.expense_line_ids" t-as="line">
+                                                        <td>
+                                                            <span t-field="line.date"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.name"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <span t-field="line.total_amount"/>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
+ 
+
+
+
+
+
+

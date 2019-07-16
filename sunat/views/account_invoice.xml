@@ -24,7 +24,7 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <field name="date_invoice" position="before">
-                <field name="date_document"/>
+                <field name="date_document" required="1"/>
             </field>
             <field name="date_invoice" position="replace">
                 <field string="Fecha Contable" name="date_invoice" options="{'datepicker': {'warn_future': true}}"/>
@@ -87,9 +87,6 @@
                    position="after">
                 <field name="type_purchase" string="Tipo de Compra"/>
             </xpath>
-            <xpath expr="//field[@name='move_id']" position="after">
-                <field name="move_punishment_id" readonly="True"/>
-            </xpath>
         </field>
     </record>
 
@@ -135,7 +132,11 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header//button[last()]" position="after">
+                <button name="action_prueba" string="Enviar a Sunat" type="object" class="oe_highlight" attrs="{'invisible': [('x_studio_estado_sunat', '=', 'Aceptado')]}"/>
+            </xpath>
             <field name="partner_id" position="after">
+                <field name="x_studio_estado_sunat" invisible="1"/>
                 <field name="refund_invoice_id"/>
             </field>
             <field name="date_invoice" position="before">
@@ -172,6 +173,9 @@
             <xpath expr="//group/group/div" position="after">
                 <field name="exchange_rate"/>
                 <field name="perception_id"/>
+                <!--#0001 - Incio -->
+                <field name="detrac_id"/>
+                <!--#0001 - Fin -->
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="SUNAT">
@@ -193,6 +197,9 @@
             </xpath>
             <xpath expr="//field[@name='amount_tax']" position="after">
                 <field name="perception_value" attrs="{'invisible':[('perception_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='move_id']" position="after">
+                <field name="move_punishment_id" readonly="True"/>
             </xpath>
         </field>
     </record>

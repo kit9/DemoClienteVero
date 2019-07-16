@@ -1,0 +1,42 @@
+<odoo>
+    <!-- Categorias -->
+    <data>
+        <!--<menuitem id="chart_of_accounts_menu_root" name="Reportes PLE" parent="account.menu_finance_reports"-->
+                  <!--sequence="0"/>-->
+        <!--reportes PLE-->
+        <menuitem id="chart_of_accounts_menu" name="Libro Diario - PC" parent="sunat.reporte_ple_menu_root"
+                  action="chart_accounts_VG" sequence="5"/>
+        <menuitem id="four_retentions_menu" name="CM - Prest 4ta Cat PLAME" parent="sunat.reporte_ple_menu_root"
+                  action="four_retentions_VG" sequence="6"/>
+        <menuitem id="not_domiciled_menu" name="Reg. Compras - No Dom" parent="sunat.reporte_ple_menu_root"
+                  action="not_domiciled_VG" sequence="2"/>
+        <menuitem id="retentions_menu" name="Reg. Retenciones" parent="sunat.reporte_ple_menu_root"
+                  action="retentions_VG" sequence="3"/>
+        <menuitem id="record_of_actives_menu" name="Reg. Activos Fijos" parent="sunat.reporte_ple_menu_root"
+                  action="record_of_actives_VG" sequence="9"/>
+        <menuitem id="account_14_menu" name="INV-BAL- Cta 14" parent="sunat.reporte_ple_menu_root"
+                  action="account_14_VG" sequence="8"/>
+        <menuitem id="account_12_13_menu" name="INV-BAL- Cta 12" parent="sunat.reporte_ple_menu_root"
+                  action="account_12_13_VG" sequence="7"/>
+        <menuitem id="account_detail_menu" name="INV-BAL- Cta 19" parent="sunat.reporte_ple_menu_root"
+                  action="account_detail_VG" sequence="5"/>
+        <menuitem id="account_10_menu" name="INV-BAL- Cta 10" parent="sunat.reporte_ple_menu_root"
+                  action="account_10_VG" sequence="11"/>
+        <menuitem id="account_17_menu" name="INV-BAL- Cta 16" parent="sunat.reporte_ple_menu_root"
+                  action="account_17_VG" sequence="12"/>
+        <menuitem id="sales_menu" name="Ple. Venta" parent="sunat.reporte_ple_menu_root"
+                  action="sales_VG" sequence="4"/>
+        <menuitem id="account_30_menu" name="INV-BAL- Cta 30" parent="sunat.reporte_ple_menu_root"
+                  action="account_30_VG" sequence="15"/>
+        <menuitem id="account_34_menu" name="INV-BAL- Cta 34" parent="sunat.reporte_ple_menu_root"
+                  action="account_34_VG" sequence="17"/>
+        <menuitem id="account_42_menu" name="INV-BAL- Cta 42" parent="sunat.reporte_ple_menu_root"
+                  action="account_42_VG" sequence="7"/>
+        <menuitem id="book_cash_menu" name="Caja y Bcos - Mov del efectivo" parent="sunat.reporte_ple_menu_root"
+                  action="book_cash_VG" sequence="16"/>
+        <menuitem id="account_46_menu" name="INV-BAL- Cta 46" parent="sunat.reporte_ple_menu_root"
+                  action="account_46_VG" sequence="13"/>
+
+
+    </data>
+</odoo>

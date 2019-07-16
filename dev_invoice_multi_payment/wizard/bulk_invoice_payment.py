@@ -52,9 +52,6 @@ class bulk_inv_payment(models.TransientModel):
                 raise ValidationError('You must select only invoices or refunds.')
             if inv.state != 'open':
                 raise ValidationError('Please Select Open Invoices.')
-            # Inicio Codigo Optimiza
-            if inv.detraccion_paid == False and inv.hide_detraction == False:
-                raise ValidationError('Debe pagar la detraccion de las facturas')
             vals.append((0, 0, {
                 'invoice_id': inv and inv.id or False,
                 'partner_id': inv and inv.partner_id.id or False,
@@ -66,6 +63,11 @@ class bulk_inv_payment(models.TransientModel):
                     'partner_type': 'customer',
                 })
             else:
+                # 0001 - Incio - Movido
+                # Inicio Codigo Optimiza
+                if inv.detraccion_paid == False and inv.hide_detraction == False:
+                    raise ValidationError('Debe pagar la detraccion de las facturas')
+                # 0001 - Fin - Movido
                 res.update({
                     'partner_type': 'supplier',
                 })
@@ -84,15 +86,29 @@ class bulk_inv_payment(models.TransientModel):
         return res
 
     name = fields.Char('Name', default='hello')
-    payment_type = fields.Selection(
-        [('outbound', 'Send Money'), ('inbound', 'Receive Money'), ('transfer', 'Transfer')], string="Payment Type",
-        required="1")
+    payment_type = fields.Selection([('outbound', 'Send Money'),
+                                     ('inbound', 'Receive Money'),
+                                     ('transfer', 'Transfer')],
+                                    string="Payment Type", required="1")
     payment_date = fields.Date('Payment Date', required="1")
     communication = fields.Char('Memo')
     partner_type = fields.Selection([('customer', 'Customer'), ('supplier', 'Supplier')], string='Partner Type')
     journal_id = fields.Many2one('account.journal', string='Payment Method', required=True,
                                  domain=[('type', 'in', ('bank', 'cash'))])
     invoice_ids = fields.One2many('bulk.invoice', 'bulk_invoice_id', string='Invoice')
+
+    payment_methods_id = fields.Many2one('sunat.payment_methods', string='Forma de Pago')
+    payment_methods_domain = fields.Char('Domain', compute="_payment_methods_domain")
+
+    @api.multi
+    def _payment_methods_domain(self):
+        for rec in self:
+            # total = sum(line.paid_amount for line in rec.invoice_ids)
+            total = 10
+            if total > 3501:
+                rec.payment_methods_domain = "'003','007','009','011','012','013','014'"
+            else:
+                rec.payment_methods_domain = "'003','007'"
 
     @api.multi
     def process_payment(self):
@@ -128,6 +144,9 @@ class bulk_inv_payment(models.TransientModel):
 
             # Validaciones de Retencion Proveedor
             apply_retention = True
+            # 0001 - Incio
+            is_detraction_client = True
+            # 0001 - Fin
             total_payment = 0
             bank_retencion = False
             bank_factura = False
@@ -136,11 +155,17 @@ class bulk_inv_payment(models.TransientModel):
             for inv_line in res.get('values'):
                 invoice = inv_line.get('invoice_id')
                 total_payment = total_payment + invoice.amount_total_signed
-            if proveedor.age_retencion:
+
+            # Condiciones que no permiten que se aplique la retención
+            if proveedor.age_retencion:  # Si es agente de retencion no retiene
                 apply_retention = False
             if total_payment < 700:
+                # 0001 - Incio
+                is_detraction_client = False
+                # 0001 - Fin
                 apply_retention = False
 
+            # Obtenermos el banco para las retenciones
             for bank in proveedor.bank_ids:
                 if bank.is_retention and not bank_retencion and not bank.is_detraction:
                     bank_retencion = bank
@@ -157,18 +182,26 @@ class bulk_inv_payment(models.TransientModel):
 
                 if invoice.hide_detraction and apply_retention:
                     is_retencion = True
+                    # 0001 - Incio
+                    is_detraction_client = False
+                    # 0001 - Fin
                 else:
                     is_retencion = False
+                    # 0001 - Incio
+                    if not invoice.hide_detraction and is_detraction_client:
+                        is_detraction_client = True
+                    # 0001 - Fin
 
-                tipo = ""
-                if is_retencion:
+                # 0001 - Incio - Modificado
+                if is_retencion and self.partner_type == "supplier":
                     tipo = "retencion"
+                elif is_detraction_client and self.partner_type == "customer":
+                    tipo = "detraccion"
                 else:
                     tipo = "factura"
+                # 0001 - Fin - Modificado
 
-                journal = False
-                banco = False
-                currency = False
+                Tipo_Pago = False
                 if tipo == "retencion":
                     journal = retention_journal
                     banco = bank_retencion
@@ -178,10 +211,25 @@ class bulk_inv_payment(models.TransientModel):
                         currency = moneda_venta.id
                     else:
                         currency = res.get('values')[0].get('currency_id')
+                # 0001 - Incio
+                elif tipo == "detraccion":
+                    banco = False
+                    # Obtenemos el diario donde se registrara el pago de Detracción
+                    journal = self.env['account.journal'].search([('is_detraction', '=', True)], limit=1)
+                    if not journal:
+                        journal = self.env['account.journal'].search([], limit=1)
+                    moneda_venta = self.env['res.currency'].search([('name', 'like', 'PEN'), ('type', 'like', 'sale')],
+                                                                   limit=1)
+                    if moneda_venta:
+                        currency = moneda_venta.id
+                    else:
+                        currency = res.get('values')[0].get('currency_id')
+                # 0001 - Fin
                 else:
                     journal = self.journal_id
                     banco = bank_factura
                     currency = res.get('values')[0].get('currency_id')
+                    Tipo_Pago = self.payment_methods_id
 
                 # Pago 1
                 pay_val = {
@@ -195,6 +243,7 @@ class bulk_inv_payment(models.TransientModel):
                     'payment_method_id': payment_method_id and payment_method_id.id or False,
                     'state': 'draft',
                     'type': tipo,
+                    'payment_methods_id': Tipo_Pago and Tipo_Pago.id or False,
                     'back_partner_id': banco and banco.id or False,
                     'currency_id': currency,
                     'amount': 0.0,
@@ -208,15 +257,23 @@ class bulk_inv_payment(models.TransientModel):
                     paid_amt1 = round(inv_line.get('paid_amount') * 0.03, 2)
                     paid_amt2 = inv_line.get('paid_amount') - paid_amt1
                     paid_amt1 = paid_amt1 * invoice.exchange_rate
+                # 0001 - Incio
+                elif is_detraction_client:
+                    paid_amt1 = round(inv_line.get('paid_amount') * (invoice.detrac_id.detrac * 0.01), 2)
+                    paid_amt2 = round(inv_line.get('paid_amount') - paid_amt1, 2)
+                    paid_amt1 = paid_amt1 * invoice.exchange_rate
+                # 0001 - Fin
                 else:
                     paid_amt1 = inv_line.get('paid_amount')
 
                 full_reco1 = False
                 full_reco2 = False
 
-                if is_retencion:
+                # 0001 - Inicio - Modificado
+                if is_retencion or is_detraction_client:
                     if invoice.residual == inv_line.get('paid_amount'):
                         full_reco2 = True
+                # 0001 - Fin - Modificado
                 else:
                     if invoice.residual == inv_line.get('paid_amount'):
                         full_reco1 = True
@@ -241,7 +298,9 @@ class bulk_inv_payment(models.TransientModel):
                 })
 
                 # Pago 2
-                if is_retencion:
+                # 0001 - Incio - Modificado
+                if is_retencion or is_detraction_client:
+                    # 0001 - Fin - Modificado
                     pay_val = {
                         'payment_type': self.payment_type,
                         'payment_date': payment_date,
@@ -253,6 +312,7 @@ class bulk_inv_payment(models.TransientModel):
                         'payment_method_id': payment_method_id and payment_method_id.id or False,
                         'state': 'draft',
                         'type': 'factura',
+                        'payment_methods_id': self.payment_methods_id and self.payment_methods_id.id or False,
                         'back_partner_id': bank_factura and bank_factura.id or False,
                         'currency_id': res.get('values')[0].get('currency_id'),
                         'amount': 0.0,
@@ -326,6 +386,8 @@ class bulk_inv_detraction(models.TransientModel):
                 'paid_amount': inv.detraction_residual or 0.0,
             }))
             if inv.type in ('out_invoice', 'out_refund'):
+                if not inv.hide_detraction:
+                    raise ValidationError('Sólo Proveedores')
                 res.update({
                     'partner_type': 'customer',
                 })
