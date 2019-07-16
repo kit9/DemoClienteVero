@@ -6,6 +6,9 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header//button[last()]" position="after">
+                <button name="report_sunat" string="Facturacion Electronica" type="object" class="oe_highlight"/>
+            </xpath>
             <field name="partner_id" position="before">
                 <field name="document_type_id" required="True"/>
                 <field name="invoice_serie" required="True"/>
@@ -132,6 +135,9 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_form"/>
         <field name="arch" type="xml">
+            <!--            <xpath expr="//header//button[last()]" position="after">-->
+            <!--                <button name="report_sunat" string="Facturacion Electronica" type="object" class="oe_highlight"/>-->
+            <!--            </xpath>-->
             <field name="partner_id" position="after">
                 <field name="refund_invoice_id"/>
             </field>
@@ -169,6 +175,9 @@
             <xpath expr="//group/group/div" position="after">
                 <field name="exchange_rate"/>
                 <field name="perception_id"/>
+                <!--#0001 - Incio -->
+                <field name="detrac_id"/>
+                <!--#0001 - Fin -->
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="SUNAT">
@@ -176,8 +185,10 @@
                         <group>
                             <h2>Documento</h2>
                             <field name="document_type_id" required="True"/>
-                            <field name="invoice_serie" required="True"/>
-                            <field name="invoice_number" required="True"/>
+                            <!--#0003 - Inicio-->
+                            <field name="sunat_serie" required="1"/>
+                            <field name="sunat_number" readonly="1"/>
+                            <!--#0003 - Fin-->
                         </group>
                         <group>
                             <h2>Exportación</h2>
@@ -197,49 +208,60 @@
         </field>
     </record>
 
-    <!-- Tabla - Factura Cliente -->
-    <record id="sunat_account_invoice_tree" model="ir.ui.view">
-    <field name="name">sunat.account.invoice.tree</field>
-    <field name="model">account.invoice</field>
-    <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
-    <field name="arch" type="xml">
-    <field name="amount_untaxed_invoice_signed" position="after">
-    <field name="inv_fac_exp" sum="Total"/>
-    <field name="inv_exonerada" sum="Total"/>
-    <field name="inv_inafecto" sum="Total"/>
-    <field name="inv_isc" sum="Total"/>
-    </field>
-    <field name="amount_tax_signed" position="after">
-    <field name="inv_otros" sum="Total"/>
-    </field>
-    <field name="amount_untaxed_invoice_signed" position="replace">
-    <field name="amount_untaxed_invoice_signed" invisible="1"/>
-    <field name="inv_amount_untax" sum="Total"/>
-    </field>
-    </field>
+    <record id="account_invoice_form_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.form.invoice.inherit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_ids']" position="attributes">
+                <attribute name="attrs">{"invisible": [["payment_ids","=",False]]}</attribute>
+            </xpath>
+        </field>
     </record>
 
     <!-- Tabla - Factura Cliente -->
-<!--    <record id="sunat_account_invoice_tree" model="ir.ui.view">-->
-<!--        <field name="name">sunat.account.invoice.tree</field>-->
-<!--        <field name="model">account.invoice</field>-->
-<!--        <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <field name="amount_untaxed" position="after">-->
-<!--                <field name="inv_fac_exp" sum="Total"/>-->
-<!--                <field name="inv_exonerada" sum="Total"/>-->
-<!--                <field name="inv_inafecto" sum="Total"/>-->
-<!--                <field name="inv_isc" sum="Total"/>-->
-<!--            </field>-->
-<!--            <field name="amount_tax" position="after">-->
-<!--                <field name="inv_otros" sum="Total"/>-->
-<!--            </field>-->
-<!--            <field name="amount_untaxed" position="replace">-->
-<!--                <field name="amount_untaxed" invisible="1"/>-->
-<!--                <field name="inv_amount_untax" sum="Total"/>-->
-<!--            </field>-->
-<!--        </field>-->
-<!--    </record>-->
+    <record id="sunat_account_invoice_tree" model="ir.ui.view">
+        <field name="name">sunat.account.invoice.tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <field name="amount_untaxed_invoice_signed" position="after">
+                <field name="inv_fac_exp" sum="Total"/>
+                <field name="inv_exonerada" sum="Total"/>
+                <field name="inv_inafecto" sum="Total"/>
+                <field name="inv_isc" sum="Total"/>
+            </field>
+            <field name="amount_tax_signed" position="after">
+                <field name="inv_otros" sum="Total"/>
+            </field>
+            <field name="amount_untaxed_invoice_signed" position="replace">
+                <field name="amount_untaxed_invoice_signed" invisible="1"/>
+                <field name="inv_amount_untax" sum="Total"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Tabla - Factura Cliente -->
+    <!--    <record id="sunat_account_invoice_tree" model="ir.ui.view">-->
+    <!--        <field name="name">sunat.account.invoice.tree</field>-->
+    <!--        <field name="model">account.invoice</field>-->
+    <!--        <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <field name="amount_untaxed" position="after">-->
+    <!--                <field name="inv_fac_exp" sum="Total"/>-->
+    <!--                <field name="inv_exonerada" sum="Total"/>-->
+    <!--                <field name="inv_inafecto" sum="Total"/>-->
+    <!--                <field name="inv_isc" sum="Total"/>-->
+    <!--            </field>-->
+    <!--            <field name="amount_tax" position="after">-->
+    <!--                <field name="inv_otros" sum="Total"/>-->
+    <!--            </field>-->
+    <!--            <field name="amount_untaxed" position="replace">-->
+    <!--                <field name="amount_untaxed" invisible="1"/>-->
+    <!--                <field name="inv_amount_untax" sum="Total"/>-->
+    <!--            </field>-->
+    <!--        </field>-->
+    <!--    </record>-->
 
     <record id="invoice_punishment" model="ir.actions.server">
         <field name="name">Castigo</field>

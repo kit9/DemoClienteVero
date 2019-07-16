@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import json
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import datetime
 import logging
+import requests
+from lxml.etree import SubElement, Element, tostring
 
 _logger = logging.getLogger(__name__)
 
@@ -19,14 +22,20 @@ class account_invoice(models.Model):
     # Apply Retention
     apply_retention = fields.Boolean(string="Apply Retention")
     # Detraction Paid
-    detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True)
+    detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True, copy=False)
     # Saldo de Detraccion
     detraction_residual = fields.Monetary(string="Detraction To Pay", compute="_detraction_residual", store=True)
     # Total a Pagar
     total_pagar = fields.Monetary(string="Total a Pagar2", compute="_total_pagar_factura")
+
     # Numero de Factura del Proveedor
     invoice_number = fields.Char(string="Numero")
     invoice_serie = fields.Char(string="Serie")
+
+    # 0003 - Inicio
+    sunat_serie = fields.Many2one('sunat.series', 'Serie')
+    sunat_number = fields.Integer(string="Numero", compute="sunat_number_define", store=True)
+    # 0003 - Fin
 
     # Campos necesarios para el TXT
     fourth_suspension = fields.Boolean(string="Suspencion de Cuarta")
@@ -58,12 +67,14 @@ class account_invoice(models.Model):
 
     # Factura de Cliente - Invoice
     export_invoice = fields.Boolean(string="Fac.- Exp.")
-    exchange_rate = fields.Float(string="Tipo de Cambio", compute="_get_exchange_rate", store=True, copy=False)
+    exchange_rate = fields.Float(string="Tipo de Cambio", digits=(12, 3), compute="_get_exchange_rate", store=True,
+                                 copy=False)
     date_document = fields.Date(string="Fecha del Documento")
 
     # Hide or not Apply Retention
     hide_apply_retention = fields.Boolean(string='Hide', compute="_compute_hide_apply_retention")
-    # Detraccion Aplica
+
+    # Detraccion Aplica - False: Tiene Detraccion / True: No tiene Detraccion
     hide_detraction = fields.Boolean(compute="_compute_hide_detraction")
 
     retencion = fields.Selection(
@@ -131,14 +142,41 @@ class account_invoice(models.Model):
     num_comp_serie = fields.Char(string='Numero de Comp. N1 de Serie')
     num_perception = fields.Char(string='Numero de Percepción')
 
+    # Campo para guardar respuesta de sunat
+    sunat_response = fields.Text(string="Respuesta de Sunat")
+
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
+    # 0002 - Incio - Modificado
     @api.multi
-    @api.depends('currency_id')
+    @api.depends('currency_id', 'date_document')
     def _get_exchange_rate(self):
         for rec in self:
-            rec.exchange_rate = rec.currency_id.rate_pe
+            currency = False
+            if rec.date_document:
+                domain = [('currency_id.id', '=', rec.currency_id.id),
+                          ('name', '=', fields.Date.to_string(rec.date_document)),
+                          ('currency_id.type', '=', rec.currency_id.type)]
+                currency = self.env['res.currency.rate'].search(domain, limit=1)
+            if currency:
+                rec.exchange_rate = currency.rate_pe
+            else:
+                if rec.currency_id:
+                    rec.exchange_rate = rec.currency_id.rate_pe
+
+    # 0002 - Fin - Modificado
+
+    @api.depends('sunat_serie')
+    def sunat_number_define(self):
+        for rec in self:
+            if rec.sunat_serie:
+                invoice = self.env['account.invoice'].search([('sunat_serie.id', '=', rec.sunat_serie.id)],
+                                                             order='sunat_number desc', limit=1)
+                if invoice and invoice.sunat_number:
+                    rec.sunat_number = invoice.sunat_number + 1
+                else:
+                    rec.sunat_number = 1
 
     @api.multi
     def _inv_no_gravado(self):
@@ -548,7 +586,7 @@ class account_invoice(models.Model):
     @api.multi
     def _compute_hide_detraction(self):
         for rec in self:
-            if rec.detrac_id.name == 'No Aplica':
+            if rec.detrac_id.name == 'No Aplica' or not rec.detrac_id:
                 rec.hide_detraction = True
             else:
                 rec.hide_detraction = False
@@ -648,12 +686,10 @@ class account_invoice(models.Model):
             if rec.move_punishment_id:
                 raise ValidationError('La factura ' + str(rec.number) + ' ya tiene un catigo')
 
-            _logger.info("Antes del for")
             move_line = False
             for line in rec.move_id.line_ids:
                 if str(line.account_id.code) == '121100' and not move_line:
                     move_line = line
-            _logger.info("Despues del for")
 
             if not move_line:
                 raise ValidationError('No se encontro la cuenta 121100 en el asiento de factura')
@@ -690,12 +726,169 @@ class account_invoice(models.Model):
                 'line_ids': lines
             }
 
-            _logger.info("Plantilla Completa")
             move_punishment = self.env['account.move'].create(account_move_dic)
-            _logger.info("Asiento Creado")
             move_punishment.post()
-
-            _logger.info("Asiento Publicado")
 
             rec.move_punishment_id = move_punishment
         return True
+
+    @api.multi
+    def report_sunat(self):
+        url = 'https://api.nubefact.com/api/v1/d85c7677-84ab-4b3f-8a82-57ed550772ac'
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': '9c09cc6e225849089cfecd32952d54f2c8e7b3f8b2c7485d9f79e9f5a722b13b'
+        }
+        response = requests.post(url, headers)
+        # dat2.append(data)
+        #  --  JSON  --
+        data = {}
+        data['operacion'] = 'generar_comprobante'
+        data['tipo_de_comprobante'] = 1
+        data['serie'] = self.invoice_serie
+        data['numero'] = int(self.invoice_number)
+        data['sunat_transaction'] = int(self.type_sales[:2]) if self.type_sales else ""
+        data['cliente_tipo_de_documento'] = \
+            int(self.partner_id.catalog_06_id.code) if self.partner_id.catalog_06_id else ""
+        data['cliente_numero_de_documento'] = int(self.partner_id.vat) if self.partner_id else ""
+        data['cliente_denominacion'] = self.partner_id.registration_name if self.partner_id else ""
+        data['cliente_direccion'] = self.partner_id.street if self.partner_id else ""
+        data['cliente_email'] = self.partner_id.email if self.partner_id else ""
+        data['cliente_email_1'] = ""
+        data['cliente_email_2'] = ""
+        data['fecha_de_emision'] = self.date_document.strftime("%d-%m-%Y") if self.date_document else ""
+        data['fecha_de_vencimiento'] = self.date_due.strftime("%d-%m-%Y") if self.date_due else ""
+        monedas = {
+            'PEN': 1,
+            'USD': 2,
+            'EUR': 3
+        }
+        data['moneda'] = monedas.get(self.currency_id.name, "") if self.currency_id else ""
+        data['tipo_de_cambio'] = self.exchange_rate if self.exchange_rate else ""
+        porcentaje_de_igv = ""
+        if len(self.tax_line_ids) > 0:
+            if "18" in self.tax_line_ids[0].name:
+                porcentaje_de_igv = float("18.00")
+        data['porcentaje_de_igv'] = porcentaje_de_igv
+        data['descuento_global'] = ""
+        data['total_descuento'] = ""
+        data['total_anticipo'] = ""
+        data['total_gravada'] = self.amount_untaxed if self.amount_untaxed else ""
+        data['total_inafecta'] = self.inv_inafecto
+        data['total_exonerada'] = self.inv_exonerada
+        data['total_igv'] = self.amount_tax if self.amount_tax else ""
+        data['total_gratuita'] = ""
+        data['total_otros_cargos'] = self.inv_otros
+        data['total'] = self.amount_total if self.amount_total else ""
+        data['percepcion_tipo'] = ""
+        data['percepcion_base_imponible'] = ""
+        data['total_percepcion'] = ""
+        data['total_incluido_percepcion'] = ""
+        data['detraccion'] = not self.hide_detraction
+        data['observaciones'] = ""
+        data['documento_que_se_modifica_tipo'] = ""
+        data['documento_que_se_modifica_serie'] = ""
+        data['documento_que_se_modifica_numero'] = ""
+        data['tipo_de_nota_de_credito'] = ""
+        data['tipo_de_nota_de_debito'] = ""
+        data['enviar_automaticamente_a_la_sunat'] = True
+        data['enviar_automaticamente_al_cliente'] = False
+        data['codigo_unico'] = ""
+        data['condiciones_de_pago'] = ""
+        data['medio_de_pago'] = ""
+        data['placa_vehiculo'] = ""
+        data['orden_compra_servicio'] = ""
+        data['tabla_personalizada_codigo'] = ""
+        data['formato_de_pdf'] = ""
+        data['generado_por_contingencia'] = ""
+        data['items'] = []
+        data['guias'] = []
+
+        numorden = 0
+        for line in self.invoice_line_ids:
+            item = {}
+            item['unidad_de_medida'] = line.uom_id.sunat_code if line.uom_id.sunat_code else ""
+            item['codigo'] = ""  # str(numorden).zfill(4)
+            item['codigo_producto_sunat'] = "10000000"
+            item['descripcion'] = str(line.product_id.name) if line.product_id else ""
+            item['cantidad'] = line.quantity
+            item['valor_unitario'] = line.price_unit
+            item['precio_unitario'] = line.price_total / line.quantity
+            item['descuento'] = ""
+            item['subtotal'] = line.price_subtotal
+            item['tipo_de_igv'] = 1
+            item['igv'] = line.price_tax
+            item['total'] = line.price_total
+            item['anticipo_regularizacion'] = "false"
+            item['anticipo_documento_serie'] = ""
+            item['anticipo_documento_numero'] = ""
+            data['items'].append(item)
+
+        _logger.info("\n" + json.dumps(data, indent=3))
+
+        if False:
+            # -- XML --
+            invoice = Element('factura')
+            # SubElement(invoice, "serieNumero", name="blah").text = "Demo"
+
+            # --- Datos de la Factura Electrónica --- #
+            SubElement(invoice, "serieNumero").text = (
+                    self.invoice_serie + "-" + self.invoice_number) if self.invoice_serie and self.invoice_number else ""
+            SubElement(invoice, "fechaEmision").text = self.date_document.strftime(
+                "%Y-%m-%d") if self.date_document else ""
+            SubElement(invoice, "horaEmision").text = "00:00:00"
+            SubElement(invoice, "tipoDocumento").text = self.document_type_id.number if self.document_type_id else ""
+            SubElement(invoice, "tipoMoneda").text = self.currency_id.name if self.currency_id else ""
+
+            # --- Datos del Emisor --- #
+            SubElement(invoice, "tipoDocumentoEmisor").text = \
+                str(int(
+                    self.company_id.partner_id.catalog_06_id.code)) if self.company_id.partner_id.catalog_06_id else ""
+            SubElement(invoice, "numeroDocumentoEmisor").text = \
+                self.company_id.partner_id.vat if self.company_id.partner_id.vat else ""
+            SubElement(invoice, "nombreComercialEmisor").text = \
+                self.company_id.partner_id.registration_name if self.company_id.partner_id.registration_name else ""
+            SubElement(invoice, "razonSocialEmisor").text = \
+                self.company_id.partner_id.registration_name if self.company_id.partner_id.registration_name else ""
+            SubElement(invoice, "ubigeoEmisor").text = \
+                self.company_id.partner_id.ubigeo if self.company_id.partner_id.ubigeo else ""
+            SubElement(invoice, "direccionEmisor").text = \
+                self.company_id.partner_id.street if self.company_id.partner_id.street else ""
+            SubElement(invoice, "urbanizacion").text = ""
+            SubElement(invoice, "provinciaEmisor").text = \
+                self.company_id.partner_id.provincia if self.company_id.partner_id.provincia else ""
+            SubElement(invoice, "departamentoEmisor").text = \
+                self.company_id.partner_id.departamento if self.company_id.partner_id.departamento else ""
+            SubElement(invoice, "distritoEmisor").text = \
+                self.company_id.partner_id.distrito if self.company_id.partner_id.distrito else ""
+            SubElement(invoice, "paisEmisor").text = ""
+            SubElement(invoice, "paisPrestacionServicio").text = ""
+            SubElement(invoice, "codigoLocalAnexoEmisor").text = ""
+
+            # --- Datos del Cliente o Receptor --- #
+            SubElement(invoice, "tipoDocumentoAdquiriente").text = \
+                str(int(self.partner_id.catalog_06_id.code)) if self.partner_id.catalog_06_id else ""
+            SubElement(invoice, "numeroDocumentoAdquiriente").text = self.partner_id.vat if self.partner_id.vat else ""
+            SubElement(invoice, "razonSocialAdquiriente").text = \
+                self.partner_id.registration_name if self.partner_id.registration_name else ""
+
+            # --- Totales de la Factura --- #
+            SubElement(invoice, "totalValorVentaNetoOpGravadas").text = ""
+
+            numorden = 0
+            for line in self.invoice_line_ids:
+                # --- Campos SUNAT --- #
+                numorden = numorden + 1
+                lines = Element('line')
+                SubElement(lines, "numeroOrdenItem").text = str(numorden)
+                SubElement(lines, "unidadMedida").text = \
+                    line.uom_id.sunat_code if line.uom_id.sunat_code else ""
+                SubElement(lines, "unidadMedida").text = \
+                    str(line.quantity) if line.quantity else ""
+                SubElement(lines, "codigoProducto").text = ""
+                SubElement(lines, "codigoProductoSUNAT").text = ""
+                invoice.append(lines)
+
+            # xml = tostring(invoice).decode("ascii")
+            xml = tostring(invoice, pretty_print=True).decode("ascii")
+            _logger.info("\n" + xml)

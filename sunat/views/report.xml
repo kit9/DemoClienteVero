@@ -1,0 +1,79 @@
+<odoo>
+
+    <!--    Reporte de Factura con Pago - Cliente-->
+    <record id="invoice_with_payment" model="ir.ui.view">
+        <field name="name">invoice.with.payment</field>
+        <field name="model" eval="False"/>
+        <field name="inherit_id" ref="account.report_invoice_document_with_payments"/>
+        <field name="type">qweb</field>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="/t/t/div/div[2]" position="after">
+                    <div class="text-center">
+                        <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png"/>
+                    </div>
+                </xpath>
+                <xpath expr="/t/t/div/h2" position="after">
+                    <div class="row">
+                        <div class="col">
+                            <span t-field="o.invoice_serie"/>
+                        </div>
+                    </div>
+                </xpath>
+                <xpath expr="/t/t/div/div[1]" position="after">
+                    <div class="row">
+                        <div class="col-3">
+                            <span>
+                                <strong>RUC:</strong>
+                                <br/>
+                            </span>
+                            <span t-field="o.partner_id.vat"/>
+                        </div>
+                        <div class="col-5">
+                            <span>
+                                <strong>Nombre:</strong>
+                                <br/>
+                            </span>
+                            <span t-field="o.partner_id.registration_name"/>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>Serie:</strong>
+                                <br/>
+                            </span>
+                            <span t-field="o.invoice_serie"/>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>Numero:</strong>
+                                <br/>
+                            </span>
+                            <span t-field="o.invoice_number"/>
+                        </div>
+                    </div>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/div[1]/div[1]" position="replace"/>
+                <xpath expr="/t[1]/t[1]/t[2]/div[1]" position="replace"/>
+                <!--
+                  <xpath expr="/t/t/t[2]/div" position="attributes">
+                    <attribute name="style" separator=";" add="background-color:#FF0000"/>
+                  </xpath>
+                  -->
+                <!--
+                <xpath expr="/t[1]/t[1]/div[1]/div[4]" position="attributes">
+                    <attribute name="class">row mt32 mb32 a</attribute>
+                </xpath>
+                -->
+                <xpath expr="/t[1]/t[1]/t[2]/div[1]" position="replace"/>
+                <xpath expr="/t/t/div/h2" position="before">
+                    <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6">
+                        </div>
+                    </div>
+                </xpath>
+            </data>
+        </field>
+    </record>
+</odoo>
