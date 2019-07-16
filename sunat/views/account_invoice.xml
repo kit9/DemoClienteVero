@@ -136,6 +136,7 @@
                 <button name="action_prueba" string="Enviar a Sunat" type="object" class="oe_highlight" attrs="{'invisible': [('x_studio_estado_sunat', '=', 'Aceptado')]}"/>
             </xpath>
             <field name="partner_id" position="after">
+                <field name="x_studio_estado_sunat" invisible="1"/>
                 <field name="refund_invoice_id"/>
             </field>
             <field name="date_invoice" position="before">
