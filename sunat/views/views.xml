@@ -6,6 +6,9 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field string="Detraccion" name="detrac_id"/>
+            </field>
             <xpath expr="/form/sheet/group" position="replace">
                 <notebook colspan="4">
                     <page string="Datos Generales">
@@ -39,10 +42,6 @@
                                        attrs="{'readonly': [('parent_id','!=',False)]}"/>
                                 <!-- Agregado -->
                                 <field string="Detraccion" name="detrac_id"/>
-                                <!--                                <field string="district_id"/>-->
-                                <!--                                <field string="province_id"/>-->
-                                <!--                                <field string="state_id"/>-->
-                                <!--                                <field string="country_id"/>-->
                                 <field name="age_retencion"/>
                                 <field name="buen_contribuyente"/>
                                 <field name="age_percepcion"/>
@@ -85,9 +84,6 @@
                         </group>
                     </page>
                 </notebook>
-            </xpath>
-            <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
-                <field name="is_employee"/>
             </xpath>
         </field>
     </record>
@@ -460,10 +456,6 @@
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
-            <!--            Datos de la compañia-->
-            <!--            <xpath expr="//field[@name='vat']" position="before">-->
-            <!--                <field name="catalog_06_id" required="1"/>-->
-            <!--            </xpath>-->
             <xpath expr="//field[@name='vat']" position="attributes">
                 <attribute name="string">RUC</attribute>
             </xpath>
@@ -548,20 +540,6 @@
             </xpath>
         </field>
     </record>
-
-    <!--#0001 - Incio -->
-    <!-- Formulario - Diarios / Cuentas Bancarias -->
-    <record id="account_bank_journal_form_inherit" model="ir.ui.view">
-        <field name="name">account.bank.journal.form.inherit</field>
-        <field name="model">account.journal</field>
-        <field name="inherit_id" ref="account.view_account_bank_journal_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='company_id']" position="after">
-                <field name="is_detraction"/>
-            </xpath>
-        </field>
-    </record>
-    <!--#0001 - Fin -->
 
     <!-- Accion de Prueba -->
     <record id="asset_validate" model="ir.actions.server">

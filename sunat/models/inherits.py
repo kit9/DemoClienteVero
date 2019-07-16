@@ -2,16 +2,8 @@ from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
 import logging
-import json
-from lxml.etree import SubElement, Element, tostring
 
 _logger = logging.getLogger(__name__)
-
-
-class ProductCategory(models.Model):
-    _inherit = "product.category"
-
-    analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
 
 
 class ProductTemplate(models.Model):
@@ -25,12 +17,6 @@ class ProductTemplate(models.Model):
         ('1', '1 NO REVALUADO'),
         ('2', '2 REVALUADO CON EFECTO TRIBUTARIO')
     ])
-
-
-class ProductProduct(models.Model):
-    _inherit = "product.product"
-
-    account_account = fields.Char(string='Cuenta Contable', related="categ_id.property_stock_valuation_account_id.code")
 
 
 class StockPicking(models.Model):
@@ -147,12 +133,17 @@ class Partner(models.Model):
 
     document_num_identity = fields.Char(string="Numero de Documento de Identidad")
 
+    person_type = fields.Selection(string="Tipo de Persona", selection=[('01-Persona Natural', '01-Persona Natural'),
+                                                                        ('02-Persona Jurídica', '02-Persona Jurídica'),
+                                                                        ('03-Sujeto no Domiciliado',
+                                                                         '03-Sujeto no Domiciliado')])
     is_empresa = fields.Boolean(compute="_is_empresa")
-
-    is_employee = fields.Boolean(string='Is a Empleyee', default=False,
-                                 help="Check this box if this contact is an Employee.")
-
     is_withholding_agent = fields.Boolean(string="Agente de Retención")
+
+    # Datos Persona Natural
+    ape_pat = fields.Char(string="Apellido Paterno")
+    ape_mat = fields.Char(string="Apellido Materno")
+    nombres = fields.Char(string="Nombre Completo")
 
     # Datos Persona Juridica
     age_retencion = fields.Boolean(string="Agente de Retención")
@@ -341,8 +332,6 @@ class AccountPayment(models.Model):
     payment_methods_id = fields.Many2one('sunat.payment_methods', string='Forma de Pago')
     operation_number = fields.Char(string='Número de Operación')
 
-    partner_type = fields.Selection(selection_add=[('is_employee', 'Employee')])
-
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
@@ -352,13 +341,6 @@ class AccountPayment(models.Model):
         for rec in self:
             if rec.payment_date:
                 rec.month_year_inv = rec.payment_date.strftime("%m%Y")
-
-    @api.multi
-    @api.depends('back_partner_id')
-    def _get_banco(self):
-        for rec in self:
-            if rec.back_partner_id:
-                rec.vv_bank = rec.back_partner_id.bank_id.name + " " + rec.back_partner_id.acc_number or ""
 
 
 class MrpWorkcenter(models.Model):
@@ -371,6 +353,18 @@ class Employee(models.Model):
     _inherit = "hr.employee"
 
     analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
+
+
+class ProductCategory(models.Model):
+    _inherit = "product.category"
+
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Cuenta Analítica')
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+    account_account = fields.Char(string='Cuenta Contable', related="categ_id.property_stock_valuation_account_id.code")
 
 
 class AccountTax(models.Model):
@@ -390,14 +384,5 @@ class AccountAnalyticLine(models.Model):
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
-    type = fields.Selection(selection_add=[('retention', 'Retención IGV')])
-
-    # 0001 - Incio
-    is_detraction = fields.Boolean(string="Es para Detracción")
-    # 0001 - Fin
-
-    # -- Datos de la compañia -- #
-    # class ResCompany(models.Model):
-    #     _inherit = 'res.company'
-    #
-    #     catalog_06_id = fields.Many2one('einvoice.catalog.06', 'Tipo Doc.')
+    type = fields.Selection(
+        selection_add=[('retention', 'Retención IGV')])
