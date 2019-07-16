@@ -615,7 +615,7 @@ class account_invoice(models.Model):
     # Trial Action
     @api.multi
     def action_prueba(self):
-        return self.env['report'].get_action(self, 'account.report_invoice_with_payments')
+        self.x_studio_estado_sunat = "Aceptado"
 
     @api.depends('residual_signed', 'detraccion')
     @api.multi
