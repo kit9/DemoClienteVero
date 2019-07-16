@@ -157,7 +157,7 @@ class bulk_inv_payment(models.TransientModel):
                 total_payment = total_payment + invoice.amount_total_signed
 
             # Condiciones que no permiten que se aplique la retención
-            if proveedor.age_retencion: # Si es agente de retencion no retiene
+            if proveedor.age_retencion:  # Si es agente de retencion no retiene
                 apply_retention = False
             if total_payment < 700:
                 # 0001 - Incio
@@ -386,6 +386,8 @@ class bulk_inv_detraction(models.TransientModel):
                 'paid_amount': inv.detraction_residual or 0.0,
             }))
             if inv.type in ('out_invoice', 'out_refund'):
+                if not inv.hide_detraction:
+                    raise ValidationError('Sólo Proveedores')
                 res.update({
                     'partner_type': 'customer',
                 })

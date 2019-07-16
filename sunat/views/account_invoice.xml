@@ -169,6 +169,9 @@
             <xpath expr="//group/group/div" position="after">
                 <field name="exchange_rate"/>
                 <field name="perception_id"/>
+                <!--#0001 - Incio -->
+                <field name="detrac_id"/>
+                <!--#0001 - Fin -->
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
                 <page string="SUNAT">
