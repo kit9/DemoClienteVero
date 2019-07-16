@@ -28,6 +28,11 @@ class account_invoice(models.Model):
     invoice_number = fields.Char(string="Numero")
     invoice_serie = fields.Char(string="Serie")
 
+    # 0003 - Inicio
+    sunat_serie = fields.Many2one('sunat.series', 'Serie')
+    sunat_number = fields.Integer(string="Numero", compute="sunat_number_define", store=True)
+    # 0003 - Fin
+
     # Campos necesarios para el TXT
     fourth_suspension = fields.Boolean(string="Suspencion de Cuarta")
     operation_type = fields.Selection(string="Tipo de Operación", selection=[('1.-Exportación', '1.-Exportación')])
@@ -139,6 +144,19 @@ class account_invoice(models.Model):
     def _get_exchange_rate(self):
         for rec in self:
             rec.exchange_rate = rec.currency_id.rate_pe
+
+    # 0003 - Inicio
+    @api.depends('sunat_serie')
+    def sunat_number_define(self):
+        for rec in self:
+            if rec.sunat_serie:
+                invoice = self.env['account.invoice'].search([('sunat_serie.id', '=', rec.sunat_serie.id)],
+                                                             order='sunat_number desc', limit=1)
+                if invoice and invoice.sunat_number:
+                    rec.sunat_number = invoice.sunat_number + 1
+                else:
+                    rec.sunat_number = 1
+        # 0003 - Inicio
 
     @api.multi
     def _inv_no_gravado(self):

@@ -21,6 +21,7 @@
     <menuitem id="sunat_type_operation_menu" name="Tipo de Operación" sequence="1" parent="sunat_menu_root" action="action_sunat_type_operation"/>
     <menuitem id="sunat_type_operation_detraction_menu" name="Tipo de Operación de Detracción" sequence="1" parent="sunat_menu_root"
               action="action_sunat_type_operation_detraction"/>
+    <menuitem id="sunat_series_menu" name="Series" sequence="1" parent="sunat_menu_root" action="action_sunat_series"/>
 
 
     <!--<record id="action_make_testing" model="ir.actions.server">-->

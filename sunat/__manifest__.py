@@ -53,6 +53,7 @@
         'views/news/Type_Existence.xml',
         'views/news/Type_Operation.xml',
         'views/news/Type_Operation_Detraction.xml',
+        'views/news/Series.xml',
         'views/account_invoice.xml',
         'views/views.xml',
         # 'views/templates.xml',

@@ -6,6 +6,16 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+# 0003 - Incio
+class Series(models.Model):
+    _name = 'sunat.series'
+    _description = "Series"
+
+    name = fields.Char(string="Serie")
+
+
+# 0003 - Fin
+
 class detracciones(models.Model):
     _name = 'sunat.detracciones'
     _description = "Codigos de Detracciones"
