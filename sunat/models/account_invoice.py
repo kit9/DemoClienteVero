@@ -612,6 +612,11 @@ class account_invoice(models.Model):
     #         rec.reference = 'FacturaDePrueba'
     #     return True
 
+    # Trial Action
+    @api.multi
+    def action_prueba(self):
+        return self.env['report'].get_action(self, 'account.report_invoice_with_payments')
+
     @api.depends('residual_signed', 'detraccion')
     @api.multi
     def _total_pagar_factura(self):
