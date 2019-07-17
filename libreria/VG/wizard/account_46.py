@@ -78,7 +78,7 @@ class Account_14(models.TransientModel):
                 line.invoice_id.date_document or '',
                 line.partner_id.name or '',
                 line.account_id.code or '',
-                line.debit or - line.credit,
+                - line.debit or line.credit,
                 _estado_ope or ''
             )
 
