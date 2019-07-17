@@ -71,8 +71,8 @@ class Sales(models.TransientModel):
                 # 008 - Fin - Coreccion de error con campo fecha
                 line.number or '',  # 2
                 line.move_id.x_studio_field_fwlP9 or '',  # 3
-                line.date_invoice or '',  # 4
-                line.date_due or '',  # 5
+                line.date_invoice.strftime("%d-%m-%Y") if line.date_invoice else "",  # 4
+                line.date_due.strftime("%d-%m-%Y") if line.date_due else "",  # 5
                 line.document_type_id.id or '',  # 6
                 line.invoice_serie or '',  # 7
                 line.invoice_number or '',  # 8
