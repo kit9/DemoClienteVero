@@ -24,6 +24,9 @@ class Account_14(models.TransientModel):
     _name = "libreria.account_46"
     _description = "Cuenta_46"
 
+    date_year = fields.Selection(string="Año", selection=[('2019')])
+
+
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
     txt_binary = fields.Binary('file', readonly=True)
@@ -36,7 +39,8 @@ class Account_14(models.TransientModel):
     # INICIO 005 "MODIFICADO EL MODELO A BUSCAR CON FILTRO"
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move.line'].search([('account_id.code', 'like', '46')])
+        lst_account_move_line = self.env['account.move.line'].search([('month_year_inv', '=', self.date_year),
+                                                                      ('account_id.code', 'like', '46')])
 
     # FIN 005
 
