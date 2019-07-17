@@ -69,7 +69,7 @@ class Sales(models.TransientModel):
                 line.date_document.strftime("%Y%m00") if line.date_document else "",  # 1
                 # line.date_document.strftime("%d-%m-%Y") if self.date_document else "",  # 1
                 # 008 - Fin - Coreccion de error con campo fecha
-                line.number.replace("/", "") or '',  # 2
+                line.number.replace("/", "") if line.number else "",  # 2
                 line.move_id.x_studio_field_fwlP9 or '',  # 3
                 line.date_invoice.strftime("%d-%m-%Y") if line.date_invoice else "",  # 4
                 line.date_due.strftime("%d-%m-%Y") if line.date_due else "",  # 5
