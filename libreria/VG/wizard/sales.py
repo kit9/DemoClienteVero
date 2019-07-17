@@ -66,10 +66,10 @@ class Sales(models.TransientModel):
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 # 008 - Incio - Coreccion de error con campo fecha
-                line.date_document.strftime("%d-%m-%Y") if line.date_document else "",  # 1
+                line.date_document.strftime("%Y%m00") if line.date_document else "",  # 1
                 # line.date_document.strftime("%d-%m-%Y") if self.date_document else "",  # 1
                 # 008 - Fin - Coreccion de error con campo fecha
-                line.number or '',  # 2
+                line.number.replace("/", "") or '',  # 2
                 line.move_id.x_studio_field_fwlP9 or '',  # 3
                 line.date_invoice.strftime("%d-%m-%Y") if line.date_invoice else "",  # 4
                 line.date_due.strftime("%d-%m-%Y") if line.date_due else "",  # 5
