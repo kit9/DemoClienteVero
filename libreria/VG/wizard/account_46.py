@@ -58,7 +58,7 @@ class Account_14(models.TransientModel):
                 0
             else:
                 if line.balance_cash_basis != 0:
-                    txt_line
+                    content_txt
 
 
 
