@@ -24,7 +24,7 @@ class Account_14(models.TransientModel):
     _name = "libreria.account_46"
     _description = "Cuenta_46"
 
-    date_year = fields.Char(string="Año", size=4)
+    date_year = fields.Char(string="Año", selection=[('01', '2019')])
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')], default='choose')
     txt_filename = fields.Char('filename', readonly=True)
