@@ -48,10 +48,18 @@ class Account_14(models.TransientModel):
         _estado_ope = ""
         _credi = ""
 
+
     # INICIO 002 "AGREGADO DE CAMPOS CON CONDICIONALES"
 
         # Iterador
         for line in lst_account_move_line:
+
+            if line.balance_cash_basis == 0:
+                0
+            else:
+                if line.balance_cash_basis != 0:
+                    txt_line
+
 
 
             # validador de estado de operación
