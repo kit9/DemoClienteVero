@@ -22,6 +22,9 @@ class AccountMoveLine(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    move_target_id = fields.Many2one('account.move', string='Analytical Seat', translate=True)
+    move_target_ids = fields.One2many('account.move', 'move_target_id', string='Analytical Seats')
+
     def account_analytic_destino(self):
         accounts = []
         if self.state == "posted":
@@ -58,11 +61,12 @@ class AccountMove(models.Model):
                 account_move_dic = {
                     'date': str(datetime.now().date()) or False,
                     'journal_id': self.journal_id and self.journal_id.id or False,
+                    'move_target_id': self and self.id or False,
                     'ref': self.ref,
                     'line_ids': lines
                 }
 
                 account_move = self.env['account.move'].create(account_move_dic)
-                account_move.post()
+                # account_move.post()
 
                 account.move_analytic_id = account_move and account_move.id or False
