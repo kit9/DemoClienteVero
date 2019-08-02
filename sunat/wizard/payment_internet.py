@@ -76,8 +76,8 @@ class InventoryValorized(models.TransientModel):
                     line_pay.invoice_id.type_operation_id.number or '',  # 8 ->
                     line_pay.invoice_id.date_invoice.strftime("%Y%m") if line_pay.invoice_id.date_invoice else "",  # 9
                     line_pay.invoice_id.document_type_id.number or '',  # 10 ->
-                    line_pay.invoice_id.invoice_serie.zfill(4) or '',  # 11 ->
-                    line_pay.invoice_id.invoice_number.zfill(8) or '',  # 12 ->
+                    line_pay.invoice_id.invoice_serie.zfill(4) if line_pay.invoice_id.invoice_serie else '',  # 11 ->
+                    line_pay.invoice_id.invoice_number.zfill(8) if line_pay.invoice_id.invoice_number else ''  # 12 ->
                 )
 
                 total_monto = total_monto + line.amount

@@ -1,0 +1,4 @@
+#. module: opt_expenses
+#: model:ir.model.fields,field_description:opt_expenses.field_hr_expense__merchant
+msgid "Merchant"
+msgstr "Comerciante"

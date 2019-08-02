@@ -19,7 +19,7 @@ class account_invoice(models.Model):
     # Apply Retention
     apply_retention = fields.Boolean(string="Apply Retention")
     # Detraction Paid
-    detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True)
+    detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True, copy=False)
     # Saldo de Detraccion
     detraction_residual = fields.Monetary(string="Detraction To Pay", compute="_detraction_residual", store=True)
     # Total a Pagar
@@ -63,7 +63,8 @@ class account_invoice(models.Model):
 
     # Factura de Cliente - Invoice
     export_invoice = fields.Boolean(string="Fac.- Exp.")
-    exchange_rate = fields.Float(string="Tipo de Cambio", compute="_get_exchange_rate", store=True, copy=False)
+    exchange_rate = fields.Float(string="Tipo de Cambio", digits=(12, 3), compute="_get_exchange_rate", store=True,
+                                 copy=False)
     date_document = fields.Date(string="Fecha del Documento")
 
     # Hide or not Apply Retention
@@ -140,7 +141,7 @@ class account_invoice(models.Model):
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
     @api.multi
-    @api.depends('currency_id')
+    @api.depends('currency_id', 'date_document')
     def _get_exchange_rate(self):
         for rec in self:
             rec.exchange_rate = rec.currency_id.rate_pe
@@ -618,6 +619,11 @@ class account_invoice(models.Model):
     #     for rec in self:
     #         rec.reference = 'FacturaDePrueba'
     #     return True
+
+    # Trial Action
+    @api.multi
+    def action_prueba(self):
+        self.x_studio_estado_sunat = "Aceptado"
 
     @api.depends('residual_signed', 'detraccion')
     @api.multi

@@ -19,6 +19,8 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
                     <group>
                         <field name="payment_date"/>
                         <field name="communication"/>
+                        <field name="payment_methods_domain" invisible="1"/>
+                        <!--<field name="payment_methods_id" domain="[('number','in',[payment_methods_domain])]" required="True"/>-->
                         <field name="payment_methods_id" required="True"/>
                     </group>
                 </group>

@@ -85,6 +85,9 @@
                     </page>
                 </notebook>
             </xpath>
+            <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
+                <field name="is_employee"/>
+            </xpath>
         </field>
     </record>
 
@@ -540,6 +543,20 @@
             </xpath>
         </field>
     </record>
+
+    <!--#0001 - Incio -->
+    <!-- Formulario - Diarios / Cuentas Bancarias -->
+    <record id="account_bank_journal_form_inherit" model="ir.ui.view">
+        <field name="name">account.bank.journal.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_bank_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="is_detraction"/>
+            </xpath>
+        </field>
+    </record>
+    <!--#0001 - Fin -->
 
     <!-- Accion de Prueba -->
     <record id="asset_validate" model="ir.actions.server">

@@ -1,0 +1,4 @@
+#. module: opt_parent_account
+#: model:ir.model.fields,field_description:opt_parent_account.field_account_account__parent_account_id
+msgid "Parent Account"
+msgstr "Cuenta Padre"
