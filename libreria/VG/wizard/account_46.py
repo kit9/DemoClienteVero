@@ -57,6 +57,9 @@ class Account_14(models.TransientModel):
 
             if line.debit - line.credit == 0:
                 0
+            else:
+                if line.debit - line.credit != 0:
+                    txt_line
 
             # validador de estado de operación
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
