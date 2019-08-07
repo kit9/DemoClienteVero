@@ -39,7 +39,7 @@ class Account_14(models.TransientModel):
         # --- Modificado el 26/06/2019 de ---
         # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '141200')])
         # -- A
-        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '14')])
+        # lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '1411')])
 
         # modelo a buscar
         lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'like', '1411')])

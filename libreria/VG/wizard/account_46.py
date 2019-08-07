@@ -1,3 +1,4 @@
+
 ########################################################################################################################
 # -- OPTIMIZA                                                                                                          #
 # -- DESCRIPCION: CUENTA 14 CREACION PARA PROYECTO ODOO                                                                #
@@ -54,11 +55,7 @@ class Account_14(models.TransientModel):
         # Iterador
         for line in lst_account_move_line:
 
-            if line.balance_cash_basis == 0:
-                0
-            else:
-                if line.balance_cash_basis != 0:
-                    content_txt
+
 
 
 
