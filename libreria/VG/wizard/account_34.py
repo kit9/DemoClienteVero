@@ -21,7 +21,7 @@ class account_34(models.TransientModel):
 
         # modelo a buscar
         lst_account_move_line = self.env['account.move'].search([('year_move', '=', self.date_year),
-                                                                      ('account_id.code', 'like', '34')])
+                                                                      ('line_ids.account_id.code', 'like', '34')])
 
 
         # variables creadas
