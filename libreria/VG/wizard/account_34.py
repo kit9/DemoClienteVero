@@ -20,9 +20,9 @@ class account_34(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move.line'].search([('year_move.line', '=', self.date_year),
-                                                                      ('account_id.code', 'like', '34')])
 
+        lst_account_move_line = self.env['account.move.line'].search([('year_move_line', '=', self.date_year),
+                                                                      ('account_id.code', 'like', '34')])
         # variables creadas
         content_txt = ""
 
@@ -34,7 +34,7 @@ class account_34(models.TransientModel):
 
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y/%m/%d") or '',
-                line.move_id.name or '',
+                line.move_id.name or'',
                 '',
                 '',
                 '',
