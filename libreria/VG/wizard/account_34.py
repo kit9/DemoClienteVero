@@ -37,7 +37,7 @@ class account_34(models.TransientModel):
                 line.move_id.name or '',
                 line.move_id.x_studio_field_fwlP9 or '',
                 '',
-                line.account_id.invoice_line_ids or '',
+                line.invoice_id.invoice_line_ids or '',
                 '',
                 '',
                 '',
