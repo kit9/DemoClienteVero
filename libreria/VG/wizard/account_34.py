@@ -20,7 +20,7 @@ class account_34(models.TransientModel):
     def generate_file(self):
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.move.line'].search([('year_move_line', '=', self.date_year),
+        lst_account_move_line = self.env['account.move'].search([('year_move_line', '=', self.date_year),
                                                                       ('account_id.code', 'like', '34')])
 
 
