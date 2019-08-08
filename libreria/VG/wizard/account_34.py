@@ -34,8 +34,8 @@ class account_34(models.TransientModel):
 
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.date.strftime("%Y/%m/%d") or '',
-                line.invoice_id.name or '',
-                '',
+                line.move_id.name or '',
+                line.x_studio_field_fwlp9 or '',
                 '',
                 '',
                 '',
