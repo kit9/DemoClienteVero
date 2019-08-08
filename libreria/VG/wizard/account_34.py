@@ -26,10 +26,21 @@ class account_34(models.TransientModel):
 
         # variables creadas
         content_txt = ""
+        _estado_ope = ""
 
         # Iterador
         for line in lst_account_move_line:
 
+            if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
+                _estado_ope = "1"
+            else:
+                if line.create_date.strftime("%Y") != time.strftime("%Y"):
+                    _estado_ope = "8"
+                else:
+                    if int(time.strftime("%m")) == int(time.strftime("%m")) - 1:
+                        _estado_ope = "9"
+                    else:
+                        _estado_ope = "1"
 
             # datos a exportar a txt
 
@@ -45,7 +56,7 @@ class account_34(models.TransientModel):
                 '',
                 '',
                 '',
-                '',
+                _estado_ope or '',
             )
 
             # Agregamos la linea al TXT
