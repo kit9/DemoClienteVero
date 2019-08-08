@@ -9,17 +9,18 @@ import time
 
 from odoo import api, fields, models, tools, _
 
-TYPES = [('purchase','Compra'),('sale','Venta'),('close','Cierre')]
+TYPES = [('purchase', 'Compra'), ('sale', 'Venta'), ('close', 'Cierre')]
+
 
 class Currency(models.Model):
     _inherit = "res.currency"
     _description = "Currency"
-    
+
     rate_pe = fields.Float(compute='_compute_current_rate_pe', string='Cambio del dia', digits=(12, 4),
-                        help='Tipo de cambio del dia en formato peruano.')
-    type = fields.Selection(TYPES,string='Tipo',default='sale')
-    
-    #~ Tipo de cambio PE ctual
+                           help='Tipo de cambio del dia en formato peruano.')
+    type = fields.Selection(TYPES, string='Tipo', default='sale', required=True)
+
+    # ~ Tipo de cambio PE ctual
     @api.multi
     def _compute_current_rate_pe(self):
         date = self._context.get('date') or fields.Date.today()
@@ -36,24 +37,26 @@ class Currency(models.Model):
         currency_rates = dict(self._cr.fetchall())
         for currency in self:
             currency.rate_pe = currency_rates.get(currency.id) or 1.0
-    
-    #~ Agrega tipo de moneda en nombre
+
+    # ~ Agrega tipo de moneda en nombre
     @api.multi
     def name_get(self):
         return [(currency.id, tools.ustr(currency.name + ' - ' + dict(TYPES)[currency.type])) for currency in self]
-    
+
     _sql_constraints = [
         ('unique_name', 'unique (name,type)', 'Solo puede existir una moneda con el mismo tipo de cambio!'),
         ('rounding_gt_zero', 'CHECK (rounding>0)', 'The rounding factor must be greater than 0!')
     ]
 
+
 class CurrencyRate(models.Model):
     _inherit = "res.currency.rate"
     _description = "Currency Rate"
 
-    rate_pe = fields.Float(string='Cambio',digits=(12, 4), help='Tipo de cambio en formato peruano. Ejm: 3.25 si $1 = S/. 3.25')
+    rate_pe = fields.Float(string='Cambio', digits=(12, 4),
+                           help='Tipo de cambio en formato peruano. Ejm: 3.25 si $1 = S/. 3.25')
     type = fields.Selection(related="currency_id.type", store=True)
-    
+
     @api.onchange('rate_pe')
     def onchange_rate_pe(self):
         if self.rate_pe > 0:
