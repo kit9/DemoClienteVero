@@ -39,7 +39,7 @@ class Account_14(models.TransientModel):
     # INICIO 005 "MODIFICADO EL MODELO A BUSCAR CON FILTRO"
 
         # modelo a buscar
-        lst_account_move_line = self.env['account.moveline.'].search([('year_move_line', '=', self.date_year),
+        lst_account_move_line = self.env['account.move.line'].search([('year_move_line', '=', self.date_year),
                                                                       ('account_id.code', 'like', '46')])
 
     # FIN 005
