@@ -33,7 +33,7 @@ class account_34(models.TransientModel):
             # datos a exportar a txt
 
             txt_line = "%s|%s|M%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.date.strftime("%Y%m%d") or '',
+                line.date.strftime("%Y/%m/%d") or '',
                 line.move_id.name or '',
                 '',
                 '',
