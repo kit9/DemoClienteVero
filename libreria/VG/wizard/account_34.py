@@ -23,6 +23,7 @@ class account_34(models.TransientModel):
         lst_account_move_line = self.env['account.move.line'].search([('year_move_line', '=', self.date_year),
                                                                       ('account_id.code', 'like', '34')])
 
+
         # variables creadas
         content_txt = ""
 
@@ -37,7 +38,7 @@ class account_34(models.TransientModel):
                 line.move_id.name or '',
                 line.move_id.x_studio_field_fwlP9 or '',
                 '',
-                line.invoice_id.invoice_line_ids or '',
+                '',
                 '',
                 '',
                 '',
