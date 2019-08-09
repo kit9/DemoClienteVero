@@ -58,10 +58,9 @@ class Account_12_13(models.TransientModel):
                 if refer.ref == _refe:  # si en referencia es igual a POS
                     # if refer.ref:  # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / As. Cont. / Referencia
                     _sinFact = refer.move_id.ref
-                else:
-                    if refer.ref == _fact:  # si en referencia es igual a INV
+                if refer.ref == _fact:  # si en referencia es igual a INV
                     # if refer.ref == _ref: # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / Factura / Fech. Doc
-                        _FecDoc = refer.invoice_id.date_document.strftime("%d%m%Y")
+                    _FecDoc = refer.invoice_id.date_document.strftime("%d%m%Y")
 
                 # if fec_Doc == _fact:
                 #     _sinFact = refer.date_document.strftime("%d%m%Y")
