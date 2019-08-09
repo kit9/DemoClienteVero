@@ -54,28 +54,24 @@ class Account_12_13(models.TransientModel):
                 #si no hay factura
             for refer in line.line_ids:
                 if refer.ref == _fact:
-                    _sinFact = refer.ref
+                    _sinFact = refer.ref.strftime("%d%m%Y")
                 else:
-                    _sinFact = refer.statement_id.date
-                                            
-
-
+                    _sinFact = refer.statement_id.date.strftime("%d%m%Y")
 
             #Estado de operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
-                estado_ope = "01"
+                estado_ope = "1"
             else:
                 if line.create_date.strftime("%Y") != time.strftime("%Y"):
-                    estado_ope = "08"
+                    estado_ope = "8"
                 else:
                     if int(time.strftime("%Y")) == int(time.strftime("%Y")) - 2:
-                        estado_ope = "09"
+                        estado_ope = "9"
                     else:
-                        estado_ope = "01"
-
+                        estado_ope = "1"
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.create_date.strftime("%Y/%m/%d") or '', #1 Periodo- Fecha contable
+                line.create_date.strftime("%Y%m%d") or '', #1 Periodo- Fecha contable
                 line.ref or '',  # 2 ASIENTO CONTABLE
                 line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
                 _catalogo or '', #4 ID - RUC
