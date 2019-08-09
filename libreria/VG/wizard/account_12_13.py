@@ -28,7 +28,7 @@ class Account_12_13(models.TransientModel):
         _catalogo = ""
         _fec_per = ""
         _resid = ""
-        _ref = ""
+        _ref = "POS"
         _FecDoc = ""
         _fact = "INV"
         _sinFact = ""
@@ -54,11 +54,13 @@ class Account_12_13(models.TransientModel):
 
                 #si no hay factura   ref
             for refer in line.line_ids:
-                if refer.ref != _fact:  # si en Odoo, Referencia contiene dato diferente a INV
-                    if refer.ref: # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / As. Cont. / Referencia
-                        _sinFact =refer.ref
-                    else: # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / Factura / Fech. Doc
-                        _FecDoc = refer.invoice_id.date_document.strftime("%d%m%Y")
+                # Referencia tiene INV
+                if refer.ref == _fact: # si en referencia es igual a INV
+                    # if refer.ref: # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / Factura / Fech. Doc
+                    _FecDoc = refer.invoice_id.date_document.strftime("%d%m%Y")
+                else:
+                    if refer.ref == _ref: # si en referencia es igual a POS --- # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / As. Cont. / Referencia
+                        _sinFact = refer.ref
 
                 # if fec_Doc == _fact:
                 #     _sinFact = refer.date_document.strftime("%d%m%Y")
