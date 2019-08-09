@@ -18,8 +18,8 @@ class Account_12_13(models.TransientModel):
     def generate_file(self):
         # modelo a buscar
         # ('dummy_account_id.code', 'like', 121100
-        #dominio = ([('line_ids.account_id.code', 'ilike', '121100')])
-        #Filtro
+        # dominio = ([('line_ids.account_id.code', 'ilike', '121100')])
+        # Filtro
         lst_account_move_line = self.env['account.move'].search([('line_ids.account_id.code', 'ilike', '121100')])
 
         # variables creadas
@@ -29,6 +29,7 @@ class Account_12_13(models.TransientModel):
         _fec_per = ""
         _resid = ""
         _FecDoc = ""
+        _fact = "INV"
         _refe = "POS"
         _sinFact = ""
 
@@ -43,7 +44,7 @@ class Account_12_13(models.TransientModel):
             # if line.invoice_id.date_document:
             #     _fec_per = line.invoice_id.date_document
 
-            #residual - importe adeudado
+            # residual - importe adeudado
             for res in line.line_ids:
                 if res.invoice_id.residual:
                     _resid = res.invoice_id.residual
@@ -51,22 +52,23 @@ class Account_12_13(models.TransientModel):
                 #     if res1.residual:
                 #         _resid = res1.residual
 
-                #si no hay factura   ref
+                # si no hay factura   ref
             for refer in line.line_ids:
                 # Referencia tiene POS
-                if refer.ref == _refe: # si en referencia es igual a POS
+                if refer.ref == _refe:  # si en referencia es igual a POS
                     # if refer.ref:  # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / As. Cont. / Referencia
                     _sinFact = refer.move_id.ref
                 else:
+                    if refer.ref == _fact:  # si en referencia es igual a INV
                     # if refer.ref == _ref: # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / Factura / Fech. Doc
-                    _FecDoc = refer.invoice_id.date_document.strftime("%d%m%Y")
+                        _FecDoc = refer.invoice_id.date_document.strftime("%d%m%Y")
 
                 # if fec_Doc == _fact:
                 #     _sinFact = refer.date_document.strftime("%d%m%Y")
                 # else:
                 #     _sinFact = refer.ref
 
-            #Estado de operacion
+            # Estado de operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
                 estado_ope = "1"
             else:
@@ -79,14 +81,14 @@ class Account_12_13(models.TransientModel):
                         estado_ope = "1"
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                line.create_date.strftime("%Y%m%d") or '', #1 Periodo- Fecha contable
+                line.create_date.strftime("%Y%m%d") or '',  # 1 Periodo- Fecha contable
                 line.name or '',  # 2 ASIENTO CONTABLE (nombre del asiento ... referencia ya no)
                 line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
-                _catalogo or '', #4 ID - RUC
+                _catalogo or '',  # 4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
                 _sinFact or _FecDoc,  # 7 Referencia (si no tiene factura) - Fecha de doc. (si tiene factura)
-                _resid or '', # 8 importe adeudado
+                _resid or '',  # 8 importe adeudado
                 estado_ope or '',
             )
 
