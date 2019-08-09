@@ -86,7 +86,7 @@ class Account_12_13(models.TransientModel):
                 _catalogo or '',  # 4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
-                _sinFact or _FecDoc,  # 7 Referencia (si no tiene factura) - Fecha de doc. (si tiene factura)
+                _FecDoc or _sinFact,  # 7 Referencia (si no tiene factura) - Fecha de doc. (si tiene factura)
                 _resid or '',  # 8 importe adeudado
                 estado_ope or '',
             )
