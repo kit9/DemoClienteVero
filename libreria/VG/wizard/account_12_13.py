@@ -29,6 +29,7 @@ class Account_12_13(models.TransientModel):
         _fec_per = ""
         _resid = ""
         _ref = ""
+        _FecDoc = ""
         _fact = "INV"
         _sinFact = ""
 
@@ -53,10 +54,16 @@ class Account_12_13(models.TransientModel):
 
                 #si no hay factura   ref
             for refer in line.line_ids:
-                if refer.ref == _fact:
-                    _sinFact = refer.date_document.strftime("%d%m%Y")
-                else:
-                    _sinFact = refer.ref
+                if refer.ref != _fact:  # si en Odoo, Referencia contiene dato diferente a INV
+                    if refer.ref: # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / As. Cont. / Referencia
+                        _sinFact =refer.ref
+                    else: # Lib Mayor (de Auditoria) / As. Cont. / Cta. 12 / Factura / Fech. Doc
+                        _FecDoc = refer.invoice_id.date_document.strftime("%d%m%Y")
+
+                # if fec_Doc == _fact:
+                #     _sinFact = refer.date_document.strftime("%d%m%Y")
+                # else:
+                #     _sinFact = refer.ref
 
             #Estado de operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
@@ -72,12 +79,12 @@ class Account_12_13(models.TransientModel):
 
             txt_line = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
                 line.create_date.strftime("%Y%m%d") or '', #1 Periodo- Fecha contable
-                line.ref or '',  # 2 ASIENTO CONTABLE
+                line.name or '',  # 2 ASIENTO CONTABLE (nombre del asiento ... referencia ya no)
                 line.x_studio_field_fwlP9 or '',  # 3 Asiento contable _ ID
                 _catalogo or '', #4 ID - RUC
                 line.partner_id.vat or '',  # 5 Tipo de Doc. Identidad - RUC, enteros
                 line.partner_id.registration_name or '',  # 6 Nombre de la empresa
-                _sinFact or '',  # 7
+                _sinFact or _FecDoc,  # 7 Referencia (si no tiene factura) - Fecha de doc. (si tiene factura)
                 _resid or '', # 8 importe adeudado
                 estado_ope or '',
             )
