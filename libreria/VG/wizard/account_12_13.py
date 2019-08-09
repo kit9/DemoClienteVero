@@ -51,12 +51,12 @@ class Account_12_13(models.TransientModel):
                 #     if res1.residual:
                 #         _resid = res1.residual
 
-                #si no hay factura
+                #si no hay factura   ref
             for refer in line.line_ids:
                 if refer.ref == _fact:
-                    _sinFact = refer.ref
+                    _sinFact = refer.date_document.strftime("%d%m%Y")
                 else:
-                    _sinFact = refer.statement_id.date
+                    _sinFact = refer.ref
 
             #Estado de operacion
             if line.create_date.strftime("%m%Y") == time.strftime("%m%Y"):
