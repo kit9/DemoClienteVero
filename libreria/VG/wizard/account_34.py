@@ -51,7 +51,7 @@ class account_34(models.TransientModel):
                 '',
                 '',
                 '',
-                line.line_ids.balance_cash_basis or'',
+                '',
                 '',
                 '',
                 '',
