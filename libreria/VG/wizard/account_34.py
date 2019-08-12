@@ -48,7 +48,7 @@ class account_34(models.TransientModel):
                 line.date.strftime("%Y/%m/%d") or '',
                 line.name or '',
                 line.x_studio_field_fwlP9 or '',
-                line.code or'',
+                '',
                 '',
                 '',
                 '',
