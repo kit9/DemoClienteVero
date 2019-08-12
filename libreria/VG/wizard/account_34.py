@@ -50,7 +50,7 @@ class account_34(models.TransientModel):
                 line.x_studio_field_fwlP9 or '',
                 line.asset_depreciation_ids or'',
                 '',
-                line.product_id or'',
+                line.move.product_id or'',
                 '',
                 '',
                 '',
