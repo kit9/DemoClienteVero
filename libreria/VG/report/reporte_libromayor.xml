@@ -1,0 +1,25 @@
+<openerp>
+<data>
+    <report
+        id="report_sale_utilities"
+        model="product.product"
+        string="Reporte de utilidad"
+        name="libreria.utilities"
+        file="libreria.utilities"
+        report_type="qweb-pdf" />
+
+    <template id="utilities">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <p><h2>Producto:</h2> <span t-field="doc.name"/></p>
+                        <separator/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</data>
+</openerp>
