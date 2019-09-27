@@ -36,6 +36,8 @@
                   action="book_cash_VG" sequence="16"/>
         <menuitem id="account_46_menu" name="INV-BAL- Cta 46" parent="sunat.reporte_ple_menu_root"
                   action="account_46_VG" sequence="13"/>
+        <menuitem id="libromayor_VG" name="Libro Mayor P!" parent="sunat.reporte_ple_menu_root"
+                  action="report_Demo" sequence="0"/>
 
 
     </data>
