@@ -47,6 +47,7 @@
         'wizard/book_cash_view.xml',
         'wizard/account_46_view.xml',
         'Report/Libro_Mayor.xml',
+        'Report/Libro_Mayor_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
