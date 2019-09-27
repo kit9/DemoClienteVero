@@ -1,7 +1,7 @@
 <odoo>
 
     <data>
-        <template id="report_libromayor_document">
+        <template id="Libro_Mayor">
             <t t-call="report.external_layout">
                 <t t-set="value" t.value="doc.with_context({'lang':doc.partner_id.lang})">
                     <div class="container">
@@ -46,7 +46,7 @@
         </template>
         <template id="report_Demo">
             <t t-call="report.html_container">
-                <t t-call="libreria.report_libromayor_document" t-lang="doc.partner_id.lang"/>
+                <t t-call="Libro_Mayor" t-lang="doc.partner_id.lang"/>
             </t>
 
         </template>
