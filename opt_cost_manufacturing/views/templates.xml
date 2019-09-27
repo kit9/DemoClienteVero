@@ -1,0 +1,169 @@
+<odoo>
+    <data>
+
+        <template id="mrp_account_mrp_cost_structure_inherit" inherit_id="mrp_account.mrp_cost_structure">
+            <data>
+                <!--                <xpath expr="/t/t/div/t[2]/div[2]" position="after">-->
+                <xpath expr="/t/t/div/t[2]/t[5]/table" position="after">
+                    <t t-set="overheads_cost" t-value="0.0"/>
+                    <t t-set="labours_cost" t-value="0.0"/>
+
+                    <t t-if="line['overheads']">
+                        <h3>Manufacturing Overhead Cost</h3>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span>Operation</span>
+                                    </th>
+                                    <th>
+                                        <span>Product</span>
+                                    </th>
+                                    <th class="text-right">
+                                        <span>Actual Quantity</span>
+                                    </th>
+                                    <th class="text-right">
+                                        <span>Unit Cost</span>
+                                    </th>
+                                    <th class="text-right">
+                                        <span>Total Actual Cost</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="line['overheads']" t-as="over">
+                                    <td>
+                                        <span t-esc="over.operation_id.name or ''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="over.product_id.name or ''"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="over.actual_qty or ''"/>
+                                        <span t-esc="over.uom_id.name or ''"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="over.cost or 0" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="over.total_actual_cost or 0" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <t t-set="overheads_cost" t-value="overheads_cost + over.total_actual_cost"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        <strong>Total Overhead Cost</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="overheads_cost" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <t t-if="line['labours']">
+                        <h3>Direct Labour Cost</h3>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span>Operation</span>
+                                    </th>
+                                    <th>
+                                        <span>Product</span>
+                                    </th>
+                                    <th class="text-right">
+                                        <span>Actual Quantity</span>
+                                    </th>
+                                    <th class="text-right">
+                                        <span>Unit Cost</span>
+                                    </th>
+                                    <th class="text-right">
+                                        <span>Total Actual Cost</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="line['labours']" t-as="lab">
+                                    <td>
+                                        <span t-esc="lab.operation_id.name or ''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="lab.product_id.name or ''"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="lab.actual_qty or ''"/>
+                                        <span t-esc="lab.uom_id.name or ''"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="lab.cost or 0" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="lab.total_actual_cost or 0" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <t t-set="labours_cost" t-value="labours_cost + lab.total_actual_cost"/>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        <strong>Total Direct Labour Cost</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="labours_cost" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/t[2]/div[2]/div[1]/table[1]/tr[2]/th[1]/strong[1]" position="replace">
+                    <strong t-esc="(line['total_cost'] + opcost + overheads_cost + labours_cost) / line['mo_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                </xpath>
+            </data>
+        </template>
+
+        <!--        <template id="mrp_report_mrporder_inherit" inherit_id="mrp.report_mrporder">-->
+        <!--            <xpath expr="/t/t/t/t/div/div[6]" position="after">-->
+        <!--                <h3 t-if="o.move_raw_ids">-->
+        <!--                    Manufacturing Overhead Cost-->
+        <!--                </h3>-->
+        <!--                <table class="table table-sm" t-if="o.pro_overhead_cost_ids">-->
+        <!--                    <thead>-->
+        <!--                        <tr>-->
+        <!--                            <th>Operation</th>-->
+        <!--                            <th>Product</th>-->
+        <!--                            <th>Quantity</th>-->
+        <!--                            <th>Unit Cost</th>-->
+        <!--                            <th>Total Cost</th>-->
+        <!--                        </tr>-->
+        <!--                    </thead>-->
+        <!--                    <tbody>-->
+        <!--                        <t t-if="o.pro_overhead_cost_ids">-->
+        <!--                            <t t-set="lines" t-value="o.pro_overhead_cost_ids"/>-->
+        <!--                            <t t-foreach="lines" t-as="line">-->
+        <!--                                <tr>-->
+        <!--                                    <td>-->
+        <!--                                        <span t-esc="line.operation_id.name or ''"/>-->
+        <!--                                    </td>-->
+        <!--                                    <td>-->
+        <!--                                        <span t-esc="line.product_id.name or ''"/>-->
+        <!--                                    </td>-->
+        <!--                                    <td>-->
+        <!--                                        <span t-esc="line.planned_qty or ''"/>-->
+        <!--                                        <span t-esc="line.uom_id.name or ''"/>-->
+        <!--                                    </td>-->
+        <!--                                    <td>-->
+        <!--                                        <span t-esc="line.cost or 0.0" t-options='{"widget": "monetary", "display_currency": currency}'/>-->
+        <!--                                    </td>-->
+        <!--                                    <td>-->
+        <!--                                        <span t-esc="lab.total_cost or 0.0" t-options='{"widget": "monetary", "display_currency": currency}'/>-->
+        <!--                                    </td>-->
+        <!--                                </tr>-->
+        <!--                            </t>-->
+        <!--                        </t>-->
+        <!--                    </tbody>-->
+        <!--                </table>-->
+        <!--            </xpath>-->
+        <!--        </template>-->
+    </data>
+</odoo>

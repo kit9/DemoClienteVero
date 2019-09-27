@@ -1,0 +1,94 @@
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "January"
+msgstr "Enero"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "February"
+msgstr "Febrero"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "March"
+msgstr "Marzo"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "April"
+msgstr "Abril"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "May"
+msgstr "Mayo"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "June"
+msgstr "Junio"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "July"
+msgstr "Julio"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "August"
+msgstr "Agosto"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "September"
+msgstr "Septiembre"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "October"
+msgstr "Octubre"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "November"
+msgstr "Noviembre"
+
+#. module: opt_cost_manufacturing
+#: selection:mrp.general_cost,period_month:0
+msgid "December"
+msgstr "Diciembre"
+
+#. module: opt_cost_manufacturing
+#: model:ir.model.fields,field_description:opt_cost_manufacturing.field_mrp_general_cost__period_month
+msgid "Period Month"
+msgstr "Mes del Periodo"
+
+#. module: opt_cost_manufacturing
+#: model:ir.model.fields,field_description:opt_cost_manufacturing.field_mrp_general_cost__period_year
+msgid "Period Year"
+msgstr "Año del Periodo"
+
+#. module: opt_cost_manufacturing
+#: model:ir.model.fields,field_description:opt_cost_manufacturing.field_mrp_general_cost__state
+msgid "Status"
+msgstr "Estado"
+
+#. module: opt_cost_manufacturing
+#: model:ir.model.fields,field_description:opt_cost_manufacturing.field_mrp_general_cost__type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: opt_cost_manufacturing
+#: model:ir.model.fields,field_description:opt_cost_manufacturing.field_mrp_general_cost__operation_id
+msgid "Operation"
+msgstr "Operación"
+
+#. module: opt_cost_manufacturing
+#: model:ir.model.fields,field_description:opt_cost_manufacturing.field_mrp_general_cost__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: opt_cost_manufacturing
+#: model:ir.model.fields,field_description:opt_cost_manufacturing.field_mrp_general_cost__total_cost
+msgid "Amount Total"
+msgstr "Importe Total"

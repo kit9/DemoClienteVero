@@ -5,23 +5,24 @@
     <menuitem id="reporte_pdb_menu_root" name="Reportes PDB" sequence="0" parent="account.menu_finance_reports"/>
     <menuitem id="formas_pago_menu_root" name="Formas de Pago" sequence="0" parent="account.menu_finance_reports"/>
     <menuitem id="reporte_excel_menu_root" name="Reporte Excel" sequence="0" parent="account.menu_finance_reports"/>
-    <menuitem id="sunat_menu_root" name="Sunat" sequence="1" parent="account.menu_finance_configuration"/>
+    <menuitem id="sunat_menu_root" name="Sunat" sequence="1" parent="account.menu_finance_configuration" groups="base.group_no_one"/>
 
     <!--Items-->
-    <menuitem id="sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_menu_root" action="action_sunat_detracciones"/>
-    <menuitem id="sunat_document_type_menu" name="Tipo Documento" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type"/>
+    <menuitem id="sunat_detracciones_menu" name="Detracciones" sequence="1" parent="sunat_menu_root" action="action_sunat_detracciones" groups="base.group_no_one"/>
+    <menuitem id="sunat_document_type_menu" name="Tipo Documento" sequence="1" parent="sunat_menu_root" action="action_sunat_document_type" groups="base.group_no_one"/>
     <menuitem id="sunat_document_type_identity_menu" name="Tipo Documento de Identidad" sequence="1" parent="sunat_menu_root"
-              action="action_sunat_document_type_identity"/>
+              action="action_sunat_document_type_identity" groups="base.group_no_one"/>
     <!--<menuitem id="sunat_currency_type_menu" name="Tipos de Monedas" sequence="1" parent="sunat_menu_root" action="action_sunat_currency_type" />-->
-    <menuitem id="sunat_customs_code_menu" name="Codigos de la Aduana" sequence="1" parent="sunat_menu_root" action="action_sunat_customs_code"/>
+    <menuitem id="sunat_customs_code_menu" name="Codigos de la Aduana" sequence="1" parent="sunat_menu_root" action="action_sunat_customs_code" groups="base.group_no_one"/>
     <menuitem id="sunat_classification_goods_menu" name="Clasificacón de Bienes" sequence="1" parent="sunat_menu_root"
-              action="action_sunat_classification_goods"/>
-    <menuitem id="sunat_stock_catalog_menu" name="Catalogo de Stock" sequence="1" parent="sunat_menu_root" action="action_sunat_stock_catalog"/>
-    <menuitem id="sunat_type_existence_menu" name="Tipo de Existencia" sequence="1" parent="sunat_menu_root" action="action_sunat_type_existence"/>
-    <menuitem id="sunat_type_operation_menu" name="Tipo de Operación" sequence="1" parent="sunat_menu_root" action="action_sunat_type_operation"/>
+              action="action_sunat_classification_goods" groups="base.group_no_one"/>
+    <menuitem id="sunat_stock_catalog_menu" name="Catalogo de Stock" sequence="1" parent="sunat_menu_root" action="action_sunat_stock_catalog" groups="base.group_no_one"/>
+    <menuitem id="sunat_type_existence_menu" name="Tipo de Existencia" sequence="1" parent="sunat_menu_root" action="action_sunat_type_existence" groups="base.group_no_one"/>
+    <menuitem id="sunat_type_operation_menu" name="Tipo de Operación" sequence="1" parent="sunat_menu_root" action="action_sunat_type_operation" groups="base.group_no_one"/>
     <menuitem id="sunat_type_operation_detraction_menu" name="Tipo de Operación de Detracción" sequence="1" parent="sunat_menu_root"
-              action="action_sunat_type_operation_detraction"/>
-    <menuitem id="sunat_series_menu" name="Series" sequence="1" parent="sunat_menu_root" action="action_sunat_series"/>
+              action="action_sunat_type_operation_detraction" groups="base.group_no_one"/>
+    <menuitem id="sunat_series_menu" name="Series" sequence="1" parent="sunat_menu_root" action="action_sunat_series" groups="base.group_no_one"/>
+    <!--    <menuitem id="sunat_producto_sunat_menu" name="Productos Sunat" sequence="1" parent="sunat_menu_root" action="action_sunat_producto_sunat" groups="base.group_no_one"/>-->
 
 
     <!--<record id="action_make_testing" model="ir.actions.server">-->

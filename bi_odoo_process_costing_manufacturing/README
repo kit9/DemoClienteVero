@@ -1,0 +1,18 @@
+Dt : 28/03/19
+Version : 12.0.0.1
+
+1) Change index.
+
+Dt : 30/03/19
+Version : 12.0.0.2
+
+1) Add features and change index.
+
+
+12.0.0.3
+when quantity update in MO , consumed material entries not generate properly.
+when user update quantity in  MO , that quantity also change in BOM
+when user create new MO with previous BOM or duplicate MO , old BOM labour and overhead lines remove
+
+operation column data is missing in direct material cost.
+when MO create , in direct matrial cost added wrong product.

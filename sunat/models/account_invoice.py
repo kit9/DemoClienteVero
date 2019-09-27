@@ -1,47 +1,77 @@
 # -*- coding: utf-8 -*-
 
+import json
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import datetime
 import logging
+import requests
+import qrcode
+import base64
+from io import BytesIO
+from lxml.etree import SubElement, Element, tostring
 
 _logger = logging.getLogger(__name__)
 
 
-class account_invoice(models.Model):
+# Retorna las cabezeras de la peticion HTTP
+def _get_headers(config):
+    HEADERS = {
+        'Authorization': config.api_token,
+        'Content-Type': 'application/json'
+    }
+    return HEADERS
+
+
+# Retorna las configuraciones del Sistema - Soporta MultiCompañia
+def _get_config(self):
+    config = self.env['res.config.settings'].sudo().search(
+        [('company_id', '=', self._context.get('company_id', self.env.user.company_id.id))], order="id desc", limit=1)
+    return config
+
+
+class AccountInvoice(models.Model):
     _inherit = "account.invoice"
     # _rec_name = 'month_year_inv'
+    _sql_constraints = [('unique_serie_number', 'unique(sunat_serie,sunat_number)',
+                         'You cannot repeat a series and a correlative number.')]
+
+    def _default_operation_type_id(self):
+        return self.env['ir.model.data'].xmlid_to_res_id('sunat.nb_opetype_01') or False
+
+    def _default_detrac_id(self):
+        return self.env['ir.model.data'].xmlid_to_res_id('sunat.sunat_detrac_0')
+
+    def _default_document_type_id(self):
+        return self.env['ir.model.data'].xmlid_to_res_id('sunat.document_type_01')
 
     # Detraction
-    detrac_id = fields.Many2one('sunat.detracciones', 'Detraccion')
+    detrac_id = fields.Many2one('sunat.detracciones', 'Detracción', default=_default_detrac_id)
     # Value of the Detraction
-    detraccion = fields.Monetary(string="Detraction Value", compute="_calcular_detrac", store=True)
+    detraccion = fields.Monetary(string="Detraction Value", compute="_calcular_detrac", store=True, copy=False)
     # Apply Retention
     apply_retention = fields.Boolean(string="Apply Retention")
     # Detraction Paid
     detraccion_paid = fields.Boolean(string="Detraction Paid", compute="_detraction_is_paid", store=True, copy=False)
     # Saldo de Detraccion
-    detraction_residual = fields.Monetary(string="Detraction To Pay", compute="_detraction_residual", store=True)
+    detraction_residual = fields.Monetary(string="Detraction To Pay", compute="_detraction_residual", store=True,
+                                          copy=False)
     # Total a Pagar
     total_pagar = fields.Monetary(string="Total a Pagar2", compute="_total_pagar_factura")
+
     # Numero de Factura del Proveedor
     invoice_number = fields.Char(string="Numero")
     invoice_serie = fields.Char(string="Serie")
 
-    # 0003 - Inicio
-    sunat_serie = fields.Many2one('sunat.series', 'Serie')
-    sunat_number = fields.Integer(string="Numero", compute="sunat_number_define", store=True)
-    # 0003 - Fin
-
     # Campos necesarios para el TXT
     fourth_suspension = fields.Boolean(string="Suspencion de Cuarta")
     operation_type = fields.Selection(string="Tipo de Operación", selection=[('1.-Exportación', '1.-Exportación')])
-    hide_dua_fields = fields.Boolean(compute="_hide_dua_fields")
+    hide_dua_fields = fields.Boolean(compute="_hide_dua_fields", copy=False)
     num_dua = fields.Char(string="N° DUA")
     year_emission_dua = fields.Char(string="Año de emisión de la DUA")
 
     # Document Type
-    document_type_id = fields.Many2one('sunat.document_type', 'Tipo de Documento')
+    document_type_id = fields.Many2one('sunat.document_type', 'Tipo de Documento', default=_default_document_type_id)
     type_income_id = fields.Many2one('sunat.type_income', 'Tipo de Renta')
 
     # Detracciones
@@ -65,20 +95,22 @@ class account_invoice(models.Model):
     export_invoice = fields.Boolean(string="Fac.- Exp.")
     exchange_rate = fields.Float(string="Tipo de Cambio", digits=(12, 3), compute="_get_exchange_rate", store=True,
                                  copy=False)
-    date_document = fields.Date(string="Fecha del Documento")
+    date_document = fields.Date(string="Fecha de Emisión", default=fields.Date.today(), copy=False)
 
     # Hide or not Apply Retention
-    hide_apply_retention = fields.Boolean(string='Hide', compute="_compute_hide_apply_retention")
-    # Detraccion Aplica
-    hide_detraction = fields.Boolean(compute="_compute_hide_detraction")
+    hide_apply_retention = fields.Boolean(string='Hide', compute="_compute_hide_apply_retention", copy=False)
+
+    # Detraccion Aplica - False: Tiene Detraccion / True: No tiene Detraccion
+    hide_detraction = fields.Boolean(compute="_compute_hide_detraction", copy=False)
 
     retencion = fields.Selection(
         [('ARET', 'ARET(Detección Automática Retención)'), ('SRET', 'SRET(Siempre Retención)')],
         string='Tipo de Pago')
 
     # Datos del Proveedor
-    type_ident = fields.Char(string='Documento', compute="_get_type_ident", copy=False)
-    num_ident = fields.Char(string='Num. Documento', compute="_get_num_ident", copy=False)
+    type_ident = fields.Char(string='Documento', related='partner_id.catalog_06_id.name')
+    num_ident = fields.Char(string='Num. Documento', related='partner_id.vat')
+    address = fields.Char(string='Dirección', related='partner_id.street')
 
     # Juego de Precios
     type_operation = fields.Selection(
@@ -91,26 +123,21 @@ class account_invoice(models.Model):
     code_goods_id = fields.Many2one('sunat.code_goods', 'Código de Bienes')
     payment_methods_id = fields.Many2one('sunat.payment_methods', 'Formas de Pago')
     perception_id = fields.Many2one('sunat.perception', 'Sujeto a Percepción')
-    perception_value = fields.Monetary(string="Percepción", compute="_compute_amount")
+    perception_value = fields.Monetary(string="Percepción", compute="_compute_amount", copy=False)
 
-    base_imp = fields.Monetary(string="Base Imponible", compute="_base_imp")
-    base_igv = fields.Monetary(string="IGV", compute="_base_igv")
+    base_imp = fields.Monetary(string="Base Imponible", compute="_base_imp", copy=False)
+    base_igv = fields.Monetary(string="IGV", compute="_base_igv", copy=False)
 
-    base_imp_ope_ex = fields.Monetary(string="B.Imp. Op.Ex", compute="_base_imp_ope_ex")
-    base_igv_ope_ex = fields.Monetary(string="IGV. Op.Ex.", compute="_base_igv_ope_ex")
+    base_imp_ope_ex = fields.Monetary(string="B.Imp. Op.Ex", compute="_base_imp_ope_ex", copy=False)
+    base_igv_ope_ex = fields.Monetary(string="IGV. Op.Ex.", compute="_base_igv_ope_ex", copy=False)
 
-    base_imp_no_gra = fields.Monetary(string="B.I.  Dest.Op. no Grav.", compute="_base_imp_no_gra")
-    base_igv_no_gra = fields.Monetary(string="Igv/des/op no Grav.", compute="_base_igv_no_gra")
+    base_imp_no_gra = fields.Monetary(string="B.I.  Dest.Op. no Grav.", compute="_base_imp_no_gra", copy=False)
+    base_igv_no_gra = fields.Monetary(string="Igv/des/op no Grav.", compute="_base_igv_no_gra", copy=False)
 
     type_purchase = fields.Selection([
         ('01 Compra Interna', '01 Compra Interna'),
         ('02 Compra Externa', '02 Compra Externa')],
         string='Tipo de Compra')
-
-    type_sales = fields.Selection([
-        ('01 Interna', '01 Interna'),
-        ('02 Externa', '02 Externa')],
-        string='Tipo de Venta')
 
     # Datos de Factura de Cliente
     inv_type_operation = fields.Selection([
@@ -122,80 +149,207 @@ class account_invoice(models.Model):
     # Asiento Castigo
     move_punishment_id = fields.Many2one('account.move', "Asiento Castigo")
 
+    # Taxs
+    total_isc = fields.Monetary(string="Total ISC", compute="_compute_total_isc", copy=False)
+    total_igv = fields.Monetary(string="Total IGV", compute="_compute_total_igv", copy=False)
+    total_otros = fields.Monetary(string="Total Otros", compute="_compute_total_otros", copy=False)
+    total_inafecto = fields.Monetary(string="Total Inafecto", compute="_compute_total_inafecto", copy=False)
+    total_exonerado = fields.Monetary(string="Total Exonerado", compute="_compute_total_exonerado", copy=False)
+    total_no_gravado = fields.Monetary(string="Total No Gravado", compute="_compute_total_no_gravado", copy=False)
+
+    total_discount = fields.Monetary(string="Total Discount", compute="_compute_total_discount", copy=False)
+
+    credit_note_type_id = fields.Many2one('einvoice.catalog.09', string='Credit note type',
+                                          help='Catalog 09: Type of Credit note')
+    operation_type_id = fields.Many2one('nubefact.operation_type', string='Tipo de Operación',
+                                        help='Tipo de Operación', default=_default_operation_type_id)
+
     # Factura Cliente
-    inv_isc = fields.Monetary(string="ISC", compute="_inv_isc")
-    inv_inafecto = fields.Monetary(string="Inafecto", compute="_inv_inafecto")
-    inv_exonerada = fields.Monetary(string="Exonerada", compute="_inv_exonerada")
-    inv_fac_exp = fields.Monetary(string="Valor fac de la exp", compute="_inv_fac_exp")
-    inv_amount_untax = fields.Monetary(string="Impuesto no incluido", compute="_inv_amount_untax")
-    inv_no_gravado = fields.Monetary(string="No Gravado", compute="_inv_no_gravado")
+    inv_fac_exp = fields.Monetary(string="Valor fac de la exp", compute="_inv_fac_exp", copy=False)
+    inv_amount_untax = fields.Monetary(string="Impuesto no incluido", compute="_inv_amount_untax", copy=False)
     inv_otros = fields.Char(string='Otros')
 
     # Factura Proveedor
-    bill_isc = fields.Monetary(string="ISC", compute="_bill_isc")
-
     num_comp_serie = fields.Char(string='Numero de Comp. N1 de Serie')
     num_perception = fields.Char(string='Numero de Percepción')
+
+    is_paid = fields.Boolean(string="Tiene Pago", compute="_compute_is_paid", store=True, copy=False)
+
+    # Campo para guardar respuesta de sunat
+    sunat_response = fields.Text(string="Respuesta de Sunat", readonly=True, copy=False)
+    sunat_request = fields.Text(string="Solicitud a Sunat", readonly=True, copy=False)
+    sunat_status = fields.Selection([
+        ('-', 'Pendiente de Envío'),
+        ('0', 'Aceptado'),
+        ('1', 'Rechazado'),
+        ('2', 'Anulado'),
+        ('3', 'Error'),
+        ('4', 'No recibido por Sunat'),
+        ('5', 'Anulacion no Recibida por Sunat')
+    ], string='Estado Sunat', help='Estado del Documento en Sunat',
+        default='-', readonly=True, copy=False)
+    sunat_description = fields.Text(string="Mensaje de Sunat", readonly=True, copy=False)
+    sunat_qr_code = fields.Binary(string="QR de Sunat", copy=False)
+    sunat_pdf = fields.Binary(string="PDF de Sunat", copy=False)
+    electronic_invoicing = fields.Boolean(string="Electronic Invoicing Peru",
+                                          related="company_id.electronic_invoicing",
+                                          store=True)
+
+    # 0003 - Inicio
+    sunat_serie = fields.Many2one(comodel_name='sunat.series', string='Serie', required=True, ondelete="restrict")
+    sunat_number = fields.Char(string="Numero", store=True, readonly=True, copy=False)
+    sunat_document_number = fields.Char(string="Numero de Documento",
+                                        compute="_compute_document_number",
+                                        store=True, copy=False)
+    # 0003 - Fin
 
     # Para filtrar
     month_year_inv = fields.Char(compute="_get_month_invoice", store=True, copy=False)
 
+    @api.constrains('invoice_line_ids')
+    def _check_lines(self):
+        if self.type in 'out_invoice,out_refund':
+            for line in self.invoice_line_ids:
+                if line.product_id and not line.product_id.sunat_product_id:
+                    raise ValidationError("El producto " + str(line.product_id.name) +
+                                          " no tiene registrado su codigo de producto Sunat")
+
+    @api.constrains('sunat_serie', 'document_type_id')
+    def _check_sunat_serie(self):
+        if self.type in 'out_invoice,out_refund':
+            if self.sunat_serie and self.document_type_id:
+                if not self.sunat_serie.sequence_id:
+                    raise ValidationError("Se necesita una Serie que tenga una Secuencia")
+                else:
+                    if self.document_type_id.number in '01,03,07,08':
+                        if len(self.sunat_serie.name) > 4:
+                            raise ValidationError("La serie tiene que ser un maximo de 4 Caracteres")
+                    elif self.document_type_id.number in '12':
+                        if len(self.sunat_serie.name) > 20:
+                            raise ValidationError("La serie tiene que ser un maximo de 20 Caracteres")
+
+    @api.constrains('partner_id')
+    def _check_partner(self):
+        if self.partner_id:
+            if not self.partner_id.vat or not self.partner_id.catalog_06_id:
+                raise ValidationError("Tiene que llenar el Tipo de Documento de Identidad y su Valor")
+
+    # Cargar la Detraccion del Proveedor
+    @api.onchange('partner_id')
+    def _onchange_proveedor(self):
+        if self.partner_id:
+            self.detrac_id = self.partner_id.detrac_id
+
+    # Cambiar el tipo de Operacion cuando tiene detracción
+    @api.onchange('detrac_id')
+    def _onchange_detrac_id(self):
+        if self.detrac_id and not self.detrac_id.name == 'No Aplica':
+            self.operation_type_id = self.env['ir.model.data'].xmlid_to_res_id('sunat.nb_opetype_30') or False
+        else:
+            self.operation_type_id = self.env['ir.model.data'].xmlid_to_res_id('sunat.nb_opetype_01') or False
+
+    @api.onchange('journal_id')
+    def _onchange_journal_id(self):
+        if self.journal_id.sunat_serie_id:
+            self.sunat_serie = self.journal_id.sunat_serie_id
+
+    # 0002 - Incio - Modificado
     @api.multi
     @api.depends('currency_id', 'date_document')
     def _get_exchange_rate(self):
         for rec in self:
-            rec.exchange_rate = rec.currency_id.rate_pe
+            currency = False
+            if rec.date_document:
+                domain = [('currency_id.id', '=', rec.currency_id.id),
+                          ('name', '=', fields.Date.to_string(rec.date_document)),
+                          ('currency_id.type', '=', rec.currency_id.type)]
+                currency = self.env['res.currency.rate'].search(domain, limit=1)
+            if currency:
+                rec.exchange_rate = currency.rate_pe
+            else:
+                if rec.currency_id:
+                    rec.exchange_rate = rec.currency_id.rate_pe
+        # 0002 - Fin - Modificado
 
     # 0003 - Inicio
-    @api.depends('sunat_serie')
-    def sunat_number_define(self):
+    @api.multi
+    def action_invoice_open(self):
+        # OVERRIDE
+        # Auto-reconcile the invoice with payments coming from transactions.
+        # It's useful when you have a "paid" sale order (using a payment transaction) and you invoice it later.
+        res = super(AccountInvoice, self).action_invoice_open()
+
+        config = _get_config(self)
+
+        if self.journal_id.sunat_serie_id and not self.sunat_serie:
+            self.sunat_serie = self.journal_id.sunat_serie_id
+
+        if self.sunat_serie.sequence_id:
+            seq = self.sunat_serie.sequence_id
+            number = seq._next_do()
+            if number:
+                self.sunat_number = number
+                if config.electronic_invoicing:
+                    resp = self.report_sunat(config)
+                    if not resp:
+                        seq.number_next = int(number)
+                        raise ValidationError("No se pudo validar el documento en Sunat")
+        return res
+        # 0003 - Fin
+
+    @api.multi
+    @api.depends('sunat_serie', 'sunat_number')
+    def _compute_document_number(self):
         for rec in self:
+            name = ""
             if rec.sunat_serie:
-                invoice = self.env['account.invoice'].search([('sunat_serie.id', '=', rec.sunat_serie.id)],
-                                                             order='sunat_number desc', limit=1)
-                if invoice and invoice.sunat_number:
-                    rec.sunat_number = invoice.sunat_number + 1
-                else:
-                    rec.sunat_number = 1
-        # 0003 - Inicio
+                name = name + str(rec.sunat_serie.name)
+            if rec.sunat_number:
+                name = name + "-" + str(rec.sunat_number)
+            rec.sunat_document_number = name
 
     @api.multi
-    def _inv_no_gravado(self):
+    @api.depends('payment_ids')
+    def _compute_is_paid(self):
         for rec in self:
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name.upper() == "No Gravado".upper():
-                        rec.inv_no_gravado = rec.amount_total
+            if len(rec.payment_ids) > 0:
+                rec.is_paid = True
+            else:
+                rec.is_paid = False
 
-    @api.multi
-    def _inv_isc(self):
-        for rec in self:
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name.upper() == "ISC":
-                        rec.inv_isc = rec.amount_tax_signed
+    @api.one
+    def _compute_total_isc(self):
+        taxes = list(filter(lambda line: not line.tax_id.tax_rate != 'isc', self.tax_line_ids))
+        self.total_isc = sum(line.amount_total for line in taxes)
 
-    @api.multi
-    def _bill_isc(self):
-        for rec in self:
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name.upper() == "ISC":
-                        rec.inv_isc = rec.amount_tax
+    @api.one
+    def _compute_total_igv(self):
+        taxes = list(filter(lambda line: not line.tax_id.tax_rate != 'igv', self.tax_line_ids))
+        self.total_igv = sum(line.amount_total for line in taxes)
 
-    @api.multi
-    @api.depends('inv_type_operation')
-    def _inv_inafecto(self):
-        for rec in self:
-            if str(rec.inv_type_operation).upper() == "inafecto".upper():
-                rec.inv_inafecto = rec.amount_untaxed_invoice_signed
+    @api.one
+    def _compute_total_otros(self):
+        taxes = list(filter(lambda line: not line.tax_id.tax_rate != 'otros', self.tax_line_ids))
+        self.total_no_gravado = sum(line.amount_total for line in taxes)
 
-    @api.multi
-    @api.depends('inv_type_operation')
-    def _inv_exonerada(self):
-        for rec in self:
-            if rec.inv_type_operation == "exonerado":
-                rec.inv_exonerada = rec.amount_untaxed_invoice_signed
+    @api.one
+    def _compute_total_inafecto(self):
+        taxes = list(filter(lambda line: not line.tax_id.tax_rate != 'inafecto', self.tax_line_ids))
+        self.total_inafecto = self.amount_untaxed if len(taxes) >= 1 else 0.0
+
+    @api.one
+    def _compute_total_exonerado(self):
+        taxes = list(filter(lambda line: not line.tax_id.tax_rate != 'exonerado', self.tax_line_ids))
+        self.total_exonerado = self.amount_untaxed if len(taxes) >= 1 else 0.0
+
+    @api.one
+    def _compute_total_no_gravado(self):
+        taxes = list(filter(lambda line: not line.tax_id.tax_rate != 'no_gravado', self.tax_line_ids))
+        self.total_no_gravado = self.amount_untaxed if len(taxes) >= 1 else 0.0
+
+    @api.one
+    def _compute_total_discount(self):
+        self.total_discount = sum(line.total_discount for line in self.invoice_line_ids)
 
     @api.multi
     @api.depends('export_invoice')
@@ -208,21 +362,21 @@ class account_invoice(models.Model):
     def _inv_amount_untax(self):
         for rec in self:
             if not (
-                    rec.inv_isc or rec.inv_type_operation == "inafecto" or rec.inv_type_operation == "exonerado" or rec.export_invoice):
+                    rec.total_isc or rec.inv_type_operation == "inafecto" or rec.inv_type_operation == "exonerado" or rec.export_invoice):
                 rec.inv_amount_untax = rec.amount_untaxed_invoice_signed  # amount_untaxed -> Para factura de Cliente
 
     @api.multi
     @api.depends('amount_untaxed', 'type_operation')
     def _base_imp(self):
         for rec in self:
-            if (rec.type_operation == "1" or not rec.type_operation) and not rec.inv_no_gravado:
+            if (rec.type_operation == "1" or not rec.type_operation) and not rec.total_no_gravado:
                 rec.base_imp = rec.amount_untaxed
 
     @api.multi
     @api.depends('amount_untaxed', 'type_operation')
     def _base_igv(self):
         for rec in self:
-            if (rec.type_operation == "1" and not rec.inv_isc) or (not rec.type_operation):
+            if (rec.type_operation == "1" and not rec.total_isc) or (not rec.type_operation):
                 rec.base_igv = rec.amount_tax
 
     @api.multi
@@ -254,295 +408,11 @@ class account_invoice(models.Model):
                 rec.base_igv_no_gra = rec.amount_tax
 
     @api.multi
-    @api.depends('partner_id')
-    def _get_type_ident(self):
-        for rec in self:
-            if rec.partner_id:
-                rec.type_ident = rec.partner_id.catalog_06_id.name
-
-    @api.multi
-    @api.depends('partner_id')
-    def _get_num_ident(self):
-        for rec in self:
-            if rec.partner_id:
-                rec.num_ident = rec.partner_id.vat
-
-    @api.multi
     @api.depends('date_invoice')
     def _get_month_invoice(self):
         for rec in self:
             if rec.date_invoice:
                 rec.month_year_inv = rec.date_invoice.strftime("%m%Y")
-
-    # Generar txt de Compra
-    def _generate_txt_bill(self):
-        content = ''
-        for rec in self:
-            # Obtener el correlativo General de la Factura en el Mes
-            correlativo = ""
-            dominio = [('month_year_inv', 'like', rec.date_invoice.strftime("%m%Y"))]
-            facturas = self.env['account.invoice'].search(dominio, order="id asc")
-            contador = 0
-            for inv in facturas:
-                contador = contador + 1
-                if inv.number == rec.number:
-                    correlativo = "%s" % (contador)
-
-            # Obtener el impuesto otros
-            impuesto_otros = ""
-            for imp in rec.tax_line_ids:
-                if str(imp.tax_id.tax_rate) == "otros":
-                    impuesto_otros = imp.amount_total
-
-            # 26 -> Fecha
-            campo_26 = ""
-            if rec.refund_invoice_id.date_document:
-                campo_26 = rec.refund_invoice_id.date_document.strftime("%d/%m/%Y")
-
-            # 14 Base imponible
-            campo_14 = ""
-            if rec.type_operation == "1":
-                campo_14 = rec.amount_untaxed
-
-            # 15 Impuesto
-            campo_15 = ""
-            if rec.type_operation == "1":
-                for imp in rec.tax_line_ids:
-                    if str(imp.tax_id.tax_rate) == "igv":
-                        campo_15 = imp.amount_total
-
-            # 16 Base imponible
-            campo_16 = ""
-            if rec.type_operation == "2":
-                campo_16 = rec.amount_untaxed
-
-            # 17 Impuesto
-            campo_17 = ""
-            if rec.type_operation == "2":
-                campo_17 = rec.amount_tax
-
-            # 18 Base imponible
-            campo_18 = ""
-            if rec.type_operation == "3":
-                campo_18 = rec.amount_untaxed
-
-            # 19 Impuesto
-            campo_19 = ""
-            if rec.type_operation == "3":
-                campo_19 = rec.amount_tax
-
-            # 20 -> Importe exonerado
-            campo_20 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "No gravado":
-                        campo_20 = rec.amount_total
-
-            # 21 -> Importe exonerado
-            campo_21 = ""
-            for imp in rec.tax_line_ids:
-                if str(imp.tax_id.tax_rate) == "isc":
-                    campo_21 = imp.amount_total
-
-            # 33 -> Tipo de Pago
-            campo_33 = ""
-            if rec.retencion == "ARET":
-                campo_33 = "ARET(Detección Automática Retención)"
-            if rec.retencion == "SRET":
-                campo_33 = "SRET(Siempre Retención)"
-
-            content = "%s00|%s|M%s|%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s|" \
-                      "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
-                          rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
-                          rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
-                          str(correlativo).zfill(4) or '',  # Correlativo de todos los asientos no solo facturas -> 3
-                          rec.date_invoice.strftime("%d/%m/%Y") or '',  # Fecha de la Factura -> 4
-                          rec.date_due.strftime("%d/%m/%Y") or '',  # Fecha de Vencimiento -> 5
-                          rec.document_type_id.number or '',  # N° del Tipo de Documento -> 6
-                          str(rec.invoice_serie if rec.invoice_serie else 0).zfill(4),  # Numero de la Factura -> 7
-                          rec.year_emission_dua or '',  # Año de emision del DUA -> 8
-                          str(rec.invoice_number if rec.invoice_number else 0).zfill(8) or '',  # Numero -> 9
-                          # Omitido -> 10
-                          # N° Tipo de Documento Identidad -> 11
-                          rec.partner_id.catalog_06_id.code or '',
-                          rec.partner_id.vat or '',  # N° de Documento de Identidad -> 12
-                          rec.partner_id.name or '',  # Nombre del Proveedor -> 13
-                          campo_14 or '',  # Base imponible -> 14
-                          campo_15 or "",  # Total -> 15
-                          campo_16 or '',  # Base imponible -> 16
-                          campo_17 or '',  # Impuesto -> 17
-                          campo_18 or '',  # Base imponible -> 18
-                          campo_19 or '',  # Impuesto -> 19
-                          campo_20 or '',  # Total Adeudado -> 20
-                          campo_21 or "",  # Impuesto -> 21
-                          impuesto_otros or "",  # Otros de las Lineas -> 22
-                          rec.amount_total or '',  # Total -> 23
-                          rec.currency_id.name or '',  # Tipo de moneda -> 24
-                          rec.exchange_rate or 0.00,  # Tipo de Cambio-> 25
-                          campo_26 or '',  # Fecha del documento que modifica -> 26
-                          # Tipo del documento que modifica -> 27
-                          rec.refund_invoice_id.document_type_id.number or '',
-                          # Numero del documento que modifica -> 28
-                          rec.refund_invoice_id.invoice_number or '',
-                          rec.refund_invoice_id.code_dua.number or '',  # Codigo DUA -> 29
-                          rec.refund_invoice_id.invoice_number or '',  # Numero DUA -> 30
-                          rec.date_detraction or '',  # Fecha de Detracciones -> 31
-                          rec.num_detraction or '',  # Numero de Detracciones -> 32
-                          campo_33 or '',  # Marca de Comprobante -> 33
-                          rec.classifier_good.number or '',  # Clasificador de Bienes -> 34
-                          '',  # -> 35
-                          '',  # -> 36
-                          '',  # -> 37
-                          '',  # -> 38
-                          '',  # -> 39
-                          "1" if rec.state == 'paid' else "",  # -> 40
-                      )
-            return content
-
-    # Generar txt de Venta
-    def _generate_txt_invoice(self):
-        content = "-"
-        for rec in self:
-
-            # Obtener el correlativo General de la Factura en el Mes
-            correlativo = ""
-            dominio = [('month_year_inv', 'like',
-                        rec.date_invoice.strftime("%m%Y"))]
-            facturas = self.env['account.invoice'].search(
-                dominio, order="id asc")
-            contador = 0
-            for inv in facturas:
-                contador = contador + 1
-                if inv.number == rec.number:
-                    correlativo = "%s" % (contador)
-
-            # 13 -> Factura de Exportacion
-            factura_exportacion = ""
-            if rec.export_invoice == True:
-                factura_exportacion = rec.amount_total
-
-            # 14 -> Base imponible
-            base_imponible_14 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "ISC":
-                        base_imponible_14 = rec.amount_untaxed
-
-            # 15 -> Impuesto
-            impuesto_15 = ""
-            for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify:
-                    if int(rec.date_invoice.strftime("%m")) > int(rec.date_document_modifies.strftime("%m")):
-                        impuesto_15 = rec.amount_tax
-
-            # 16 -> Impuesto
-            impuesto_16 = ""
-            for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify:
-                    if int(rec.date_invoice.strftime("%m")) == int(rec.date_document_modifies.strftime("%m")):
-                        impuesto_16 = rec.amount_tax
-
-            # 17 -> Impuesto
-            impuesto_17 = ""
-            for line in rec.invoice_line_ids:
-                if rec.document_type_id.number == '07' and rec.document_modify:
-                    if rec.date_invoice > rec.date_document_modifies:
-                        impuesto_17 = rec.amount_tax
-
-            # 18 -> Importe exonerado
-            importe_exonerado_18 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "exonerado":
-                        importe_exonerado_18 = rec.amount_total
-
-            # 19 -> Importe inafecto
-            importe_inafecto_19 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "inafecto":
-                        importe_inafecto_19 = rec.amount_total
-
-            # 20 -> Impuesto
-            impuesto_20 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "ISC":
-                        impuesto_20 = rec.amount_tax
-
-            # 21 -> Base imponible
-            base_imponible_21 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "arroz pilado":
-                        base_imponible_21 = rec.amount_untaxed
-
-            # 22 -> Impuesto
-            impuesto_22 = ""
-            for line in rec.invoice_line_ids:
-                for imp in line.invoice_line_tax_ids:
-                    if imp.name == "arroz pilado":
-                        impuesto_22 = rec.amount_tax
-
-            # 27 -> Fecha
-            campo_27 = ""
-            if rec.date_document != False:
-                campo_27 = rec.date_document.strftime("%d/%m/%Y")
-
-            # 34 -> Fechas
-            codigo_34 = ''
-            if rec.date_invoice != False and rec.date_document != False:
-                if rec.date_invoice.strftime("%m%Y") == rec.date_document.strftime("%m%Y"):
-                    codigo_34 = '1'
-                else:
-                    if rec.date_invoice.strftime("%Y") != rec.date_document.strftime("%Y"):
-                        codigo_34 = '9'
-                    else:
-                        if int(rec.date_invoice.strftime("%m")) == int(rec.date_document.strftime("%m")) - 1:
-                            codigo_34 = '1'
-                        else:
-                            codigo_34 = '9'
-
-            content = "%s|%s|M%s|%s|%s|%s|%s|%s||%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%s|%s|%s|%s" \
-                      "|||%s|%s|" % (
-                          rec.move_id.date.strftime("%Y%m") or '',  # Periodo del Asiento -> 1
-                          rec.move_id.name.replace("/", "") or '',  # Correlativo de Factura -> 2
-                          str(correlativo).zfill(4) or '',  # Correlativo de todos los asientos no solo facturas -> 3
-                          rec.date_invoice.strftime("%d/%m/%Y") or '',  # Fecha de la Factura -> 4
-                          rec.date_due.strftime("%d/%m/%Y") or '',  # Fecha de Vencimiento -> 5
-                          rec.document_type_id.number or '',  # N° del Tipo de Documento -> 6
-                          str(rec.invoice_serie if rec.invoice_serie else 0).zfill(4),  # Serie de Documento -> 7
-                          rec.invoice_number or '',  # Numero de Documento -> 8
-                          # Dejan en blanco -> 9
-                          rec.partner_id.catalog_06_id.code or '',
-                          # Tipo de Documento -> 10
-                          rec.partner_id.vat or '',  # Numero de Documento -> 11
-                          rec.partner_id.name or '',  # Nombre del Proveedor -> 12
-                          # rec.inv_exonerada or '',  # Factura de Exportacion -> 13
-                          rec.inv_fac_exp or '',  # Factura de Exportacion -> 13
-                          rec.inv_amount_untax or '',  # Impuesto no incluido -> 14
-                          '' or '',  # Impuesto -> 15 - Dejar en Blanco
-                          rec.amount_tax or '',  # Impuesto -> 16
-                          '' or '',  # Impuesto -> 17 - Dejar en Blanco
-                          rec.inv_exonerada or '',  # Importe exonerado -> 18
-                          rec.inv_inafecto or '',  # Importe inafecto -> 19
-                          rec.inv_isc or '',  # Impuesto -> 20
-                          '' or '',  # Base Imponible -> 21
-                          '' or '',  # Impuesto -> 22
-                          rec.inv_otros or '',  # Impuesto -> 23
-                          rec.amount_total or '',  # Total -> 24
-                          rec.currency_id.name or '',  # Tipo de moneda -> 25
-                          rec.exchange_rate or 0.00,  # Tipo de Cambio-> 26
-                          campo_27 or '',  # Fecha del Documento Asociado -> 27
-                          rec.refund_invoice_id.document_type_id.number or '',  # Tipo del Documento Asociado -> 28
-                          rec.refund_invoice_id.invoice_serie or '',  # Serie del Documento Asociado -> 29
-                          rec.refund_invoice_id.invoice_number or '',  # Numero del Documento Asociado -> 30
-                          # 2 campos en blanco -> 31, 32
-                          "1" if rec.state == 'paid' else "",
-                          codigo_34 or '',  # -> 34
-                          # 1 campo en blanco -> 35
-                      )
-        return content
 
     # Method to hide Apply Retention
     @api.depends('document_type_id')
@@ -554,20 +424,19 @@ class account_invoice(models.Model):
             else:
                 rec.hide_apply_retention = True
 
+    @api.one
     @api.depends('document_type_id')
-    @api.multi
     def _hide_dua_fields(self):
-        for rec in self:
-            if rec.document_type_id.number == '50':
-                rec.hide_dua_fields = False
-            else:
-                rec.hide_dua_fields = True
+        if self.document_type_id.number == '50':
+            self.hide_dua_fields = False
+        else:
+            self.hide_dua_fields = True
 
     @api.depends('detrac_id')
     @api.multi
     def _compute_hide_detraction(self):
         for rec in self:
-            if rec.detrac_id.name == 'No Aplica':
+            if rec.detrac_id.name == 'No Aplica' or not rec.detrac_id:
                 rec.hide_detraction = True
             else:
                 rec.hide_detraction = False
@@ -600,12 +469,6 @@ class account_invoice(models.Model):
                 if rec.detraction_residual < 0:
                     rec.detraction_residual = 0
 
-    # Load the retention of the selected provider
-    @api.onchange('partner_id')
-    def _onchange_proveedor(self):
-        # if len(self.detrac_id) <= 0 :
-        self.detrac_id = self.partner_id.detrac_id
-
     # Calculate the value of the Detraction
     @api.depends('amount_total', 'detrac_id')
     @api.multi
@@ -619,11 +482,6 @@ class account_invoice(models.Model):
     #     for rec in self:
     #         rec.reference = 'FacturaDePrueba'
     #     return True
-
-    # Trial Action
-    @api.multi
-    def action_prueba(self):
-        self.x_studio_estado_sunat = "Aceptado"
 
     @api.depends('residual_signed', 'detraccion')
     @api.multi
@@ -672,12 +530,10 @@ class account_invoice(models.Model):
             if rec.move_punishment_id:
                 raise ValidationError('La factura ' + str(rec.number) + ' ya tiene un catigo')
 
-            _logger.info("Antes del for")
             move_line = False
             for line in rec.move_id.line_ids:
                 if str(line.account_id.code) == '121100' and not move_line:
                     move_line = line
-            _logger.info("Despues del for")
 
             if not move_line:
                 raise ValidationError('No se encontro la cuenta 121100 en el asiento de factura')
@@ -714,12 +570,297 @@ class account_invoice(models.Model):
                 'line_ids': lines
             }
 
-            _logger.info("Plantilla Completa")
             move_punishment = self.env['account.move'].create(account_move_dic)
-            _logger.info("Asiento Creado")
             move_punishment.post()
-
-            _logger.info("Asiento Publicado")
 
             rec.move_punishment_id = move_punishment
         return True
+
+    # 0004 - Inicio
+    @api.multi
+    def anular_sunat(self, reason, config=False):
+        if not config:
+            config = _get_config(self)
+        data = {}
+        data['operacion'] = 'generar_anulacion'
+        data['tipo_de_comprobante'] = 1
+        data['serie'] = self.sunat_serie.name if self.sunat_serie else ""
+        data['numero'] = self.sunat_number if self.sunat_serie else ""
+        data['motivo'] = reason if reason else ""
+        data['codigo_unico'] = self.id
+        response = requests.post(url=config.api_url, headers=_get_headers(config), json=data)
+        if response.status_code == 200:
+            resp = response.json()
+            if resp['aceptada_por_sunat']:
+                self.sunat_status = '2'
+                return True
+            else:
+                self.sunat_status = '5'
+                return self.sunat_check_status(config)
+        else:
+            return False
+
+    @api.multi
+    def sunat_check_status(self, config=False):
+        if not config:
+            config = _get_config(self)
+        data = {}
+        data['operacion'] = 'consultar_anulacion'
+        data['tipo_de_comprobante'] = 1
+        data['serie'] = self.sunat_serie.name if self.sunat_serie else ""
+        data['numero'] = self.sunat_number if self.sunat_serie else ""
+        if self.sunat_status == '5':
+            response = requests.post(url=config.api_url, headers=_get_headers(config), json=data)
+            if response.status_code == 200:
+                resp = response.json()
+                if resp['aceptada_por_sunat']:
+                    self.sunat_status = '2'
+                    return True
+                else:
+                    self.sunat_status = '5'
+                    return False
+            else:
+                return False
+
+    @api.multi
+    def report_sunat(self, config=False):
+        respuesta = False
+        if not config or self.type == "out_refund":
+            config = _get_config(self)
+        #  --  JSON  --
+        data = {}
+        seq = False
+        number = 0
+        if self.sunat_serie.sequence_id and not self.sunat_number:
+            seq = self.sunat_serie.sequence_id
+            number = seq._next_do()
+            if number:
+                self.sunat_number = number
+        if number == 0:
+            number = self.sunat_number
+        if config.electronic_invoicing:
+            documentos = {
+                'out_invoice': 1,  # FACTURA / Customer Invoice
+                'out_refund': 3,  # NOTA DE CRÉDITO / Customer Credit Note
+            }
+            data['operacion'] = 'generar_comprobante'
+            data['tipo_de_comprobante'] = documentos.get(self.type, 0)
+            data['serie'] = self.sunat_serie.name if self.sunat_serie else ""
+            data['numero'] = self.sunat_number if self.sunat_serie and self.sunat_number else ""
+            data['sunat_transaction'] = int(self.operation_type_id.code) if self.operation_type_id.code else ""
+            data['cliente_tipo_de_documento'] = \
+                int(self.partner_id.catalog_06_id.code) if self.partner_id.catalog_06_id else ""
+            data['cliente_numero_de_documento'] = int(self.partner_id.vat) if self.partner_id.vat else ""
+            data['cliente_denominacion'] = \
+                self.partner_id.registration_name if self.partner_id.registration_name else ""
+            data['cliente_direccion'] = self.partner_id.street if self.partner_id.street else ""
+            data['cliente_email'] = self.partner_id.email if self.partner_id.email else ""
+            data['cliente_email_1'] = ""
+            data['cliente_email_2'] = ""
+            data['fecha_de_emision'] = self.date_document.strftime("%d-%m-%Y") if self.date_document else ""
+            data['fecha_de_vencimiento'] = self.date_due.strftime("%d-%m-%Y") if self.date_due else ""
+            monedas = {
+                'PEN': 1,
+                'USD': 2,
+                'EUR': 3
+            }
+            data['moneda'] = monedas.get(self.currency_id.name, "") if self.currency_id else ""
+            data['tipo_de_cambio'] = self.exchange_rate if self.exchange_rate and self.exchange_rate != 1.0 else ""
+            porcentaje_de_igv = ""
+            taxes = list(filter(lambda line: not line.tax_id.tax_rate != 'igv', self.tax_line_ids))
+            if len(taxes) > 0:
+                porcentaje_de_igv = taxes[0].tax_id.amount
+            data['porcentaje_de_igv'] = "18.00"
+            data['descuento_global'] = ""
+            data['total_descuento'] = round(self.total_discount, 10) if self.total_discount else ""
+            data['total_anticipo'] = ""
+            data['total_gravada'] = round(self.amount_untaxed, 10) if self.total_igv else ""
+            data['total_inafecta'] = round(self.total_inafecto, 10) if self.total_inafecto else ""
+            data['total_exonerada'] = round(self.total_exonerado, 10) if self.total_exonerado else ""
+            if self.total_isc:
+                data['total_isc'] = round(self.total_isc, 10) if self.total_isc else ""
+            data['total_igv'] = round(self.total_igv, 10) if self.total_igv else ""
+            data['total_gratuita'] = ""
+            data['total_otros_cargos'] = round(self.inv_otros, 10) if self.inv_otros else ""
+            data['total'] = round(self.amount_total, 10) if self.amount_total else ""
+            data['percepcion_tipo'] = ""
+            data['percepcion_base_imponible'] = ""
+            data['total_percepcion'] = ""
+            data['total_incluido_percepcion'] = ""
+            data['detraccion'] = not self.hide_detraction
+            data['observaciones'] = ""
+            data['documento_que_se_modifica_tipo'] = documentos.get(self.refund_invoice_id.type, 0)
+            data['documento_que_se_modifica_serie'] = self.refund_invoice_id.sunat_serie.name \
+                if self.refund_invoice_id.sunat_serie.name else ""
+            data['documento_que_se_modifica_numero'] = self.refund_invoice_id.sunat_number \
+                if self.refund_invoice_id.sunat_serie and self.refund_invoice_id.sunat_number else ""
+            data['tipo_de_nota_de_credito'] = 1 if self.type == 'out_refund' else ""
+            data['tipo_de_nota_de_debito'] = ""
+            data['enviar_automaticamente_a_la_sunat'] = True
+            data['enviar_automaticamente_al_cliente'] = False
+            data['codigo_unico'] = self.id
+            data['condiciones_de_pago'] = self.payment_term_id.name if self.payment_term_id else ""
+            data['medio_de_pago'] = ""
+            data['placa_vehiculo'] = ""
+            data['orden_compra_servicio'] = self.origin if self.origin else ""
+            if not self.hide_detraction:
+                data['detraccion_tipo'] = float(self.detrac_id.number) if self.detrac_id.number else ""
+                data['detraccion_total'] = self.detraccion if self.detraccion else ""
+            data['tabla_personalizada_codigo'] = ""
+            data['formato_de_pdf'] = ""
+            data['generado_por_contingencia'] = ""
+            data['items'] = []
+            # data['guias'] = []
+
+            numorden = 0
+            for line in self.invoice_line_ids:
+                item = {}
+                item['unidad_de_medida'] = line.uom_id.sunat_code if line.uom_id.sunat_code else ""
+                item['codigo'] = ""  # str(numorden).zfill(4)
+                item['descripcion'] = str(line.product_id.name) if line.product_id else ""
+                item['cantidad'] = line.quantity
+                item['valor_unitario'] = round(line.price_unit, 10)
+                item['precio_unitario'] = round((line.total_without_discount) / line.quantity, 10)
+                item['descuento'] = round(line.total_discount, 10) if line.total_discount else ""
+                item['subtotal'] = round(line.price_subtotal, 10)
+                if line.total_isc and line.isc_type:
+                    item['tipo_de_isc'] = line.isc_type if line.isc_type else ""
+                    item['isc'] = round(line.total_isc, 10) if line.total_isc else 0
+                item['tipo_de_igv'] = line.igv_type if line.igv_type else ""
+                item['igv'] = round(line.total_igv, 10) if line.total_igv else 0
+                item['total'] = round(line.price_total, 10)
+                item['anticipo_regularizacion'] = False
+                item['anticipo_documento_serie'] = ""
+                item['anticipo_documento_numero'] = ""
+                item['codigo_producto_sunat'] = line.product_id.sunat_product_id.code \
+                    if line.product_id.sunat_product_id.code else ""
+                data['items'].append(item)
+
+            _logger.info("\n" + json.dumps(data, indent=3))
+
+        # Realizamos la peticion HTTP y obtenemos la respuesta
+        response = requests.post(url=config.api_url, headers=_get_headers(config), json=data)
+        # response = requests.get(url)
+        _logger.info(response.json())
+        # Si la Respuesta es Correcta
+        if response.status_code == 200:
+            resp = response.json()
+            if resp['cadena_para_codigo_qr'] and resp['enlace_del_pdf'] and resp['codigo_hash']:
+                # Inicio - Generamos el codigo qr
+                qr_code = qrcode.make(resp['cadena_para_codigo_qr'])
+                buffered = BytesIO()
+                qr_code.save(buffered, format="JPEG")
+                qr_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+                # Fin - Generamos el codigo qr
+                if resp['aceptada_por_sunat']:
+                    sunat_status = "0"
+                elif not resp['aceptada_por_sunat']:
+                    sunat_status = "4"
+                else:
+                    sunat_status = "3"
+                self.sunat_response = json.dumps(resp)
+                self.sunat_request = json.dumps(data)
+                self.sunat_status = sunat_status
+                self.sunat_description = resp['sunat_description']
+                self.sunat_qr_code = qr_base64
+                respuesta = True
+        elif response.status_code == 400:
+            resp = response.json()
+            self.sunat_response = json.dumps(resp)
+            self.sunat_status = '1'
+            self.sunat_request = json.dumps(data)
+            if resp['errors']:
+                raise ValidationError(resp['errors'])
+            if resp['sunat_soap_error']:
+                raise ValidationError(resp['sunat_soap_error'])
+            respuesta = True
+        else:
+            self.sunat_response = str(response)
+            self.sunat_status = '3'
+            self.sunat_request = json.dumps(data)
+        if self.sunat_status != '0' and self.sunat_status != '4':
+            seq.number_next = int(number)
+            self.sunat_number = 0
+        return respuesta
+        # 0004 - Inicio
+
+
+class AccountInvoiceLine(models.Model):
+    _inherit = "account.invoice.line"
+
+    # Facturación Electronica
+    total_discount = fields.Monetary(string="Total Discount", compute="_compute_total_discount", copy=False)
+    total_without_discount = fields.Monetary(string="Tax Without Discount", compute="_compute_total_discou", copy=False)
+    total_isc = fields.Monetary(string="Total ISC", compute="_compute_total_discou", copy=False)
+    total_igv = fields.Monetary(string="Total IGV", compute="_compute_total_discou", copy=False)
+    igv_type = fields.Char(string="IGV type", compute="_compute_igv_type", copy=False)
+    isc_type = fields.Char(string="ISC type", compute="_compute_igv_type", copy=False)
+
+    @api.one
+    @api.depends('price_unit', 'discount', 'invoice_line_tax_ids', 'quantity', 'product_id', 'invoice_id.partner_id',
+                 'invoice_id.currency_id', 'invoice_id.company_id', 'invoice_id.date_invoice', 'invoice_id.date')
+    def _compute_total_discou(self):
+        currency = self.invoice_id and self.invoice_id.currency_id or None
+        price = self.price_unit - (self.price_unit * ((self.discount or 0.0) / 100.0))
+        taxes_without_discount = False
+        if self.invoice_line_tax_ids:
+            taxes = self.invoice_line_tax_ids.compute_all(price, currency, self.quantity,
+                                                          product=self.product_id,
+                                                          partner=self.invoice_id.partner_id)
+            taxes_without_discount = self.invoice_line_tax_ids.compute_all(self.price_unit, currency, self.quantity,
+                                                                           product=self.product_id,
+                                                                           partner=self.invoice_id.partner_id)
+            igv = 0
+            isc = 0
+            for tax in taxes['taxes']:
+                if tax.get('type', '') == 'igv':
+                    igv = igv + tax['amount']
+                if tax.get('type', '') == 'isc':
+                    isc = isc + tax['amount']
+            self.total_igv = igv
+            self.total_isc = isc
+        self.total_without_discount = taxes_without_discount['total_included'] \
+            if taxes_without_discount else self.quantity * self.price_unit
+        price = self.price_unit * ((self.discount or 0.0) / 100.0)
+        discount = self.quantity * price
+        if self.invoice_id.currency_id and self.invoice_id.currency_id != self.invoice_id.company_id.currency_id:
+            currency = self.invoice_id.currency_id
+            date = self.invoice_id._get_currency_rate_date()
+            discount = currency._convert(discount,
+                                         self.invoice_id.company_id.currency_id,
+                                         self.company_id or self.env.user.company_id,
+                                         date or fields.Date.today())
+        self.total_discount = discount
+
+    @api.one
+    def _compute_igv_type(self):
+        inafecto = list(filter(lambda line: not line.tax_rate != 'inafecto', self.invoice_line_tax_ids))
+        exonerado = list(filter(lambda line: not line.tax_rate != 'exonerado', self.invoice_line_tax_ids))
+        isc = list(filter(lambda line: not line.tax_rate != 'isc', self.invoice_line_tax_ids))
+        if len(inafecto) >= 1:
+            self.igv_type = '9'  # Gravado - Operación Onerosa
+        elif len(exonerado) >= 1:
+            self.igv_type = '8'  # Exonerado - Operación Onerosa
+        else:
+            self.igv_type = '1'  # Inafecto - Operación Onerosa
+        if len(isc) >= 1:
+            self.isc_type = '1'
+
+
+class AccountInvoiceRefund(models.TransientModel):
+    """Credit Notes"""
+    _inherit = "account.invoice.refund"
+
+    # @api.multi
+    # def invoice_refund(self):
+    #     res = super(AccountInvoiceRefund, self).invoice_refund()
+    #     if self.filter_refund == 'cancel':
+    #         _logger.info("Anulación")
+    #         config = _get_config(self)
+    #         if config.electronic_invoicing:
+    #             inv_obj = self.env['account.invoice']
+    #             context = dict(self._context or {})
+    #             if res:
+    #                 for inv in inv_obj.browse(context.get('active_ids')):
+    #                     inv.anular_sunat(self.description, config)
+    #     return res

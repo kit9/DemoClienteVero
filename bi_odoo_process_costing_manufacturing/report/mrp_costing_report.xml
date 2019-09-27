@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            string="BOM Cost Report" 
+            id="action_report_bom_cost_report" 
+            model="mrp.bom" 
+            name="bi_odoo_process_costing_manufacturing.mrp_bom_cost_report"
+            file="bi_odoo_process_costing_manufacturing.mrp_bom_cost_report" 
+            report_type="qweb-pdf"
+            print_report_name="'BOM - %s' % (object.product_id.name or object.product_tmpl_id.name or '')"
+        />
+
+        <report
+            string="Production Order Cost"
+            id="action_report_order_cost"
+            model="mrp.production"
+            name="bi_odoo_process_costing_manufacturing.mrp_production_order_report"
+            file="bi_odoo_process_costing_manufacturing.mrp_production_order_report"
+            report_type="qweb-pdf"
+            print_report_name="'Production Order Cost- %s' % object.name"
+        />
+    </data>
+</odoo>
+

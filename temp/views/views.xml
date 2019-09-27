@@ -1,0 +1,128 @@
+<odoo>
+    <!--    <data noupdate="1">-->
+    <data>
+        <!--Categorias de Unidades de Medida-->
+        <!--        <record id="box_product_uom_categ" model="uom.category">-->
+        <!--            <field name="name">Caja</field>-->
+        <!--            <field name="measure_type">box</field>-->
+        <!--        </record>-->
+        <!--        <record id="can_product_uom_categ" model="uom.category">-->
+        <!--            <field name="name">Latas</field>-->
+        <!--            <field name="measure_type">can</field>-->
+        <!--        </record>-->
+        <!--        <record id="uom.product_uom_categ_unit" model="uom.category">-->
+        <!--            <field name="name">Unit(Assets)</field>-->
+        <!--            <field name="measure_type">unit</field>-->
+        <!--        </record>-->
+        <!--        <record id="product_uom_categ_unit_service" model="uom.category">-->
+        <!--            <field name="name">Unit(Services)</field>-->
+        <!--            <field name="measure_type">service</field>-->
+        <!--        </record>-->
+
+        <!--Unidades de Medida-->
+        <record id="uom.product_uom_kgm" model="uom.uom">
+            <!--            <field name="name">KILOGRAMOS</field>-->
+            <field name="sunat_code">KGM</field>
+        </record>
+        <record id="uom.product_uom_lb" model="uom.uom">
+            <!--            <field name="name">LIBRAS</field>-->
+            <field name="sunat_code">LBR</field>
+        </record>
+        <!--        <record id="03" model="uom.uom">-->
+        <!--            <field name="name">TONELADAS LARGAS</field>-->
+        <!--            <field name="sunat_code">03</field>-->
+        <!--            <field name="category_id" ref="uom.product_uom_categ_kgm"/>-->
+        <!--            <field name="factor_inv" eval="1016.05"/>-->
+        <!--            <field name="uom_type">bigger</field>-->
+        <!--        </record>-->
+        <record id="uom.product_uom_ton" model="uom.uom">
+            <!--            <field name="name">TONELADAS MÉTRICAS</field>-->
+            <field name="sunat_code">TNE</field>
+        </record>
+        <!--        <record id="product_uom_05" model="uom.uom">-->
+        <!--            <field name="name">TONELADAS CORTAS</field>-->
+        <!--            <field name="sunat_code">05</field>-->
+        <!--            <field name="category_id" ref="uom.product_uom_categ_kgm"/>-->
+        <!--            <field name="factor_inv" eval="907.185"/>-->
+        <!--            <field name="uom_type">bigger</field>-->
+        <!--        </record>-->
+        <record id="uom.product_uom_gram" model="uom.uom">
+            <!--            <field name="name">GRAMOS</field>-->
+            <field name="sunat_code">GRM</field>
+        </record>
+
+        <record id="uom.product_uom_unit" model="uom.uom">
+            <!--            <field name="category_id" ref="uom.product_uom_categ_unit"/>-->
+            <!--            <field name="name">Unit(s)(Assets)</field>-->
+            <!--            <field name="factor" eval="1.0"/>-->
+            <!--            <field name="rounding" eval="0.001"/>-->
+            <field name="sunat_code">NIU</field>
+        </record>
+        <!--        <record id="product_uom_ZZ" model="uom.uom">-->
+        <!--            <field name="category_id" ref="product_uom_categ_unit_service"/>-->
+        <!--            <field name="name">Unit(s)(Services)</field>-->
+        <!--            <field name="factor" eval="1.0"/>-->
+        <!--            <field name="rounding" eval="0.001"/>-->
+        <!--            <field name="sunat_code">ZZ</field>-->
+        <!--        </record>-->
+        <!--<record id="uom.product_uom_litre" model="uom.uom">-->
+        <!--<field name="name">LITROS</field>-->
+        <!--<field name="sunat_code">08</field>-->
+        <!--</record>-->
+        <record id="uom.product_uom_gal" model="uom.uom">
+            <!--            <field name="name">GALONES</field>-->
+            <field name="sunat_code">GLI</field>
+        </record>
+        <!--        <record id="10" model="uom.uom">-->
+        <!--            <field name="name">BARRILES</field>-->
+        <!--            <field name="sunat_code">10</field>-->
+        <!--            <field name="category_id" ref="uom.product_uom_categ_vol"/>-->
+        <!--            <field name="factor_inv" eval="159"/>-->
+        <!--            <field name="uom_type">bigger</field>-->
+        <!--        </record>-->
+        <!--        <record id="11" model="uom.uom">-->
+        <!--            <field name="name">LATAS</field>-->
+        <!--            <field name="sunat_code">11</field>-->
+        <!--            <field name="category_id" ref="latas_product_uom_categ"/>-->
+        <!--            <field name="factor" eval="1.0"/>-->
+        <!--            <field name="rounding" eval="0.001"/>-->
+        <!--        </record>-->
+        <!--        <record id="product_uom_12" model="uom.uom">-->
+        <!--            <field name="name">CAJAS</field>-->
+        <!--            <field name="sunat_code">12</field>-->
+        <!--            <field name="category_id" ref="box_product_uom_categ"/>-->
+        <!--            <field name="factor">1.0</field>-->
+        <!--            <field name="rounding" eval="0.001"/>-->
+        <!--        </record>-->
+        <!--        <record id="product_uom_13" model="uom.uom">-->
+        <!--            <field name="name">MILLARES</field>-->
+        <!--            <field name="sunat_code">13</field>-->
+        <!--            <field name="category_id" ref="uom.product_uom_categ_unit"/>-->
+        <!--            <field name="uom_type">bigger</field>-->
+        <!--            <field name="factor_inv">1000</field>-->
+        <!--            <field name="rounding">0.001</field>-->
+        <!--        </record>-->
+        <!--        <record model="uom.uom" id="14">-->
+        <!--            <field name="name">METROS CÚBICOS</field>-->
+        <!--            <field name="sunat_code">14</field>-->
+        <!--            <field name="category_id" ref="uom.product_uom_categ_vol"/>-->
+        <!--            <field name="uom_type">bigger</field>-->
+        <!--            <field name="factor_inv" eval="1000"/>-->
+        <!--            <field name="rounding" eval="0.001"/>-->
+        <!--        </record>-->
+        <record id="uom.product_uom_meter" model="uom.uom">
+            <!--            <field name="category_id" ref="uom.uom_categ_length"/>-->
+            <!--            <field name="name">m</field>-->
+            <!--            <field name="factor" eval="1.0"/>-->
+            <field name="sunat_code">MTR</field>
+        </record>
+        <!--        <record id="product_uom_99" model="uom.uom">-->
+        <!--            <field name="name">OTROS (ESPECIFICAR)</field>-->
+        <!--            <field name="sunat_code">99</field>-->
+        <!--            <field name="category_id" ref="uom.product_uom_categ_unit"/>-->
+        <!--            <field name="uom_type">smaller</field>-->
+        <!--            <field name="factor" eval="1.0"/>-->
+        <!--            <field name="rounding" eval="0.001"/>-->
+        <!--        </record>-->
+    </data>
+</odoo>

@@ -65,6 +65,13 @@ class Sunat(http.Controller):
         _logger.info(resultado)
         return resultado
 
+    @http.route('/sunatpersons', auth='public')
+    def sunat_agente_retencion(self):
+        model = request.env['sunat.general_actions'].sudo().search([], limit=1)
+        resultado = model.sunat_create_update_legal_persons()
+        _logger.info(resultado)
+        return resultado
+
     @http.route('/percepcion', auth='public')
     def sunat_agente_percepcion(self):
         model = request.env['sunat.general_actions'].sudo().search([], limit=1)
@@ -84,3 +91,15 @@ class Sunat(http.Controller):
         # registros = request.env['account.move.line'].sudo().search([('account_id.code', 'like', '20111.01')])
         model = request.env['sunat.payment_provider'].sudo().search([], limit=1)
         return model.generate_file()
+
+    @http.route('/secuencia', auth='public')
+    def secuencia(self):
+        # product_id = self.env.ref('product.product_to_find').id
+        sec = request.env['ir.model.data'].xmlid_to_res_id('sunat.seq_sunat_invoice')
+        model = request.env['ir.sequence'].browse(sec)
+        number = model._next_do()
+        model.write({
+            'number_next': int(number)
+        })
+        _logger.info(model.name if model else str(model))
+        return str(number)

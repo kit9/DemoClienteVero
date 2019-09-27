@@ -1,24 +1,26 @@
 <odoo>
-    <record model="sunat.type_operation_detraction" id="01">
-        <field name="number">01</field>
-        <field name="description">VENTA DE BIENES MUEBLES O INMUEBLES, PRESTACIÓN DE SERVICIOS O CONTRATOS DE CONSTRUCCIÓN GRAVADOS CON EL IGV.
-        </field>
-    </record>
-    <record model="sunat.type_operation_detraction" id="02">
-        <field name="number">02</field>
-        <field name="description">RETIRO DE BIENES GRAVADOS CON EL IGV.</field>
-    </record>
-    <record model="sunat.type_operation_detraction" id="03">
-        <field name="number">03</field>
-        <field name="description">TRASLADO DE BIENES FUERA DEL CENTRO DE PRODUCCIÓN, ASÍ COMO DESDE CUALQUIER ZONA GEOGRÁFICA QUE GOCE DE BENEFICIOS TRIBUTARIOS HACIA EL RESTO DEL PAÍS, CUANDO DICHO TRASLADO NO SE ORIGINE EN UNA OPERACIÓN DE VENTA.
-        </field>
-    </record>
-    <record model="sunat.type_operation_detraction" id="04">
-        <field name="number">04</field>
-        <field name="description">VENTA DE BIENES GRAVADA CON EL IGV REALIZADA A TRAVÉS DE LA BOLSA DE PRODUCTOS.</field>
-    </record>
-    <record model="sunat.type_operation_detraction" id="05">
-        <field name="number">05</field>
-        <field name="description">VENTA DE BIENES EXONERADA DEL IGV.</field>
-    </record>
+    <data noupdate="1">
+        <record model="sunat.type_operation_detraction" id="sunat_type_operation_detraction_01">
+            <field name="number">01</field>
+            <field name="description">VENTA DE BIENES MUEBLES O INMUEBLES, PRESTACIÓN DE SERVICIOS O CONTRATOS DE CONSTRUCCIÓN GRAVADOS CON EL IGV.
+            </field>
+        </record>
+        <record model="sunat.type_operation_detraction" id="sunat_type_operation_detraction_02">
+            <field name="number">02</field>
+            <field name="description">RETIRO DE BIENES GRAVADOS CON EL IGV.</field>
+        </record>
+        <record model="sunat.type_operation_detraction" id="sunat_type_operation_detraction_03">
+            <field name="number">03</field>
+            <field name="description">TRASLADO DE BIENES FUERA DEL CENTRO DE PRODUCCIÓN, ASÍ COMO DESDE CUALQUIER ZONA GEOGRÁFICA QUE GOCE DE BENEFICIOS TRIBUTARIOS HACIA EL RESTO DEL PAÍS, CUANDO DICHO TRASLADO NO SE ORIGINE EN UNA OPERACIÓN DE VENTA.
+            </field>
+        </record>
+        <record model="sunat.type_operation_detraction" id="sunat_type_operation_detraction_04">
+            <field name="number">04</field>
+            <field name="description">VENTA DE BIENES GRAVADA CON EL IGV REALIZADA A TRAVÉS DE LA BOLSA DE PRODUCTOS.</field>
+        </record>
+        <record model="sunat.type_operation_detraction" id="sunat_type_operation_detraction_05">
+            <field name="number">05</field>
+            <field name="description">VENTA DE BIENES EXONERADA DEL IGV.</field>
+        </record>
+    </data>
 </odoo>

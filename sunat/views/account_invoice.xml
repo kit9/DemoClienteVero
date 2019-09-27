@@ -6,47 +6,48 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
-            <field name="partner_id" position="before">
-                <field name="document_type_id" required="True"/>
-                <field name="invoice_serie" required="True"/>
-                <field name="invoice_number" required="True"/>
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="document_type_id" required="1"/>
+                <field name="invoice_serie" required="1"/>
+                <field name="invoice_number" required="1"/>
                 <field name="code_dua"/>
                 <field name="year_emission_dua"/>
-            </field>
+            </xpath>
             <xpath expr="//field[@name='reference']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <field name="reference" position="after">
+            <xpath expr="//field[@name='reference']" position="after">
                 <field name="type_ident" readonly="1"/>
                 <field name="num_ident" readonly="1"/>
-            </field>
+            </xpath>
             <xpath expr="//field[@name='vendor_bill_purchase_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <field name="date_invoice" position="before">
-                <field name="date_document" required="1"/>
-            </field>
-            <field name="date_invoice" position="replace">
-                <field string="Fecha Contable" name="date_invoice" options="{'datepicker': {'warn_future': true}}"/>
-            </field>
-            <field name="move_name" position="after">
+            <xpath expr="//field[@name='date_invoice']" position="before">
+                <field name="date_document" required="1" options="{'datepicker': {'warn_future': true}}"/>
+            </xpath>
+            <xpath expr="//field[@name='date_invoice']" position="attributes">
+                <attribute name="string">Fecha Contable</attribute>
+                <attribute name="options">{'datepicker': {'warn_future': true}}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='move_name']" position="after">
                 <field name="exchange_rate"/>
-            </field>
-            <field name="payments_widget" position="before">
+            </xpath>
+            <xpath expr="//field[@name='payments_widget']" position="before">
                 <field name="hide_detraction" invisible="1"/>
                 <field name="detraccion" attrs="{'invisible':[('hide_detraction', '=', True)]}"/>
-            </field>
+            </xpath>
             <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='currency_id']" position="after">
                 <field name="type_income_id"/>
             </xpath>
-            <field name="partner_bank_id" position="after">
-                <field name="type_operation" required="True"/>
+            <xpath expr="//field[@name='partner_bank_id']" position="after">
+                <field name="type_operation" required="1"/>
                 <field string="Detraccion" name="detrac_id" attrs="{'readonly':[['state','not in',['draft']]]}"/>
-            </field>
+            </xpath>
             <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
-                <field name="payment_ids">
-                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
-                          edit="false">
+                <field name="is_paid" invisible="1"/>
+                <field name="payment_ids" attrs="{'invisible':[('is_paid','=',False)]}">
+                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']" edit="false">
                         <field name="payment_date"/>
                         <field name="vv_bank"/>
                         <field name="operation_number"/>
@@ -83,8 +84,7 @@
                     </group>
                 </page>
             </xpath>
-            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other_info']/group[1]/group[1]/field[@name='name']"
-                   position="after">
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other_info']/group[1]/group[1]/field[@name='name']" position="after">
                 <field name="type_purchase" string="Tipo de Compra"/>
             </xpath>
         </field>
@@ -111,8 +111,8 @@
             </field>
             <field name="amount_untaxed" position="replace">
                 <field name="amount_untaxed" invisible="1"/>
-                <field name="bill_isc" sum="Total"/>
-                <field name="inv_no_gravado"/>
+                <field name="total_isc" sum="Total"/>
+                <field name="total_no_gravado"/>
                 <field name="base_imp"/>
                 <field name="base_igv"/>
             </field>
@@ -131,29 +131,75 @@
         <field name="name">sunat.form.invoice</field>
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="mode">extension</field>
         <field name="arch" type="xml">
+            <!--# 0004 - Inicio-->
             <xpath expr="//header//button[last()]" position="after">
-                <button name="action_prueba" string="Enviar a Sunat" type="object" class="oe_highlight" attrs="{'invisible': [('x_studio_estado_sunat', '=', 'Aceptado')]}"/>
+                <!--<button name="report_sunat" string="Send to Sunat" type="object" class="oe_highlight" attrs="{'invisible': ['&amp;',('type','!=','out_refund'),('sunat_status','in',['0','2'])]}"/>-->
+                <button name="report_sunat" string="Send to Sunat" type="object" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','out_refund'),'&amp;',('type','=','out_refund'),('sunat_status','in',['0','2'])]}"/>
             </xpath>
+            <xpath expr="/form/sheet/h1[1]" position="replace">
+                <h1 class="mt0">
+                    <div class="row">
+                        <div class="col-8 text-left">
+                            <div attrs="{'invisible': [('sequence_number_next_prefix','!=',False)]}">
+                                <label for="number" string="Draft Invoice" attrs="{'invisible': ['|',('state','not in',('draft',)), ('type','!=','out_invoice')]}"/>
+                                <label for="number" string="Draft Credit Note" attrs="{'invisible': ['|',('state','not in',('draft',)), ('type','!=','out_refund')]}"/>
+                                <field name="sunat_document_number" readonly="1" class="oe_inline" attrs="{'invisible': [('state','in',('draft',))]}"/>
+                            </div>
+                            <div attrs="{'invisible': [('sequence_number_next_prefix','=',False)]}">
+                                <label for="sequence_number_next_prefix" string="Invoice Number:"/>
+                                <br/>
+                                <field name="sequence_number_next_prefix" class="oe_inline"/>
+                                <field name="sequence_number_next" class="oe_inline"/>
+                            </div>
+                        </div>
+                        <div class="col-4 text-right" attrs="{'invisible': [('electronic_invoicing','=',False)]}">
+                            <field name="sunat_status" readonly="1"/>
+                        </div>
+                    </div>
+                </h1>
+            </xpath>
+            <!--# 0004 - Fin-->
+            <field name="partner_id" position="before">
+                <field name="document_type_id" required="1"
+                       options="{'no_create': True, 'no_open' : True}"
+                       attrs="{'readonly':[('state','not in',['draft']),('sunat_status','in',['0','2'])]}"/>
+                <field name="operation_type_id" required="1" widget="selection"
+                       attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                <field name="credit_note_type_id" widget="selection"
+                       attrs="{'readonly':[('state','not in',['draft']),('sunat_status','in',['0','2'])],
+                               'invisible':[('type','!=','out_refund')],
+                               'required':[('type','=','out_refund')]}"/>
+                <field name="sunat_serie" required="1" attrs="{'readonly':[('state','not in',['draft']),('sunat_status','in',['0','2'])]}"/>
+                <field name="sunat_number" readonly="1" attrs="{'invisible':[('state','in',['draft'])]}"/>
+            </field>
             <field name="partner_id" position="after">
-                <field name="x_studio_estado_sunat" invisible="1"/>
-                <field name="refund_invoice_id"/>
+                <field name="electronic_invoicing" invisible="1"/>
+                <field name="refund_invoice_id" options="{'no_create': True, 'no_open' : True}"/>
+                <field name="address" readonly="1"/>
+                <field name="type_ident" readonly="1"/>
+                <field name="num_ident" readonly="1"/>
             </field>
             <field name="date_invoice" position="before">
                 <field name="document_modify"/>
-                <field name="date_document"/>
+                <field name="date_document" required="1" attrs="{'readonly':[['state','not in',['draft']]]}"/>
             </field>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="widget">many2one</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <field name="date_invoice" position="replace">
                 <field string="Fecha Contable" name="date_invoice" options="{'datepicker': {'warn_future': true}}"/>
             </field>
             <field name="payment_term_id" position="after">
-                <field name="type_ident" readonly="1"/>
-                <field name="num_ident" readonly="1"/>
                 <field name="inv_type_operation"/>
-                <field name="type_sales"/>
             </field>
             <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
-                <field name="payment_ids">
+                <field name="is_paid" invisible="1"/>
+                <field name="payment_ids" attrs="{'invisible':[('is_paid','=',False)]}">
                     <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
                           edit="false">
                         <field name="payment_date"/>
@@ -172,9 +218,9 @@
             </xpath>
             <xpath expr="//group/group/div" position="after">
                 <field name="exchange_rate"/>
-                <field name="perception_id"/>
+                <field name="perception_id" options="{'no_create': True, 'no_open' : True}"/>
                 <!--#0001 - Incio -->
-                <field name="detrac_id"/>
+                <field name="detrac_id" attrs="{'readonly':[['state','not in',['draft']]]}" options="{'no_create': True, 'no_open' : True}"/>
                 <!--#0001 - Fin -->
             </xpath>
             <xpath expr="//notebook/page[last()]" position="after">
@@ -182,11 +228,14 @@
                     <group>
                         <group>
                             <h2>Documento</h2>
-                            <field name="document_type_id" required="True"/>
+                            <!--                            <field name="document_type_id" required="1" attrs="{'readonly':[['state','not in',['draft']]]}"/>-->
                             <!--#0003 - Inicio-->
-                            <field name="sunat_serie" required="1"/>
-                            <field name="sunat_number" readonly="1"/>
+                            <!--                            <field name="sunat_serie" required="1" attrs="{'readonly':[('state', '!=', 'draft')]}"/>-->
+                            <!--                            <field name="sunat_number" readonly="1" attrs="{'invisible':[['state','in',['draft']]]}"/>-->
                             <!--#0003 - Fin-->
+                            <!--# 0004 - Inicio-->
+                            <field name="sunat_qr_code" readonly="1" attrs="{'invisible':[('sunat_status', '!=', '0')]}"/>
+                            <!--# 0004 - Fin-->
                         </group>
                         <group>
                             <h2>Exportación</h2>
@@ -203,30 +252,34 @@
             <xpath expr="//field[@name='move_id']" position="after">
                 <field name="move_punishment_id" readonly="True"/>
             </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/group[1]/field[@name='amount_total']" position="after">
+                <field name="total_discount"/>
+                <field name="detraccion"/>
+            </xpath>
         </field>
     </record>
 
     <!-- Tabla - Factura Cliente -->
-    <!--<record id="sunat_account_invoice_tree" model="ir.ui.view">-->
-    <!--<field name="name">sunat.account.invoice.tree</field>-->
-    <!--<field name="model">account.invoice</field>-->
-    <!--<field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
-    <!--<field name="arch" type="xml">-->
-    <!--<field name="amount_untaxed_invoice_signed" position="after">-->
-    <!--<field name="inv_fac_exp" sum="Total"/>-->
-    <!--<field name="inv_exonerada" sum="Total"/>-->
-    <!--<field name="inv_inafecto" sum="Total"/>-->
-    <!--<field name="inv_isc" sum="Total"/>-->
-    <!--</field>-->
-    <!--<field name="amount_tax_signed" position="after">-->
-    <!--<field name="inv_otros" sum="Total"/>-->
-    <!--</field>-->
-    <!--<field name="amount_untaxed_invoice_signed" position="replace">-->
-    <!--<field name="amount_untaxed_invoice_signed" invisible="1"/>-->
-    <!--<field name="inv_amount_untax" sum="Total"/>-->
-    <!--</field>-->
-    <!--</field>-->
-    <!--</record>-->
+    <!--    <record id="sunat_account_invoice_tree" model="ir.ui.view">-->
+    <!--        <field name="name">sunat.account.invoice.tree</field>-->
+    <!--        <field name="model">account.invoice</field>-->
+    <!--        <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <field name="amount_untaxed_invoice_signed" position="after">-->
+    <!--                <field name="inv_fac_exp" sum="Total"/>-->
+    <!--                <field name="total_exonerado" sum="Total"/>-->
+    <!--                <field name="total_inafecto" sum="Total"/>-->
+    <!--                <field name="total_isc" sum="Total"/>-->
+    <!--            </field>-->
+    <!--            <field name="amount_tax_signed" position="after">-->
+    <!--                <field name="inv_otros" sum="Total"/>-->
+    <!--            </field>-->
+    <!--            <field name="amount_untaxed_invoice_signed" position="replace">-->
+    <!--                <field name="amount_untaxed_invoice_signed" invisible="1"/>-->
+    <!--                <field name="inv_amount_untax" sum="Total"/>-->
+    <!--            </field>-->
+    <!--        </field>-->
+    <!--    </record>-->
 
     <!-- Tabla - Factura Cliente -->
     <record id="sunat_account_invoice_tree" model="ir.ui.view">
@@ -236,18 +289,17 @@
         <field name="arch" type="xml">
             <field name="amount_untaxed" position="after">
                 <field name="inv_fac_exp" sum="Total"/>
-                <field name="inv_exonerada" sum="Total"/>
-                <field name="inv_inafecto" sum="Total"/>
-                <field name="inv_isc" sum="Total"/>
+                <field name="total_exonerado" sum="Total"/>
+                <field name="total_inafecto" sum="Total"/>
+                <field name="total_isc" sum="Total"/>
             </field>
             <field name="amount_tax" position="after">
-                <field name="inv_otros" sum="Total"/>
+                <field name="total_otros" sum="Total"/>
             </field>
             <field name="amount_untaxed" position="replace">
                 <field name="amount_untaxed" invisible="1"/>
                 <field name="inv_amount_untax" sum="Total"/>
             </field>
-
         </field>
     </record>
 

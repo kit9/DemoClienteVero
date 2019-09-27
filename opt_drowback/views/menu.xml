@@ -1,0 +1,3 @@
+<odoo>
+    <!--    <menuitem id="drowback_drowback_menu" name="Drowback" sequence="1" parent="sunat.sunat_menu_root" action="drowback_drowback_action"/>-->
+</odoo>

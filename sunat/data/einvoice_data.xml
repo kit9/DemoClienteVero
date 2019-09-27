@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <!-- Catalogo 09  - Codigos de Tipo de Nota de Credito Electronica  -->
+        <record id="e09_01" model="einvoice.catalog.09"><field name="code">01</field><field name="name">Anulación de la operación</field></record>
+        <record id="e09_02" model="einvoice.catalog.09"><field name="code">02</field><field name="name">Anulación por error en el RUC</field></record>
+        <record id="e09_03" model="einvoice.catalog.09"><field name="code">03</field><field name="name">Corrección por error en la descripción</field></record>
+        <record id="e09_04" model="einvoice.catalog.09"><field name="code">04</field><field name="name">Descuento global</field></record>
+        <record id="e09_05" model="einvoice.catalog.09"><field name="code">05</field><field name="name">Descuento por ítem</field></record>
+        <record id="e09_06" model="einvoice.catalog.09"><field name="code">06</field><field name="name">Devolución total</field></record>
+        <record id="e09_07" model="einvoice.catalog.09"><field name="code">07</field><field name="name">Devolución por ítem</field></record>
+        <record id="e09_08" model="einvoice.catalog.09"><field name="code">08</field><field name="name">Bonificación</field></record>
+        <record id="e09_09" model="einvoice.catalog.09"><field name="code">09</field><field name="name">Disminución en el valor</field></record>
+
+        <!-- Catalogo 09  - Codigos de Tipo de Nota de Credito Electronica  -->
+        <record id="nb_opetype_01" model="nubefact.operation_type"><field name="code">01</field><field name="name">Venta Interna</field></record>
+        <record id="nb_opetype_02" model="nubefact.operation_type"><field name="code">02</field><field name="name">Exportación</field></record>
+        <record id="nb_opetype_04" model="nubefact.operation_type"><field name="code">04</field><field name="name">Venta Interna – Anticipos</field></record>
+        <record id="nb_opetype_29" model="nubefact.operation_type"><field name="code">29</field><field name="name">Ventas No Domiciliados Que No Califican Como   Exportación</field></record>
+        <record id="nb_opetype_30" model="nubefact.operation_type"><field name="code">30</field><field name="name">Operación Sujeta A Detracción.</field></record>
+        <record id="nb_opetype_33" model="nubefact.operation_type"><field name="code">33</field><field name="name">Detracción - Servicios De Transporte Carga</field></record>
+
+    </data>
+</openerp>

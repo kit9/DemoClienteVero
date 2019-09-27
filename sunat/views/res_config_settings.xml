@@ -1,0 +1,38 @@
+<odoo>
+    <record id="res_config_settings_view_form_inherit_account_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="mode">extension</field>
+        <field name="arch" type="xml">
+            <xpath expr="//*[@id='setup']" position="after">
+                <h2>Electronic Invoicing Peru</h2>
+                <div class="row mt16 o_settings_container" id="peru_electronic_invoicing">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="electronic_invoicing"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="electronic_invoicing"/>
+                            <div class="text-muted">
+                                Enable electronic invoicing with Sunat
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane" attrs="{'invisible': [('electronic_invoicing', '=', False)]}">
+                            <div class="row mt16">
+                                <label for="api_token" class="col-md-4 o_light_label"/>
+                                <field name="api_token" attrs="{'required': [('electronic_invoicing', '=', True)]}"/>
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane" attrs="{'invisible': [('electronic_invoicing', '=', False)]}">
+                            <div class="row mt16">
+                                <label for="api_url" class="col-md-4 o_light_label"/>
+                                <field name="api_url" attrs="{'required': [('electronic_invoicing', '=', True)]}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

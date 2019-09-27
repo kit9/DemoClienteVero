@@ -22,48 +22,29 @@
 import logging
 from odoo import models, fields, api
 from odoo.exceptions import Warning
+import json
 
 import requests
-
-
-def get_data_doc_number(tipo_doc, numero_doc, format='json'):
-    user, password = 'demorest', 'demo1234'
-    if tipo_doc == 'dni':
-        url = 'http://aplicaciones007.jne.gob.pe/srop_publico/Consulta/Afiliado/GetNombresCiudadano?DNI='
-        url = '%s%s' % (url, str(numero_doc))
-    else:
-        url = 'http://py-devs.com/api'
-        url = '%s/%s/%s' % (url, tipo_doc, str(numero_doc))
-    res = {'error': True, 'message': None, 'data': {}}
-    try:
-        if tipo_doc == 'dni':
-            response = requests.get(url)
-        else:
-            response = requests.get(url, auth=(user, password))
-    except requests.exceptions.ConnectionError as e:
-        res['message'] = 'Error en la conexion'
-        return res
-
-    if response.status_code == 200:
-        res['error'] = False
-        if tipo_doc == 'dni':
-            res['data'] = response.text
-        else:
-            res['data'] = response.json()
-    else:
-        try:
-            res['message'] = response.json()['detail']
-        except Exception as e:
-            res['error'] = True
-    return res
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    registration_name = fields.Char('Name', size=128, index=True)
+    registration_name = fields.Char('Registration Name', size=128, index=True, )
     catalog_06_id = fields.Many2one('einvoice.catalog.06', 'Tipo Doc.', index=True)
     state = fields.Selection([('habido', 'Habido'), ('nhabido', 'No Habido')], 'State')
+
+    person_type = fields.Selection(string="Tipo de Persona", selection=[('01-Persona Natural', '01-Persona Natural'),
+                                                                        ('02-Persona Jurídica', '02-Persona Jurídica'),
+                                                                        ('03-Sujeto no Domiciliado',
+                                                                         '03-Sujeto no Domiciliado')])
+
+    # Datos Persona Natural
+    ape_pat = fields.Char(string="Apellido Paterno")
+    ape_mat = fields.Char(string="Apellido Materno")
+    nombres = fields.Char(string="Nombre Completo")
+
+    response = fields.Text(string="Response")
 
     # ~ tipo_contribuyente = fields.Char('Tipo de contribuyente')
     # ~ fecha_inscripcion = fields.Date('Fecha de inscripción')
@@ -75,13 +56,43 @@ class ResPartner(models.Model):
     # ~ sistema_contabilidad = fields.Char('Sistema contabilidad')
     # ~ ultima_actualizacion_sunat = fields.Date('Última actualización')
 
+    def get_data_doc_number(self, tipo_doc, numero_doc, format='json'):
+        user, password = 'demorest', 'demo1234'
+        if tipo_doc == 'dni':
+            url = 'http://aplicaciones007.jne.gob.pe/srop_publico/Consulta/Afiliado/GetNombresCiudadano?DNI='
+            url = '%s%s' % (url, str(numero_doc))
+        else:
+            url = 'http://py-devs.com/api'
+            url = '%s/%s/%s' % (url, tipo_doc, str(numero_doc))
+        res = {'error': True, 'message': None, 'data': {}}
+        try:
+            if tipo_doc == 'dni':
+                response = requests.get(url)
+            else:
+                response = requests.get(url, auth=(user, password))
+        except requests.exceptions.ConnectionError as e:
+            res['message'] = 'Error en la conexion'
+            return res
+
+        if response.status_code == 200:
+            res['error'] = False
+            if tipo_doc == 'dni':
+                res['data'] = response.text
+            else:
+                res['data'] = response.json()
+        else:
+            try:
+                res['message'] = response.json()['detail']
+            except Exception as e:
+                res['error'] = True
+        return res
+
     @api.onchange('catalog_06_id', 'vat')
     def vat_change(self):
         self.update_document()
 
     @api.one
     def update_document(self):
-
         if not self.vat:
             return False
         if self.catalog_06_id and self.catalog_06_id.code == '1':
@@ -89,11 +100,10 @@ class ResPartner(models.Model):
             if self.vat and len(self.vat) != 8:
                 raise Warning('El Dni debe tener 8 caracteres')
             else:
-                resp = get_data_doc_number(
-                    'dni', self.vat, format='json')
-                if not resp['error']:
-                    resp = resp['data']
-                    part = resp.split("|")
+                d = self.get_data_doc_number('dni', self.vat, format='json')
+                if not d['error']:
+                    d = d['data']
+                    part = d.split("|")
                     if len(part[0]) > 0:
                         self.name = '%s %s %s' % (
                             part[2],
@@ -111,8 +121,7 @@ class ResPartner(models.Model):
             if self.vat and len(self.vat) != 11:
                 raise Warning('El Ruc debe tener 11 caracteres')
             else:
-                d = get_data_doc_number(
-                    'ruc', self.vat, format='json')
+                d = self.get_data_doc_number('ruc', self.vat, format='json')
                 if d['error']:
                     return True
                 d = d['data']
@@ -157,5 +166,6 @@ class ResPartner(models.Model):
                 self.street = domicilio_fiscal
                 self.vat_subjected = True
                 self.is_company = True
+                self.response = json.dumps(d)
         else:
             True

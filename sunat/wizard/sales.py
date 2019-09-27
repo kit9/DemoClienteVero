@@ -67,7 +67,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                 for payment in inv.payment_ids:
                     txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" \
                                        "%s|%s|%s|%s|%s|%s|%s|%s|" % (
-                                           inv.type_sales[:2] if inv.type_sales else '',
+                                           inv.operation_type_id.code if inv.operation_type_id.code else '',
                                            inv.document_type_id.number or '',
                                            payment.payment_date.strftime("%d/%m/%Y") \
                                                if payment.payment_date else '',
@@ -86,7 +86,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                                            inv.inv_type_operation or '',
                                            campo16 or '',
                                            inv.inv_amount_untax or '',
-                                           inv.inv_isc or '',
+                                           inv.total_isc or '',
                                            inv.amount_tax or '',
                                            inv.inv_otros or '',
                                            '1' if inv.perception_id else '0',  # 21 ->
@@ -107,7 +107,7 @@ class AccountInvoiceConfirm(models.TransientModel):
             else:
                 txt_line_detalle = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|" \
                                    "%s|%s|%s|%s|%s|%s|%s|%s|" % (
-                                       inv.type_sales[:2] if inv.type_sales else '',
+                                       inv.inv.operation_type_id.code if inv.inv.operation_type_id.code else '',
                                        inv.document_type_id.number or '',
                                        '',
                                        inv.invoice_serie or '',
@@ -125,7 +125,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                                        inv.inv_type_operation or '',
                                        campo16 or '',
                                        inv.inv_amount_untax or '',
-                                       inv.inv_isc or '',
+                                       inv.total_isc or '',
                                        inv.amount_tax or '',
                                        inv.inv_otros or '',
                                        '1' if inv.perception_id else '0',  # 21 ->

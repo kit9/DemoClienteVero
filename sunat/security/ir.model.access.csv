@@ -15,3 +15,7 @@ access_sunat_code_goods_all,access_sunat_code_goods_all,model_sunat_code_goods,,
 access_sunat_payment_methods_all,access_sunat_payment_methods_all,model_sunat_payment_methods,,1,1,1,1
 access_sunat_perception_all,access_sunat_perception_all,model_sunat_perception,,1,1,1,1
 access_sunat_series_all,access_sunat_series_all,model_sunat_series,,1,1,1,1
+access_sunat_product,sunat.product,model_sunat_product,,1,1,1,1
+access_einvoice_catalog_09,einvoice.catalog.09,model_einvoice_catalog_09,,1,1,1,1
+access_nubefact_operation_type,nubefact.operation_type,model_nubefact_operation_type,,1,1,1,1
+access_sunat_legal_persons,sunat.legal_persons,model_sunat_legal_persons,,1,1,1,1

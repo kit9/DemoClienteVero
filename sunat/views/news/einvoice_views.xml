@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Codigos de Tipo de Nota de Credito Electronica -->
+        <record id="view_catalog_09_tree" model="ir.ui.view">
+            <field name="name">Codigos de Tipo de Nota de Credito Electronica</field>
+            <field name="model">einvoice.catalog.09</field>
+            <field name="arch" type="xml">
+                <tree string="Tipo de Medio de Pago">
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_catalog_09_form" model="ir.ui.view">
+            <field name="name">Codigos de Tipo de Nota de Credito Electronica</field>
+            <field name="model">einvoice.catalog.09</field>
+            <field name="arch" type="xml">
+                <form string="Codigos de Tipo de Nota de Credito Electronica">
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="catalog_09_action">
+            <field name="name">Codigos de Tipo de Nota de Credito Electronica</field>
+            <field name="res_model">einvoice.catalog.09</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Nubefact - Codigos de Tipo de Operacion Nubefact -->
+        <record id="view_nubefact_operation_type_tree" model="ir.ui.view">
+            <field name="name">Codigos de Tipo de Operacion Nubefact</field>
+            <field name="model">nubefact.operation_type</field>
+            <field name="arch" type="xml">
+                <tree string="Codigos de Tipo de Operacion Nubefact">
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_nubefact_operation_type_form" model="ir.ui.view">
+            <field name="name">Codigos de Tipo de Operacion Nubefact</field>
+            <field name="model">nubefact.operation_type</field>
+            <field name="arch" type="xml">
+                <form string="Codigos de Tipo de Operacion Nubefact">
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="nubefact_operation_type_action">
+            <field name="name">Codigos de Tipo de Operacion Nubefact</field>
+            <field name="res_model">nubefact.operation_type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Sunat - Codigos de Productos -->
+        <record id="view_sunat_product_tree" model="ir.ui.view">
+            <field name="name">Codigos de Productos Sunat</field>
+            <field name="model">sunat.product</field>
+            <field name="arch" type="xml">
+                <tree string="Codigos de Productos Sunat">
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_sunat_product_form" model="ir.ui.view">
+            <field name="name">Codigos de Productos Sunat</field>
+            <field name="model">sunat.product</field>
+            <field name="arch" type="xml">
+                <form string="Codigos de Productos Sunat">
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="sunat_product_action">
+            <field name="name">Codigos de Productos Sunat</field>
+            <field name="res_model">sunat.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Sunat - Personas Jurídicas -->
+        <record id="view_sunat_legal_persons_tree" model="ir.ui.view">
+            <field name="name">Sunat Personas Juridicas</field>
+            <field name="model">sunat.legal_persons</field>
+            <field name="arch" type="xml">
+                <tree string="Sunat Personas Juridicas">
+                    <field name="name"/>
+                    <field name="business_name"/>
+                    <field name="date"/>
+                    <field name="resolution"/>
+                    <field name="good_contributor"/>
+                    <field name="retention_agent"/>
+                    <field name="perception_agent"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_sunat_legal_persons_form" model="ir.ui.view">
+            <field name="name">Sunat Personas Juridicas</field>
+            <field name="model">sunat.legal_persons</field>
+            <field name="arch" type="xml">
+                <form string="Sunat Personas Juridicas">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="business_name"/>
+                            <field name="date"/>
+                            <field name="resolution"/>
+                        </group>
+                        <group>
+                            <field name="good_contributor"/>
+                            <field name="retention_agent"/>
+                            <field name="perception_agent"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="sunat_legal_persons_action">
+            <field name="name">Sunat Personas Juridicas</field>
+            <field name="res_model">sunat.legal_persons</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem name="Factura Electronica" id="einvoice_configuration_menu" parent="account.menu_finance_configuration" sequence="23" groups="base.group_no_one"/>
+        <menuitem name="Catalog 09 - Tipo Nota de Credito" id="einvoice_catalog_09_menu" parent="einvoice_configuration_menu" action="catalog_09_action" sequence="9" groups="base.group_no_one"/>
+        <menuitem name="Nubefact - Tipo de Operacion" id="nubefact_operation_type_menu" parent="einvoice_configuration_menu" action="nubefact_operation_type_action" sequence="50" groups="base.group_no_one"/>
+        <menuitem name="Sunat - Codigos de Producto" id="sunat_product_menu" parent="einvoice_configuration_menu" action="sunat_product_action" sequence="51" groups="base.group_no_one"/>
+        <menuitem name="Sunat - Personas Jurídicas" id="sunat_legal_persons_menu" parent="einvoice_configuration_menu" action="sunat_legal_persons_action" sequence="52" groups="base.group_no_one"/>
+    </data>
+</openerp>

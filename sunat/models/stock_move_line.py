@@ -6,7 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class stock_move_line(models.Model):
+class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
     unit_price = fields.Float(string="Unitario", compute="_unit_price")
@@ -19,6 +19,11 @@ class stock_move_line(models.Model):
     # Datos Historicos
     balance_quantity = fields.Integer(string="Cantidad Historico")
     historical_cost = fields.Float(string="Costo Historico")
+
+    @api.multi
+    def write(self, vals):
+        res = super(StockMoveLine, self).write(vals)
+        return res
 
     @api.multi
     @api.depends('date')

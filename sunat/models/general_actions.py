@@ -4,7 +4,6 @@ import time
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
-from odoo.http import request
 from urllib.request import urlopen
 import zipfile
 from io import BytesIO
@@ -146,29 +145,33 @@ class GeneralActions(models.Model):
 
             file = zip.read('BueCont_TXT.txt')
 
-            datos = file.decode("windows-1252")
+            # datos = file.decode("windows-1252")
+            datos = file.decode("iso-8859-1")
 
             # datos = datos.replace("\r", "\r\n")
-            # lista = datos.split("\r\n");
+            # lista = datos.split("\r\n")
 
-            lista = datos.split("\r");
+            lista = datos.split("\r")
             _logger.info(len(lista))
 
-            proveedores = request.env['res.partner'].sudo().search([('is_company', '=', 'True')])
+            proveedores = self.env['res.partner'].search([('is_company', '=', 'True')])
             for proveedor in proveedores:
-                proveedor.buen_contribuyente = False
+                proveedor.good_contributor = False
 
             for line in lista:
                 # _logger.info(len(lista))
                 campos = line.split("|")
-                proveedor = request.env['res.partner'].sudo().search(
+                proveedor = self.env['res.partner'].search(
                     [('is_company', '=', 'True'), ('vat', 'like', campos[0])], limit=1)
                 if proveedor.catalog_06_id.code == "6":
-                    proveedor.buen_contribuyente = True
+                    proveedor.good_contributor = True
 
         except requests.exceptions.ConnectionError as e:
             _logger.info("No se realizo la caneccion")
             return "No se realizo la caneccion"
+        except:
+            _logger.info("Error desconocido")
+            return "Error desconocido"
 
         return "Completo"
 
@@ -182,29 +185,33 @@ class GeneralActions(models.Model):
 
             file = zip.read('AgenRet_TXT.txt')
 
-            datos = file.decode("windows-1252")
+            # datos = file.decode("windows-1252")
+            datos = file.decode("iso-8859-1")
 
             # datos = datos.replace("\r", "\r\n")
-            # lista = datos.split("\r\n");
+            # lista = datos.split("\r\n")
 
-            lista = datos.split("\r");
+            lista = datos.split("\r")
             _logger.info(len(lista))
 
-            proveedores = request.env['res.partner'].sudo().search([('is_company', '=', 'True')])
+            proveedores = self.env['res.partner'].search([('is_company', '=', 'True')])
             for proveedor in proveedores:
-                proveedor.age_retencion = False
+                proveedor.retention_agent  = False
 
             for line in lista:
                 # _logger.info(len(lista))
                 campos = line.split("|")
-                proveedor = request.env['res.partner'].sudo().search(
+                proveedor = self.env['res.partner'].search(
                     [('is_company', '=', 'True'), ('vat', 'like', campos[0])], limit=1)
                 if proveedor.catalog_06_id.code == "6":
-                    proveedor.age_retencion = True
+                    proveedor.retention_agent  = True
 
         except requests.exceptions.ConnectionError as e:
             _logger.info("No se realizo la caneccion")
             return "No se realizo la caneccion"
+        except:
+            _logger.info("Error desconocido")
+            return "Error desconocido"
 
         return "Completo"
 
@@ -218,28 +225,90 @@ class GeneralActions(models.Model):
 
             file = zip.read('AgenPercVI_TXT.txt')
 
-            datos = file.decode("windows-1252")
+            # datos = file.decode("windows-1252")
+            datos = file.decode("iso-8859-1")
 
             # datos = datos.replace("\r", "\r\n")
-            # lista = datos.split("\r\n");
+            # lista = datos.split("\r\n")
 
-            lista = datos.split("\r");
+            lista = datos.split("\r")
             _logger.info(len(lista))
 
-            proveedores = request.env['res.partner'].sudo().search([('is_company', '=', 'True')])
+            proveedores = self.env['res.partner'].search([('is_company', '=', 'True')])
             for proveedor in proveedores:
-                proveedor.age_percepcion = False
+                proveedor.perception_agent = False
 
             for line in lista:
                 # _logger.info(len(lista))
                 campos = line.split("|")
-                proveedor = request.env['res.partner'].sudo().search(
+                proveedor = self.env['res.partner'].search(
                     [('is_company', '=', 'True'), ('vat', 'like', campos[0])], limit=1)
                 if proveedor.catalog_06_id.code == "6":
-                    proveedor.age_percepcion = True
+                    proveedor.perception_agent = True
 
         except requests.exceptions.ConnectionError as e:
             _logger.info("No se realizo la caneccion")
             return "No se realizo la caneccion"
+        except:
+            _logger.info("Error desconocido")
+            return "Error desconocido"
 
         return "Completo"
+
+    def sunat_create_update_legal_persons(self):
+        urls = []
+        urls.append({
+            'url': "http://www.sunat.gob.pe/descarga/BueCont/BueCont_TXT.zip",
+            'txt': "BueCont_TXT.txt",
+            'decode': "iso-8859-1",
+            'fields': 'good_contributor',
+        })
+        urls.append({
+            'url': "http://www.sunat.gob.pe/descarga/AgentRet/AgenRet_TXT.zip",
+            'txt': "AgenRet_TXT.txt",
+            'decode': "iso-8859-1",
+            'fields': 'retention_agent',
+        })
+        urls.append({
+            'url': "http://www.sunat.gob.pe/descarga/AgentRet/AgenPercVI_TXT.zip",
+            'txt': "AgenPercVI_TXT.txt",
+            'decode': "iso-8859-1",
+            'fields': 'perception_agent',
+        })
+        for url in urls:
+            # Buen contribuyente
+            response = urlopen(url.get('url', ''))
+            zip = zipfile.ZipFile(BytesIO(response.read()))
+
+            file = zip.read(url.get('txt', ''))
+
+            # datos = file.decode("windows-1252")
+            datos = file.decode(url.get('decode', ''))
+
+            lista = datos.split("\r")
+            _logger.info(len(lista))
+            del lista[0]
+            _logger.info(len(lista))
+
+            person_obj = self.env['sunat.legal_persons']
+
+            for line in lista:
+                campos = line.split("|")
+                if len(campos) >= 4:
+                    person = person_obj.search([
+                        ('name', '=', campos[0])
+                    ], order="write_date desc", limit=1)
+                    if person:
+                        person.write({
+                            url.get('fields', ''): True
+                        })
+                    else:
+                        person_obj.create({
+                            'name': campos[0],
+                            'business_name': campos[1],
+                            'date': datetime.strptime(campos[2], '%d/%m/%Y').date() \
+                                if len(campos[2].split("/")) == 3 else False,
+                            'resolution': campos[3],
+                            url.get('fields', ''): True
+                        })
+        return "Correcto"

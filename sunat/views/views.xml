@@ -6,61 +6,40 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <field name="vat" position="after">
-                <field string="Detraccion" name="detrac_id"/>
-            </field>
+            <!-- #0009 - Inicio -->
             <xpath expr="/form/sheet/group" position="replace">
-                <notebook colspan="4">
+                <notebook>
                     <page string="Datos Generales">
                         <group>
                             <group>
-                                <field name="type" attrs="{'invisible': [('parent_id','=', False)]}"
-                                       groups="base.group_no_one"/>
+                                <field name="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
                                 <label for="street" string="Address"/>
                                 <div class="o_address_format">
-                                    <div attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}"
-                                         class="oe_edit_only">
+                                    <div attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}" class="oe_edit_only">
                                         <b>Company Address:</b>
                                     </div>
-                                    <field name="street" placeholder="Street..." class="o_address_street"
-                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
-                                    <field name="street2" placeholder="Street 2..." class="o_address_street"
-                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
-                                    <field name="city" placeholder="City" class="o_address_city"
-                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
-                                    <field name="state_id" class="o_address_state" placeholder="State"
-                                           options="{&quot;no_open&quot;: True}"
-                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
-                                           context="{'country_id': country_id, 'zip': zip}"/>
-                                    <field name="zip" placeholder="ZIP" class="o_address_zip"
-                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
-                                    <field name="country_id" placeholder="Country" class="o_address_country"
-                                           options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"
-                                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="street" placeholder="Street..." class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="street2" placeholder="Urbanización o Zona" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="country_id" placeholder="País" class="o_address_city" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="state_id" class="o_address_city" placeholder="Departamento" options="{&quot;no_open&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" domain="[('country_id', '=', country_id),('state_id', '=', False),('province_id', '=', False)]"/>
+                                    <field name="province_id" class="o_address_city" placeholder="Provincia" options="{&quot;no_open&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" domain="[('country_id', '=', country_id),('state_id', '=', state_id),('province_id', '=', False)]"/>
+                                    <field name="district_id" class="o_address_city" placeholder="Distrito" options="{&quot;no_open&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" domain="[('country_id', '=', country_id),('state_id', '=', state_id),('province_id', '=', province_id)]"/>
+                                    <field name="zip" placeholder="Código postal" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    <field name="city" placeholder="Otra referencia" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                                 </div>
-                                <field name="vat" placeholder="e.g. BE0477472701"
-                                       attrs="{'readonly': [('parent_id','!=',False)]}"/>
                                 <!-- Agregado -->
                                 <field string="Detraccion" name="detrac_id"/>
-                                <field name="age_retencion"/>
-                                <field name="buen_contribuyente"/>
-                                <field name="age_percepcion"/>
                             </group>
                             <group>
-                                <field name="function" placeholder="e.g. Sales Director"
-                                       attrs="{'invisible': [('is_company','=', True)]}"/>
+                                <field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': [('is_company','=', True)]}"/>
                                 <field name="phone" widget="phone"/>
                                 <field name="mobile" widget="phone"/>
                                 <field name="user_ids" invisible="1"/>
-                                <field name="email" widget="email" context="{'gravatar_image': True}"
-                                       attrs="{'required': [('user_ids','!=', [])]}"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}" attrs="{'required': [('user_ids','!=', [])]}"/>
                                 <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
-                                <field name="title" options="{&quot;no_open&quot;: True}"
-                                       attrs="{'invisible': [('is_company', '=', True)]}"/>
+                                <field name="title" options="{&quot;no_open&quot;: True}" attrs="{'invisible': [('is_company', '=', True)]}"/>
                                 <field name="lang"/>
-                                <field name="category_id" widget="many2many_tags"
-                                       options="{'color_field': 'color', 'no_create_edit': True}"
-                                       placeholder="Tags..."/>
+                                <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Tags..."/>
                             </group>
                         </group>
                     </page>
@@ -77,37 +56,35 @@
                             <field name="ape_mat" attrs="{'invisible':[('is_empresa', '=', True)]}"/>
                             <field name="nombres" attrs="{'invisible':[('is_empresa', '=', True)]}"/>
 
-                            <!--Persona Juridica-->
-                            <field name="age_retencion" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
-                            <field name="buen_contribuyente" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
-                            <field name="age_percepcion" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
+                            <!--Persona Juridica -->
+                            <field name="retention_agent" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
+                            <field name="good_contributor" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
+                            <field name="perception_agent" attrs="{'invisible':[('is_empresa', '=', False)]}"/>
                         </group>
                     </page>
                 </notebook>
             </xpath>
+            <!-- #0009 - Fin -->
             <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
                 <field name="is_employee"/>
             </xpath>
         </field>
     </record>
 
-    <!-- Tabla - Ordenes de Compra-->
+    <!-- Tabla - Ordenes de Compra -->
     <record id="view_purchase_order_custom" model="ir.ui.view">
         <field name="name">purchase.order.custom</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_order']" position="after">
-                <!--<field name="waiting_orders" string="Pedidos de Espera"/>-->
-                <!--<field name="billing" string="Facturación"/>-->
-                <!--<field name="seat_generated" string="Asiento"/>-->
                 <field name="cuenta_analtica"/>
                 <field name="line_name"/>
             </xpath>
         </field>
     </record>
 
-    <!-- Formulario - Ordenes de Compra-->
+    <!-- Formulario - Ordenes de Compra -->
     <record id="purchase_order_form_inherit" model="ir.ui.view">
         <field name="name">purchase.order.form.inherit</field>
         <field name="model">purchase.order</field>
@@ -127,17 +104,44 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='acc_number']" position="after">
                 <field name="priority"/>
                 <field name="is_retention"/>
                 <field name="is_detraction"/>
             </xpath>
-
         </field>
     </record>
 
-    <!--Vista de Producto-->
+    <!-- #0009 - Inicio -->
+    <!-- Formulario - Vista de Producto Template Base -->
+    <record id="product_template_common_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@class='oe_title']/div[@name='options']/div[last()]" position="after">
+                <div>
+                    <field name="is_imported_product"/>
+                    <label for="is_imported_product"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tabla - Transferencia -->
+    <record id="stock_picking_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.tree.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="dua_number"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- #0009 - Fin -->
+
+    <!-- Formulario - Vista de Producto Template -->
     <record id="product_template_inherit_form" model="ir.ui.view">
         <field name="name">product.template.inherit.form</field>
         <field name="model">product.template</field>
@@ -145,8 +149,27 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='barcode']" position="after">
                 <field name="existence_code"/>
-                <field name="type_existence_id"/>
-                <field name="catalog_id"/>
+                <field name="type_existence_id" options="{'no_create': True, 'no_open' : True}"/>
+                <field name="catalog_id" options="{'no_create': True, 'no_open' : True}"/>
+                <field name="sunat_product_id" required="1" options="{'no_create': True, 'no_open' : True}"/>
+            </xpath>
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="tipo_de_act" attrs="{'required': [('asset_category_id','!=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Formulario - Vista de Producto -->
+    <record id="product_product_form_inherit" model="ir.ui.view">
+        <field name="name">product.product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="existence_code"/>
+                <field name="type_existence_id" options="{'no_create': True, 'no_open' : True}"/>
+                <field name="catalog_id" options="{'no_create': True, 'no_open' : True}"/>
+                <field name="sunat_product_id" options="{'no_create': True, 'no_open' : True}"/>
             </xpath>
             <xpath expr="//field[@name='uom_id']" position="after">
                 <field name="tipo_de_act" attrs="{'required': [('asset_category_id','!=', False)]}"/>
@@ -174,12 +197,22 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='picking_type_id']" position="after">
                 <field name="type_operation_id"/>
                 <field name="document_type_id"/>
             </xpath>
-
+            <!-- #0009 - Inicio -->
+            <xpath expr="//sheet/group/group[1]/field[last()]" position="after">
+                <field name="dua_serie"/>
+                <field name="dua_number"/>
+                <field name="dua_code"/>
+            </xpath>
+            <xpath expr="//sheet/group/group[2]/field[last()]" position="after">
+                <field name="invoice_id"/>
+                <field name="dua_year"/>
+                <field name="boarding_date"/>
+            </xpath>
+            <!-- #0009 - Fin -->
         </field>
     </record>
 
@@ -195,7 +228,7 @@
         </field>
     </record>
 
-    <!-- Tabla - Movimiento de productos-->
+    <!-- Tabla - Movimiento de productos -->
     <record id="stock_move_line_kardex" model="ir.ui.view">
         <field name="name">stock.move.line.kardex</field>
         <field name="model">stock.move.line</field>
@@ -209,7 +242,7 @@
         </field>
     </record>
 
-    <!-- Tabla - Unidades de Medida-->
+    <!-- Tabla - Unidades de Medida -->
     <record id="uom_uom_inherit_tree" model="ir.ui.view">
         <field name="name">uom.uom.inherit.tree</field>
         <field name="model">uom.uom</field>
@@ -222,20 +255,7 @@
         </field>
     </record>
 
-    <record id="ir_model_inherit_sunat" model="ir.ui.view">
-        <field name="name">ir.model.inherit.sunat</field>
-        <field name="model">ir.model</field>
-        <field name="inherit_id" ref="base.view_model_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='field_id']/tree[1]/field[@name='ttype']"
-                   position="after">
-                <field name="relation"/>
-                <field name="modules"/>
-            </xpath>
-        </field>
-    </record>
-
-    <!-- Formulario - Cuenta Contable-->
+    <!-- Formulario - Cuenta Contable -->
     <record id="target_view_account_form" model="ir.ui.view">
         <field name="name">target.account.account.form</field>
         <field name="model">account.account</field>
@@ -282,7 +302,7 @@
         </field>
     </record>
 
-    <!--Tabla - Cuenta Contable-->
+    <!-- Tabla - Cuenta Contable -->
     <record id="account_account_list_inherit" model="ir.ui.view">
         <field name="name">account.account.list.inherit</field>
         <field name="model">account.account</field>
@@ -294,7 +314,7 @@
         </field>
     </record>
 
-    <!--Fomulario - Asientos Contables-->
+    <!-- Fomulario - Asientos Contables -->
     <record id="account_move_form_inherit" model="ir.ui.view">
         <field name="name">account.move.form.inherit</field>
         <field name="model">account.move</field>
@@ -309,7 +329,7 @@
         </field>
     </record>
 
-    <!--Tabla - Pago a Proveedores-->
+    <!-- Tabla - Pago a Proveedores -->
     <record id="account_supplier_payment_tree_inherit" model="ir.ui.view">
         <field name="name">account.supplier.payment.tree.inherit</field>
         <field name="model">account.payment</field>
@@ -322,7 +342,7 @@
         </field>
     </record>
 
-    <!--Formulario - Pago a Proveedores-->
+    <!-- Formulario - Pago a Proveedores -->
     <record id="account_payment_form_inherit" model="ir.ui.view">
         <field name="name">account.payment.form.inherit</field>
         <field name="model">account.payment</field>
@@ -334,7 +354,7 @@
         </field>
     </record>
 
-    <!--Formulario - Activos-->
+    <!-- Formulario - Activos -->
     <record id="account_asset_asset_inherit_form" model="ir.ui.view">
         <field name="name">account.asset.asset.inherit.form</field>
         <field name="model">account.asset.asset</field>
@@ -383,7 +403,7 @@
         </field>
     </record>
 
-    <!--Tabla - Activos-->
+    <!-- Tabla - Activos -->
     <record id="account_asset_asset_purchase_tree_inherit" model="ir.ui.view">
         <field name="name">account.asset.asset.purchase.tree.inherit</field>
         <field name="model">account.asset.asset</field>
@@ -401,7 +421,7 @@
         </field>
     </record>
 
-    <!--Formulario - Centro de Produccion-->
+    <!-- Formulario - Centro de Produccion -->
     <record id="mrp_workcenter_form_inherit" model="ir.ui.view">
         <field name="name">mrp.workcenter.form.inherit</field>
         <field name="model">mrp.workcenter</field>
@@ -413,7 +433,7 @@
         </field>
     </record>
 
-    <!--Formulario - Empleado-->
+    <!-- Formulario - Empleado -->
     <record id="hr_employee_form_inherit" model="ir.ui.view">
         <field name="name">hr.employee.form.inherit</field>
         <field name="model">hr.employee</field>
@@ -425,7 +445,7 @@
         </field>
     </record>
 
-    <!--Formulario - Categoria de Producto-->
+    <!-- Formulario - Categoria de Producto -->
     <record id="product_category_form_inherit" model="ir.ui.view">
         <field name="name">product.category.form.inherit</field>
         <field name="model">product.category</field>
@@ -437,7 +457,7 @@
         </field>
     </record>
 
-    <!--Formulario - Rest Partner Bank-->
+    <!-- Formulario - Rest Partner Bank -->
     <record id="res_partner_bank_form_inherit" model="ir.ui.view">
         <field name="name">res.partner.bank.form.inherit</field>
         <field name="model">res.partner.bank</field>
@@ -453,34 +473,28 @@
         </field>
     </record>
 
-    <!--Formulario - Compañia-->
+    <!-- Formulario - Compañia -->
     <record id="res_company_form_inherit" model="ir.ui.view">
         <field name="name">res.company.form.inherit</field>
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
+            <!--            Datos de la compañia -->
+            <!--            <xpath expr="//field[@name='vat']" position="before">-->
+            <!--                <field name="catalog_06_id" required="1"/>-->
+            <!--            </xpath>-->
             <xpath expr="//field[@name='vat']" position="attributes">
                 <attribute name="string">RUC</attribute>
             </xpath>
+            <!-- #0009 - Inicio -->
+            <xpath expr="//sheet/notebook/page/group/group/div[@class='o_address_format']" position="after">
+                <field name="legal_representative" required="1"/>
+            </xpath>
+            <!-- #0009 - Fin -->
         </field>
     </record>
 
-    <!-- Tabla - Valoracion de Inventario-->
-    <record id="product_stock_tree_2_inherit" model="ir.ui.view">
-        <field name="name">product.stock.tree.2.inherit</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="stock_account.view_stock_product_tree2"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='display_name']" position="after">
-                <field name="account_account"/>
-            </xpath>
-            <xpath expr="//field[@name='qty_at_date']" position="after">
-                <field name="standard_price" string="Costo "/>
-            </xpath>
-        </field>
-    </record>
-
-    <!-- Tabla - Valoracion de Inventario-->
+    <!-- Tabla - Valoracion de Inventario -->
     <record id="product_stock_tree_2_inherit" model="ir.ui.view">
         <field name="name">product.stock.tree.2.inherit</field>
         <field name="model">product.product</field>
@@ -503,6 +517,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="tax_rate" required="True"/>
+            </xpath>
+            <xpath expr="//field[@name='type_tax_use']" position="after">
+                <field name="sequence"/>
             </xpath>
         </field>
     </record>
@@ -530,6 +547,7 @@
         </field>
     </record>
 
+    <!-- Tabla - Asientos Contables -->
     <record id="account_move_inherit_tree" model="ir.ui.view">
         <field name="name">account.move.inherit.tree</field>
         <field name="model">account.move</field>
@@ -545,7 +563,7 @@
     </record>
 
     <!--#0001 - Incio -->
-    <!-- Formulario - Diarios / Cuentas Bancarias -->
+    <!-- Formulario - Cuentas Bancarias -->
     <record id="account_bank_journal_form_inherit" model="ir.ui.view">
         <field name="name">account.bank.journal.form.inherit</field>
         <field name="model">account.journal</field>
@@ -557,6 +575,23 @@
         </field>
     </record>
     <!--#0001 - Fin -->
+
+    <!-- #0010 - Incio -->
+    <!-- Formulario - Diarios -->
+    <record id="account_bank_journal_form_inherit" model="ir.ui.view">
+        <field name="name">account.bank.journal.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="is_anticipo"/>
+                <field name="is_detraction"/>
+                <field name="sunat_serie_id" widget="selection"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- #0010 - Fin -->
+
 
     <!-- Accion de Prueba -->
     <record id="asset_validate" model="ir.actions.server">
@@ -577,8 +612,7 @@
         <field name="binding_model_id" ref="account.model_account_move_line"/>
         <field name="state">code</field>
         <field name="code">
-            for rec in records:
-            rec.update_ref_invoice()
+            records.update_ref_invoice()
         </field>
     </record>
 
@@ -593,5 +627,30 @@
       rec.action_prueba()
       </field>
     </record> -->
+
+    <!-- Para desarrollo -->
+    <record id="ir_model_inherit_sunat" model="ir.ui.view">
+        <field name="name">ir.model.inherit.sunat</field>
+        <field name="model">ir.model</field>
+        <field name="inherit_id" ref="base.view_model_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='field_id']/tree[1]/field[@name='ttype']"
+                   position="after">
+                <field name="relation"/>
+                <field name="modules"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="ir_model_fields tree_inherit" model="ir.ui.view">
+        <field name="name">ir.model.fields tree.inherit</field>
+        <field name="model">ir.model.fields</field>
+        <field name="inherit_id" ref="base.view_model_fields_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='field_description']" position="after">
+                <field name="modules"/>
+            </xpath>
+        </field>
+    </record>
 
 </odoo>

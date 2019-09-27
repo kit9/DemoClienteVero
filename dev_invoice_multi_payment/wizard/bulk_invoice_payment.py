@@ -157,7 +157,7 @@ class bulk_inv_payment(models.TransientModel):
                 total_payment = total_payment + invoice.amount_total_signed
 
             # Condiciones que no permiten que se aplique la retención
-            if proveedor.age_retencion:  # Si es agente de retencion no retiene
+            if proveedor.retention_agent:  # Si es agente de retencion no retiene
                 apply_retention = False
             if total_payment < 700:
                 # 0001 - Incio

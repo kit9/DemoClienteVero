@@ -105,7 +105,7 @@ class AccountInvoiceConfirm(models.TransientModel):
                                    inv.type_operation,
                                    '1' if inv.type_operation else '',
                                    inv.base_imp or '',
-                                   inv.inv_isc or '',
+                                   inv.total_isc or '',
                                    inv.base_igv or '',
                                    Campo20 or '',
                                    Campo21,

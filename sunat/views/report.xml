@@ -1,74 +1,151 @@
 <odoo>
 
     <!--    Reporte de Factura con Pago - Cliente-->
-    <record id="invoice_with_payment" model="ir.ui.view">
-        <field name="name">invoice.with.payment</field>
+    <record id="report_invoice_document_with_payments_inherit" model="ir.ui.view">
+        <field name="name">report_invoice_document_with_payments_inherit</field>
         <field name="model" eval="False"/>
         <field name="inherit_id" ref="account.report_invoice_document_with_payments"/>
         <field name="type">qweb</field>
+        <field name="mode">extension</field>
         <field name="arch" type="xml">
-            <data>
-                <xpath expr="/t/t/div/div[2]" position="after">
-                    <div class="text-center">
-                        <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png"/>
+            <xpath expr="/t[1]/t[1]/div[1]/h2[1]" position="replace">
+                <h2 class="mt32">
+                    <span t-if="o.type == 'out_invoice' and o.state in ('open', 'in_payment', 'paid')">Factura</span>
+                    <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Factura Borrador</span>
+                    <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Factura Cancelada</span>
+                    <span t-if="o.type == 'out_refund'">Nota de Crédito</span>
+                    <span t-if="o.type == 'in_refund'">Nota de crédito del Vendedor</span>
+                    <span t-if="o.type == 'in_invoice'">Factura del Vendedor</span>
+                    <span t-field="o.sunat_serie.name"/>
+                    -
+                    <span t-field="o.sunat_number"/>
+                </h2>
+            </xpath>
+            <xpath expr="/t[1]/t[1]/div[1]/h2[1]" position="after">
+                <div class="row mt32">
+                    <div class="col-4">
+                        <span>
+                            <strong>RUC:</strong>
+                            <br/>
+                        </span>
+                        <span t-field="o.partner_id.vat"/>
                     </div>
-                </xpath>
-                <xpath expr="/t/t/div/h2" position="after">
-                    <div class="row">
-                        <div class="col">
-                            <span t-field="o.invoice_serie"/>
+                    <div class="col-4">
+                        <span>
+                            <strong>Nombre:</strong>
+                            <br/>
+                        </span>
+                        <span t-field="o.partner_id.registration_name"/>
+                    </div>
+                    <div class="col-2"/>
+                    <div class="col-2"/>
+                </div>
+            </xpath>
+
+            <xpath expr="/t/t/div/div[3]" position="after">
+                <div class="text-center">
+                    <!--                    <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png"/>-->
+                    <img class="img-fluid" t-if="o.sunat_qr_code" t-att-src="image_data_uri(o.sunat_qr_code)" alt="QR CODE" height="200" width="200"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="address_layout_inherit" model="ir.ui.view">
+        <field name="name">address_layout_inherit</field>
+        <field name="model" eval="False"/>
+        <field name="inherit_id" ref="web.address_layout"/>
+        <field name="type">qweb</field>
+        <field name="mode">extension</field>
+        <field name="arch" type="xml">
+            <xpath expr="/t[1]/t[2]/div[1]" position="replace"/>
+        </field>
+    </record>
+
+    <!--    Reporte de Factura con Pago Layaut - Cliente-->
+    <record id="external_layout_boxed_inherit" model="ir.ui.view">
+        <field name="name">external_layout_boxed_inherit</field>
+        <field name="model" eval="False"/>
+        <field name="inherit_id" ref="web.external_layout_boxed"/>
+        <field name="type">qweb</field>
+        <field name="mode">extension</field>
+        <field name="arch" type="xml">
+            <xpath expr="/t[1]/div[1]" position="replace">
+                <div class="header">
+                    <div class="o_boxed_header">
+                        <div class="row mb8">
+                            <div class="col-6 text-left mb4">
+                                <h4 class="mt0" t-field="company.report_header"/>
+                                <div name="company_address" class="mb4">
+                                    RUC:
+                                    <span class="company_address" t-field="company.vat"/>
+                                    <span class="company_address" t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
+                                </div>
+                            </div>
+                            <div class="col-6 text-right">
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                            </div>
                         </div>
                     </div>
-                </xpath>
-                <xpath expr="/t/t/div/div[1]" position="after">
-                    <div class="row">
-                        <div class="col-3">
-                            <span>
-                                <strong>RUC:</strong>
-                                <br/>
-                            </span>
-                            <span t-field="o.partner_id.vat"/>
-                        </div>
-                        <div class="col-5">
-                            <span>
-                                <strong>Nombre:</strong>
-                                <br/>
-                            </span>
-                            <span t-field="o.partner_id.registration_name"/>
-                        </div>
-                        <div class="col-2">
-                            <span>
-                                <strong>Serie:</strong>
-                                <br/>
-                            </span>
-                            <span t-field="o.invoice_serie"/>
-                        </div>
-                        <div class="col-2">
-                            <span>
-                                <strong>Numero:</strong>
-                                <br/>
-                            </span>
-                            <span t-field="o.invoice_number"/>
-                        </div>
-                    </div>
-                </xpath>
-                <xpath expr="/t[1]/t[1]/div[1]/div[1]/div[1]" position="replace"/>
-                <xpath expr="/t[1]/t[1]/t[2]/div[1]" position="replace"/>
-                <!--
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!--    <record id="invoice_with_payment" model="ir.ui.view">-->
+    <!--        <field name="name">invoice.with.payment</field>-->
+    <!--        <field name="model" eval="False"/>-->
+    <!--        <field name="inherit_id" ref="account.report_invoice_document_with_payments"/>-->
+    <!--        <field name="type">qweb</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="/t/t/div/h2/span[1]" position="replace">-->
+    <!--                <span t-if="o.type == 'out_invoice' and o.state in ('open', 'in_payment', 'paid')">Factura</span>-->
+    <!--            </xpath>-->
+    <!--            <xpath expr="/t[1]/t[1]/div[1]/h2[1]/span[7]" position="replace">-->
+    <!--                <span t-field="o.sunat_serie.name"/>-->
+    <!--                - -->
+    <!--                <span t-field="o.sunat_number"/>-->
+    <!--            </xpath>-->
+    <!--            <xpath expr="/t/t/div/div[2]" position="after">-->
+    <!--                <div class="text-center">-->
+    <!--                    <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png"/>-->
+    <!--                </div>-->
+    <!--            </xpath>-->
+    <!--            <xpath expr="/t[1]/t[1]/div[1]/div[3]" position="attributes">-->
+    <!--                <attribute name="t-if">o.x_studio_estado_sunat == "Aceptado"</attribute>-->
+    <!--            </xpath>-->
+    <!--            <xpath expr="/t/t/div/h2" position="after">-->
+    <!--                <div class="row">-->
+    <!--                    <div class="col-4">-->
+    <!--                        <span>-->
+    <!--                            <strong>RUC:</strong>-->
+    <!--                            <br/>-->
+    <!--                        </span>-->
+    <!--                        <span t-field="o.partner_id.vat"/>-->
+    <!--                    </div>-->
+    <!--                    <div class="col-4">-->
+    <!--                        <span>-->
+    <!--                            <strong>Nombre:</strong>-->
+    <!--                            <br/>-->
+    <!--                        </span>-->
+    <!--                        <span t-field="o.partner_id.registration_name"/>-->
+    <!--                    </div>-->
+    <!--                    <div class="col-2"/>-->
+    <!--                    <div class="col-2"/>-->
+    <!--                </div>-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+</odoo>
+
+        <!--
           <xpath expr="/t/t/t[2]/div" position="attributes">
             <attribute name="style" separator=";" add="background-color:#FF0000"/>
           </xpath>
           -->
-                <xpath expr="/t[1]/t[1]/t[2]/div[1]" position="replace"/>
-                <xpath expr="/t/t/div/h2" position="before">
-                    <div class="row">
-                        <div class="col-6">
-                        </div>
-                        <div class="col-6">
-                        </div>
-                    </div>
-                </xpath>
-            </data>
-        </field>
-    </record>
-</odoo>
+        <!--
+        <xpath expr="/t[1]/t[1]/div[1]/div[4]" position="attributes">
+            <attribute name="class">row mt32 mb32 a</attribute>
+        </xpath>
+        -->

@@ -1,14 +1,18 @@
 <odoo>
 
-    <!-- Form Tipo de Documentos -->
-    <record id="customs_code_form_view" model="ir.ui.view">
+    <!-- Form Seriess -->
+    <record id="sunat_series_form_view" model="ir.ui.view">
         <field name="name">sunat.series.form.view</field>
         <field name="model">sunat.series</field>
         <field name="arch" type="xml">
-            <form string="Form Tipo de Documento">
+            <form string="Form Series">
+                <header>
+                    <button name="create_sequence" type="object" attrs="{'invisible': [('sequence_id', '!=', False)]}" string="Create Sequence" class="oe_highlight"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="sequence_id"/>
                     </group>
                 </sheet>
             </form>
@@ -16,20 +20,21 @@
     </record>
 
     <!-- Thee -->
-    <record id="customs_code_tree_view" model="ir.ui.view">
+    <record id="sunat_series_tree_view" model="ir.ui.view">
         <field name="name">sunat.series.tree.view</field>
         <field name="model">sunat.series</field>
         <field name="arch" type="xml">
-            <tree string="Tree Tipo de Documentos">
+            <tree string="Tree Seriess">
                 <field name="id"/>
                 <field name="name"/>
+                <field name="sequence_id"/>
             </tree>
         </field>
     </record>
 
-    <!-- Action Document Type -->
+    <!-- Action Series -->
     <record id="action_sunat_series" model="ir.actions.act_window">
-        <field name="name">Tipo de Documento Sunat</field>
+        <field name="name">Series Sunat</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sunat.series</field>
         <field name="view_mode">tree,form</field>

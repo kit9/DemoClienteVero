@@ -23,16 +23,16 @@
 ###############################################################################
 
 {
-    'name' : 'Validador RUC/DNI',
-    'version' : '1.2.2',
-    'author' : 'Odoo Peru',
-    'category' : 'Generic Modules/Base',
-    'summary': 'Valida RUC y DNI.',
+    'name': 'Validador RUC',
+    'version': '1.2.2',
+    'author': 'Odoo Peru',
+    'category': 'Generic Modules/Base',
+    'summary': 'Valida RUC.',
     'license': 'AGPL-3',
     'contributors': [
         'Leonidas Pezo <leonidas@odooperu.pe>',
     ],
-    'description' : """
+    'description': """
 Validador RUC y DNI
 -----------------------
 
@@ -52,18 +52,21 @@ Este módulo esta basado en el módulo de Alex Cuellar en https://github.com/ale
 
     """,
     'website': 'http://odooperu.pe/page/contabilidad',
-    'depends' : ['account','odoope_einvoice_base','odoope_toponyms'],
+    'depends': ['account', 'odoope_toponyms'],
     'data': [
         'views/res_partner_view.xml',
+        'views/einvoice_views.xml',
+        'data/einvoice_data.xml',
+        'security/ir.model.access.csv',
     ],
-    'qweb' : [
+    'qweb': [
 
     ],
     'demo': [
-        #'demo/account_demo.xml',
+        # 'demo/account_demo.xml',
     ],
     'test': [
-        #'test/account_test_users.yml',
+        # 'test/account_test_users.yml',
     ],
     'images': [
         'static/description/banner.png',

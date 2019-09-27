@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+
+        <!-- Account Tax Group -->
+        <record id="sunat_tax_group" model="account.tax.group">
+            <field name="name">Taxes</field>
+        </record>
+
+        <!-- Taxs -->
+        <record id="sunat_ITAX_ISC" model="account.tax">
+            <field name="name">ISC</field>
+            <field name="description">ISC</field>
+            <field name="amount">10</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="sunat_tax_group"/>
+            <field name="tax_rate">isc</field>
+            <field name="sequence">0</field>
+            <field name="include_base_amount">1</field>
+        </record>
+
+        <record id="sunat_ITAX_OTROS" model="account.tax">
+            <field name="name">Otros</field>
+            <field name="description">Otros</field>
+            <field name="amount">5</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="sunat_tax_group"/>
+            <field name="tax_rate">otros</field>
+        </record>
+
+        <record id="sunat_itax_exonerado" model="account.tax">
+            <field name="name">Exonerado</field>
+            <field name="description">Exonerado</field>
+            <field name="amount">0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="sunat_tax_group"/>
+            <field name="tax_rate">exonerado</field>
+        </record>
+
+        <record id="sunat_itax_inafecto" model="account.tax">
+            <field name="name">Inafecto</field>
+            <field name="description">Inafecto</field>
+            <field name="amount">0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="sunat_tax_group"/>
+            <field name="tax_rate">inafecto</field>
+        </record>
+
+        <record id="sunat_itax_no_gravado" model="account.tax">
+            <field name="name">No Gravado</field>
+            <field name="description">No Gravado</field>
+            <field name="amount">0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="sunat_tax_group"/>
+            <field name="tax_rate">no_gravado</field>
+        </record>
+
+    </data>
+</odoo>

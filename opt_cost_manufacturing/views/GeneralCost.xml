@@ -1,0 +1,82 @@
+<odoo>
+
+    <!-- Form General Cost -->
+    <record id="mrp_general_cost_form_view" model="ir.ui.view">
+        <field name="name">mrp.general_cost.form.view</field>
+        <field name="model">mrp.general_cost</field>
+        <field name="arch" type="xml">
+            <form string="Form General Cost">
+                <header>
+                    <button name="action_process_overhead" type="object" states="pending" string="Process" class="oe_highlight o_invoice_validate"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="period_month" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                        <field name="period_year" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                        <field name="type" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                        <field name="operation_id" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                        <field name="product_id" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                        <!--                        <field name="planned_qty"/>-->
+                        <!--                        <field name="actual_qty"/>-->
+                        <field name="uom_id" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                        <!--                        <field name="cost"/>-->
+                        <field name="total_cost" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                    </group>
+                    <field name="production_ids" readonly="1" states="complete"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Thee -->
+    <record id="mrp_general_cost_tree_view" model="ir.ui.view">
+        <field name="name">mrp.general_cost.tree.view</field>
+        <field name="model">mrp.general_cost</field>
+        <field name="arch" type="xml">
+            <tree string="Tree General Cost" editable="bottom">
+                <field name="period_month" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                <field name="period_year" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                <field name="type" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                <field name="operation_id" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                <field name="product_id" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                <!--                <field name="planned_qty"/>-->
+                <!--                <field name="actual_qty"/>-->
+                <field name="uom_id" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                <!--                <field name="cost"/>-->
+                <field name="total_cost" attrs="{'readonly': [('state','=', 'complete')]}"/>
+                <field name="state" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action General Cost -->
+    <record id="action_mrp_general_cost" model="ir.actions.act_window">
+        <field name="name">General Cost</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.general_cost</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Accion para Procesar en la Tabla -->
+    <record id="prueba" model="ir.actions.server">
+        <field name="name">Process</field>
+        <field name="model_id" ref="model_mrp_general_cost"/>
+        <field name="binding_model_id" ref="opt_cost_manufacturing.model_mrp_general_cost"/>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_process_overhead()
+        </field>
+    </record>
+
+    <menuitem id="menu_mrp_general_cost"
+              name="General Cost"
+              parent="mrp.menu_mrp_manufacturing"
+              action="action_mrp_general_cost"
+              sequence="30"/>
+</odoo>

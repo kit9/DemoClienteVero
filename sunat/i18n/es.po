@@ -1,0 +1,113 @@
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_sunat_series__sequence_id
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: sunat
+#: model:ir.model.fields,help:sunat.field_sunat_series__sequence_id
+msgid ""
+"This field contains information on the numbering of electronic invoicing."
+msgstr ""
+"Este campo contiene información sobre la numeración de la facturación electrónica."
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_product_product__account_account
+msgid "Accounting Account"
+msgstr "Cuenta Contable"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_product_template__sunat_product
+msgid "SUNAT Product Code"
+msgstr "Código de Producto SUNAT"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_product_product__sunat_product
+msgid "SUNAT Product Code"
+msgstr "Código de Producto SUNAT"
+
+#. module: sunat
+#: selection:uom.category,measure_type:0
+msgid "Service"
+msgstr "Servicio"
+
+#. module: sunat
+#: selection:uom.category,measure_type:0
+msgid "Box"
+msgstr "Caja"
+
+#. module: sunat
+#: selection:uom.category,measure_type:0
+msgid "Can"
+msgstr "Lata"
+
+#. module: sunat
+#: model:uom.category,uom_name:sunat.product_uom_categ_unit_service
+msgid "Unit(Services)"
+msgstr "Unidad(Servicio)"
+
+#. module: sunat
+#: model:uom.uom,name:sunat.ZZ
+msgid "Unit(s)(Services)"
+msgstr "Unidad(es)(Servicios)"
+
+#. module: uom
+#: model:uom.uom,name:uom.product_uom_unit
+msgid "Unit(s)(Assets)"
+msgstr "Unidad(es)(Bienes)"
+
+#. module: uom
+#: model:uom.uom,name:uom.product_uom_unit
+msgid "Unit(s)"
+msgstr "Unidad(es)(Bienes)"
+
+
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_product_template__is_imported_product
+msgid "Is Imported Product"
+msgstr "Es Producto Importado"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_stock_picking__document_type_id
+msgid "Document Type"
+msgstr "Tipo de Documento"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_stock_picking__invoice_id
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_stock_picking__dua_code
+msgid "Dua Code"
+msgstr "Código Dua"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_stock_picking__dua_year
+msgid "Dua Year"
+msgstr "Año de Dua"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_stock_picking__boarding_date
+msgid "Boarding Date"
+msgstr "Fecha de Embarque"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_stock_picking__dua_serie
+msgid "Dua Serie"
+msgstr "Serie de Dua"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_stock_picking__dua_number
+msgid "Dua Number"
+msgstr "Número de Dua"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_res_company__legal_representative
+msgid "Legal Representative"
+msgstr "Representante Legal"
+
+#. module: sunat
+#: model:ir.model.fields,field_description:sunat.field_account_move__person_type
+msgid "Person Type"
+msgstr "Tipo de Persona"
