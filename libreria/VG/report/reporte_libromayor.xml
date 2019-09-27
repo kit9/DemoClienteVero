@@ -4,8 +4,8 @@
         id="report_sale_utilities"
         model="product.product"
         string="Reporte de utilidad"
-        name="velfasa.utilities"
-        file="velfasa.utilities"
+        name="libreria.utilities"
+        file="libreria.utilities"
         report_type="qweb-pdf" />
 
     <template id="utilities">

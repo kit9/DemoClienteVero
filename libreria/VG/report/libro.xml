@@ -5,7 +5,7 @@
 
         <record model="ir.ui.view" id="wizard_form_view">
             <field name="name">wizard.form</field>
-            <field name="model">velfasa.wizard</field>
+            <field name="model">libreria.wizard</field>
             <field name="arch" type="xml">
                 <form string="Informe de utilidades">
                     <group>
@@ -23,7 +23,7 @@
         <act_window id="launch_vel_utilities_wizard"
                     name="Informe de utilidades"
                     src_model="product.product"
-                    res_model="velfasa.wizard"
+                    res_model="libreria.wizard"
                     view_mode="form"
                     target="new"/>
     </data>

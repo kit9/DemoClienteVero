@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 
 class Wizard(models.AbstractModel):
-    _name = 'velfasa.wizard'
+    _name = 'libreria.wizard'
     product_id = fields.Many2one('product.product', string='Producto', widget='selection', store=False)
 
     @api.multi
@@ -14,4 +14,4 @@ class Wizard(models.AbstractModel):
             'doc_model': report.model,
             'docs': self.product_id,
         }
-        return report_obj.render('velfasa.utilities', docargs)
+        return report_obj.render('libreria.utilities', docargs)
