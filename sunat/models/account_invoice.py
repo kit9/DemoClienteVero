@@ -573,7 +573,7 @@ class AccountInvoice(models.Model):
             move_punishment = self.env['account.move'].create(account_move_dic)
             move_punishment.post()
 
-            rec.move_punishment_id = move_punishment
+            rec.move_punishment_id = move_punishment and move_punishment.id or False
         return True
 
     # 0004 - Inicio
