@@ -1,25 +1,55 @@
-<openerp>
-<data>
-    <report
-        id="report_sale_utilities"
-        model="product.product"
-        string="Reporte de utilidad"
-        name="velfasa.utilities"
-        file="velfasa.utilities"
-        report_type="qweb-pdf" />
+<odoo>
 
-    <template id="utilities">
-        <t t-call="report.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <t t-call="report.external_layout">
-                    <div class="page">
-                        <p><h2>Producto:</h2> <span t-field="doc.name"/></p>
-                        <separator/>
+    <data>
+        <template id="report_libromayor_document">
+            <t t-call="report.external_layout">
+                <t t-set="value" t.value="doc.with_context({'lang':doc.partner_id.lang})">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-8">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Firstname</th>
+                                            <th>Lastname</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>John</td>
+                                            <td>Doe</td>
+                                            <td>john@example.com</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mary</td>
+                                            <td>Moe</td>
+                                            <td>mary@example.com</td>
+                                        </tr>
+                                        <tr>
+                                            <td>July</td>
+                                            <td>Dooley</td>
+                                            <td>july@example.com</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-2">
+                            </div>
+                        </div>
                     </div>
                 </t>
-            </t>
-        </t>
-    </template>
 
-</data>
-</openerp>
+            </t>
+        </template>
+        <template id="report_Demo">
+            <t t-call="report.html_container">
+                <t t-call="libreria.report_libromayor_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </template>
+    </data>
+
+
+</odoo>
