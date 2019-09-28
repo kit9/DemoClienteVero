@@ -17,42 +17,53 @@
                                 </footer>
                             </blockquote>
                             <div class="container">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                </div>
-                                <div>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th rowspan="2">FECHA DE LA OPERACION</th>
-                                                <th rowspan="2">NUMERO CORRELATIVO DEL LIBRO DIARIO</th>
-                                                <th class="col-sm-2" rowspan="2">DESCRIPCION O GLOSA DE LA OPERACION
-                                                </th>
-                                                <th colspan="2">SALDOS Y MOVIMIENTOS</th>
-                                            </tr>
-                                            <tr>
-                                                <th>DEUDOR</th>
-                                                <th>ACREEDOR</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-foreach="docs" as="o">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                    </div>
+                                    <div>
+                                        <table class="table table-bordered">
+                                            <thead>
                                                 <tr>
-                                                    <td><span t-field="o.name"/></td>
-                                                    <td><span t-field="o.date"/></td>
-                                                    <td><span t-field="o.ref"/></td>
-                                                    <td><span t-field="o.partner_id.name"/></td>
-                                                    <td><span t-field="o.name"/></td>
+                                                    <th rowspan="2">FECHA DE LA OPERACION</th>
+                                                    <th rowspan="2">NUMERO CORRELATIVO DEL LIBRO DIARIO</th>
+                                                    <th class="col-sm-2" rowspan="2">DESCRIPCION O GLOSA DE LA OPERACION
+                                                    </th>
+                                                    <th colspan="2">SALDOS Y MOVIMIENTOS</th>
                                                 </tr>
-                                            </t>
+                                                <tr>
+                                                    <th>DEUDOR</th>
+                                                    <th>ACREEDOR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="docs" as="o">
+                                                    <tr>
+                                                        <td>
+                                                            <span t-field="o.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="o.date"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="o.ref"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="o.partner_id.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="o.name"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
 
-                                            <th style="text-align: right" colspan="3">TOTALES(S/.)</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tbody>
-                                    </table>
+                                                <th style="text-align: right" colspan="3">TOTALES(S/.)</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tbody>
+                                        </table>
 
 
+                                    </div>
                                 </div>
                             </div>
                         </t>
