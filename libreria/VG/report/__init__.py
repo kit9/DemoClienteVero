@@ -1,1 +1,1 @@
-from . import wizard
+from . import libromayor_pdf

@@ -1,0 +1,9 @@
+<report
+    id="libro_mayor_pdf"
+    model=""
+    string="Libro Mayor"
+    report_type="qweb-pdf"
+    name= "libromayor."
+    file="libromayor"
+    attachment_use="True"
+/>

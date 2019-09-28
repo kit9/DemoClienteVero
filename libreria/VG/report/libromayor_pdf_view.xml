@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <template id="libromayor_pdf_view">
+
+            <t t-call="libreria.container">
+                <t t-call="libreria.external_layaot">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="page-header"/>
+
+                        <t t-foreach="get_periods(docs)" as="p">
+                            <blockquote>
+                                <p>Period</p>
+                                <footer>
+                                    <span t-esc="p"/>
+                                </footer>
+                            </blockquote>
+                            <div class="container">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                </div>
+                                <div>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2">FECHA DE LA OPERACION</th>
+                                                <th rowspan="2">NUMERO CORRELATIVO DEL LIBRO DIARIO</th>
+                                                <th class="col-sm-2" rowspan="2">DESCRIPCION O GLOSA DE LA OPERACION
+                                                </th>
+                                                <th colspan="2">SALDOS Y MOVIMIENTOS</th>
+                                            </tr>
+                                            <tr>
+                                                <th>DEUDOR</th>
+                                                <th>ACREEDOR</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="docs" as="o">
+                                                <tr>
+                                                    <td><span t-field="o.name"/></td>
+                                                    <td><span t-field="o.date"/></td>
+                                                    <td><span t-field="o.ref"/></td>
+                                                    <td><span t-field="o.partner_id.name"/></td>
+                                                    <td><span t-field="o.name"/></td>
+                                                </tr>
+                                            </t>
+
+                                            <th style="text-align: right" colspan="3">TOTALES(S/.)</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>
